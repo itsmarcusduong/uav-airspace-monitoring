@@ -1,0 +1,23 @@
+# Large source data and generated media
+resources/datasets/
+data/samples/frames/
+data/samples/*.staging/
+
+# Local dependency environments and caches
+resources/python_deps/
+.venv*/
+__pycache__/
+*.py[cod]
+
+# Model and experiment artifacts
+*.pt
+*.pth
+*.onnx
+*.engine
+runs/
+weights/
+
+# Editor/OS files
+.DS_Store
+Thumbs.db
+.vscode/
