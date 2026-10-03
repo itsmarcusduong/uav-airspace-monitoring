@@ -21,3 +21,7 @@ weights/
 .DS_Store
 Thumbs.db
 .vscode/
+
+# Generated weekly-report QA files; final submission PDFs in reports/ are tracked.
+tmp/
+output/

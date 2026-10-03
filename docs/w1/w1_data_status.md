@@ -21,6 +21,9 @@ Survey datasets, establish licenses/manifest, inspect resources, create 100 trac
 - `resources/metadata/svanstrom_files.csv` (1,303 file records; SHA-256 in resource inventory)
 - `data/samples/index_100_frames.csv` (100 traced samples; SHA-256 in validation report)
 - Local PDFs/README/LICENSE files listed in `resource_inventory.csv`.
+- `docs/w1/mvp_specification.md` (phạm vi MVP, quy tắc cảnh báo, metrics và ranh giới).
+- `reports/w1/E1_W1_bao_cao_ket_qua_tuan.pdf` (PDF Link 1 để nộp tuần).
+- `reports/w1/E1_W1_phien_ban_do_an_cap_nhat.pdf` (PDF Link 2, phiên bản đồ án W1).
 
 ## Problems
 
