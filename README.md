@@ -2,7 +2,7 @@
 
 **Repository description:** Reproducible research, data governance and implementation evidence for the E1 graduation project, *Detection, classification and tracking of UAVs in airport airspace using deep learning*.
 
-This is the clean handoff repository for weekly review by Lê Ngọc An, Dương Minh Quang, and the supervisor. It deliberately excludes large datasets, model weights, downloaded upstream repositories, dependency caches, and generated image frames.
+This is repository for weekly review by Lê Ngọc An, Dương Minh Quang, and the supervisor. It deliberately excludes large datasets, model weights, downloaded upstream repositories, dependency caches, and generated image frames.
 
 ## Week 1 status
 
