@@ -1,0 +1,66 @@
+{
+  "IR|Airplane|equal": {
+    "videos": 25,
+    "best_offset_counts": {
+      "-1": 16,
+      "0": 5,
+      "1": 4
+    }
+  },
+  "IR|Bird|plus1": {
+    "videos": 25,
+    "best_offset_counts": {
+      "1": 12,
+      "-1": 9,
+      "0": 4
+    }
+  },
+  "IR|Drone|equal": {
+    "videos": 25,
+    "best_offset_counts": {
+      "-1": 14,
+      "1": 4,
+      "0": 7
+    }
+  },
+  "IR|Helicopter|equal": {
+    "videos": 25,
+    "best_offset_counts": {
+      "-1": 13,
+      "1": 7,
+      "0": 5
+    }
+  },
+  "V|Airplane|equal": {
+    "videos": 25,
+    "best_offset_counts": {
+      "-1": 17,
+      "0": 3,
+      "1": 5
+    }
+  },
+  "V|Bird|plus1": {
+    "videos": 25,
+    "best_offset_counts": {
+      "1": 11,
+      "-1": 11,
+      "0": 3
+    }
+  },
+  "V|Drone|plus1": {
+    "videos": 25,
+    "best_offset_counts": {
+      "0": 9,
+      "-1": 6,
+      "1": 10
+    }
+  },
+  "V|Helicopter|equal": {
+    "videos": 25,
+    "best_offset_counts": {
+      "0": 7,
+      "1": 5,
+      "-1": 13
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "videos": 650,
+  "videos_with_issues": 276,
+  "issue_counts": {
+    "large_center_jump": 58,
+    "label_len_mismatch": 253,
+    "no_positive_bbox": 12
+  },
+  "all_absent_videos": [
+    "IR_BIRD_007",
+    "IR_BIRD_038",
+    "IR_DRONE_143",
+    "IR_DRONE_144",
+    "IR_DRONE_145",
+    "IR_DRONE_146",
+    "IR_DRONE_147",
+    "V_BIRD_005",
+    "V_BIRD_009",
+    "V_DRONE_106",
+    "V_DRONE_107",
+    "V_HELICOPTER_040"
+  ]
+}

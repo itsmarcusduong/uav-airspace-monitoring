@@ -1,0 +1,47 @@
+{
+  "stages": {
+    "env": "OK",
+    "checksums": "OK",
+    "workbook": "OK",
+    "inventory_labels": "OK",
+    "audit": "OK",
+    "stats": "OK",
+    "split": "OK",
+    "plots": "OK",
+    "review_sheets": "OK"
+  },
+  "checksums": {
+    "checked": 1303,
+    "mismatch": 0,
+    "missing": 0,
+    "skipped": false
+  },
+  "totals": {
+    "videos": 650,
+    "frames_decoded": 203328,
+    "by_modality": {
+      "IR": 365,
+      "V": 285
+    },
+    "by_class": {
+      "Airplane": 133,
+      "Bird": 130,
+      "Drone": 271,
+      "Helicopter": 116
+    },
+    "resolutions": {
+      "IR:320x256": 365,
+      "V:640x512": 285
+    }
+  },
+  "args": {
+    "data_root": "/kaggle/input",
+    "out": "/kaggle/working/w2_outputs",
+    "inventory": "/kaggle/input/datasets/minhquangdng/e1-w2-tools/svanstrom_files.csv",
+    "commit": "COMMIT",
+    "seed": "20261011",
+    "n_seeds": "200",
+    "group_by": "video",
+    "skip_sheets": "False"
+  }
+}
