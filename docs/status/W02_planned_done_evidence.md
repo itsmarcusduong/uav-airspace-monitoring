@@ -9,7 +9,7 @@
 | W2-05 | Split v1 + rò rỉ | Split video-level 454/98/98 + sàng lọc rò rỉ | `data/splits/video_split_v1*.{csv,json}` | DONE (PROPOSED, chưa freeze) |
 | W2-06 | Phần cứng/protocol/chỉ tiêu | Chưa họp GVHD; phần cứng W2 = CPU Kaggle | `env.json` | MISSING |
 | W2-07 | Template v0.2 (Mở đầu, 1.1–1.3, 3.2) | Bản nháp `E1_DoAn_v0.2_W02` | file docx | PARTIAL |
-| W2-08 | Báo cáo W2 | `E1_W02_bao_cao_cong_viec` | file docx/pdf | PARTIAL (cần điền link Issue/PR/commit) |
+| W2-08 | Báo cáo W2 | `E1_W02_bao_cao_cong_viec` (đã điền link Issue/PR/commit) | `reports/w2/*.docx/pdf`; PR #13: https://github.com/itsmarcusduong/uav-airspace-monitoring/pull/13 | PARTIAL (chờ review chéo của An + merge PR #13) |
 
 ## Problems
 1. Phần của An (split file-level, audit không kiểm nhãn) không dùng được → `docs/w2/an_work_review.md`.
@@ -19,3 +19,6 @@
 
 ## Next (W3)
 An xác nhận/sửa review (W3-01); chốt chính sách căn nhãn (W3-02); export YOLO (train/val) → train baseline YOLOv8n trên Kaggle GPU; chốt ADR.
+
+## GitHub
+PR #13, 8 commit: 1fd337f, ceb77c4, b609888, 08647d1, 499f101, 20287b2, 2e10c2a, 48c8a04 (SHA đầy đủ trong báo cáo). SHA merge vào `main`: chưa có.

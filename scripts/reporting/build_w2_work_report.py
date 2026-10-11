@@ -22,6 +22,23 @@ def para(text, bold=False, size=None, align=None, italic=False):
     if size: r.font.size = Pt(size)
     if align: p.alignment = align
     return p
+
+REPO = "https://github.com/itsmarcusduong/uav-airspace-monitoring"
+def add_link(par, text, url, size=8.5):
+    rid = d.part.relate_to(url, "http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink", is_external=True)
+    h = OxmlElement("w:hyperlink"); h.set(qn("r:id"), rid)
+    r = OxmlElement("w:r"); rp = OxmlElement("w:rPr")
+    c = OxmlElement("w:color"); c.set(qn("w:val"), "0563C1"); rp.append(c)
+    u = OxmlElement("w:u"); u.set(qn("w:val"), "single"); rp.append(u)
+    sz = OxmlElement("w:sz"); sz.set(qn("w:val"), str(int(size * 2))); rp.append(sz)
+    r.append(rp); t = OxmlElement("w:t"); t.text = text; t.set(qn("xml:space"), "preserve"); r.append(t); h.append(r)
+    par._p.append(h)
+def plain(par, text, size=8.5):
+    r = par.add_run(text); r.font.size = Pt(size)
+COMMITS = [("1fd337f", "1fd337f8ae3a23612fe8ce8a984cd55bf387f068"), ("ceb77c4", "ceb77c4042f4df9f995f95eb934d9b41e4109123"),
+           ("b609888", "b60988868214aaf9fba20c4279aeb597a3898d56"), ("08647d1", "08647d1674e611c2e64a1f461d2e04165e357191"),
+           ("499f101", "499f10192edd3568b2134e9ee665f44d41a3f8ff"), ("20287b2", "20287b27fc9424dcf6b251082445b70651e2cd49"),
+           ("2e10c2a", "2e10c2a2973c4b51ba9dc8f693a1e5485d05dfa3"), ("48c8a04", "48c8a047ad1f7383d0a2fbc21c17d5eb231421a2")]
 def table(header, rows, widths, size=8.5):
     t = d.add_table(rows=1, cols=len(header)); t.style = "Table Grid"
     for i, h in enumerate(header):
@@ -39,11 +56,25 @@ para("BÁO CÁO CÔNG VIỆC TUẦN 2 — NHÓM E1", True, 13, WD_ALIGN_PARAGRAP
 para("Đề tài: Nghiên cứu và phát triển hệ thống phát hiện, phân loại và theo dõi UAV trong vùng trời sân bay dựa trên học sâu", False, 9.5, WD_ALIGN_PARAGRAPH.CENTER, True)
 para("Tuần 2 (04/10–10/10/2026) — Milestone W2. GVHD: TS. Nguyễn Tất Thắng. Sinh viên: Lê Ngọc An, Dương Minh Quang.")
 para("1. GitHub: Issue / PR / Commit", True)
-table(["Hạng mục", "Liên kết (điền trước khi nộp)"],
-      [["Milestone W2 / Issues W2-00…W2-08", "[ĐIỀN LINK] — chưa xác minh đã tạo"],
-       ["Pull Request W2 evidence (review chéo)", "[ĐIỀN LINK PR] — reviewer: An / Quang"],
-       ["Commit SHA (main sau merge)", "[ĐIỀN SHA + LINK]"],
-       ["Tag release", "Chưa có (tag đầu tiên tại W4)"]], [6.5, 10.9])
+t = d.add_table(rows=1, cols=2); t.style = "Table Grid"
+for i, h in enumerate(["Hạng mục", "Liên kết"]):
+    c = t.rows[0].cells[i]; c.text = ""; r = c.paragraphs[0].add_run(h); r.bold = True; r.font.size = Pt(8.5)
+    sh = OxmlElement("w:shd"); sh.set(qn("w:val"), "clear"); sh.set(qn("w:fill"), "D9E2F3"); c._tc.get_or_add_tcPr().append(sh)
+def row(label):
+    cells = t.add_row().cells; cells[0].text = ""; r = cells[0].paragraphs[0].add_run(label); r.font.size = Pt(8.5)
+    cells[1].text = ""; return cells[1].paragraphs[0]
+p = row("Milestone W2 / Issues W2-00…W2-08")
+add_link(p, "Milestones", REPO + "/milestones"); plain(p, " · "); add_link(p, "Issues #1–#9 (W2)", REPO + "/issues"); plain(p, "; W3-01, W3-02 = #10, #11")
+p = row("Pull Request W2 evidence (review chéo)")
+add_link(p, "PR #13", REPO + "/pull/13"); plain(p, " — reviewer: An")
+p = row("Commit SHA (PR #13)")
+for i, (sh7, full) in enumerate(COMMITS):
+    add_link(p, sh7, REPO + "/commit/" + full)
+    if i < len(COMMITS) - 1: plain(p, ", ")
+p = row("Tag release"); plain(p, "Chưa có (tag đầu tiên tại W4)")
+for r_ in t.rows:
+    r_.cells[0].width = Cm(6.5); r_.cells[1].width = Cm(10.9)
+d.add_paragraph().paragraph_format.space_after = Pt(0)
 para("2. Phân chia công việc", True)
 table(["Issue", "Nội dung", "Phụ trách", "Review chéo", "Trạng thái"],
       [["W2-01/02", "Chạy Kaggle: SHA-256, inventory, EDA", "Quang", "An", "Hoàn thành"],
