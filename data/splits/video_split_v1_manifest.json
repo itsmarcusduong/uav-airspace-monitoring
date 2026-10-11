@@ -1,0 +1,46 @@
+{
+  "split_version": "v1",
+  "unit": "video (mp4 + _LABELS.mat di cung nhau)",
+  "videos": 650,
+  "counts": {
+    "train": 454,
+    "test": 98,
+    "val": 98
+  },
+  "target_ratio": {
+    "train": 0.7,
+    "val": 0.15,
+    "test": 0.15
+  },
+  "strata": "modality x class",
+  "balanced_on": [
+    "class frames/bbox-frames",
+    "distance_bin videos/frames",
+    "modality frames"
+  ],
+  "leakage_screen": {
+    "method": "dHash khung dau/giua, Hamming<=4, cung modality, khac split",
+    "near_duplicate_pairs_across_splits": 562,
+    "of_which_same_class": 437,
+    "ir_v_same_class_number_pairs": 279,
+    "ir_v_pairs_in_different_splits": 123
+  },
+  "base_seed": 20261011,
+  "n_seeds_searched": 3000,
+  "chosen_seed": 20261217,
+  "balance_score_lower_is_better": 0.0718,
+  "inputs_sha256": {
+    "video_inventory.csv": "0621ff37cfbb603bc30812d0a8ebb5f1c001bf447753ffd667e1670ee08ae2f0",
+    "annotation_audit.csv": "e6c99e0f2b885108dc47def53c98a1785901c00e977a0d2d456e576b3aae61da",
+    "Video_dataset_description.xlsx": "0544022ae732a6b088af4b6555a18c53a9364c2c02721d38e30d73af1c684cab"
+  },
+  "output_sha256": {
+    "video_split_v1.csv": "7e39940eb948880951a05edf199887ec6b42ae557c85088d63a561a49604e5e2"
+  },
+  "status": "PROPOSED - dong bang (freeze) sau khi An va Quang ky duyet va tag commit",
+  "known_limits": [
+    "Khong kiem soat duoc trung canh/dia diem giua cac split (khong co metadata phien quay).",
+    "IR_x va V_x cung class+number khong duoc coi la cung su kien; xem docs/w2/split_protocol.md.",
+    "12 video khong co bbox duoc giu lam am tinh (all_absent=True)."
+  ]
+}
