@@ -12,7 +12,7 @@ ap = argparse.ArgumentParser(); ap.add_argument("--out", type=Path, required=Tru
 d = docx.Document()
 s = d.sections[0]; s.page_width, s.page_height = Cm(21), Cm(29.7)
 for m in ("left_margin", "right_margin"): setattr(s, m, Cm(1.8))
-s.top_margin = s.bottom_margin = Cm(1.5)
+s.top_margin = s.bottom_margin = Cm(1.1)
 st = d.styles["Normal"]; st.font.name = "Times New Roman"; st.font.size = Pt(10)
 st.element.rPr.rFonts.set(qn("w:eastAsia"), "Times New Roman")
 st.paragraph_format.space_after = Pt(2)
@@ -39,6 +39,7 @@ COMMITS = [("1fd337f", "1fd337f8ae3a23612fe8ce8a984cd55bf387f068"), ("ceb77c4", 
            ("b609888", "b60988868214aaf9fba20c4279aeb597a3898d56"), ("08647d1", "08647d1674e611c2e64a1f461d2e04165e357191"),
            ("499f101", "499f10192edd3568b2134e9ee665f44d41a3f8ff"), ("20287b2", "20287b27fc9424dcf6b251082445b70651e2cd49"),
            ("2e10c2a", "2e10c2a2973c4b51ba9dc8f693a1e5485d05dfa3"), ("48c8a04", "48c8a047ad1f7383d0a2fbc21c17d5eb231421a2")]
+COMMITS2 = [("32682ff", "32682ffeb1fd2181ca2811f5cebf031891d4ee73")]
 def table(header, rows, widths, size=8.5):
     t = d.add_table(rows=1, cols=len(header)); t.style = "Table Grid"
     for i, h in enumerate(header):
@@ -65,18 +66,23 @@ def row(label):
     cells[1].text = ""; return cells[1].paragraphs[0]
 p = row("Milestone W2 / Issues W2-00…W2-08")
 add_link(p, "Milestones", REPO + "/milestones"); plain(p, " · "); add_link(p, "Issues #1–#9 (W2)", REPO + "/issues"); plain(p, "; W3-01, W3-02 = #10, #11")
-p = row("Pull Request W2 evidence (review chéo)")
-add_link(p, "PR #13", REPO + "/pull/13"); plain(p, " — reviewer: An")
-p = row("Commit SHA (PR #13)")
+p = row("Pull Request W2 evidence")
+add_link(p, "PR #13", REPO + "/pull/13"); plain(p, " (dữ liệu, audit, split, ADR); "); add_link(p, "PR #14", REPO + "/pull/14"); plain(p, " (báo cáo, version v0.2) — đều đã merge")
+p = row("Commit SHA")
+plain(p, "PR #13: ")
 for i, (sh7, full) in enumerate(COMMITS):
     add_link(p, sh7, REPO + "/commit/" + full)
     if i < len(COMMITS) - 1: plain(p, ", ")
+plain(p, "; PR #14: ")
+for sh7, full in COMMITS2: add_link(p, sh7, REPO + "/commit/" + full)
+p = row("Review chéo")
+plain(p, "Tuần W2 chưa có review chéo trên GitHub: PR #13, #14 do Quang merge. Đã bật bảo vệ nhánh main; từ W3 mọi PR cần An approve trước khi merge.")
 p = row("Tag release"); plain(p, "Chưa có (tag đầu tiên tại W4)")
 for r_ in t.rows:
     r_.cells[0].width = Cm(6.5); r_.cells[1].width = Cm(10.9)
 d.add_paragraph().paragraph_format.space_after = Pt(0)
 para("2. Phân chia công việc", True)
-table(["Issue", "Nội dung", "Phụ trách", "Review chéo", "Trạng thái"],
+table(["Issue", "Nội dung", "Phụ trách", "Reviewer dự kiến", "Trạng thái"],
       [["W2-01/02", "Chạy Kaggle: SHA-256, inventory, EDA", "Quang", "An", "Hoàn thành"],
        ["W2-03", "Tiêu chí audit + xem chéo nhãn", "An (tiêu chí), cả hai (xem)", "Nhau", "Một phần: audit xong; review sơ bộ 358/358, chờ An xác nhận"],
        ["W2-04", "Giao thức split, ADR-0002/0003", "An", "Quang", "Bản nháp (Proposed)"],
