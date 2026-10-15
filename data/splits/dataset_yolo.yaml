@@ -1,0 +1,10 @@
+path: .
+train: data/splits/train_v1.csv
+val: data/splits/val_v1.csv
+test: data/splits/test_v1.csv
+nc: 4
+names:
+  0: drone
+  1: bird
+  2: airplane
+  3: helicopter

@@ -1,0 +1,33 @@
+# Ultralytics YOLO Training Configuration - Baseline A
+model: yolov8n.pt  # Hoặc yolov11n.pt tùy lựa chọn baseline
+data: data/splits/dataset_yolo.yaml  # Đường dẫn tới file yaml cấu hình dataset YOLO (liên kết train_v1 và val_v1)
+
+# Hyperparameters huấn luyện
+epochs: 50
+imgsz: 640
+batch: 16
+device: 0  # GPU index (hoặc 'cpu' nếu chạy local)
+workers: 8
+optimizer: SGD
+lr0: 0.01
+lrf: 0.01
+momentum: 0.937
+weight_decay: 0.0005
+warmup_epochs: 3.0
+warmup_momentum: 0.8
+box: 7.5
+cls: 0.5
+dfl: 1.5
+
+# Quản lý chạy thực nghiệm
+project: results/W03
+name: baseline_A
+save: true
+save_period: 10
+cache: false
+exist_ok: true
+pretrained: true
+val: true
+plots: true
+seed: 20261014
+early_stopping: 10  # Dừng sớm nếu không cải thiện sau 10 epochs trên validation

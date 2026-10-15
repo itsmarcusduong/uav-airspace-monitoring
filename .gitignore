@@ -25,3 +25,6 @@ Thumbs.db
 # Generated weekly-report QA files; final submission PDFs in reports/ are tracked.
 tmp/
 output/
+
+# Temporary files
+docs/w2/note.txt
