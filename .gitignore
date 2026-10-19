@@ -28,3 +28,7 @@ output/
 
 # Temporary files
 docs/w2/note.txt
+
+# Large files
+results/W03/kaggle_run_03/yolo_dataset/
+results/W03/kaggle_run_03/yolo_dataset.zip

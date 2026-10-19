@@ -1,0 +1,35 @@
+{
+  "stages": [
+    {
+      "stage": "train_inventory_and_validation",
+      "status": "OK",
+      "images": 5172,
+      "labels": 5172,
+      "errors": []
+    },
+    {
+      "stage": "val_inventory_and_validation",
+      "status": "OK",
+      "images": 1136,
+      "labels": 1136,
+      "errors": []
+    },
+    {
+      "stage": "test_inventory_and_validation",
+      "status": "OK",
+      "images": 1078,
+      "labels": 1078,
+      "errors": []
+    },
+    {
+      "stage": "file_inventory_and_sha256",
+      "status": "OK",
+      "files_hashed": 14772
+    },
+    {
+      "stage": "overall",
+      "status": "OK",
+      "errors": []
+    }
+  ]
+}
