@@ -33,7 +33,7 @@ Giao diện Kaggle có thể đổi tên nút đôi chút; các bước giữ ng
 |---|---|---|---|
 | `w3_run03a_review_offset.ipynb` | `e1-w3-run03a` | None | `e1-svanstrom-raw`, `e1-w3-tools` |
 | `w3_run03b_export_yolo.ipynb` | `e1-w3-run03b` | None | `e1-svanstrom-raw`, `e1-w3-tools` (bản có `review_assignment_w3.csv`) |
-| `w3_run04_train_baseline_A.ipynb` | `e1-w3-run04` | GPU T4 x2 (hoặc P100) | `e1-w3-tools`, **output của notebook `e1-w3-run03b`** |
+| `w3_run04_train_baseline_A.ipynb` | `e1-w3-run04` | GPU T4 x2 (hoặc P100) | `e1-w3-tools`, **output của notebook `e1-w3-run03b` bản có `e1-yolo-v1.zip`** |
 | `w3_run05_analyze_baseline_A.ipynb` | `e1-w3-run05` | None | `e1-w3-tools` (bản có `w3_analyze_baseline.py`), output `e1-w3-run03b`, output `e1-w3-run04` |
 
 ## 3. Thêm input và cài đặt
@@ -65,3 +65,9 @@ Xong mỗi run, nhắn Claude "đã có kết quả run 03a/03b/04" để đọc
 - 03a: 358 video được vẽ, không lỗi; mọi stage OK (export = SKIPPED); nhóm `V|Drone|plus1` và `V|Bird|plus1` có `passes=True`. Nếu không: **dừng**, không chạy 03b/04.
 - 03b: mọi stage OK; `split_counts` = 454/98/98; không có `images/test`; train và val đều có đủ 4 lớp.
 - 04: mọi stage OK; có GPU; `results.csv` có dòng mỗi epoch; có PR curve trên val.
+
+## Sự cố gắn input run 04 (21/10/2026) và cách xử lý
+- Run 04 bản 1 thất bại trước khi chạy ô code đầu: `ERRORED_MOUNTING_DATASET … e1-w3-run03b … retry budget exhausted (30 attempts)`. Output run 03b bản đầu có khoảng 14 nghìn file nhỏ (ảnh + nhãn); tạo Dataset từ output này cũng lỗi (`Unexpected end of JSON input`).
+- Cách xử lý: chạy lại run 03b với `--pack-zip` (đã có trong notebook 03b mới) → output chỉ còn `e1-yolo-v1.zip` (ZIP_STORED, không nén lại JPEG), `w3_export_evidence/` và `w3_export_evidence.zip`. Run 04/05 giải nén zip vào `/tmp`, kiểm tra SHA-256 của zip với `dataset_zip.json` và SHA-256 từng ảnh với `yolo_manifest.csv.gz`, rồi in fingerprint và so với bản gốc `d0ac7e23…`.
+- Nếu fingerprint khác bản gốc (ví dụ OpenCV trên Kaggle đổi phiên bản làm khác byte JPEG): vẫn dùng được nhưng phải lưu bằng chứng run 03b mới thay cho bản cũ và ghi vào ADR-0004.
+- Luôn chạy thử các ô đến bước dữ liệu ở chế độ Edit trước khi *Save Version* để phát hiện lỗi gắn input sớm.
