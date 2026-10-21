@@ -9,7 +9,7 @@ Giao diện Kaggle có thể đổi tên nút đôi chút; các bước giữ ng
 
 ## 1. Tạo dataset công cụ `e1-w3-tools`
 1. kaggle.com → **Datasets** (menu trái) → **+ New Dataset**.
-2. Kéo thả **7 file** (lấy từ thư mục repo `D:\code_source\e1-uav-airspace-monitoring\` sau khi pull `main`):
+2. Kéo thả **7 file** (lấy từ repo sau khi pull `main`, đúng commit dùng làm `COMMIT`; đường dẫn tính từ gốc repo):
 
 | File | Đường dẫn trong repo |
 |---|---|
@@ -52,9 +52,9 @@ Mở phiên bản đã chạy xong → tab **Output** → di chuột lên file �
 
 | Run | Tải về | Giải nén vào |
 |---|---|---|
-| 03a | `w3_review_v2.zip`, `w3_export_evidence.zip` | `D:\code_source\Do_an_tot_nghiep\results\W03\kaggle_run_03a\` |
-| 03b | `w3_export_evidence.zip` (không tải thư mục `e1-yolo-v1/`) | `...\results\W03\kaggle_run_03b\` |
-| 04 | `w3_train_evidence.zip` | `...\results\W03\kaggle_run_04\` |
+| 03a | `w3_review_v2.zip`, `w3_export_evidence.zip` | `results/W03/kaggle_run_03a/` |
+| 03b | `w3_export_evidence.zip` (không tải thư mục `e1-yolo-v1/`) | `results/W03/kaggle_run_03b/` |
+| 04 | `w3_train_evidence.zip` | `results/W03/kaggle_run_04/` |
 | 04 | `runs/baseline_A/weights/best.pt`, `last.pt` | Google Drive `E1/weights/W03/` (quyền xem); **không** đưa vào Git |
 
 Xong mỗi run, nhắn Claude "đã có kết quả run 03a/03b/04" để đọc, đối chiếu và cập nhật tài liệu.

@@ -23,7 +23,7 @@ Modality · đơn vị nhóm split · xử lý 12 chuỗi không bbox · GT trac
 Dữ liệu chỉ ≈ 0,2 GB nên CPU là đủ; Kaggle dùng để giữ mọi xử lý dữ liệu ngoài máy local và để từ W3 có GPU.
 
 **Bước 1 — Chuẩn bị file (máy local, chỉ nén/copy, không xử lý):**
-1. Thư mục dataset: `D:\code_source\Do_an_tot_nghiep\resources\datasets\svanstrom-drone-detection-dataset\Drone-detection-dataset-master` (có `Data\Video_IR`, `Data\Video_V`, `Data\Video_dataset_description.xlsx`).
+1. Thư mục dataset Svanström đã tải về (`Drone-detection-dataset-master`) (có `Data\Video_IR`, `Data\Video_V`, `Data\Video_dataset_description.xlsx`).
 2. Hai file công cụ: `scripts\kaggle\w2_eda_audit_split.py` và `resources\metadata\svanstrom_files.csv`.
 
 **Bước 2 — Tạo 2 Kaggle Dataset (Private):** kaggle.com → Datasets → New Dataset.
@@ -56,7 +56,7 @@ print(open('/kaggle/working/w2_outputs/stage_status.json').read())
 ```
 **Bước 4 — Lưu bằng "Save Version → Save & Run All (Commit)"** để output được lưu vĩnh viễn. Mở tab **Output**, tải `w2_outputs_bundle.zip`.
 
-**Bước 5 — Đặt kết quả về máy:** giải nén vào `D:\code_source\Do_an_tot_nghiep\results\W02\kaggle_run_01\` rồi nhắn mình ("đã có kết quả W2"). Mình sẽ đọc file, đối chiếu và cập nhật tài liệu/báo cáo.
+**Bước 5 — Đặt kết quả về máy:** giải nén vào `results/W02/kaggle_run_01/` rồi nhắn mình ("đã có kết quả W2"). Mình sẽ đọc file, đối chiếu và cập nhật tài liệu/báo cáo.
 
 **Cách tự kiểm tra thành công:** `stage_status.json` — mọi stage `OK`; `checksums.mismatch = 0` và `missing = 0`; `totals.videos = 650`; `totals.frames_decoded ≈ 203328` (khớp W1). Nếu lệch → dừng, gửi file đó cho mình, đừng sửa dữ liệu.
 Nếu một stage `FAILED`: gửi `stage_status.json` + dòng log lỗi trong notebook; không chạy lại nhiều lần.

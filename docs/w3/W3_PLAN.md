@@ -46,7 +46,7 @@ Mỗi notebook có ô tự kiểm tra in `PASS`/`FAIL`. `w3_export_yolo.py` đ�
 
 **Input cần add:**
 - `e1-svanstrom-raw` (đã có từ W2).
-- Dataset mới **`e1-w3-tools`** (Private), upload 6 file từ `D:\code_source\Do_an_tot_nghiep\`:
+- Dataset mới **`e1-w3-tools`** (Private), upload 6 file (đường dẫn tính từ gốc repo):
   `scripts\kaggle\w3_export_yolo.py`, `scripts\kaggle\w3_train_baseline.py`, `configs\baseline_A.yaml`,
   `data\splits\video_split_v1.csv`, `results\W02\kaggle_run_01\w2_outputs_bundle\annotation_audit.csv`, `results\W02\review\review_assignment_w2.csv`.
 
@@ -85,7 +85,7 @@ print(card['inputs']['split_counts'], card['videos_included'], card['images'], c
 print(pd.read_csv(f'{ev}/dataset_stats.csv'))
 ```
 **Lưu:** Save Version → *Save & Run All (Commit)*. Tab Output: tải `w3_export_evidence.zip`. **Không tải** thư mục `e1-yolo-v1/` (để nguyên trên Kaggle, run 04 dùng trực tiếp).
-**Đặt kết quả:** giải nén vào `D:\code_source\Do_an_tot_nghiep\results\W03\kaggle_run_03\`.
+**Đặt kết quả:** giải nén vào `results/W03/kaggle_run_03/`.
 **Tự kiểm tra thành công:** mọi stage `OK`; `split_counts` = train 454 / val 98 / test 98; `problems` rỗng; không có `images/test`; hai nhóm `V|Drone|plus1`, `V|Bird|plus1` có `passes: true`.
 
 **Xem bảng mù (W3-02):** mỗi người copy `offset_review.csv` thành `offset_review_quang.csv` / `offset_review_an.csv`, mở các ảnh `offset_review_sheets/*.jpg`, với mỗi ô ghi `A`, `B` hoặc `UNCLEAR` vào cột `choice_A_B_UNCLEAR` (hộp nào khớp vật thể trong ảnh). **Không mở file `..._KEY_...` trước khi cả hai xem xong.** Lưu vào `results\W03\review\` rồi báo mình; mình chạy `scripts/dataset/score_offset_review.py`.
@@ -119,7 +119,7 @@ print({k: v['status'] for k, v in json.load(open(f'{ev}/stage_status.json')).ite
 print(json.load(open(f'{ev}/env.json'))['gpu'])
 print(json.dumps(json.load(open(f'{ev}/baseline_A_val_metrics.json'))['overall'], indent=1))
 ```
-**Lưu:** Save Version → *Save & Run All (Commit)* (chạy nền). Tab Output: tải `w3_train_evidence.zip` → giải nén vào `D:\code_source\Do_an_tot_nghiep\results\W03\kaggle_run_04\`; tải `runs/baseline_A/weights/best.pt` và `last.pt` → Drive (thư mục `E1/weights/W03/`, quyền xem), **không** đưa vào Git.
+**Lưu:** Save Version → *Save & Run All (Commit)* (chạy nền). Tab Output: tải `w3_train_evidence.zip` → giải nén vào `results/W03/kaggle_run_04/`; tải `runs/baseline_A/weights/best.pt` và `last.pt` → Drive (thư mục `E1/weights/W03/`, quyền xem), **không** đưa vào Git.
 **Tự kiểm tra thành công:** mọi stage `OK`; `gpu` khác `none`; `train/results.csv` có một dòng mỗi epoch; có `val/BoxPR_curve.png` (hoặc `PR_curve.png`) và `baseline_A_val_metrics.json`. Gửi mình link Drive của 2 file weights để ghi vào `weights_manifest.json`.
 
 ## E. Script đã kiểm thử
