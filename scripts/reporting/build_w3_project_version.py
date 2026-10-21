@@ -163,7 +163,7 @@ def s12(c):
     c.table("Mục tiêu → chỉ số → ngưỡng đề xuất → minh chứng (cập nhật tới tuần 3).",
             ["Mục tiêu", "Chỉ số", "Ngưỡng đề xuất", "Tuần", "Minh chứng"],
             [["Dữ liệu sạch, tái lập", "Checksum 1.303 tệp; split theo video", "Không sai khác; không rò rỉ trực tiếp", "W2–W3", "checksum_verification.csv; video_split_v1.csv; dataset_card.json"],
-             ["Detector baseline", "mAP@0.5, P/R theo lớp, theo cỡ bbox", "Như Bảng 1", "W3–W4", "Đang huấn luyện (Kaggle run 04)"],
+             ["Detector baseline", "mAP@0.5, P/R theo lớp, theo cỡ bbox", "Như Bảng 1", "W3–W4", "W3: mAP@0.5 = 0,807 trên val (Kaggle run 04, mục 5.3); test chưa đánh giá"],
              ["Tracker", "ID switch, độ ổn định ID", "Chưa có nhãn track hợp lệ", "W5", "Chưa có"],
              ["Cảnh báo", "Cảnh báo giả / event recall", "−30% / ≤ 5 điểm %", "W6–W7", "Chưa có"],
              ["Tốc độ", "FPS, độ trễ p95", "≥ 15 FPS; ≤ 500 ms", "W9", "Chưa có"]],
@@ -181,14 +181,14 @@ def s13(c):
 
 # ============================================================ 1.4
 def s14(c):
-    c.para("Kết quả dự kiến của đồ án gồm bốn nhóm sản phẩm: dữ liệu, mô hình, phần mềm và tài liệu nghiên cứu. Mỗi sản phẩm có định danh phiên bản (commit, SHA-256 hoặc tag) để người khác có thể kiểm tra và chạy lại. Bảng 6 liệt kê các sản phẩm và trạng thái tại ngày 21/10/2026.")
+    c.para("Kết quả dự kiến của đồ án gồm bốn nhóm sản phẩm: dữ liệu, mô hình, phần mềm và tài liệu nghiên cứu. Mỗi sản phẩm có định danh phiên bản (commit, SHA-256 hoặc tag) để người khác có thể kiểm tra và chạy lại. Bảng 6 liệt kê các sản phẩm và trạng thái tại ngày 22/10/2026.")
     c.table("Danh sách sản phẩm (artifact) có phiên bản và trạng thái tại tuần 3.",
             ["Sản phẩm", "Loại", "Định danh / vị trí", "Trạng thái"],
             [["Manifest và checksum dữ liệu gốc", "Dữ liệu", "data/manifests/; checksum_verification.csv (1.303 tệp)", "Hoàn thành (W1–W2)"],
              ["Split theo video v1 (454/98/98)", "Dữ liệu", "data/splits/video_split_v1.csv, SHA-256 7e3994…", "Đề xuất, chưa đóng băng"],
              ["Review nhãn v2 (358 video)", "Dữ liệu", "results/W03/review/review_assignment_w3.csv", "Hoàn thành (W3)"],
              ["Tập huấn luyện YOLO e1-yolo-v1", "Dữ liệu", "dataset_card.json, fingerprint d0ac7e23…", "Hoàn thành (W3)"],
-             ["Detector baseline A (YOLOv8n @640)", "Mô hình", "weights + model card (docs/w3/model_card_baseline_A.md)", "Đang huấn luyện (W3)"],
+             ["Detector baseline A (YOLOv8n @640)", "Mô hình", "best.pt SHA-256 65dd67fb… (Drive) + model card (docs/w3/model_card_baseline_A.md)", "Hoàn thành (W3), đánh giá trên val"],
              ["Detector đối chứng B", "Mô hình", "Tag release W4", "Kế hoạch (W4)"],
              ["Mô-đun theo dõi (ByteTrack, đối chiếu BoT-SORT)", "Phần mềm", "W5–W6", "Kế hoạch"],
              ["Mô-đun ROI và cảnh báo theo quỹ đạo", "Phần mềm", "W6–W7", "Kế hoạch"],
@@ -257,6 +257,7 @@ def s32(c):
     c.para("Để quyết định cách dùng video dư một mục, nhóm đo độ nhạy: nếu tỷ lệ cặp frame liên tiếp có IoU ≥ 0,5 đạt từ 90% trở lên thì việc lệch một frame hầu như không làm đổi kết quả khớp ở ngưỡng IoU 0,5 của mAP@0.5. Kết quả ở Hình 4: Drone dư một mục đạt 98,6% (95 video) và Bird dư một mục đạt 95,3% (34 video), nên nhóm này được giữ lại với cách căn frame i ↔ nhãn i (offset 0). Nhóm Bird thiếu nhãn chỉ đạt 87,5% và bị loại.")
     c.image(a.fig_w3 / "fig_w3_offset_sensitivity.png", 14, "Độ nhạy với lệch một khung hình theo nhóm video khả kiến (Kaggle run 03a, offset_sensitivity_summary.json).")
     c.para("Nhóm cũng thăm dò chiều lệch bằng bảng xem có nhóm đối chứng, với luật chấm đặt trước (ADR-0004 mục 6). Ở nhóm đối chứng, người xem chỉ chọn đúng 53% (8/15 lựa chọn rõ ràng), thấp hơn ngưỡng 80%, nên phương pháp xem không đủ tin cậy và chiều lệch được ghi là chưa xác định. Kết quả này chỉ là thăm dò, không phải review mù độc lập, vì khóa đáp án nằm cùng gói kết quả với bảng xem và lựa chọn không được chốt trước khi khóa có thể truy cập. Việc kiểm chứng chuyển sang tuần 4 bằng tập chuẩn vẽ lại hộp trên CVAT, với khóa đáp án tách khỏi gói của người xem.")
+    c.para("Sau khi phân tích baseline A (mục 5.4), nhóm ghi nhận thêm một chi tiết cấu trúc: 111/114 video Drone khả kiến dư một mục có đúng một mục nhãn rỗng (annotation_audit.csv); ở cả 92 video Drone đã xuất, mục rỗng đó rơi vào frame 0 (yolo_manifest.csv.gz), trong khi review v2 thấy drone ngay ở frame 0. Chi tiết này nghiêng về giả thuyết mục đầu tiên là mục thừa (nhãn đúng của frame i là mục i + 1), nhưng chưa được dùng để đổi quyết định trước khi kiểm chứng ở tuần 4.")
     c.para("Review nhãn lần 2 xem 358 video, mỗi video 8 frame (trải đều và frame có bước nhảy lớn nhất) kèm ảnh phóng to quanh hộp, có hỗ trợ công cụ. Quy tắc: SAI_NHAN khi hộp rỗng trong lúc vật thể nhìn rõ ở chỗ khác hoặc một đoạn dài thiếu nhãn dù vẫn thấy vật thể; KHONG_RO khi không đủ thông tin. Kết quả nêu ở Bảng 10.")
     c.table("Kết quả review nhãn v2 (review_v2_summary.json).", ["Kết luận", "Số video", "Ghi chú"],
             [["OK", 283, "Bao gồm trường hợp lệch một frame ngay tại điểm chuyển cảnh"],
@@ -273,13 +274,58 @@ def s32(c):
     c.para("Theo ADR-0004, baseline A chỉ dùng ảnh khả kiến (640×512), bốn lớp Airplane = 0, Bird = 1, Drone = 2, Helicopter = 3, lấy 1 frame trên 10 frame, chỉ xuất train và val. Quá trình chọn video và kết quả xuất được thể hiện ở Hình 6, Hình 7 và Bảng 12.")
     c.image(a.fig_w3 / "fig_w3_data_funnel.png", 15, "Từ video khả kiến tới tập huấn luyện e1-yolo-v1 (Kaggle run 03b, inclusion_decisions.csv).")
     c.image(a.fig_w3 / "fig_w3_yolo_images.png", 15.5, "Số ảnh theo lớp và cỡ hộp bao trong tập e1-yolo-v1 (dataset_stats.csv).")
-    c.table("Tập e1-yolo-v1 (dataset_card.json, fingerprint d0ac7e23…).", ["Tập", "Video", "Ảnh", "Ảnh có hộp", "Ảnh âm tính", "Hộp nhỏ / vừa / lớn"],
+    c.table("Tập e1-yolo-v1 (dataset_card.json, fingerprint d0ac7e23…).", ["Tập", "Video", "Ảnh", "Ảnh có hộp", "Ảnh không nhãn", "Hộp nhỏ / vừa / lớn"],
             [["train", 178, "5.667", "5.544", 123, "3.041 / 1.894 / 609"], ["val", 38, "1.202", "1.162", 40, "475 / 574 / 113"]],
             [2.0, 2.0, 2.4, 2.6, 2.6, 4.6],
-            note="Giới hạn: tập val chỉ còn 3 video Bird (73 ảnh có hộp) nên AP lớp Bird trên val dao động lớn; 77/242 video khả kiến thuộc train và val chưa được xem bằng mắt.")
+            note="Giới hạn: tập val chỉ còn 3 video Bird (73 ảnh có hộp) nên AP lớp Bird trên val dao động lớn; 77/242 video khả kiến thuộc train và val chưa được xem bằng mắt. Ảnh không nhãn chủ yếu là frame 0 của video dư một mục và đoạn thiếu nhãn, không phải ảnh nền trời trống (mục 5.4).")
 
 
-fill(57, mo_dau); fill(63, s11); fill(66, s12); fill(69, s13); fill(72, s14); fill(75, s15); fill(96, s32)
+# ============================================================ 5.1, 5.3, 5.4 (kết quả W3)
+EV4 = "results/W03/kaggle_run_04/train_evidence"
+EV5 = "results/W03/kaggle_run_05/analysis"
+
+
+def s51(c):
+    c.para("Mọi bước xử lý dữ liệu thật và huấn luyện chạy trên Kaggle; mỗi lần chạy ghi phiên bản thư viện, phần cứng, commit mã nguồn và SHA-256 của dữ liệu đầu vào. Bảng 13 tóm tắt môi trường của lần huấn luyện baseline A.")
+    c.table("Môi trường huấn luyện baseline A (env.json, stage_status.json của Kaggle run 04).", ["Thành phần", "Giá trị"],
+            [["Phần cứng", "1 × NVIDIA Tesla T4 15 GB (phiên Kaggle có 2 GPU, Ultralytics dùng GPU 0)"],
+             ["Phần mềm", "Python 3.13.15; PyTorch 2.11.0+cu128 [9]; Ultralytics 8.4.183 [12]; OpenCV 4.14 [8]"],
+             ["Mã nguồn", "Commit 9597fce (scripts/kaggle/w3_train_baseline.py, configs/baseline_A.yaml)"],
+             ["Dữ liệu", "e1-yolo-v1, fingerprint d0ac7e23…, đóng gói một tệp zip, kiểm SHA-256 từng ảnh trước khi huấn luyện"],
+             ["Tái lập", "seed 20261013, deterministic = true; weights best.pt/last.pt lưu Google Drive kèm SHA-256"]],
+            [3.4, 12.8])
+
+
+def s53(c):
+    c.para("Baseline A là YOLOv8n khởi tạo từ trọng số COCO, ảnh vào 640, tối đa 50 epoch, dừng sớm khi fitness trên val không cải thiện sau 15 epoch (giao thức: docs/w3/training_protocol.md). Toàn bộ số liệu dưới đây đo trên tập validation; tập test vẫn khóa. Vì val vừa dùng để dừng sớm và chọn checkpoint, các số này lạc quan và không được so trực tiếp với chỉ tiêu trên test ở Bảng 1.")
+    c.para("Quá trình huấn luyện dừng ở epoch 36, checkpoint tốt nhất ở epoch 21, tổng thời gian khoảng 27 phút (Hình 8). Loss trên train giảm đều trong khi loss hộp trên val không giảm thêm sau khoảng epoch 12–20 và mAP trên val đạt đỉnh ở epoch 21, cho thấy mô hình bắt đầu khớp quá mức với tập train; cơ chế dừng sớm giữ checkpoint tại đỉnh.")
+    c.image(a.fig_w3 / "fig_w3_learning_curves.png", 15.5, "Learning curve của baseline A: box loss trên train và val, mAP trên val theo epoch (train/results.csv, Kaggle run 04).")
+    c.para("Kết quả theo lớp ở Bảng 14 và Hình 9. AP@0.5 và AP@0.5:0.95 tính trên toàn bộ đường precision–recall với ngưỡng confidence 0,001. Cột P và R là giá trị Ultralytics báo tại một ngưỡng confidence chung cho mọi lớp, chọn để F1 trung bình các lớp lớn nhất; đây không phải ngưỡng vận hành.")
+    c.table("Kết quả baseline A trên val (baseline_A_val_metrics.json).", ["Lớp", "P", "R", "AP@0.5", "AP@0.5:0.95"],
+            [["Airplane", "0,764", "0,672", "0,677", "0,306"], ["Bird", "0,729", "0,849", "0,865", "0,382"],
+             ["Drone", "0,838", "0,871", "0,809", "0,266"], ["Helicopter", "0,921", "0,867", "0,879", "0,414"],
+             ["Tất cả", "0,813", "0,815", "0,807", "0,342"]], [3.4, 2.6, 2.6, 3.4, 3.4])
+    c.image(a.fig_w3 / "fig_w3_per_class_ap.png", 13.5, "AP@0.5 và AP@0.5:0.95 theo lớp trên val (baseline_A_val_per_class.csv).")
+    c.para("Ngưỡng vận hành được chọn theo giao thức: duyệt confidence 0,05–0,90 bước 0,05, chọn ngưỡng có F1 lớp Drone lớn nhất trên val, đồng hạng thì lấy ngưỡng cao hơn. Ngưỡng chọn được là 0,25 (Bảng 15). Ngưỡng có F1 trung bình 4 lớp lớn nhất là 0,35 (F1 = 0,814), chỉ dùng để tham khảo.")
+    c.table("Ngưỡng vận hành chọn trên val (operating_points.csv, Kaggle run 05).", ["Confidence", "Drone P", "Drone R", "Drone F1", "4 lớp P", "4 lớp R", "F1 trung bình"],
+            [["0,20", "0,794", "0,884", "0,836", "0,786", "0,843", "0,799"],
+             ["0,25 (chọn)", "0,832", "0,882", "0,856", "0,814", "0,837", "0,808"],
+             ["0,30", "0,834", "0,878", "0,855", "0,826", "0,826", "0,811"],
+             ["0,35", "0,837", "0,870", "0,853", "0,835", "0,818", "0,814"]],
+            [2.6, 2.0, 2.0, 2.0, 2.0, 2.0, 2.6], size=8.5)
+
+
+def s54(c):
+    c.para("Phân tích lỗi thực hiện tại ngưỡng 0,25 trên val, khớp dự đoán với nhãn khi cùng lớp và IoU ≥ 0,5 (scripts/kaggle/w3_analyze_baseline.py, Kaggle run 05). Bốn nhận xét chính:")
+    c.rich([("Bỏ sót chiếm phần lớn lỗi, nhầm lớp ít. ", True), ("Khi bỏ điều kiện cùng lớp, số hộp bị bỏ sót là Airplane 83/289, Drone 58/511, Helicopter 30/285, Bird 2/73; số hộp bị gán sai lớp chỉ từ 1 đến 6 ở mỗi cặp lớp (class_confusion.csv).", False)])
+    c.rich([("Recall không giảm đều theo cỡ vật thể. ", True), ("Hộp nhỏ hơn 32×32 px có recall 0,863, không thấp hơn hộp vừa (0,803) (Hình 10). Recall thấp của Airplane cỡ vừa (0,563) tập trung ở ba video: V_AIRPLANE_027 (0/33), V_AIRPLANE_007 (8/30), V_AIRPLANE_005 (16/33) (recall_by_video.csv), nên đây là lỗi theo cảnh hơn là theo kích thước. Helicopter cỡ nhỏ có recall thấp nhất (0,667, 60 hộp).", False)])
+    c.image(a.fig_w3 / "fig_w3_recall_by_size.png", 15, "Recall theo lớp và cỡ hộp tại confidence 0,25 trên val; bỏ các ô có dưới 5 hộp (recall_by_size.csv, Kaggle run 05).")
+    c.rich([("Định vị hộp còn kém với vật thể nhỏ. ", True), ("Khoảng cách giữa AP@0.5 (0,809) và AP@0.5:0.95 (0,266) lớn nhất ở lớp Drone, nghĩa là mô hình tìm được vật thể nhưng hộp chưa khớp chặt. Một nguyên nhân có thể là nhãn lệch một frame ở video dư một mục: lệch này hầu như không đổi kết quả ở IoU 0,5 (mục 3.2.3) nhưng làm giảm IoU ở các ngưỡng cao.", False)])
+    c.rich([("Tập val không có ảnh nền trống thật. ", True), ("Cả 40 ảnh val không có nhãn đều có dự đoán ở ngưỡng 0,25 (negatives_fp.json), nhưng đây không phải dự đoán sai trên nền trời: 20 ảnh là frame 0 của video dư một mục (17 Drone, 3 Bird) — nơi review thấy vật thể nhưng mục nhãn rỗng — và 20 ảnh là đoạn thiếu nhãn f110–f300 của V_BIRD_041. Vì vậy chưa đo được tỷ lệ cảnh báo giả trên nền trời; việc này cần video không có vật thể (tuần 7, hard negatives).", False)])
+    c.para("Từ các nhận xét trên, tuần 4 ưu tiên: (1) kiểm chứng chiều lệch nhãn bằng tập chuẩn CVAT và bằng so IoU của dự đoán baseline A với nhãn i và i + 1 trước khi xuất lại dữ liệu; (2) cấu hình đối chứng và tăng cường dữ liệu cho vật thể nhỏ theo ADR-0005; (3) xem lại ba video Airplane có recall thấp để phân biệt lỗi mô hình với lỗi nhãn.")
+
+
+fill(57, mo_dau); fill(63, s11); fill(66, s12); fill(69, s13); fill(72, s14); fill(75, s15); fill(96, s32); fill(123, s51); fill(129, s53); fill(132, s54)
 
 # Mục lục, danh sách hình, danh sách bảng: trường TOC thật
 replace_with_field(40, 'TOC \\o "1-3" \\h \\z \\u', "Nhấn F9 trong Word để cập nhật mục lục.")
