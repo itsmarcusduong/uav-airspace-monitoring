@@ -1,0 +1,76 @@
+{
+  "env": {
+    "status": "OK",
+    "python": "3.13.15 (main, Aug  6 2026, 11:06:22) [GCC 13.3.0]",
+    "platform": "Linux-6.18.48+-x86_64-with-glibc2.39",
+    "commit": "680043bf9cfd43033a92688cdaabbd547049c6cc",
+    "cv2": "4.14.0",
+    "numpy": "2.1.3",
+    "mcos_decoder": "0.1.0",
+    "nvidia_smi": "none/unavailable"
+  },
+  "inputs": {
+    "status": "OK"
+  },
+  "sensitivity": {
+    "status": "OK",
+    "V|Airplane|equal": {
+      "pairs": 15401,
+      "ge": 15359,
+      "videos": 49,
+      "frac_iou_ge_min": 0.9973,
+      "passes": true
+    },
+    "V|Airplane|minus": {
+      "pairs": 299,
+      "ge": 297,
+      "videos": 1,
+      "frac_iou_ge_min": 0.9933,
+      "passes": true
+    },
+    "V|Bird|minus": {
+      "pairs": 1459,
+      "ge": 1276,
+      "videos": 8,
+      "frac_iou_ge_min": 0.8746,
+      "passes": false
+    },
+    "V|Bird|plus1": {
+      "pairs": 9514,
+      "ge": 9066,
+      "videos": 34,
+      "frac_iou_ge_min": 0.9529,
+      "passes": true
+    },
+    "V|Drone|plus1": {
+      "pairs": 29515,
+      "ge": 29115,
+      "videos": 95,
+      "frac_iou_ge_min": 0.9864,
+      "passes": true
+    },
+    "V|Helicopter|equal": {
+      "pairs": 15835,
+      "ge": 15777,
+      "videos": 51,
+      "frac_iou_ge_min": 0.9963,
+      "passes": true
+    }
+  },
+  "offset_sheets": {
+    "status": "OK",
+    "tiles": 72,
+    "sheets": 6
+  },
+  "decide": {
+    "status": "OK"
+  },
+  "export": {
+    "status": "OK"
+  },
+  "verify": {
+    "status": "OK",
+    "images": 6869,
+    "fingerprint": "d0ac7e230b385132c4bbec90eb5af2c5740a478fec6c79aeb245acca032c27de"
+  }
+}

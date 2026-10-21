@@ -1,0 +1,243 @@
+video_id,split,modality,class_name,kind,all_absent,include,label_offset,reason,review_column,review_value
+V_AIRPLANE_001,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_002,train,V,Airplane,minus,False,False,0,label_entries-frames=-1: khong biet canh nhan,review_quang,OK
+V_AIRPLANE_003,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_005,val,V,Airplane,equal,False,True,0,,review_quang,OK
+V_AIRPLANE_006,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_007,val,V,Airplane,equal,False,True,0,,review_quang,KHONG_RO
+V_AIRPLANE_008,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_009,val,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_011,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_012,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_014,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_015,train,V,Airplane,equal,False,True,0,,review_quang,KHONG_RO
+V_AIRPLANE_016,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_017,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_018,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_019,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_022,train,V,Airplane,equal,False,True,0,,review_quang,KHONG_RO
+V_AIRPLANE_023,train,V,Airplane,equal,False,True,0,,review_quang,OK
+V_AIRPLANE_024,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_026,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_027,val,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_028,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_029,train,V,Airplane,equal,False,True,0,,review_quang,OK
+V_AIRPLANE_030,val,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_031,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_032,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_033,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_034,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_036,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_037,val,V,Airplane,equal,False,True,0,,review_quang,KHONG_RO
+V_AIRPLANE_038,train,V,Airplane,equal,False,True,0,,review_quang,OK
+V_AIRPLANE_039,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_041,train,V,Airplane,equal,False,True,0,,review_quang,OK
+V_AIRPLANE_042,train,V,Airplane,equal,False,True,0,,review_quang,OK
+V_AIRPLANE_043,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_044,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_045,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_046,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_047,val,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_048,val,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_049,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_051,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_052,val,V,Airplane,equal,False,True,0,,review_quang,KHONG_RO
+V_AIRPLANE_053,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_054,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_055,train,V,Airplane,equal,False,True,0,,review_quang,KHONG_RO
+V_AIRPLANE_056,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_057,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_058,train,V,Airplane,equal,False,True,0,,,
+V_AIRPLANE_059,train,V,Airplane,equal,False,True,0,,,
+V_BIRD_001,train,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_BIRD_002,train,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_BIRD_003,train,V,Bird,minus,False,False,0,review_quang=SAI_NHAN,review_quang,SAI_NHAN
+V_BIRD_004,train,V,Bird,minus,False,False,0,label_entries-frames=-3: khong biet canh nhan,review_quang,KHONG_RO
+V_BIRD_006,train,V,Bird,minus,False,False,0,label_entries-frames=-55: khong biet canh nhan,review_quang,KHONG_RO
+V_BIRD_007,train,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_BIRD_008,train,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_BIRD_009,train,V,Bird,minus,True,False,0,label_entries-frames=-288: khong biet canh nhan,review_quang,KHONG_RO
+V_BIRD_010,train,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_BIRD_011,train,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_BIRD_012,train,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_BIRD_013,val,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_BIRD_015,train,V,Bird,minus,False,False,0,label_entries-frames=-22: khong biet canh nhan,review_quang,OK
+V_BIRD_016,train,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_BIRD_017,train,V,Bird,minus,False,False,0,review_quang=SAI_NHAN,review_quang,SAI_NHAN
+V_BIRD_018,train,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_BIRD_019,train,V,Bird,plus1,False,False,0,review_quang=SAI_NHAN,review_quang,SAI_NHAN
+V_BIRD_020,val,V,Bird,minus,False,False,0,review_quang=SAI_NHAN,review_quang,SAI_NHAN
+V_BIRD_021,val,V,Bird,minus,False,False,0,review_quang=SAI_NHAN,review_quang,SAI_NHAN
+V_BIRD_023,val,V,Bird,minus,False,False,0,review_quang=SAI_NHAN,review_quang,SAI_NHAN
+V_BIRD_024,train,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_BIRD_025,val,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_BIRD_026,train,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_BIRD_027,train,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_BIRD_028,train,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_BIRD_029,train,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_BIRD_030,train,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_BIRD_031,train,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_BIRD_032,train,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_BIRD_033,train,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_BIRD_034,train,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_BIRD_035,train,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_BIRD_037,val,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_BIRD_038,train,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_BIRD_039,train,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_BIRD_041,val,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_BIRD_043,train,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_BIRD_044,train,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_BIRD_045,train,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_BIRD_046,train,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_BIRD_047,train,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_BIRD_048,val,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_BIRD_051,train,V,Bird,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_001,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_002,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_003,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_004,val,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_005,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_006,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_007,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_008,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_009,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_010,val,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_011,val,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_012,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_013,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_014,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_015,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_016,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_017,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_018,val,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_019,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_022,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_023,val,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_024,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_025,val,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_027,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_028,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_029,val,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_030,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_031,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_032,val,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_033,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_034,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_036,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_037,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_038,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_039,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_040,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_041,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_042,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_043,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_044,val,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_045,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_046,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_047,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_048,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_049,val,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_051,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_052,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_053,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_055,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_057,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_058,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_059,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_060,val,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_061,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_062,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_064,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_065,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_066,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_067,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_068,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_069,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_071,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_072,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_073,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_074,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_075,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_077,val,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_078,val,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_079,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_080,val,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_081,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_082,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_083,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_084,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_085,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_086,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_087,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_088,val,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_090,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_092,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_094,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_095,val,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_096,val,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_097,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_100,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_101,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_103,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_104,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_105,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_106,train,V,Drone,plus1,True,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_107,train,V,Drone,plus1,True,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_109,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_110,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,OK
+V_DRONE_111,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_112,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_113,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_DRONE_114,train,V,Drone,plus1,False,True,0,"plus1, offset0",review_quang,KHONG_RO
+V_HELICOPTER_001,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_002,train,V,Helicopter,equal,False,True,0,,review_quang,OK
+V_HELICOPTER_003,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_004,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_005,val,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_006,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_007,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_009,train,V,Helicopter,equal,False,True,0,,review_quang,KHONG_RO
+V_HELICOPTER_010,val,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_011,val,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_012,val,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_013,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_014,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_015,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_016,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_017,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_018,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_019,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_022,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_023,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_025,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_026,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_027,train,V,Helicopter,equal,False,True,0,,review_quang,OK
+V_HELICOPTER_028,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_029,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_030,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_031,val,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_032,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_033,train,V,Helicopter,equal,False,True,0,,review_quang,OK
+V_HELICOPTER_035,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_036,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_039,val,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_040,train,V,Helicopter,minus,True,False,0,label_entries-frames=-219: khong biet canh nhan,review_quang,KHONG_RO
+V_HELICOPTER_041,val,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_042,train,V,Helicopter,equal,False,True,0,,review_quang,OK
+V_HELICOPTER_043,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_044,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_045,train,V,Helicopter,equal,False,True,0,,review_quang,OK
+V_HELICOPTER_046,train,V,Helicopter,equal,False,True,0,,review_quang,OK
+V_HELICOPTER_048,train,V,Helicopter,equal,False,True,0,,review_quang,OK
+V_HELICOPTER_049,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_050,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_051,train,V,Helicopter,equal,False,True,0,,review_quang,OK
+V_HELICOPTER_052,train,V,Helicopter,equal,False,True,0,,review_quang,OK
+V_HELICOPTER_053,val,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_054,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_055,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_056,val,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_057,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_059,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_060,train,V,Helicopter,equal,False,True,0,,,
+V_HELICOPTER_061,train,V,Helicopter,equal,False,True,0,,review_quang,OK
