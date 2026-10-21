@@ -427,6 +427,24 @@ def stage_verify(ctx, args, ds: Path, ev: Path, manifest: list[dict], decisions:
     return {"images": len(manifest), "fingerprint": fingerprint}
 
 
+def stage_pack(args, ds: Path, ev: Path) -> dict:
+    """Zip thu muc du lieu (khong nen lai JPEG), kiem tra lai zip, roi xoa thu muc goc."""
+    files = sorted(p for p in ds.rglob("*") if p.is_file())
+    z = args.out / f"{args.dataset_version}.zip"
+    with zipfile.ZipFile(z, "w", zipfile.ZIP_STORED) as zf:
+        for p in files:
+            zf.write(p, p.relative_to(ds.parent))
+    with zipfile.ZipFile(z) as zf:
+        names, bad = zf.namelist(), zf.testzip()
+    if bad is not None or len(names) != len(files):
+        raise RuntimeError(f"zip loi: bad={bad}, {len(names)} entry / {len(files)} file")
+    info = {"zip": z.name, "sha256": sha256(z), "bytes": z.stat().st_size, "entries": len(names),
+            "root": args.dataset_version, "compression": "ZIP_STORED"}
+    (ev / "dataset_zip.json").write_text(json.dumps(info, indent=2), encoding="utf-8")
+    shutil.rmtree(ds)
+    return info
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--data-root", type=Path, required=True)
@@ -448,6 +466,9 @@ def main() -> int:
     ap.add_argument("--dataset-version", default="e1-yolo-v1")
     ap.add_argument("--commit", default="UNKNOWN")
     ap.add_argument("--skip-export", action="store_true", help="chi chay sensitivity + bang xem (nhanh)")
+    ap.add_argument("--pack-zip", action="store_true",
+                    help="dong goi thu muc du lieu thanh <dataset-version>.zip (ZIP_STORED) roi xoa thu muc: output it file, "
+                         "Kaggle gan input on dinh hon ~14k file nho")
     args = ap.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 
@@ -483,7 +504,9 @@ def main() -> int:
     elif decisions:
         manifest = run("export", lambda: stage_export(ctx, args, data, ds, decisions, labels)) or []
         if manifest:
-            run("verify", lambda: stage_verify(ctx, args, ds, ev, manifest, decisions))
+            ok = run("verify", lambda: stage_verify(ctx, args, ds, ev, manifest, decisions))
+            if ok and args.pack_zip:
+                run("pack", lambda: stage_pack(args, ds, ev))
 
     def bundle():
         z = args.out / "w3_export_evidence.zip"
