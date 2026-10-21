@@ -1,0 +1,11 @@
+{
+  "split_csv_sha256": "7e39940eb948880951a05edf199887ec6b42ae557c85088d63a561a49604e5e2",
+  "audit_sha256": "e6c99e0f2b885108dc47def53c98a1785901c00e977a0d2d456e576b3aae61da",
+  "review_sha256": "f968005dff16c1bb13143e90eef3610729877087f73ebd677cf8dbe72a3c097e",
+  "videos_in_split": 650,
+  "split_counts": {
+    "train": 454,
+    "test": 98,
+    "val": 98
+  }
+}
