@@ -1,0 +1,44 @@
+{
+  "rule": "ADR-0004 muc 6",
+  "control_min": 0.8,
+  "offset1_min": 0.7,
+  "reviewers": {
+    "offset_review_quang": {
+      "V|Airplane|equal": {
+        "offset0": 3,
+        "unclear": 5,
+        "offset1": 4
+      },
+      "V|Bird|plus1": {
+        "unclear": 9,
+        "offset0": 5,
+        "offset1": 10
+      },
+      "V|Drone|plus1": {
+        "offset1": 16,
+        "offset0": 3,
+        "unclear": 5
+      },
+      "V|Helicopter|equal": {
+        "unclear": 4,
+        "offset0": 5,
+        "offset1": 3
+      }
+    }
+  },
+  "pooled": {
+    "plus1": {
+      "offset1": 26,
+      "unclear": 14,
+      "offset0": 8
+    },
+    "equal": {
+      "unclear": 9,
+      "offset0": 8,
+      "offset1": 7
+    }
+  },
+  "control_accuracy_offset0": 0.5333,
+  "plus1_frac_offset1": 0.7647,
+  "recommendation": "offset0 (doi chung khong dat: phuong phap xem khong dang tin, offset CHUA XAC DINH)"
+}

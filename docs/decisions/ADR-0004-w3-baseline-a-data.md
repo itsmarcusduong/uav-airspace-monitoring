@@ -30,3 +30,16 @@
 
 ## Còn mở
 Kết quả run 03; review của An; xác nhận GVHD về modality và chỉ tiêu (issue W2-06, chuyển W3).
+
+## Kết quả thực hiện (21/10/2026) [Kết quả đo]
+Nguồn: `results/W03/kaggle_run_03a/`, `results/W03/kaggle_run_03b/`, `results/W03/review/` (commit script `680043b`).
+
+1. **Độ nhạy lệch 1 frame** (`offset_sensitivity_summary.json`, ngưỡng IoU 0,5, yêu cầu ≥ 90%): V-Drone plus1 98,6% (95 video), V-Bird plus1 95,3% (34 video), đối chứng V-Airplane 99,7%, V-Helicopter 99,6% → **đạt**, giữ video plus1 với offset 0. V-Bird thiếu nhãn (minus) 87,5% → không đạt, vẫn bị loại theo mục 7.
+2. **Bảng xem mù offset** (72 ô, `offset_review_score.json`): nhóm đối chứng chọn đúng nhãn i chỉ 53% (8/15 lựa chọn rõ ràng) < 80% → theo luật mục 6, phương pháp xem không đủ tin cậy; **offset chưa xác định, dùng offset0**. Ghi nhận (không dùng để quyết định): ở nhóm plus1, 26/34 lựa chọn rõ ràng nghiêng về nhãn i+1 → kiểm chứng ở W4 bằng tập chuẩn CVAT (#24).
+3. **Review nhãn v2** (#10, 358 video, 8 frame/video, có hỗ trợ công cụ): OK 283 / SAI_NHAN 60 / KHONG_RO 15 (`review_v2_summary.json`). 10 video "không có nhãn" có vật thể bay trong hình (IR_DRONE_143–147, V_DRONE_106/107, V_HELICOPTER_040, IR_BIRD_038, V_BIRD_005) → không dùng làm âm tính (sửa mục 9: chỉ video không bbox **đã xem và không thấy vật thể** mới là âm tính).
+4. **Dữ liệu xuất `e1-yolo-v1`** (`dataset_card.json`, fingerprint `d0ac7e23…`): train 178 video / 5.667 ảnh (123 âm tính), val 38 video / 1.202 ảnh (40 âm tính); bbox nhỏ (< 32×32 px) chiếm 3.041/5.544 (train) và 475/1.162 (val). Loại 21 video train, 5 val.
+
+## Giới hạn ghi nhận
+- Val chỉ còn 3 video Bird (73 ảnh có hộp) → AP lớp Bird trên val dao động lớn, chỉ để tham khảo.
+- 77/242 video V train+val chưa được xem bằng mắt (ngoài danh sách 358); giữ theo audit tự động.
+- Review v2 chỉ xem 8 frame/video; lỗi ở frame không được chọn không phát hiện được.

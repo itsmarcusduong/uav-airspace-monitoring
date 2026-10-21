@@ -1,0 +1,144 @@
+{
+  "videos": 358,
+  "v2": {
+    "OK": 283,
+    "SAI_NHAN": 60,
+    "KHONG_RO": 15
+  },
+  "v1_vs_v2": {
+    "KHONG_RO->KHONG_RO": 12,
+    "KHONG_RO->OK": 109,
+    "KHONG_RO->SAI_NHAN": 23,
+    "OK->KHONG_RO": 3,
+    "OK->OK": 174,
+    "OK->SAI_NHAN": 27,
+    "SAI_NHAN->SAI_NHAN": 10
+  },
+  "by_modality_class_split": {
+    "IR|Airplane|test": {
+      "OK": 3
+    },
+    "IR|Airplane|train": {
+      "OK": 13
+    },
+    "IR|Airplane|val": {
+      "OK": 4
+    },
+    "IR|Bird|test": {
+      "SAI_NHAN": 2,
+      "OK": 10
+    },
+    "IR|Bird|train": {
+      "SAI_NHAN": 15,
+      "OK": 35,
+      "KHONG_RO": 5
+    },
+    "IR|Bird|val": {
+      "OK": 10,
+      "SAI_NHAN": 2
+    },
+    "IR|Drone|test": {
+      "OK": 5
+    },
+    "IR|Drone|train": {
+      "OK": 29,
+      "SAI_NHAN": 6
+    },
+    "IR|Drone|val": {
+      "OK": 5,
+      "SAI_NHAN": 2
+    },
+    "IR|Helicopter|test": {
+      "OK": 4
+    },
+    "IR|Helicopter|train": {
+      "OK": 9
+    },
+    "IR|Helicopter|val": {
+      "OK": 3
+    },
+    "V|Airplane|test": {
+      "OK": 2
+    },
+    "V|Airplane|train": {
+      "OK": 9
+    },
+    "V|Airplane|val": {
+      "OK": 4
+    },
+    "V|Bird|test": {
+      "SAI_NHAN": 4,
+      "OK": 3,
+      "KHONG_RO": 1
+    },
+    "V|Bird|train": {
+      "KHONG_RO": 4,
+      "OK": 19,
+      "SAI_NHAN": 12
+    },
+    "V|Bird|val": {
+      "SAI_NHAN": 5,
+      "OK": 2,
+      "KHONG_RO": 1
+    },
+    "V|Drone|test": {
+      "OK": 11,
+      "SAI_NHAN": 6
+    },
+    "V|Drone|train": {
+      "OK": 72,
+      "KHONG_RO": 3,
+      "SAI_NHAN": 5
+    },
+    "V|Drone|val": {
+      "OK": 17
+    },
+    "V|Helicopter|test": {
+      "OK": 3,
+      "KHONG_RO": 1
+    },
+    "V|Helicopter|train": {
+      "OK": 11,
+      "SAI_NHAN": 1
+    }
+  },
+  "v_trainval_sai_nhan": [
+    "V_BIRD_003",
+    "V_BIRD_004",
+    "V_BIRD_008",
+    "V_BIRD_010",
+    "V_BIRD_011",
+    "V_BIRD_013",
+    "V_BIRD_015",
+    "V_BIRD_016",
+    "V_BIRD_017",
+    "V_BIRD_018",
+    "V_BIRD_019",
+    "V_BIRD_020",
+    "V_BIRD_021",
+    "V_BIRD_023",
+    "V_BIRD_024",
+    "V_BIRD_045",
+    "V_BIRD_048",
+    "V_DRONE_053",
+    "V_DRONE_100",
+    "V_DRONE_101",
+    "V_DRONE_106",
+    "V_DRONE_107",
+    "V_HELICOPTER_040"
+  ],
+  "all_absent_sai_nhan": [
+    "IR_BIRD_038",
+    "IR_DRONE_143",
+    "IR_DRONE_144",
+    "IR_DRONE_145",
+    "IR_DRONE_146",
+    "IR_DRONE_147",
+    "V_BIRD_005",
+    "V_DRONE_106",
+    "V_DRONE_107",
+    "V_HELICOPTER_040"
+  ],
+  "method": "W3 review v2: 8 frame/video (trai deu + frame nhay tam lon nhat), anh toan canh + phong to quanh hop, nhan offset0; Quang thuc hien co ho tro cong cu; quy tac: SAI_NHAN = hop rong trong khi vat the thay ro ngoai hop, hoac video/khoang dai thieu nhan du thay vat the; KHONG_RO = khong du thong tin; lech 1 frame tai cat canh hoac vat lech mot phan khoi hop = OK kem ghi chu",
+  "output_sha256": "2b5443433b0b4e1246f4040d1d74128e25326b958217b33b2b159d1b9033ccb7"
+}

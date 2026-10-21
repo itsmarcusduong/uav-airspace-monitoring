@@ -34,6 +34,7 @@ Giao diện Kaggle có thể đổi tên nút đôi chút; các bước giữ ng
 | `w3_run03a_review_offset.ipynb` | `e1-w3-run03a` | None | `e1-svanstrom-raw`, `e1-w3-tools` |
 | `w3_run03b_export_yolo.ipynb` | `e1-w3-run03b` | None | `e1-svanstrom-raw`, `e1-w3-tools` (bản có `review_assignment_w3.csv`) |
 | `w3_run04_train_baseline_A.ipynb` | `e1-w3-run04` | GPU T4 x2 (hoặc P100) | `e1-w3-tools`, **output của notebook `e1-w3-run03b`** |
+| `w3_run05_analyze_baseline_A.ipynb` | `e1-w3-run05` | None | `e1-w3-tools` (bản có `w3_analyze_baseline.py`), output `e1-w3-run03b`, output `e1-w3-run04` |
 
 ## 3. Thêm input và cài đặt
 1. Cột phải → **Input** → **+ Add Input**.
@@ -55,6 +56,7 @@ Mở phiên bản đã chạy xong → tab **Output** → di chuột lên file �
 | 03a | `w3_review_v2.zip`, `w3_export_evidence.zip` | `results/W03/kaggle_run_03a/` |
 | 03b | `w3_export_evidence.zip` (không tải thư mục `e1-yolo-v1/`) | `results/W03/kaggle_run_03b/` |
 | 04 | `w3_train_evidence.zip` | `results/W03/kaggle_run_04/` |
+| 05 | `w3_analysis.zip` | `results/W03/kaggle_run_05/` |
 | 04 | `runs/baseline_A/weights/best.pt`, `last.pt` | Google Drive `E1/weights/W03/` (quyền xem); **không** đưa vào Git |
 
 Xong mỗi run, nhắn Claude "đã có kết quả run 03a/03b/04" để đọc, đối chiếu và cập nhật tài liệu.

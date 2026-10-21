@@ -1,0 +1,9 @@
+split,class_name,images,with_bbox,negatives,small,medium,large
+train,Airplane,1280,1280,0,670,495,115
+train,Bird,672,624,48,567,57,0
+train,Drone,2386,2311,75,1461,850,0
+train,Helicopter,1329,1329,0,343,492,494
+val,Airplane,289,289,0,81,174,34
+val,Bird,96,73,23,71,2,0
+val,Drone,532,515,17,263,252,0
+val,Helicopter,285,285,0,60,146,79

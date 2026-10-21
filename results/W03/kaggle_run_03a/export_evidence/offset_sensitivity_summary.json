@@ -1,0 +1,48 @@
+{
+  "iou_min": 0.5,
+  "iou_frac_required": 0.9,
+  "groups": {
+    "V|Airplane|equal": {
+      "pairs": 15401,
+      "ge": 15359,
+      "videos": 49,
+      "frac_iou_ge_min": 0.9973,
+      "passes": true
+    },
+    "V|Airplane|minus": {
+      "pairs": 299,
+      "ge": 297,
+      "videos": 1,
+      "frac_iou_ge_min": 0.9933,
+      "passes": true
+    },
+    "V|Bird|minus": {
+      "pairs": 1459,
+      "ge": 1276,
+      "videos": 8,
+      "frac_iou_ge_min": 0.8746,
+      "passes": false
+    },
+    "V|Bird|plus1": {
+      "pairs": 9514,
+      "ge": 9066,
+      "videos": 34,
+      "frac_iou_ge_min": 0.9529,
+      "passes": true
+    },
+    "V|Drone|plus1": {
+      "pairs": 29515,
+      "ge": 29115,
+      "videos": 95,
+      "frac_iou_ge_min": 0.9864,
+      "passes": true
+    },
+    "V|Helicopter|equal": {
+      "pairs": 15835,
+      "ge": 15777,
+      "videos": 51,
+      "frac_iou_ge_min": 0.9963,
+      "passes": true
+    }
+  }
+}
