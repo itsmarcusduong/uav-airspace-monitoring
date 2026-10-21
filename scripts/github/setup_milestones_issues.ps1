@@ -1,7 +1,7 @@
 ﻿<#
 Tạo milestones W1–W14 và issues W2/W3 cho repo hiện tại.
 Yêu cầu: GitHub CLI (gh) đã cài và đã đăng nhập (gh auth login); chạy trong thư mục repo đã clone.
-    cd D:\code_source\e1-uav-airspace-monitoring
+    cd <thu-muc-repo>
     powershell -ExecutionPolicy Bypass -File scripts\github\setup_milestones_issues.ps1 [-DryRun]
 Script chỉ tạo mới; chạy lần 2 sẽ báo trùng milestone (không xóa gì).
 #>
