@@ -17,7 +17,8 @@ Quy tac (ADR-0004, Proposed):
     duoc dua vao neu ty le cap frame lien tiep co IoU >= --iou-min dat >= --iou-frac
     (lech 1 frame it lam doi ket qua khop o nguong IoU 0.5).
   * Video thieu nhan / du > 1 muc: loai (khong biet canh nhan).
-  * Video review_quang = SAI_NHAN: loai (cho An xac nhan o W3-01).
+  * Video co ket qua review = SAI_NHAN: loai. Cot dung theo thu tu uu tien verdict > review_quang_v2
+    > review_quang (cot nao co gia tri dau tien); cot da dung ghi vao inclusion_decisions.csv.
   * Video khong co bbox nao: giu lam am tinh.
   * Frame co nhan None trong pham vi nhan = am tinh (file .txt rong).
 Seed co dinh. Chi doc du lieu goc.
@@ -47,6 +48,7 @@ NAME = re.compile(r"^(IR|V)_(AIRPLANE|BIRD|DRONE|HELICOPTER)_(\d+)$")
 CLASS_ID = {"Airplane": 0, "Bird": 1, "Drone": 2, "Helicopter": 3}
 CLASS_NAMES = ["Airplane", "Bird", "Drone", "Helicopter"]
 SMALL, MEDIUM = 32 * 32, 96 * 96
+REVIEW_COLUMNS = ("verdict", "review_quang_v2", "review_quang")
 
 
 # ----------------------------------------------------------------------------- helpers
@@ -286,9 +288,12 @@ def stage_decide(ctx, args, sens: dict, ev: Path) -> list[dict]:
         kind = label_kind(int(a["label_entries"]), int(a["frames_decoded"]))
         gkey = f"{s['modality']}|{s['class_name']}|{kind}"
         rv = ctx["review"].get(vid, {})
+        # Uu tien: verdict (xac nhan cuoi) > review_quang_v2 (review ky, W3) > review_quang (so bo, W2)
+        rcol = next((c for c in REVIEW_COLUMNS if rv.get(c, "").strip()), "")
+        rval = rv.get(rcol, "").strip().upper() if rcol else ""
         include, offset, reason = True, 0, ""
-        if rv.get("review_quang", "").strip().upper() == "SAI_NHAN" and args.exclude_review_flag:
-            include, reason = False, "review_quang=SAI_NHAN (cho An xac nhan W3-01)"
+        if rval == "SAI_NHAN" and args.exclude_review_flag:
+            include, reason = False, f"{rcol}=SAI_NHAN"
         elif kind in ("minus", "plusN"):
             include, reason = False, f"label_entries-frames={int(a['label_entries']) - int(a['frames_decoded'])}: khong biet canh nhan"
         elif kind == "plus1":
@@ -301,7 +306,7 @@ def stage_decide(ctx, args, sens: dict, ev: Path) -> list[dict]:
                 reason = f"plus1, {args.plus1_policy}"
         rows.append({"video_id": vid, "split": s["split"], "modality": s["modality"], "class_name": s["class_name"],
                      "kind": kind, "all_absent": s["all_absent"], "include": include, "label_offset": offset,
-                     "reason": reason, "review_quang": rv.get("review_quang", "")})
+                     "reason": reason, "review_column": rcol, "review_value": rval})
     write_csv(ev / "inclusion_decisions.csv", rows)
     return rows
 
