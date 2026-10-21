@@ -1,6 +1,6 @@
 # Giao thức huấn luyện baseline A (W3-04)
 
-> Khung do Quang chuẩn bị 13/10/2026. **An điền các ô `[An điền]`, sửa giá trị nếu không đồng ý và ghi lý do.** Quang review trong PR. Không đổi giao thức sau khi đã chạy run chính thức; muốn đổi → phiên bản mới + ADR.
+> Khung do Quang chuẩn bị 13/10/2026. Quang review trong PR. Không đổi giao thức sau khi đã chạy run chính thức; muốn đổi → phiên bản mới + ADR. Tất cả các ô `[An điền]` đã điền, chờ run 04 cho mục 5
 
 ## 1. Mục tiêu
 Huấn luyện detector cơ sở (baseline A) theo Đề cương W3 để có Weights A, learning curves và mAP trên validation, làm mốc so sánh cho W4 (detector B / tuning).
@@ -13,7 +13,7 @@ Huấn luyện detector cơ sở (baseline A) theo Đề cương W3 để có We
 | Split | video v1, chỉ train + val; test khóa | ADR-0003, ADR-0004 |
 | Lấy mẫu | stride 10 | ADR-0004 mục 4 |
 | Xử lý nhãn lệch | giữ video dư 1 mục với offset 0 (ADR-0004, mục Kết quả thực hiện) | ADR-0004 mục 5–6 |
-| Số ảnh/lớp/split | train: Airplane 1.280, Bird 672, Drone 2.386, Helicopter 1.329 (5.667 ảnh); val: Airplane 289, Bird 96, Drone 532, Helicopter 285 (1.202 ảnh) | run 03 |
+| Số ảnh/lớp/split | train: Airplane 1.280, Bird 672, Drone 2.386, Helicopter 1.329 (5.667 ảnh (gồm âm tính)); val: Airplane 289, Bird 96, Drone 532, Helicopter 285 (1.202 ảnh (gồm âm tính)) | `results/W03/kaggle_run_03b/export_evidence/dataset_stats.csv` |
 
 ## 3. Mô hình
 YOLOv8n COCO-pretrained, ảnh 640. Lý do chọn: YOLOv8n @640 là baseline đã nêu trong Thuyết minh 7.2; biến thể nano là lựa chọn gọn để làm mốc so sánh, không hàm ý đã chứng minh ưu việt. Ảnh Visible gốc rộng 640 px, nên đầu vào 640 giữ nguyên chiều rộng và letterbox thêm padding theo chiều cao để giữ tỷ lệ.
@@ -39,7 +39,7 @@ GPU Kaggle (loại GPU ghi trong `env.json` của run 04). Thời gian train: `[
 - Precision, recall, mAP@0.5, mAP@0.5:0.95: tổng và theo từng lớp (`baseline_A_val_per_class.csv`).
 - Learning curves (`results.csv`, `results.png`), PR curve, confusion matrix.
 - Theo cỡ bbox (nhỏ < 32×32 px trên ảnh gốc): recall theo nhóm cỡ, tính từ `predictions.json` + `yolo_manifest.csv.gz` (W3-06).
-- Theo PR #28, chọn ngưỡng vận hành trong lưới 0,05–0,90, bước 0,05, bằng F1 của lớp Drone cao nhất trên val; nếu hòa, chọn ngưỡng conf cao hơn. Báo cáo ngưỡng đã chọn cùng P/R/F1 theo lớp và tổng thể; val đã dùng chọn checkpoint nên kết quả ngưỡng cũng có thể lạc quan, không dùng test để chọn. Bộ phân tích `scripts/kaggle/w3_analyze_baseline.py` tại head PR #28 triển khai đúng quy tắc này: duyệt ngưỡng tăng dần và cập nhật lựa chọn khi `Drone_F1` bằng hoặc cao hơn kết quả tốt nhất (`>=`), nên trường hợp hòa sẽ giữ ngưỡng conf cao hơn. Macro-F1 được tính riêng làm chỉ số tham khảo, không dùng để chọn ngưỡng.
+- Theo PR #28, chọn ngưỡng vận hành trong lưới 0,05–0,90, bước 0,05, bằng F1 của lớp Drone cao nhất trên val; nếu hòa, chọn ngưỡng conf cao hơn. Báo cáo ngưỡng đã chọn cùng P/R/F1 theo lớp và tổng thể; val đã dùng chọn checkpoint nên kết quả ngưỡng cũng có thể lạc quan, không dùng test để chọn. Bộ phân tích `scripts/kaggle/w3_analyze_baseline.py` tại main triển khai đúng quy tắc này: duyệt ngưỡng tăng dần và cập nhật lựa chọn khi `Drone_F1` bằng hoặc cao hơn kết quả tốt nhất (`>=`), nên trường hợp hòa sẽ giữ ngưỡng conf cao hơn. Macro-F1 được tính riêng làm chỉ số tham khảo, không dùng để chọn ngưỡng.
 
 ## 8. Không làm ở W3
 Tuning, augmentation riêng, so sánh model, tracker, đánh giá trên test, tuyên bố đạt/không đạt chỉ tiêu.
