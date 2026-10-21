@@ -3,12 +3,13 @@
     "sha256": "65dd67fb8968eb3ddbe4b50187f02cfdbbef95a3f2a92e768ac0725178c826ab",
     "bytes": 6495530,
     "kaggle_path": "/kaggle/working/runs/baseline_A/weights/best.pt",
-    "drive_link": ""
+    "drive_link": "https://drive.google.com/file/d/1D_BcgNf37nBW9hMDkclLz4q9ViKFvfNB/view"
   },
   "last.pt": {
     "sha256": "b5785db00f3a7d613508b8deacbaa71deb1cd8c548c8a08d8736189c4213de29",
     "bytes": 6495530,
     "kaggle_path": "/kaggle/working/runs/baseline_A/weights/last.pt",
-    "drive_link": ""
-  }
+    "drive_link": "https://drive.google.com/file/d/1M33LPmTQ80sTF92HHAy060a849DfFCYg/view"
+  },
+  "_drive_note": "Ban tai ve tu Kaggle bi doi duoi .pt thanh .zip (noi dung khong doi); da doi ten lai .pt tren Drive. SHA-256 kiem 22/10/2026 tren ban tai ve: best khop 65dd67fb..., last khop b5785db0...; file tren Drive trung kich thuoc 6495530 byte va thoi diem sua."
 }

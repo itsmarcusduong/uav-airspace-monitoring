@@ -14,7 +14,7 @@
 | Dữ liệu | `e1-yolo-v1`, fingerprint `d0ac7e23…`, train 5.667 / val 1.202 ảnh | `stage_status.json` (stage data) |
 | Số epoch chạy / epoch tốt nhất | 36 / 50 (dừng sớm, patience 15); tốt nhất epoch 21 theo fitness 0,1·mAP@0.5 + 0,9·mAP@0.5:0.95 | `train/results.csv` |
 | Thời gian train | 1.622 s (≈ 27 phút) cho 36 epoch | cột `time` của `train/results.csv` |
-| Weights | `best.pt` SHA-256 `65dd67fb8968eb3d…826ab` (6.495.530 byte); `last.pt` `b5785db00f3a…de29`; link Drive: `[chờ tải lại file .pt nguyên bản]` | `weights_manifest.json` |
+| Weights | `best.pt` SHA-256 `65dd67fb8968eb3d…826ab` (6.495.530 byte); `last.pt` `b5785db00f3a…de29`; Drive: [best.pt](https://drive.google.com/file/d/1D_BcgNf37nBW9hMDkclLz4q9ViKFvfNB/view), [last.pt](https://drive.google.com/file/d/1M33LPmTQ80sTF92HHAy060a849DfFCYg/view) (SHA-256 đã kiểm trên bản tải về) | `weights_manifest.json` |
 | Giấy phép | Ultralytics và `yolov8n.pt`: AGPL-3.0 (#20, PR #31) | `data/manifests/license_matrix.csv` |
 
 ## 2. Dữ liệu
