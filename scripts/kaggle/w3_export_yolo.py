@@ -226,6 +226,8 @@ def stage_offset_sheets(ctx, args, data: Path, ev: Path, labels: dict) -> dict:
         if not chosen:
             continue
         cap = cv2.VideoCapture(str(data / f"Video_{mod}" / f"{vid}.mp4"))
+        if not cap.isOpened():
+            raise RuntimeError(f"VideoCapture khong mo duoc {vid}.mp4")
         i, need = 0, set(chosen)
         while need:
             ok, frame = cap.read()
@@ -272,7 +274,8 @@ def stage_offset_sheets(ctx, args, data: Path, ev: Path, labels: dict) -> dict:
                 row.append(np.full((250, 230, 3), 255, np.uint8))
             rows.append(np.hstack(row))
         name = f"offset_sheet_{s // per + 1:02d}.jpg"
-        cv2.imwrite(str(sheets_dir / name), np.vstack(rows), [cv2.IMWRITE_JPEG_QUALITY, 92])
+        if not cv2.imwrite(str(sheets_dir / name), np.vstack(rows), [cv2.IMWRITE_JPEG_QUALITY, 92]):
+            raise RuntimeError(f"cv2.imwrite that bai: {sheets_dir / name}")
         for j in idx:
             review_rows[j]["sheet"] = name
     review_rows = [review_rows[j] for j in order]
@@ -322,6 +325,8 @@ def stage_export(ctx, args, data: Path, ds: Path, decisions: list[dict], labels:
         vid, mod, sp, off = d["video_id"], d["modality"], d["split"], int(d["label_offset"])
         boxes = labels.get(vid) or load_labels(data / f"Video_{mod}" / f"{vid}_LABELS.mat")
         cap = cv2.VideoCapture(str(data / f"Video_{mod}" / f"{vid}.mp4"))
+        if not cap.isOpened():
+            raise RuntimeError(f"VideoCapture khong mo duoc {vid}.mp4")
         i = 0
         while True:
             ok, frame = cap.read()
@@ -348,7 +353,8 @@ def stage_export(ctx, args, data: Path, ds: Path, decisions: list[dict], labels:
                         rec = {"bbox_area_px": round(area, 1), "size_bucket": size_bucket(area)}
                     stem = f"{vid}_f{i:05d}"
                     img = ds / "images" / sp / f"{stem}.jpg"
-                    cv2.imwrite(str(img), frame, [cv2.IMWRITE_JPEG_QUALITY, args.jpeg_quality])
+                    if not cv2.imwrite(str(img), frame, [cv2.IMWRITE_JPEG_QUALITY, args.jpeg_quality]):
+                        raise RuntimeError(f"cv2.imwrite that bai: {img}")
                     (ds / "labels" / sp / f"{stem}.txt").write_text(line, encoding="utf-8")
                     manifest.append({"image": f"images/{sp}/{stem}.jpg", "split": sp, "video_id": vid, "frame_index": i,
                                      "label_index": j, "class_name": d["class_name"], "has_bbox": int(bool(line)),
