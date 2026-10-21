@@ -15,5 +15,7 @@
 5. **GT tracking**: không báo HOTA/IDF1 trên Svanström. Nếu cần, chỉ dẫn xuất "track đơn" mỗi video (một ID) và ghi rõ giới hạn; ADR riêng trước khi báo bất kỳ số nào. Anti-UAV là ứng viên bổ sung (chưa kiểm license media).
 6. Stride lấy mẫu frame cho huấn luyện: quyết ở W3 (đề xuất 5–10 frame, chưa chọn).
 
+> **Cập nhật 13/10/2026:** mục 2 (loại 231 video dư 1 mục) không khả thi: toàn bộ 114 video V-Drone thuộc nhóm này (đối chiếu `annotation_audit.csv` run 01 với split v1), loại đi thì baseline ảnh khả kiến không còn Drone. Mục 2 được thay bằng ADR-0004 (mục 5–6). Mục 6 (stride) chốt trong ADR-0004 (stride 10).
+
 ## Rủi ro chấp nhận
 Trùng cảnh giữa các split không kiểm soát được (562 cặp video gần giống khác split theo dHash) → ghi trong báo cáo là giới hạn, không tuyên bố "test là cảnh chưa thấy".
