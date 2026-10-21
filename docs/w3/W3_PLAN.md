@@ -5,7 +5,7 @@ Mốc: Đề cương W3 "Train detector baseline A" → *Weights A; learning cur
 ## A. Issue và phân công (milestone W3)
 | Issue | Việc | Phụ trách | Review | Evidence |
 |---|---|---|---|---|
-| #10 W3-01 | Xác nhận cột verdict cho 358 video (ưu tiên 10 SAI_NHAN, 144 KHONG_RO, video test) | An | Quang | `results/W03/review_assignment_confirmed.csv` |
+| #10 W3-01 | Review nhãn v2 cho 358 video (8 frame/video, có ảnh phóng to; có hỗ trợ công cụ) → cột `review_quang_v2` | Quang | An | `results/W03/review/review_assignment_w3.csv` |
 | #11 W3-02 | Chính sách căn nhãn: chạy run 03 (độ nhạy IoU + bảng xem mù), chấm theo luật ADR-0004 mục 6 | Quang (chạy), cả hai (xem) | An | `offset_sensitivity_summary.json`, `offset_review_score.json` |
 | #5 W2-04 | Duyệt ADR-0003 (+ ADR-0004), đóng băng split v1 | An duyệt | Quang | ADR trạng thái Accepted; tag/commit split |
 | #7 W2-06 | Họp GVHD: chỉ tiêu, modality, tracker, kế hoạch tuần | Cả hai | — | Biên bản/ADR |
@@ -15,6 +15,7 @@ Mốc: Đề cương W3 "Train detector baseline A" → *Weights A; learning cur
 | W3-06 | Đánh giá val + model card | An (phân tích), Quang (số liệu) | Nhau | `docs/w3/model_card_baseline_A.md` |
 | W3-07 | License Ultralytics / yolov8n.pt | An | Quang | dòng mới trong `license_matrix.csv` |
 | W3-08 | Báo cáo W3 + version đồ án v0.3 (1.4, 1.5) | Quang (báo cáo), An (1.4, 1.5) | Nhau | `reports/w3/` |
+| (W4) | An kiểm tra thủ công mẫu review v2 → cột `verdict` | An | Quang | tỷ lệ đồng ý với `review_quang_v2` |
 
 Từ W3: mọi PR cần approve của người còn lại trước khi merge (main đã bảo vệ).
 
@@ -26,6 +27,19 @@ Từ W3: mọi PR cần approve của người còn lại trước khi merge (ma
 3. An review `configs/baseline_A.yaml` (W3-04) **trước** run 04.
 4. **Run 04** (GPU) → tải bằng chứng + weights → Drive.
 5. Phân tích, model card, báo cáo.
+
+
+## C0. Cập nhật 21/10/2026 — chạy bằng notebook có sẵn
+Run 03 tách làm hai để review nhãn v2 (#10) và bảng xem mù offset (#11) xong **trước** khi xuất dữ liệu. Ba notebook upload thẳng lên Kaggle (`File → Import Notebook`), hướng dẫn từng bước trong `docs/w3/kaggle_guide_w3.md`:
+
+| Lần chạy | Notebook | Máy | Kết quả tải về |
+|---|---|---|---|
+| 03a | `scripts/kaggle/notebooks/w3_run03a_review_offset.ipynb` | CPU | `w3_review_v2.zip`, `w3_export_evidence.zip` → `results/W03/kaggle_run_03a/` |
+| — | Review nhãn v2 (`review_quang_v2`) + chấm bảng xem mù (`score_offset_review.py`) | — | `results/W03/review/` |
+| 03b | `scripts/kaggle/notebooks/w3_run03b_export_yolo.ipynb` | CPU | `w3_export_evidence.zip` → `results/W03/kaggle_run_03b/` |
+| 04 | `scripts/kaggle/notebooks/w3_run04_train_baseline_A.ipynb` | GPU | `w3_train_evidence.zip` → `results/W03/kaggle_run_04/`; weights → Drive |
+
+Mỗi notebook có ô tự kiểm tra in `PASS`/`FAIL`. `w3_export_yolo.py` đọc kết quả review theo thứ tự ưu tiên `verdict` > `review_quang_v2` > `review_quang` và ghi cột đã dùng vào `inclusion_decisions.csv`. Mục C và D bên dưới là cách chạy bằng cell rời (giữ để tham khảo).
 
 ## C. Kaggle run 03 — xuất dữ liệu YOLO + kiểm tra lệch nhãn (CPU)
 **Mục đích:** đo ảnh hưởng lệch nhãn 1 frame, tạo bảng xem mù, xuất ảnh/nhãn YOLO train+val (ảnh khả kiến, stride 10).
