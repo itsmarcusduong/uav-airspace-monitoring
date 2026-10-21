@@ -81,7 +81,7 @@ for num, m7, mfull, desc, commits in PRS:
         if i < len(commits) - 1: plain(p, ", ")
     plain(p, "; merge "); add_link(p, m7, f"{REPO}/commit/{mfull}")
 p = row("Review chéo")
-plain(p, "PR #23, #25, #26 đã gửi yêu cầu review tới An; tới ngày lập báo cáo chưa có review trên GitHub, PR được merge theo ruleset hiện hành (không bắt buộc approve).")
+plain(p, "An review PR #22 (approve bằng comment), #23, #25, #26 sau khi merge, nêu 3 lỗi kỹ thuật; đã sửa trong "); add_link(p, "PR #28", REPO + "/pull/28"); plain(p, " (gửi An review trước khi merge). Từ W4: mọi PR đều gửi yêu cầu review tới An trước khi merge.")
 p = row("Kaggle (COMMIT dùng cho run)"); add_link(p, "680043b", REPO + "/commit/680043bf9cfd43033a92688cdaabbd547049c6cc"); plain(p, " — run 03a, 03b, 04")
 p = row("Tag release"); plain(p, "Chưa có (tag đầu tiên tại W4)")
 for r_ in t.rows:
@@ -90,7 +90,7 @@ d.add_paragraph().paragraph_format.space_after = Pt(0)
 para("2. Phân chia công việc", True)
 table(["Issue", "Nội dung", "Phụ trách", "Review", "Trạng thái"],
       [["#10 W3-01", "Review nhãn v2: 358 video, 8 frame/video + ảnh phóng to", "Quang", "An", "Hoàn thành (PR #23, #25)"],
-       ["#11 W3-02", "Chính sách căn nhãn: độ nhạy IoU + xem mù có đối chứng", "Quang", "An", "Hoàn thành; chiều lệch chưa xác định → W4 (#24)"],
+       ["#11 W3-02", "Chính sách căn nhãn: độ nhạy IoU + thăm dò bằng mắt có đối chứng", "Quang", "An", "Hoàn thành; chiều lệch chưa xác định → W4 (#24)"],
        ["#16 W3-03", "ADR-0004 + xuất dữ liệu YOLO e1-yolo-v1", "Quang", "An", "Hoàn thành (PR #22, #25)"],
        ["#17 W3-04", "Giao thức train + config baseline A", "An", "Quang", "Bản nháp; phần của An chưa merge vào main"],
        ["#18 W3-05", "Train YOLOv8n@640 trên Kaggle GPU", "Quang", "An", "Đang chạy (run 04)"],
@@ -104,14 +104,14 @@ table(["Planned", "Done", "Evidence (đường dẫn trong repo)", "Problems", "
       [["Chốt nhãn, xuất dữ liệu YOLO, train baseline A, đánh giá val, model card",
         "Review v2 358 video (OK 283 / SAI_NHAN 60 / KHONG_RO 15); giữ video dư 1 mục với offset 0; e1-yolo-v1: 216 video, 6.869 ảnh; job train + phân tích sẵn sàng",
         "results/W03/review/review_v2_summary.json; results/W03/kaggle_run_03a/export_evidence/offset_sensitivity_summary.json; results/W03/kaggle_run_03b/export_evidence/dataset_card.json; docs/decisions/ADR-0004*; docs/w3/model_card_baseline_A.md",
-        "mAP/PR chưa có (run 04 đang chạy); xem mù đối chứng chỉ 53% → không xác định chiều lệch; val chỉ 3 video Bird; 77/242 video chưa xem bằng mắt; #7 chưa chốt với GVHD",
+        "mAP/PR chưa có (run 04 đang chạy); thăm dò bằng mắt: đối chứng chỉ 53% → không xác định chiều lệch; val chỉ 3 video Bird; 77/242 video chưa xem bằng mắt; #7 chưa chốt với GVHD",
         "Điền model card, chạy run 05; W4: cấu hình đối chứng B + augmentation, tập chuẩn CVAT (#24), tag release W4"]],
       [3.0, 3.8, 4.4, 3.8, 2.4], size=8)
 para("4. Kết quả đo (nguồn: CSV/JSON + script)", True)
 table(["Chỉ số", "Giá trị", "Nguồn"],
       [["Review nhãn v2 (358 video)", "OK 283 / SAI_NHAN 60 / KHONG_RO 15", "results/W03/review/review_v2_summary.json"],
        ["IoU frame liên tiếp ≥ 0,5 (V, dư 1 mục)", "Drone 98,6% (95 video); Bird 95,3% (34 video)", "…/kaggle_run_03a/export_evidence/offset_sensitivity_summary.json"],
-       ["Xem mù nhóm đối chứng", "53% (8/15) < ngưỡng 80% → không kết luận", "results/W03/review/offset_review_score.json"],
+       ["Thăm dò offset bằng mắt (không phải review mù độc lập)", "Đối chứng 53% (8/15) < ngưỡng 80% → không kết luận", "results/W03/review/offset_review_score.json"],
        ["e1-yolo-v1 train / val", "178 video, 5.667 ảnh / 38 video, 1.202 ảnh (stride 10)", "…/kaggle_run_03b/export_evidence/dataset_card.json"],
        ["Baseline A: mAP@0.5, P, R (val)", PENDING, "results/W03/kaggle_run_04/ (chờ)"],
        ["Phần cứng train", PENDING, "kaggle_run_04/env.json (chờ)"]], [5.0, 5.8, 6.6])

@@ -34,7 +34,7 @@ Giao diện Kaggle có thể đổi tên nút đôi chút; các bước giữ ng
 | `w3_run03a_review_offset.ipynb` | `e1-w3-run03a` | None | `e1-svanstrom-raw`, `e1-w3-tools` |
 | `w3_run03b_export_yolo.ipynb` | `e1-w3-run03b` | None | `e1-svanstrom-raw`, `e1-w3-tools` (bản có `review_assignment_w3.csv`) |
 | `w3_run04_train_baseline_A.ipynb` | `e1-w3-run04` | GPU T4 x2 (hoặc P100) | `e1-w3-tools`, **output của notebook `e1-w3-run03b` bản có `e1-yolo-v1.zip`** |
-| `w3_run05_analyze_baseline_A.ipynb` | `e1-w3-run05` | None | `e1-w3-tools` (bản có `w3_analyze_baseline.py`), output `e1-w3-run03b`, output `e1-w3-run04` |
+| `w3_run05_analyze_baseline_A.ipynb` | `e1-w3-run05` | None | `e1-w3-tools` (**New Version** với `w3_analyze_baseline.py` của commit merge PR #28 — bản cũ bỏ qua dòng nhãn lỗi), output `e1-w3-run03b` bản có `e1-yolo-v1.zip`, output `e1-w3-run04` |
 
 ## 3. Thêm input và cài đặt
 1. Cột phải → **Input** → **+ Add Input**.

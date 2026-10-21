@@ -9,7 +9,8 @@ w3_train_evidence/ (run 04: train/results.csv, val/predictions.json, baseline_A_
 Dau ra (w3_analysis/): learning_curves.png/.csv, operating_points.csv (P/R/F1 theo nguong conf),
 recall_by_size.csv, recall_by_video.csv, class_confusion.csv, negatives_fp.json, analysis_summary.json,
 fig_*.png. Khop du doan - nhan: cung lop, IoU >= 0,5, tham lam theo score. Nguong van hanh chon tren VAL
-(F1 macro lon nhat) nen so lieu lac quan; test bi khoa.
+(F1 lop Drone lon nhat, theo training_protocol.md muc 7) nen so lieu lac quan; test bi khoa.
+Dong nhan sai dinh dang -> stage inputs FAILED kem duong dan:so dong (khong bo qua am tham).
 """
 from __future__ import annotations
 
@@ -19,6 +20,7 @@ import gzip
 import hashlib
 import json
 import logging
+import math
 import shutil
 import traceback
 import zipfile
@@ -61,13 +63,37 @@ def write_csv(path: Path, rows: list[dict]) -> None:
         w.writerows(rows)
 
 
-def load_gt(data_dir: Path, manifest: Path) -> dict:
-    """stem -> {video, w, h, boxes:[(cls, x, y, w, h, area)]} cho split val."""
+class LabelError(ValueError):
+    """Dong nhan YOLO sai dinh dang: dung phan tich thay vi bo qua am tham (review An, PR #26)."""
+
+
+def parse_label_line(line: str, path: Path, lineno: int, nc: int) -> tuple[int, float, float, float, float]:
+    p = line.split()
+    if len(p) != 5:
+        raise LabelError(f"{path}:{lineno}: can 5 truong, co {len(p)}: {line!r}")
+    try:
+        c = int(p[0])
+        cx, cy, bw, bh = (float(v) for v in p[1:])
+    except ValueError as exc:
+        raise LabelError(f"{path}:{lineno}: gia tri khong phai so: {line!r}") from exc
+    if not 0 <= c < nc or p[0] != str(c):
+        raise LabelError(f"{path}:{lineno}: class id {p[0]!r} ngoai [0, {nc - 1}]")
+    if not all(math.isfinite(v) for v in (cx, cy, bw, bh)):
+        raise LabelError(f"{path}:{lineno}: NaN/inf: {line!r}")
+    if not (0.0 <= cx <= 1.0 and 0.0 <= cy <= 1.0 and 0.0 < bw <= 1.0 and 0.0 < bh <= 1.0):
+        raise LabelError(f"{path}:{lineno}: toa do chuan hoa ngoai mien (cx,cy in [0,1]; w,h in (0,1]): {line!r}")
+    return c, cx, cy, bw, bh
+
+
+def load_gt(data_dir: Path, manifest: Path, nc: int = len(CLASSES)) -> dict:
+    """stem -> {video, w, h, boxes:[(cls, x, y, w, h, area)]} cho split val. Dong sai dinh dang -> LabelError."""
     meta = {}
     with gzip.open(manifest, "rt", encoding="utf-8") as fh:
         for r in csv.DictReader(fh):
             if r["split"] == "val":
                 meta[Path(r["image"]).stem] = r
+    if not meta:
+        raise LabelError(f"{manifest}: khong co anh split val")
     gt = {}
     for stem, r in meta.items():
         W, H = float(r["width"]), float(r["height"])
@@ -75,12 +101,14 @@ def load_gt(data_dir: Path, manifest: Path) -> dict:
         lab = data_dir / "labels" / "val" / f"{stem}.txt"
         if not lab.is_file():
             raise FileNotFoundError(lab)
-        for line in lab.read_text(encoding="utf-8").split("\n"):
-            p = line.split()
-            if len(p) == 5:
-                c, cx, cy, bw, bh = int(p[0]), *(float(v) for v in p[1:])
-                w, h = bw * W, bh * H
-                boxes.append((c, cx * W - w / 2, cy * H - h / 2, w, h, w * h))
+        for lineno, line in enumerate(lab.read_text(encoding="utf-8").splitlines(), 1):
+            if not line.strip():
+                continue
+            c, cx, cy, bw, bh = parse_label_line(line, lab, lineno, nc)
+            w, h = bw * W, bh * H
+            boxes.append((c, cx * W - w / 2, cy * H - h / 2, w, h, w * h))
+        if str(r.get("has_bbox", "")) in ("0", "1") and int(r["has_bbox"]) != int(bool(boxes)):
+            raise LabelError(f"{lab}: has_bbox={r['has_bbox']} trong manifest nhung file nhan co {len(boxes)} hop")
         gt[stem] = {"video": r["video_id"], "class_name": r["class_name"], "W": W, "H": H, "boxes": boxes}
     return gt
 
@@ -156,7 +184,8 @@ def stage_curves(ev: Path, out: Path) -> dict:
 
 
 def stage_ops(gt, preds, out: Path) -> dict:
-    rows, best = [], None
+    rows, best, best_macro = [], None, None
+    drone = CLASSES.index("Drone")
     for t in [round(0.05 * i, 2) for i in range(1, 19)]:
         gts, fps = match(gt, preds, t)
         f1s = []
@@ -174,10 +203,16 @@ def stage_ops(gt, preds, out: Path) -> dict:
         R = tp_all / n_all if n_all else 0.0
         rec.update({"all_P": round(P, 4), "all_R": round(R, 4), "macro_F1": round(sum(f1s) / len(f1s), 4)})
         rows.append(rec)
-        if best is None or rec["macro_F1"] > best["macro_F1"]:
+        # Giao thuc #17: chon nguong toi da F1 lop Drone tren val; dong hang -> nguong cao hon (duyet tang dan nen dung >=)
+        if best is None or rec["Drone_F1"] >= best["Drone_F1"]:
             best = rec
+        if best_macro is None or rec["macro_F1"] >= best_macro["macro_F1"]:
+            best_macro = rec
     write_csv(out / "operating_points.csv", rows)
-    return {"conf_selected_on_val": best["conf"], "macro_F1": best["macro_F1"], "all_P": best["all_P"], "all_R": best["all_R"]}
+    return {"selection_rule": "max Drone F1 on val; tie -> higher conf (training_protocol.md muc 7)",
+            "conf_selected_on_val": best["conf"], "Drone_P": best["Drone_P"], "Drone_R": best["Drone_R"], "Drone_F1": best["Drone_F1"],
+            "macro_F1": best["macro_F1"], "all_P": best["all_P"], "all_R": best["all_R"],
+            "reference_conf_max_macro_F1": best_macro["conf"], "reference_macro_F1": best_macro["macro_F1"], "drone_class_id": drone}
 
 
 def stage_breakdown(gt, preds, thr: float, out: Path) -> dict:
@@ -267,7 +302,7 @@ def main() -> int:
     mj = a.train_evidence / "baseline_A_val_metrics.json"
     summary = {"status": {k: v["status"] for k, v in status.items()}, "stages": status,
                "ultralytics_metrics": json.loads(mj.read_text(encoding="utf-8")) if mj.is_file() else None,
-               "note": "Danh gia tren VAL; nguong chon tren VAL nen so lieu lac quan. Test bi khoa."}
+               "note": "Danh gia tren VAL; nguong chon tren VAL nen so lieu lac quan. Test bi khoa. Nhan val da duoc kiem tra dinh dang (5 truong, class id, toa do chuan hoa) va khop has_bbox voi manifest truoc khi tinh metric."}
     (out / "analysis_summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False, default=str), encoding="utf-8")
     z = a.out / "w3_analysis.zip"
     with zipfile.ZipFile(z, "w", zipfile.ZIP_DEFLATED) as zf:
