@@ -1,0 +1,5 @@
+{
+  "negative_images": 40,
+  "images_with_fp": 40,
+  "conf": 0.25
+}
