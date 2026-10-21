@@ -1,0 +1,8 @@
+{
+    "train_count": 912,
+    "val_count": 195,
+    "test_count": 196,
+    "total": 1303,
+    "split_ratio": "70/15/15",
+    "method": "Video-based Group Split (Anti Data Leakage)"
+}

@@ -1,0 +1,48 @@
+{
+  "generated_at_utc": "2026-10-19T11:22:36.198145+00:00",
+  "dataset_path_at_generation": "D:\\uav-airspace-monitoring\\results\\W03\\kaggle_run_03\\yolo_dataset",
+  "class_names_from_yaml": {},
+  "splits": {
+    "train": {
+      "images": 5172,
+      "labels": 5172,
+      "missing_labels": 0,
+      "labels_without_images": 0,
+      "empty_labels": 0,
+      "objects": 5172,
+      "objects_by_class": {
+        "0": 2538,
+        "3": 2634
+      }
+    },
+    "val": {
+      "images": 1136,
+      "labels": 1136,
+      "missing_labels": 0,
+      "labels_without_images": 0,
+      "empty_labels": 0,
+      "objects": 1136,
+      "objects_by_class": {
+        "0": 573,
+        "3": 563
+      }
+    },
+    "test": {
+      "images": 1078,
+      "labels": 1078,
+      "missing_labels": 0,
+      "labels_without_images": 0,
+      "empty_labels": 0,
+      "objects": 1078,
+      "objects_by_class": {
+        "0": 570,
+        "3": 508
+      }
+    }
+  },
+  "file_count": 14772,
+  "validation_status": "OK",
+  "validation_errors": [],
+  "files_csv": "files.csv",
+  "files_csv_sha256": "ecc2a43f4f616edd431b70d57253fde6a17953e4113483d111c13710265aa2d6"
+}
