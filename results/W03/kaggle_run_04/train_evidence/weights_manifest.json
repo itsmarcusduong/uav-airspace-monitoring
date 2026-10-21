@@ -1,0 +1,14 @@
+{
+  "best.pt": {
+    "sha256": "65dd67fb8968eb3ddbe4b50187f02cfdbbef95a3f2a92e768ac0725178c826ab",
+    "bytes": 6495530,
+    "kaggle_path": "/kaggle/working/runs/baseline_A/weights/best.pt",
+    "drive_link": ""
+  },
+  "last.pt": {
+    "sha256": "b5785db00f3a7d613508b8deacbaa71deb1cd8c548c8a08d8736189c4213de29",
+    "bytes": 6495530,
+    "kaggle_path": "/kaggle/working/runs/baseline_A/weights/last.pt",
+    "drive_link": ""
+  }
+}
