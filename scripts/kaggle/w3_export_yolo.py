@@ -327,46 +327,53 @@ def stage_export(ctx, args, data: Path, ds: Path, decisions: list[dict], labels:
         cap = cv2.VideoCapture(str(data / f"Video_{mod}" / f"{vid}.mp4"))
         if not cap.isOpened():
             raise RuntimeError(f"VideoCapture khong mo duoc {vid}.mp4")
-        i = 0
-        while True:
-            ok, frame = cap.read()
-            if not ok:
-                break
-            if i % args.stride == 0:
-                j = i + off
-                if j >= len(boxes):
-                    skipped["beyond_labels"] += 1
-                else:
-                    b = boxes[j]
-                    H, W = frame.shape[:2]
-                    line, rec = "", {"bbox_area_px": "", "size_bucket": ""}
-                    if b == "MALFORMED":
-                        skipped["malformed"] += 1; i += 1; continue
-                    if isinstance(b, tuple):
-                        x0, y0 = max(0.0, b[0]), max(0.0, b[1])
-                        x1, y1 = min(float(W), b[0] + b[2]), min(float(H), b[1] + b[3])
-                        if x1 - x0 < 1 or y1 - y0 < 1:
-                            skipped["degenerate_after_clip"] += 1; i += 1; continue
-                        cid = CLASS_ID[d["class_name"]]
-                        line = f"{cid} {(x0 + x1) / 2 / W:.6f} {(y0 + y1) / 2 / H:.6f} {(x1 - x0) / W:.6f} {(y1 - y0) / H:.6f}\n"
-                        area = (x1 - x0) * (y1 - y0)
-                        rec = {"bbox_area_px": round(area, 1), "size_bucket": size_bucket(area)}
-                    stem = f"{vid}_f{i:05d}"
-                    img = ds / "images" / sp / f"{stem}.jpg"
-                    if not cv2.imwrite(str(img), frame, [cv2.IMWRITE_JPEG_QUALITY, args.jpeg_quality]):
-                        raise RuntimeError(f"cv2.imwrite that bai: {img}")
-                    (ds / "labels" / sp / f"{stem}.txt").write_text(line, encoding="utf-8")
-                    manifest.append({"image": f"images/{sp}/{stem}.jpg", "split": sp, "video_id": vid, "frame_index": i,
-                                     "label_index": j, "class_name": d["class_name"], "has_bbox": int(bool(line)),
-                                     "width": W, "height": H, **rec, "sha256": sha256(img)})
-            i += 1
-        cap.release()
+        try:
+            i = 0
+            while True:
+                ok, frame = cap.read()
+                if not ok:
+                    break
+                if i % args.stride == 0:
+                    j = i + off
+                    if j >= len(boxes):
+                        skipped["beyond_labels"] += 1
+                    else:
+                        b = boxes[j]
+                        H, W = frame.shape[:2]
+                        line, rec = "", {"bbox_area_px": "", "size_bucket": ""}
+                        if b == "MALFORMED":
+                            skipped["malformed"] += 1; i += 1; continue
+                        if isinstance(b, tuple):
+                            x0, y0 = max(0.0, b[0]), max(0.0, b[1])
+                            x1, y1 = min(float(W), b[0] + b[2]), min(float(H), b[1] + b[3])
+                            if x1 - x0 < 1 or y1 - y0 < 1:
+                                skipped["degenerate_after_clip"] += 1; i += 1; continue
+                            cid = CLASS_ID[d["class_name"]]
+                            line = f"{cid} {(x0 + x1) / 2 / W:.6f} {(y0 + y1) / 2 / H:.6f} {(x1 - x0) / W:.6f} {(y1 - y0) / H:.6f}\n"
+                            area = (x1 - x0) * (y1 - y0)
+                            rec = {"bbox_area_px": round(area, 1), "size_bucket": size_bucket(area)}
+                        stem = f"{vid}_f{i:05d}"
+                        img = ds / "images" / sp / f"{stem}.jpg"
+                        if not cv2.imwrite(str(img), frame, [cv2.IMWRITE_JPEG_QUALITY, args.jpeg_quality]):
+                            raise RuntimeError(f"cv2.imwrite that bai: {img}")
+                        (ds / "labels" / sp / f"{stem}.txt").write_text(line, encoding="utf-8")
+                        manifest.append({"image": f"images/{sp}/{stem}.jpg", "split": sp, "video_id": vid, "frame_index": i,
+                                         "label_index": j, "class_name": d["class_name"], "has_bbox": int(bool(line)),
+                                         "width": W, "height": H, **rec, "sha256": sha256(img)})
+                i += 1
+        finally:
+            cap.release()
+        exp = int(ctx["audit"][vid]["frames_decoded"])
+        if i != exp:
+            raise RuntimeError(f"{vid}: doc duoc {i} frame, inventory/audit ghi {exp} (video bi cat hoac loi giai ma)")
         if n % 25 == 0:
             LOG.info("export %d/%d video", n, len(todo))
     (ds / "data.yaml").write_text(
         "# Duong dan 'path' duoc w3_train_baseline.py ghi de khi chay\npath: .\ntrain: images/train\nval: images/val\n"
         f"nc: {len(CLASS_NAMES)}\nnames: {json.dumps(CLASS_NAMES)}\n", encoding="utf-8")
     ctx["skipped"] = dict(skipped)
+    if not manifest:
+        raise RuntimeError(f"khong xuat duoc anh nao ({len(todo)} video duoc chon)")
     return manifest
 
 
