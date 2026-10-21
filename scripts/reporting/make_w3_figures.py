@@ -81,10 +81,69 @@ def sensitivity(res: Path, out: Path):
     fig.tight_layout(); fig.savefig(out / "fig_w3_offset_sensitivity.png", dpi=200, bbox_inches="tight"); plt.close(fig)
 
 
+def learning(res: Path, out: Path):
+    rows = [{k.strip(): v for k, v in r.items()} for r in
+            csv.DictReader((res / "kaggle_run_04/train_evidence/train/results.csv").open(encoding="utf-8"))]
+    ep = [int(float(r["epoch"])) for r in rows]
+    fit = [0.1 * float(r["metrics/mAP50(B)"]) + 0.9 * float(r["metrics/mAP50-95(B)"]) for r in rows]
+    best = ep[max(range(len(fit)), key=lambda i: fit[i])]
+    fig, ax = plt.subplots(1, 2, figsize=(7.6, 2.8))
+    ax[0].plot(ep, [float(r["train/box_loss"]) for r in rows], color="#2a78d6", lw=2, label="train")
+    ax[0].plot(ep, [float(r["val/box_loss"]) for r in rows], color="#eb6834", lw=2, label="val")
+    ax[0].set_title("box loss", loc="left", color=INK); ax[0].set_xlabel("epoch")
+    ax[1].plot(ep, [float(r["metrics/mAP50(B)"]) for r in rows], color="#2a78d6", lw=2, label="mAP@0.5")
+    ax[1].plot(ep, [float(r["metrics/mAP50-95(B)"]) for r in rows], color="#1baf7a", lw=2, label="mAP@0.5:0.95")
+    ax[1].set_title("mAP trên val", loc="left", color=INK); ax[1].set_xlabel("epoch"); ax[1].set_ylim(0, 1)
+    for a in ax:
+        a.axvline(best, color=INK2, ls="--", lw=1); a.grid(color=GRID, lw=.6); a.set_axisbelow(True)
+        a.legend(fontsize=7, frameon=False)
+    ax[1].text(best + 0.5, 0.95, f"best.pt (epoch {best})", fontsize=7.5, color=INK2, va="top")
+    fig.tight_layout(); fig.savefig(out / "fig_w3_learning_curves.png", dpi=200, bbox_inches="tight"); plt.close(fig)
+
+
+def per_class(res: Path, out: Path):
+    rows = list(csv.DictReader((res / "kaggle_run_04/train_evidence/baseline_A_val_per_class.csv").open(encoding="utf-8")))
+    names = [r["class_name"] for r in rows]
+    fig, ax = plt.subplots(figsize=(6.4, 2.8))
+    w = 0.36
+    x = range(len(rows))
+    b1 = ax.bar([i - w / 2 - 0.01 for i in x], [float(r["ap50"]) for r in rows], w, color="#2a78d6", label="AP@0.5")
+    b2 = ax.bar([i + w / 2 + 0.01 for i in x], [float(r["ap50_95"]) for r in rows], w, color="#9ec5f4", label="AP@0.5:0.95")
+    for bars in (b1, b2):
+        for b in bars:
+            ax.text(b.get_x() + b.get_width() / 2, b.get_height() + 0.015, f"{b.get_height():.2f}".replace(".", ","),
+                    ha="center", fontsize=7.5, color=INK)
+    ax.set_xticks(list(x)); ax.set_xticklabels(names); ax.set_ylim(0, 1.15); ax.set_yticks([0, .2, .4, .6, .8, 1]); ax.set_ylabel("AP (val)")
+    ax.grid(axis="y", color=GRID, lw=.6); ax.set_axisbelow(True); ax.legend(fontsize=7.5, frameon=False, loc="upper center", ncol=2, bbox_to_anchor=(0.5, 1.02))
+    fig.tight_layout(); fig.savefig(out / "fig_w3_per_class_ap.png", dpi=200, bbox_inches="tight"); plt.close(fig)
+
+
+def recall_size(res: Path, out: Path):
+    rows = list(csv.DictReader((res / "kaggle_run_05/analysis/recall_by_size.csv").open(encoding="utf-8")))
+    sizes = ["small", "medium", "large"]; lab = {"small": "nhỏ (<32²)", "medium": "vừa (32²–96²)", "large": "lớn (≥96²)"}
+    classes = ["Airplane", "Bird", "Drone", "Helicopter"]
+    fig, ax = plt.subplots(figsize=(7.2, 2.9))
+    w = 0.19
+    for k, c in enumerate(classes):
+        for j, sz in enumerate(sizes):
+            r = next((r for r in rows if r["class"] == c and r["size"] == sz), None)
+            if not r or int(r["gt"]) < 5:
+                continue
+            xpos = j + (k - 1.5) * (w + 0.01)
+            ax.bar(xpos, float(r["recall"]), w, color=CLASS_COLOR[c], label=c if j == 0 or not any(
+                rr["class"] == c and rr["size"] in sizes[:j] and int(rr["gt"]) >= 5 for rr in rows) else None)
+            ax.text(xpos, float(r["recall"]) + 0.02, f"n={r['gt']}", ha="center", fontsize=6.5, color=INK2, rotation=90)
+    ax.set_xticks(range(3)); ax.set_xticklabels([lab[s] for s in sizes]); ax.set_ylim(0, 1.25)
+    ax.set_yticks([0, .25, .5, .75, 1]); ax.set_ylabel("recall @ conf 0,25")
+    ax.grid(axis="y", color=GRID, lw=.6); ax.set_axisbelow(True); ax.legend(fontsize=7.5, frameon=False, ncol=4, loc="upper left")
+    fig.tight_layout(); fig.savefig(out / "fig_w3_recall_by_size.png", dpi=200, bbox_inches="tight"); plt.close(fig)
+
+
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--results", type=Path, required=True); ap.add_argument("--out", type=Path, required=True)
     a = ap.parse_args(); a.out.mkdir(parents=True, exist_ok=True)
-    funnel(a.results, a.out); yolo_stats(a.results, a.out); sensitivity(a.results, a.out); print("ok", a.out)
+    funnel(a.results, a.out); yolo_stats(a.results, a.out); sensitivity(a.results, a.out)
+    learning(a.results, a.out); per_class(a.results, a.out); recall_size(a.results, a.out); print("ok", a.out)
 
 
 if __name__ == "__main__":
