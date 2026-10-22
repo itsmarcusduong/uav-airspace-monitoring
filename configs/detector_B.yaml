@@ -1,0 +1,29 @@
+# Cấu hình detector B — YOLOv8s @960 theo Thuyết minh 7.2.
+experiment: detector_B
+dataset_version: e1-yolo-v1          # cập nhật theo ADR-0006 sau Kaggle run 06
+model: yolov8s.pt                    # COCO-pretrained (Thuyết minh 7.2: YOLOv8s @960)
+ultralytics_version: ""              # điền từ env.json của run train đầu tiên; các run sau cài đúng bản này
+
+train:                               # tham số truyền thẳng vào YOLO.train()
+  imgsz: 960
+  epochs: 50
+  patience: 15                       # dừng sớm nếu fitness trên val không cải thiện 15 epoch
+  batch: 16                          # đề xuất cho T4 15 GB; YOLOv8s @960 có thể OOM ở batch 32
+  seed: 20261013
+  deterministic: true
+  workers: 4
+  optimizer: auto
+  pretrained: true
+  close_mosaic: 10
+  cache: false
+  plots: true
+  val: true
+
+val:                                 # đánh giá best.pt trên split val (test bị khóa đến đánh giá cuối)
+  split: val
+  imgsz: 960
+  batch: 32
+  conf: 0.001                        # ngưỡng thấp để tính mAP/PR đầy đủ; ngưỡng vận hành chọn sau trên val
+  iou: 0.6                           # NMS IoU
+  plots: true
+  save_json: true
