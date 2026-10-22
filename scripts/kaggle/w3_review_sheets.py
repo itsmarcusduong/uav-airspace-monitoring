@@ -46,14 +46,29 @@ def find_data(root: Path) -> Path:
     raise SystemExit(f"Khong tim thay Data/Video_V, Data/Video_IR duoi {root}")
 
 
+MALFORMED = "MALFORMED"
+
+
 def to_box(b):
+    """(x, y, w, h) neu hop le; None neu frame vang nhan (b None/rong); MALFORMED neu nhan loi.
+
+    Nhan loi (khong du 4 so, NaN/inf, w/h <= 0) KHONG duoc coi la frame khong co nhan (review An, PR #23)."""
     if b is None:
         return None
-    try:
-        x, y, w, h = (float(v) for v in list(b)[:4])
-    except Exception:
+    vals = list(b)
+    if len(vals) == 0:
         return None
-    return None if any(math.isnan(v) or math.isinf(v) for v in (x, y, w, h)) or w <= 0 or h <= 0 else (x, y, w, h)
+    try:
+        x, y, w, h = (float(v) for v in vals[:4])
+    except Exception:
+        return MALFORMED
+    if any(math.isnan(v) or math.isinf(v) for v in (x, y, w, h)) or w <= 0 or h <= 0:
+        return MALFORMED
+    return (x, y, w, h)
+
+
+def is_box(b) -> bool:
+    return isinstance(b, tuple)
 
 
 def pick_frames(boxes: list, n_frames: int) -> list[int]:
@@ -65,7 +80,7 @@ def pick_frames(boxes: list, n_frames: int) -> list[int]:
     best, jump = None, -1.0
     for i in range(n - 1):
         a, b = boxes[i], boxes[i + 1]
-        if a and b:
+        if is_box(a) and is_box(b):
             j = math.hypot(a[0] + a[2] / 2 - b[0] - b[2] / 2, a[1] + a[3] / 2 - b[1] - b[3] / 2)
             if j > jump:
                 best, jump = i, j
@@ -81,11 +96,11 @@ def render_tile(frame, box, idx: int):
     tile = np.full((FULL_H + ZOOM_H + CAP_H, TILE_W, 3), 255, np.uint8)
     s = min(TILE_W / W, FULL_H / H)
     full = cv2.resize(frame, (int(W * s), int(H * s)), interpolation=cv2.INTER_AREA)
-    if box:
+    if is_box(box):
         x, y, w, h = box
         cv2.rectangle(full, (int(x * s), int(y * s)), (int((x + w) * s) + 1, int((y + h) * s) + 1), (0, 0, 255), 1)
     tile[:full.shape[0], :full.shape[1]] = full
-    if box:
+    if is_box(box):
         x, y, w, h = box
         side = max(48.0, 3.0 * max(w, h))
         cx, cy = x + w / 2, y + h / 2
@@ -97,6 +112,9 @@ def render_tile(frame, box, idx: int):
         cv2.rectangle(crop, (int((x - x0) * z), int((y - y0) * z)), (int((x + w - x0) * z), int((y + h - y0) * z)), (0, 0, 255), 1)
         tile[FULL_H:FULL_H + crop.shape[0], :crop.shape[1]] = crop
         txt = f"f{idx} {int(w)}x{int(h)}px"
+    elif box == MALFORMED:
+        cv2.putText(tile, "NHAN LOI (malformed)", (8, FULL_H + 80), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 1)
+        txt = f"f{idx} (MALFORMED)"
     else:
         cv2.putText(tile, "khong co nhan", (8, FULL_H + 80), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 0), 1)
         txt = f"f{idx} (absent)"
@@ -111,7 +129,11 @@ def video_row(data: Path, vid: str):
     mod = vid.split("_")[0]
     mp4, mat = data / f"Video_{mod}" / f"{vid}.mp4", data / f"Video_{mod}" / f"{vid}_LABELS.mat"
     boxes = [to_box(b) for b in load_groundtruth(mat)]
+    if not mp4.is_file():
+        raise FileNotFoundError(mp4)
     cap = cv2.VideoCapture(str(mp4))
+    if not cap.isOpened():
+        raise RuntimeError(f"VideoCapture khong mo duoc {mp4}")
     n_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT) or 0)
     picks = pick_frames(boxes, n_frames)
     need, tiles, i = set(picks), {}, 0
@@ -124,12 +146,16 @@ def video_row(data: Path, vid: str):
             tiles[i] = render_tile(frame, boxes[i] if i < len(boxes) else None, i)
         i += 1
     cap.release()
+    missing = sorted(set(picks) - set(tiles))
+    if missing:
+        raise RuntimeError(f"{vid}: khong doc duoc frame {missing} (doc duoc {i} frame)")
     row = [tiles[k] for k in sorted(tiles)]
     while len(row) < PER_VIDEO:
         row.append(np.full((FULL_H + ZOOM_H + CAP_H, TILE_W, 3), 255, np.uint8))
     head = np.full((22, TILE_W * PER_VIDEO, 3), 235, np.uint8)
     cv2.putText(head, f"{vid}  labels={len(boxes)} frames={n_frames}", (4, 16), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1)
-    return np.vstack([head, np.hstack(row)]), sorted(tiles), len(boxes), n_frames
+    n_bad = sum(1 for b in boxes if b == MALFORMED)
+    return np.vstack([head, np.hstack(row)]), sorted(tiles), len(boxes), n_frames, n_bad
 
 
 def main() -> int:
@@ -159,7 +185,9 @@ def main() -> int:
             return
         sheet_no += 1
         name = f"review_v2_{sheet_no:03d}.jpg"
-        cv2.imwrite(str(ev / "sheets" / name), np.vstack([r[0] for r in rows]), [cv2.IMWRITE_JPEG_QUALITY, 90])
+        dst = ev / "sheets" / name
+        if not cv2.imwrite(str(dst), np.vstack([r[0] for r in rows]), [cv2.IMWRITE_JPEG_QUALITY, 90]) or not dst.is_file():
+            raise RuntimeError(f"cv2.imwrite that bai: {dst}")
         for _, rec in rows:
             rec["sheet"] = name
             index.append(rec)
@@ -167,9 +195,9 @@ def main() -> int:
 
     for n, vid in enumerate(vids, 1):
         try:
-            img, frames, n_labels, n_frames = video_row(data, vid)
+            img, frames, n_labels, n_frames, n_bad = video_row(data, vid)
             rows.append((img, {"video_id": vid, "frames_shown": " ".join(map(str, frames)), "label_entries": n_labels,
-                               "frames_prop": n_frames, "sheet": ""}))
+                               "malformed_labels": n_bad, "frames_prop": n_frames, "sheet": ""}))
         except Exception as exc:  # noqa: BLE001
             failed.append({"video_id": vid, "error": f"{exc.__class__.__name__}: {exc}", "trace": traceback.format_exc()[-400:]})
         if len(rows) == PER_SHEET:
@@ -178,10 +206,12 @@ def main() -> int:
             LOG.info("%d/%d", n, len(vids))
     flush()
     with (ev / "review_v2_index.csv").open("w", newline="", encoding="utf-8") as fh:
-        w = csv.DictWriter(fh, fieldnames=["sheet", "video_id", "frames_shown", "label_entries", "frames_prop"])
+        w = csv.DictWriter(fh, fieldnames=["sheet", "video_id", "frames_shown", "label_entries", "malformed_labels", "frames_prop"])
         w.writeheader(); w.writerows(index)
     status["sheets"] = {"status": "OK" if not failed else "PARTIAL", "videos_requested": len(vids),
-                        "videos_rendered": len(index), "sheets": sheet_no, "failed": failed}
+                        "videos_rendered": len(index), "sheets": sheet_no, "failed": failed,
+                        "videos_with_malformed_labels": [r["video_id"] for r in index if r["malformed_labels"]],
+                        "malformed_label_entries": sum(r["malformed_labels"] for r in index)}
     (ev / "stage_status.json").write_text(json.dumps(status, indent=2, ensure_ascii=False), encoding="utf-8")
     z = args.out / "w3_review_v2.zip"
     with zipfile.ZipFile(z, "w", zipfile.ZIP_DEFLATED) as zf:

@@ -1,0 +1,14 @@
+class,size,gt,tp,recall
+ALL,large,113,102,0.9027
+ALL,medium,574,461,0.8031
+ALL,small,475,410,0.8632
+Airplane,large,34,27,0.7941
+Airplane,medium,174,98,0.5632
+Airplane,small,81,77,0.9506
+Bird,medium,2,1,0.5
+Bird,small,71,65,0.9155
+Drone,medium,252,226,0.8968
+Drone,small,263,228,0.8669
+Helicopter,large,79,75,0.9494
+Helicopter,medium,146,136,0.9315
+Helicopter,small,60,40,0.6667

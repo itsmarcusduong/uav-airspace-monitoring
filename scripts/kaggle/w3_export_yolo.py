@@ -226,6 +226,8 @@ def stage_offset_sheets(ctx, args, data: Path, ev: Path, labels: dict) -> dict:
         if not chosen:
             continue
         cap = cv2.VideoCapture(str(data / f"Video_{mod}" / f"{vid}.mp4"))
+        if not cap.isOpened():
+            raise RuntimeError(f"VideoCapture khong mo duoc {vid}.mp4")
         i, need = 0, set(chosen)
         while need:
             ok, frame = cap.read()
@@ -272,7 +274,8 @@ def stage_offset_sheets(ctx, args, data: Path, ev: Path, labels: dict) -> dict:
                 row.append(np.full((250, 230, 3), 255, np.uint8))
             rows.append(np.hstack(row))
         name = f"offset_sheet_{s // per + 1:02d}.jpg"
-        cv2.imwrite(str(sheets_dir / name), np.vstack(rows), [cv2.IMWRITE_JPEG_QUALITY, 92])
+        if not cv2.imwrite(str(sheets_dir / name), np.vstack(rows), [cv2.IMWRITE_JPEG_QUALITY, 92]):
+            raise RuntimeError(f"cv2.imwrite that bai: {sheets_dir / name}")
         for j in idx:
             review_rows[j]["sheet"] = name
     review_rows = [review_rows[j] for j in order]
@@ -322,45 +325,55 @@ def stage_export(ctx, args, data: Path, ds: Path, decisions: list[dict], labels:
         vid, mod, sp, off = d["video_id"], d["modality"], d["split"], int(d["label_offset"])
         boxes = labels.get(vid) or load_labels(data / f"Video_{mod}" / f"{vid}_LABELS.mat")
         cap = cv2.VideoCapture(str(data / f"Video_{mod}" / f"{vid}.mp4"))
-        i = 0
-        while True:
-            ok, frame = cap.read()
-            if not ok:
-                break
-            if i % args.stride == 0:
-                j = i + off
-                if j >= len(boxes):
-                    skipped["beyond_labels"] += 1
-                else:
-                    b = boxes[j]
-                    H, W = frame.shape[:2]
-                    line, rec = "", {"bbox_area_px": "", "size_bucket": ""}
-                    if b == "MALFORMED":
-                        skipped["malformed"] += 1; i += 1; continue
-                    if isinstance(b, tuple):
-                        x0, y0 = max(0.0, b[0]), max(0.0, b[1])
-                        x1, y1 = min(float(W), b[0] + b[2]), min(float(H), b[1] + b[3])
-                        if x1 - x0 < 1 or y1 - y0 < 1:
-                            skipped["degenerate_after_clip"] += 1; i += 1; continue
-                        cid = CLASS_ID[d["class_name"]]
-                        line = f"{cid} {(x0 + x1) / 2 / W:.6f} {(y0 + y1) / 2 / H:.6f} {(x1 - x0) / W:.6f} {(y1 - y0) / H:.6f}\n"
-                        area = (x1 - x0) * (y1 - y0)
-                        rec = {"bbox_area_px": round(area, 1), "size_bucket": size_bucket(area)}
-                    stem = f"{vid}_f{i:05d}"
-                    img = ds / "images" / sp / f"{stem}.jpg"
-                    cv2.imwrite(str(img), frame, [cv2.IMWRITE_JPEG_QUALITY, args.jpeg_quality])
-                    (ds / "labels" / sp / f"{stem}.txt").write_text(line, encoding="utf-8")
-                    manifest.append({"image": f"images/{sp}/{stem}.jpg", "split": sp, "video_id": vid, "frame_index": i,
-                                     "label_index": j, "class_name": d["class_name"], "has_bbox": int(bool(line)),
-                                     "width": W, "height": H, **rec, "sha256": sha256(img)})
-            i += 1
-        cap.release()
+        if not cap.isOpened():
+            raise RuntimeError(f"VideoCapture khong mo duoc {vid}.mp4")
+        try:
+            i = 0
+            while True:
+                ok, frame = cap.read()
+                if not ok:
+                    break
+                if i % args.stride == 0:
+                    j = i + off
+                    if j >= len(boxes):
+                        skipped["beyond_labels"] += 1
+                    else:
+                        b = boxes[j]
+                        H, W = frame.shape[:2]
+                        line, rec = "", {"bbox_area_px": "", "size_bucket": ""}
+                        if b == "MALFORMED":
+                            skipped["malformed"] += 1; i += 1; continue
+                        if isinstance(b, tuple):
+                            x0, y0 = max(0.0, b[0]), max(0.0, b[1])
+                            x1, y1 = min(float(W), b[0] + b[2]), min(float(H), b[1] + b[3])
+                            if x1 - x0 < 1 or y1 - y0 < 1:
+                                skipped["degenerate_after_clip"] += 1; i += 1; continue
+                            cid = CLASS_ID[d["class_name"]]
+                            line = f"{cid} {(x0 + x1) / 2 / W:.6f} {(y0 + y1) / 2 / H:.6f} {(x1 - x0) / W:.6f} {(y1 - y0) / H:.6f}\n"
+                            area = (x1 - x0) * (y1 - y0)
+                            rec = {"bbox_area_px": round(area, 1), "size_bucket": size_bucket(area)}
+                        stem = f"{vid}_f{i:05d}"
+                        img = ds / "images" / sp / f"{stem}.jpg"
+                        if not cv2.imwrite(str(img), frame, [cv2.IMWRITE_JPEG_QUALITY, args.jpeg_quality]):
+                            raise RuntimeError(f"cv2.imwrite that bai: {img}")
+                        (ds / "labels" / sp / f"{stem}.txt").write_text(line, encoding="utf-8")
+                        manifest.append({"image": f"images/{sp}/{stem}.jpg", "split": sp, "video_id": vid, "frame_index": i,
+                                         "label_index": j, "class_name": d["class_name"], "has_bbox": int(bool(line)),
+                                         "width": W, "height": H, **rec, "sha256": sha256(img)})
+                i += 1
+        finally:
+            cap.release()
+        exp = int(ctx["audit"][vid]["frames_decoded"])
+        if i != exp:
+            raise RuntimeError(f"{vid}: doc duoc {i} frame, inventory/audit ghi {exp} (video bi cat hoac loi giai ma)")
         if n % 25 == 0:
             LOG.info("export %d/%d video", n, len(todo))
     (ds / "data.yaml").write_text(
         "# Duong dan 'path' duoc w3_train_baseline.py ghi de khi chay\npath: .\ntrain: images/train\nval: images/val\n"
         f"nc: {len(CLASS_NAMES)}\nnames: {json.dumps(CLASS_NAMES)}\n", encoding="utf-8")
     ctx["skipped"] = dict(skipped)
+    if not manifest:
+        raise RuntimeError(f"khong xuat duoc anh nao ({len(todo)} video duoc chon)")
     return manifest
 
 
@@ -421,6 +434,24 @@ def stage_verify(ctx, args, ds: Path, ev: Path, manifest: list[dict], decisions:
     return {"images": len(manifest), "fingerprint": fingerprint}
 
 
+def stage_pack(args, ds: Path, ev: Path) -> dict:
+    """Zip thu muc du lieu (khong nen lai JPEG), kiem tra lai zip, roi xoa thu muc goc."""
+    files = sorted(p for p in ds.rglob("*") if p.is_file())
+    z = args.out / f"{args.dataset_version}.zip"
+    with zipfile.ZipFile(z, "w", zipfile.ZIP_STORED) as zf:
+        for p in files:
+            zf.write(p, p.relative_to(ds.parent))
+    with zipfile.ZipFile(z) as zf:
+        names, bad = zf.namelist(), zf.testzip()
+    if bad is not None or len(names) != len(files):
+        raise RuntimeError(f"zip loi: bad={bad}, {len(names)} entry / {len(files)} file")
+    info = {"zip": z.name, "sha256": sha256(z), "bytes": z.stat().st_size, "entries": len(names),
+            "root": args.dataset_version, "compression": "ZIP_STORED"}
+    (ev / "dataset_zip.json").write_text(json.dumps(info, indent=2), encoding="utf-8")
+    shutil.rmtree(ds)
+    return info
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--data-root", type=Path, required=True)
@@ -442,6 +473,9 @@ def main() -> int:
     ap.add_argument("--dataset-version", default="e1-yolo-v1")
     ap.add_argument("--commit", default="UNKNOWN")
     ap.add_argument("--skip-export", action="store_true", help="chi chay sensitivity + bang xem (nhanh)")
+    ap.add_argument("--pack-zip", action="store_true",
+                    help="dong goi thu muc du lieu thanh <dataset-version>.zip (ZIP_STORED) roi xoa thu muc: output it file, "
+                         "Kaggle gan input on dinh hon ~14k file nho")
     args = ap.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 
@@ -477,7 +511,9 @@ def main() -> int:
     elif decisions:
         manifest = run("export", lambda: stage_export(ctx, args, data, ds, decisions, labels)) or []
         if manifest:
-            run("verify", lambda: stage_verify(ctx, args, ds, ev, manifest, decisions))
+            ok = run("verify", lambda: stage_verify(ctx, args, ds, ev, manifest, decisions))
+            if ok and args.pack_zip:
+                run("pack", lambda: stage_pack(args, ds, ev))
 
     def bundle():
         z = args.out / "w3_export_evidence.zip"

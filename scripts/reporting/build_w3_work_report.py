@@ -49,15 +49,16 @@ def table(header, rows, widths, size=8.5):
     d.add_paragraph().paragraph_format.space_after = Pt(0)
 
 
-PRS = [(22, "0c42206", "0c42206249534dc07c73ffc2dd81b9829ee72af2", "job xuất YOLO, kiểm tra lệch nhãn, job train, ADR-0004 (#16)",
-        [("d686117", "d6861170e18773e9afaf85a3f7725719f21fe2de"), ("bf1cfe1", "bf1cfe181bfbef3a9201f2a10d07e950c364449c")]),
-       (23, "680043b", "680043bf9cfd43033a92688cdaabbd547049c6cc", "review nhãn v2, notebook Kaggle 03a/03b/04 (#10)",
-        [("40dcdb2", "40dcdb2b24676b7bc817663dd5ec794404d31767"), ("8bd12a0", "8bd12a04eaf508db7d2c949b23442d5f9ac49e34"),
-         ("edc7d79", "edc7d794598956020ca63fd26f9beeab2fc4ea5c"), ("d204db3", "d204db393b29cb33d19c9a864dde10d583b64cbf")]),
-       (25, "e762257", "e762257", "bằng chứng review v2, lệch nhãn, dữ liệu e1-yolo-v1 (#10, #11, #16)",
-        [("e143e66", "e143e66ec61522a02510f202fe60544d7491d1c9"), ("b619a2e", "b619a2ec6e476e9cf9c3e102e2f072ae23e05f61")]),
-       (26, "220cd8a", "220cd8a", "job phân tích val, notebook run 05, khung model card (#19)",
-        [("98f69c8", "98f69c8e681bf06e5360838c17ddc64eddb3448b")])]
+PRS = [(22, "0c42206", "0c42206249534dc07c73ffc2dd81b9829ee72af2", "job xuất YOLO, train, ADR-0004 (#16)", [("d686117", "d6861170e18773e9afaf85a3f7725719f21fe2de"), ("bf1cfe1", "bf1cfe181bfbef3a9201f2a10d07e950c364449c")]),
+       (23, "680043b", "680043bf9cfd43033a92688cdaabbd547049c6cc", "review nhãn v2, notebook Kaggle (#10)", [("40dcdb2", "40dcdb2b24676b7bc817663dd5ec794404d31767"), ("d204db3", "d204db393b29cb33d19c9a864dde10d583b64cbf")]),
+       (25, "e762257", "e762257", "bằng chứng review v2, e1-yolo-v1 (#11, #16)", [("e143e66", "e143e66ec61522a02510f202fe60544d7491d1c9"), ("b619a2e", "b619a2ec6e476e9cf9c3e102e2f072ae23e05f61")]),
+       (26, "220cd8a", "220cd8a", "job phân tích val, khung model card (#19)", [("98f69c8", "98f69c8e681bf06e5360838c17ddc64eddb3448b")]),
+       (28, "41a82fe", "41a82fe21f4aba52a42d7bcf10ef7ca1435f8198", "sửa theo review của An (#19)", [("39e8ff0", "39e8ff0a4f43a01a9c1c16e7b04d37683e8041aa"), ("4f1e3dd", "4f1e3ddcbab96695803c32e34624b52a02c8ad36")]),
+       (29, "a54cbec", "a54cbec81689d4ecbac78e9e41932867276f36fb", "ADR-0005 (#7)", [("276c2c2", "276c2c27639eae721c2791342126f148ec2c8e25")]),
+       (31, "4532858", "45328584402d6f13011d1812df138c142908481e", "An: license Ultralytics (#20)", [("99d3534", "99d353479a9923f4a33984114c192d44b517347a")]),
+       (32, "47eec28", "47eec2877c33bf04fe11ed384a017e5f36b72f47", "An: giao thức train (#17)", [("fbea796", "fbea7963bc9b5416dd2cc7beeb278f1b10aa138b"), ("d98603f", "d98603faa52f0b82db55ab69c295a6a9aafd86e0")]),
+       (33, "9597fce", "9597fce22219073880f0ff8a47ba16c7cbd39a21", "đóng gói dữ liệu zip (#18)", [("9c90ba2", "9c90ba20241dbe9bbc279e1c8760eca8fa761a75")]),
+       (34, "0b4c79a", "0b4c79afa2a2abb27c304c1eeb7494f01344c3fe", "bằng chứng run 04/05, model card (#18, #19)", [("fc71d2a", "fc71d2afd696a6af68f5f454286375e0288b4513"), ("2f678b8", "2f678b86112fa1ba171350b1ef225b240bb166dc"), ("e073188", "e073188801fa59ab165c56947cb89ffc89219bfe")])]
 PENDING = "[chờ run 04]"
 
 para("BÁO CÁO CÔNG VIỆC TUẦN 3 — NHÓM E1", True, 13, WD_ALIGN_PARAGRAPH.CENTER)
@@ -71,7 +72,7 @@ for i, h in enumerate(["Hạng mục", "Liên kết"]):
 def row(label):
     cells = t.add_row().cells; cells[0].text = ""; r = cells[0].paragraphs[0].add_run(label); r.font.size = Pt(8.5)
     cells[1].text = ""; return cells[1].paragraphs[0]
-p = row("Milestone W3 / Issues W3-01…W3-08")
+p = row("Milestone W3 / Issues")
 add_link(p, "Milestones", REPO + "/milestones"); plain(p, " · "); add_link(p, "Issues #10, #11, #16–#21", REPO + "/issues?q=milestone%3A%22W3+%E2%80%93+Train+baseline+%28config%2C+weights%2C+mAP%2FPR%29%22")
 for num, m7, mfull, desc, commits in PRS:
     p = row(f"PR #{num}")
@@ -81,46 +82,46 @@ for num, m7, mfull, desc, commits in PRS:
         if i < len(commits) - 1: plain(p, ", ")
     plain(p, "; merge "); add_link(p, m7, f"{REPO}/commit/{mfull}")
 p = row("Review chéo")
-plain(p, "PR #23, #25, #26 đã gửi yêu cầu review tới An; tới ngày lập báo cáo chưa có review trên GitHub, PR được merge theo ruleset hiện hành (không bắt buộc approve).")
-p = row("Kaggle (COMMIT dùng cho run)"); add_link(p, "680043b", REPO + "/commit/680043bf9cfd43033a92688cdaabbd547049c6cc"); plain(p, " — run 03a, 03b, 04")
+plain(p, "An review #22, #23, #25, #26 (sau merge, 3 lỗi → sửa ở #28), approve #28 sau 1 lần yêu cầu sửa, merge #28, #29, #31; Quang review và approve #31, #32 của An. #34 merge trước khi An review lại (cần kịp báo cáo), An review sau.")
+p = row("Kaggle (COMMIT dùng cho run)"); add_link(p, "680043b", REPO + "/commit/680043bf9cfd43033a92688cdaabbd547049c6cc"); plain(p, " run 03a/03b; "); add_link(p, "9597fce", REPO + "/commit/9597fce22219073880f0ff8a47ba16c7cbd39a21"); plain(p, " run 03b bản 2, 04; "); add_link(p, "4532858", REPO + "/commit/45328584402d6f13011d1812df138c142908481e"); plain(p, " run 05")
 p = row("Tag release"); plain(p, "Chưa có (tag đầu tiên tại W4)")
 for r_ in t.rows:
     r_.cells[0].width = Cm(4.6); r_.cells[1].width = Cm(12.8)
 d.add_paragraph().paragraph_format.space_after = Pt(0)
 para("2. Phân chia công việc", True)
 table(["Issue", "Nội dung", "Phụ trách", "Review", "Trạng thái"],
-      [["#10 W3-01", "Review nhãn v2: 358 video, 8 frame/video + ảnh phóng to", "Quang", "An", "Hoàn thành (PR #23, #25)"],
-       ["#11 W3-02", "Chính sách căn nhãn: độ nhạy IoU + xem mù có đối chứng", "Quang", "An", "Hoàn thành; chiều lệch chưa xác định → W4 (#24)"],
-       ["#16 W3-03", "ADR-0004 + xuất dữ liệu YOLO e1-yolo-v1", "Quang", "An", "Hoàn thành (PR #22, #25)"],
-       ["#17 W3-04", "Giao thức train + config baseline A", "An", "Quang", "Bản nháp; phần của An chưa merge vào main"],
-       ["#18 W3-05", "Train YOLOv8n@640 trên Kaggle GPU", "Quang", "An", "Đang chạy (run 04)"],
-       ["#19 W3-06", "Phân tích val + model card", "An, Quang", "Nhau", "Job + khung model card xong (PR #26); chờ run 04"],
-       ["#20 W3-07", "License Ultralytics/YOLOv8n", "An", "Quang", "An đã kiểm (nhánh code-lna), chưa merge"],
-       ["#21 W3-08", "Báo cáo tuần + version v0.3 (1.4, 1.5)", "Quang, An", "Nhau", "Bản nháp"],
-       ["#7 W2-06", "Chỉ tiêu, modality, tracker (họp GVHD)", "Cả hai", "—", "Chưa chốt"]],
-      [1.9, 6.0, 1.9, 1.3, 6.3])
+      [["#10, #11", "Review nhãn v2 358 video; chính sách căn nhãn (độ nhạy IoU + thăm dò)", "Quang", "An", "Đóng (PR #23, #25)"],
+       ["#16", "ADR-0004 + xuất e1-yolo-v1 (6.869 ảnh)", "Quang", "An", "Đóng (PR #22, #25, #33)"],
+       ["#17", "Giao thức train + config baseline A", "An", "Quang", "Đóng (PR #32)"],
+       ["#18", "Train YOLOv8n@640, Kaggle T4; weights Drive + SHA-256", "Quang", "An", "Đóng (PR #34)"],
+       ["#19", "Phân tích val (run 05) + model card", "Quang, An", "Nhau", "Đóng (PR #26, #28, #34)"],
+       ["#20", "License Ultralytics/YOLOv8n", "An", "Quang", "Đóng (PR #31)"],
+       ["#21", "Báo cáo tuần + version v0.3", "Quang, An", "Nhau", "Bản nộp (PR #27 + PR báo cáo cuối)"],
+       ["#7", "Chỉ tiêu, modality, tracker", "Cả hai", "—", "Nhóm chốt (ADR-0005, PR #29); chờ GVHD"]],
+      [1.6, 6.6, 1.9, 1.3, 6.0])
 para("3. Planned – Done – Evidence – Problems – Next", True)
 table(["Planned", "Done", "Evidence (đường dẫn trong repo)", "Problems", "Next week"],
       [["Chốt nhãn, xuất dữ liệu YOLO, train baseline A, đánh giá val, model card",
-        "Review v2 358 video (OK 283 / SAI_NHAN 60 / KHONG_RO 15); giữ video dư 1 mục với offset 0; e1-yolo-v1: 216 video, 6.869 ảnh; job train + phân tích sẵn sàng",
-        "results/W03/review/review_v2_summary.json; results/W03/kaggle_run_03a/export_evidence/offset_sensitivity_summary.json; results/W03/kaggle_run_03b/export_evidence/dataset_card.json; docs/decisions/ADR-0004*; docs/w3/model_card_baseline_A.md",
-        "mAP/PR chưa có (run 04 đang chạy); xem mù đối chứng chỉ 53% → không xác định chiều lệch; val chỉ 3 video Bird; 77/242 video chưa xem bằng mắt; #7 chưa chốt với GVHD",
-        "Điền model card, chạy run 05; W4: cấu hình đối chứng B + augmentation, tập chuẩn CVAT (#24), tag release W4"]],
+        "Review v2 358 video; e1-yolo-v1 216 video / 6.869 ảnh; baseline A train xong (36 epoch, best 21); phân tích val, chọn ngưỡng 0,25; model card",
+        "results/W03/review/; kaggle_run_03b*/; kaggle_run_04/train_evidence/; kaggle_run_05/analysis/; docs/w3/model_card_baseline_A.md; ADR-0004, ADR-0005",
+        "Số liệu trên val (lạc quan); mAP@0.5:0.95 Drone 0,266; val không có ảnh nền trống thật; chiều lệch nhãn chưa xác định; lần đầu gắn input Kaggle lỗi",
+        "Kiểm chứng offset (CVAT #24 + so IoU), cấu hình đối chứng B + augmentation, tag release W4"]],
       [3.0, 3.8, 4.4, 3.8, 2.4], size=8)
 para("4. Kết quả đo (nguồn: CSV/JSON + script)", True)
-table(["Chỉ số", "Giá trị", "Nguồn"],
-      [["Review nhãn v2 (358 video)", "OK 283 / SAI_NHAN 60 / KHONG_RO 15", "results/W03/review/review_v2_summary.json"],
-       ["IoU frame liên tiếp ≥ 0,5 (V, dư 1 mục)", "Drone 98,6% (95 video); Bird 95,3% (34 video)", "…/kaggle_run_03a/export_evidence/offset_sensitivity_summary.json"],
-       ["Xem mù nhóm đối chứng", "53% (8/15) < ngưỡng 80% → không kết luận", "results/W03/review/offset_review_score.json"],
-       ["e1-yolo-v1 train / val", "178 video, 5.667 ảnh / 38 video, 1.202 ảnh (stride 10)", "…/kaggle_run_03b/export_evidence/dataset_card.json"],
-       ["Baseline A: mAP@0.5, P, R (val)", PENDING, "results/W03/kaggle_run_04/ (chờ)"],
-       ["Phần cứng train", PENDING, "kaggle_run_04/env.json (chờ)"]], [5.0, 5.8, 6.6])
+table(["Chỉ số (validation)", "Giá trị", "Nguồn"],
+      [["mAP@0.5 / mAP@0.5:0.95 (4 lớp)", "0,807 / 0,342", "kaggle_run_04/train_evidence/baseline_A_val_metrics.json"],
+       ["Drone: AP@0.5 / AP@0.5:0.95", "0,809 / 0,266", "baseline_A_val_per_class.csv"],
+       ["Ngưỡng vận hành (F1 Drone lớn nhất)", "conf 0,25: Drone P 0,832, R 0,882, F1 0,856", "kaggle_run_05/analysis/operating_points.csv"],
+       ["Recall hộp nhỏ / vừa / lớn (conf 0,25)", "0,863 / 0,803 / 0,903", "kaggle_run_05/analysis/recall_by_size.csv"],
+       ["Train", "36/50 epoch, best epoch 21, ≈ 27 phút, 1 × T4, ultralytics 8.4.183", "train/results.csv, env.json"],
+       ["Dữ liệu train / val", "5.667 / 1.202 ảnh, fingerprint d0ac7e23…", "kaggle_run_03b*/export_evidence/dataset_card.json"]], [5.4, 5.6, 6.4])
 para("5. Dataset card / model card", True)
-para("Dataset card: results/W03/kaggle_run_03b/export_evidence/dataset_card.json (fingerprint d0ac7e23…). Model card baseline A: docs/w3/model_card_baseline_A.md (khung, điền sau run 04/05). Weights lưu Google Drive, ghi SHA-256 trong weights_manifest.json.")
+para("Dataset card: results/W03/kaggle_run_03b/export_evidence/dataset_card.json. Model card: docs/w3/model_card_baseline_A.md (đủ run 04/05). Weights: Google Drive weights/W03 (best.pt, last.pt), SHA-256 và link trong weights_manifest.json.")
 para("6. Demo/video", True); para("Chưa có (tuần này không có sản phẩm demo).")
 para("7. Vấn đề và rủi ro (trung thực)", True)
-for t_ in ["Chiều lệch nhãn của video dư 1 mục chưa xác định; kết quả mAP@0.5 ít bị ảnh hưởng (IoU frame liên tiếp ≥ 95%) nhưng mAP@0.5:0.95 có thể bị kéo xuống. Kiểm chứng bằng tập chuẩn CVAT ở W4.",
-           "Val dùng cả để dừng sớm lẫn báo cáo → số liệu val lạc quan; không so trực tiếp với chỉ tiêu trên test.",
-           "Phần việc của An (#17, #20) mới ở nhánh code-lna, chưa qua PR; chỉ tiêu và tracker (#7) chưa được GVHD xác nhận."]:
+for t_ in ["Toàn bộ số đo trên val, val vừa dùng để dừng sớm và chọn ngưỡng → lạc quan; chưa so với chỉ tiêu trên test (ADR-0005).",
+           "Mục nhãn rỗng của video dư 1 mục nằm ở frame 0 trong khi vật thể đã xuất hiện → nghiêng về offset1; nếu đúng, dữ liệu phải xuất lại và train lại ở W4.",
+           "Val không có ảnh nền trời trống: chưa đo được cảnh báo giả (W7). Một seed, một lần chạy: chưa có khoảng dao động.",
+           "Chỉ tiêu, GPU tham chiếu và thứ tự W5/W6 (ADR-0005) chưa được GVHD xác nhận."]:
     d.add_paragraph(t_, style="List Bullet")
 a.out.parent.mkdir(parents=True, exist_ok=True); d.save(a.out); print("saved")
