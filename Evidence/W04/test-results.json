@@ -1,0 +1,144 @@
+{
+  "week": "W04",
+  "generated_by": "scripts/reporting/build_evidence.py",
+  "repo_commit": "980b3cbecc40634e3052940afb29fd72f2f50271",
+  "summary": {
+    "total": 22,
+    "passed": 22,
+    "failed": 0
+  },
+  "checks": [
+    {
+      "check": "pytest::tests.test_label_utils::test_to_box_valid_and_absent[w3_export_yolo]",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_to_box_valid_and_absent[w3_review_sheets]",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_to_box_malformed_is_not_absent[w3_export_yolo-bad0]",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_to_box_malformed_is_not_absent[w3_export_yolo-bad1]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_to_box_malformed_is_not_absent[w3_review_sheets-bad0]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_to_box_malformed_is_not_absent[w3_review_sheets-bad1]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_review_sheet_rejects_nonpositive_size",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_label_kind",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_iou_basic",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_valid",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[2 0.5 0.5 0.1]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[7 0.5 0.5 0.1 0.1]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[2 1.5 0.5 0.1 0.1]",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[2 0.5 0.5 0 0.1]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[2.0 0.5 0.5 0.1 0.1]",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[x 0.5 0.5 0.1 0.1]",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[2 nan 0.5 0.1 0.1]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_load_preds_detects_one_based",
+      "status": "PASS",
+      "detail": "0.003s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_offset_methods::test_sign_test_p",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_offset_methods::test_offset_check_end_to_end[1-offset1]",
+      "status": "PASS",
+      "detail": "0.013s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_offset_methods::test_offset_check_end_to_end[0-offset0]",
+      "status": "PASS",
+      "detail": "0.010s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_offset_methods::test_score_cvat_gold_detects_offset1",
+      "status": "PASS",
+      "detail": "0.004s",
+      "source": "tests/"
+    }
+  ]
+}
