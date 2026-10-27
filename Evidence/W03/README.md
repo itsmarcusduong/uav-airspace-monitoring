@@ -1,6 +1,6 @@
 # Evidence W03 — Train baseline (config, weights, mAP/PR)
 
-Milestone **Tuan3** · Tạo bởi `scripts/reporting/build_evidence.py` tại commit `980b3cb` · 2026-10-27
+Milestone **Tuan3** · Tạo bởi `scripts/reporting/build_evidence.py` tại commit `1a71f5b` · 2026-10-27
 
 **Phạm vi:** Review nhãn v2, xuất e1-yolo-v1, train YOLOv8n@640 (baseline A), phân tích val, model card.
 

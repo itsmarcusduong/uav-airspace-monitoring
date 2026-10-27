@@ -233,7 +233,21 @@ def w04(w: Week):
             w.m("offset_videos_i1_better", v["videos_i1_better"], "video", split=g, source=rel, producer="scripts/kaggle/w4_offset_check.py")
             w.m("offset_videos", v["videos"], "video", split=g, source=rel)
             w.m("offset_sign_test_p", v["sign_test_p"], "p", split=g, source=rel)
-        w.check("offset_check_control_ok", s["control_ok"], str(s["verdict"]), rel)
+        w.m("offset_control_ok", s["control_ok"], "bool", source=rel)
+        for g, v in s["verdict"].items():
+            w.m("offset_verdict", v, "", split=g, source=rel)
+        st = json.loads((off.parent / "stage_status.json").read_text(encoding="utf-8"))
+        w.check("run06_all_stages_ok", all(v.get("status") == "OK" for v in st.values()), str(list(st)), rel.replace("offset_check_summary", "stage_status"))
+        pg = ROOT / "results/W03/kaggle_run_04/train_evidence/val/predictions.json.gz"
+        w.check("run06_uses_run04_predictions", hashlib.sha256(gzip.open(pg).read()).hexdigest() == st["inputs"]["predictions_sha256"],
+                st["inputs"]["predictions_sha256"][:16], "results/W03/kaggle_run_04/train_evidence/val/predictions.json.gz")
+        cm = rcsv("results/W03/kaggle_run_03b/export_evidence/yolo_manifest.csv.gz")
+        m1 = ROOT / "results/W03/kaggle_run_03b/export_evidence/yolo_manifest.csv.gz"
+        m2 = ROOT / "results/W03/kaggle_run_03b_v2/export_evidence/yolo_manifest.csv.gz"
+        w.check("run06_uses_run03b_v2_manifest", sha256(m2) == st["inputs"]["manifest_sha256"], st["inputs"]["manifest_sha256"][:16], str(m2.relative_to(ROOT)))
+        w.check("manifest_03b_v2_content_eq_03b", gzip.open(m1).read() == gzip.open(m2).read(), "noi dung giai nen trung tung byte (chi khac header gzip)", str(m1.relative_to(ROOT)))
+        w.check("run06_covers_all_val_images", st["inputs"]["images"] == sum(r["split"] == "val" for r in cm) and st["inputs"]["images_without_pred"] == 0,
+                f"{st['inputs']['images']} anh", rel)
 
 
 def _find_count(obj, key):

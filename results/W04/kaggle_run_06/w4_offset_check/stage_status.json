@@ -1,0 +1,32 @@
+{
+  "inputs": {
+    "status": "OK",
+    "images": 1202,
+    "videos": 38,
+    "images_without_pred": 0,
+    "category_offset": 1,
+    "manifest_sha256": "4766ab0dca05b473088fdd36fe64f65de6caa02e1676267c73898619ea205b37",
+    "predictions_sha256": "5e5b0c320b6d4d735d4d669eaeae8103c72221f677ca02da5e24e8e49276833d",
+    "audit_sha256": "e6c99e0f2b885108dc47def53c98a1785901c00e977a0d2d456e576b3aae61da",
+    "commit": "bb8a695b560481e682c2134413765e9a2085e894",
+    "conf": 0.25,
+    "tie": 0.01
+  },
+  "pairs": {
+    "status": "OK",
+    "rows": 1202,
+    "used": 674
+  },
+  "per_video": {
+    "status": "OK",
+    "videos": 37
+  },
+  "decide": {
+    "status": "OK",
+    "control_ok": false,
+    "verdict": {
+      "Bird|plus1": "UNDETERMINED (doi chung khong dat)",
+      "Drone|plus1": "UNDETERMINED (doi chung khong dat)"
+    }
+  }
+}

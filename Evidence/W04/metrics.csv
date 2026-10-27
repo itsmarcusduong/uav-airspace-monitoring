@@ -1,1 +1,13 @@
 week,metric,value,unit,split,model,source,producer,run_commit
+W04,offset_videos_i1_better,3,video,Bird|plus1,,results/W04/kaggle_run_06/w4_offset_check/offset_check_summary.json,scripts/kaggle/w4_offset_check.py,
+W04,offset_videos,3,video,Bird|plus1,,results/W04/kaggle_run_06/w4_offset_check/offset_check_summary.json,,
+W04,offset_sign_test_p,0.25,p,Bird|plus1,,results/W04/kaggle_run_06/w4_offset_check/offset_check_summary.json,,
+W04,offset_videos_i1_better,16,video,Drone|plus1,,results/W04/kaggle_run_06/w4_offset_check/offset_check_summary.json,scripts/kaggle/w4_offset_check.py,
+W04,offset_videos,17,video,Drone|plus1,,results/W04/kaggle_run_06/w4_offset_check/offset_check_summary.json,,
+W04,offset_sign_test_p,0.000274658203125,p,Drone|plus1,,results/W04/kaggle_run_06/w4_offset_check/offset_check_summary.json,,
+W04,offset_videos_i1_better,4,video,control_equal,,results/W04/kaggle_run_06/w4_offset_check/offset_check_summary.json,scripts/kaggle/w4_offset_check.py,
+W04,offset_videos,17,video,control_equal,,results/W04/kaggle_run_06/w4_offset_check/offset_check_summary.json,,
+W04,offset_sign_test_p,0.049041748046875,p,control_equal,,results/W04/kaggle_run_06/w4_offset_check/offset_check_summary.json,,
+W04,offset_control_ok,False,bool,,,results/W04/kaggle_run_06/w4_offset_check/offset_check_summary.json,,
+W04,offset_verdict,UNDETERMINED (doi chung khong dat),,Bird|plus1,,results/W04/kaggle_run_06/w4_offset_check/offset_check_summary.json,,
+W04,offset_verdict,UNDETERMINED (doi chung khong dat),,Drone|plus1,,results/W04/kaggle_run_06/w4_offset_check/offset_check_summary.json,,
