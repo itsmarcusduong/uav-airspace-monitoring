@@ -1,6 +1,6 @@
 # ADR-0006: Chiều lệch nhãn của video dư một mục (offset0 hay offset1)
 
-- Trạng thái: **Proposed — luật quyết định đặt trước khi chạy** (Quang soạn 22/10/2026, issue #36). Phần "Kết quả" chỉ được điền sau Kaggle run 06; không sửa luật sau khi đã thấy kết quả.
+- Trạng thái: **Accepted (27/10/2026) — kết luận theo luật: UNDETERMINED, giữ offset0 / `e1-yolo-v1`**. Luật đặt trước (commit `ffb2ed0`, PR #43, 22/10) không được sửa sau khi xem kết quả. Kiểm chứng tiếp bằng tập chuẩn CVAT (#24).
 - Liên quan: ADR-0004 (offset0 tạm thời, mục 5–6 và Giới hạn), #24 (tập chuẩn CVAT), #37 (xuất lại nếu đổi).
 
 ## Bối cảnh
@@ -30,5 +30,25 @@ Giả định [INFERENCE]: detector chỉ nhìn một frame nên vị trí dự 
 - offset0 hoặc UNDETERMINED → giữ `e1-yolo-v1`, đóng #37 kèm lý do; detector B train trên v1.
 - Tập chuẩn CVAT (#24) là kiểm chứng độc lập thứ hai; nếu mâu thuẫn với run 06 thì ghi nhận và chọn theo CVAT (đo trực tiếp trên ảnh).
 
-## Kết quả
-`[chờ Kaggle run 06 — results/W04/kaggle_run_06/]`
+## Kết quả (Kaggle run 06, commit `bb8a695`, 27/10/2026)
+Nguồn: `results/W04/kaggle_run_06/w4_offset_check/` (`offset_check_summary.json`, `offset_per_video.csv`, `offset_pairs.csv`; gói zip SHA-256 `9575aa35a64aca71de1dd588fdec0bac172368ee324a954be89691ef46b52d15`). Đầu vào khớp bằng chứng đã có: `predictions.json` `5e5b0c32…` (run 04), manifest `4766ab0d…` (run 03b).
+
+[Kết quả đo] 1.202 ảnh val, 674 cặp dùng được, 37 video có cặp.
+
+| Nhóm | Video | Video nghiêng về mục i+1 | Trung vị Δ | Sign test p | Đạt luật? |
+|---|---|---|---|---|---|
+| Đối chứng (Airplane, Helicopter khớp số nhãn) | 17 | 4 (13/17 = 76,5% nghiêng về i) | −0,0154 | 0,049 | **Không** (cần ≥ 80% và p < 0,01) |
+| Drone dư 1 mục | 17 | 16 (94,1%) | +0,0278 | 0,00027 | — (không xét vì đối chứng không đạt) |
+| Bird dư 1 mục | 3 | 3 | +0,0247 | 0,25 | — (dưới 6 video) |
+
+**Kết luận theo luật [DECISION]:** đối chứng không đạt → mọi nhóm UNDETERMINED → giữ offset0, các mô hình W4 train và so sánh trên `e1-yolo-v1`; #37 không xuất lại dữ liệu trong W4.
+
+**Diễn giải [INFERENCE], không dùng để quyết định:**
+- Đối chứng nghiêng đúng chiều (13/17 video, trung vị Δ âm) nhưng không đủ mạnh. 4 video "ngược chiều" đều có Δ rất nhỏ (+0,004 đến +0,014) và ít cặp (4–10 cặp): vật gần như đứng yên nên lệch 1 frame khó phân biệt.
+- Nhóm Drone dư 1 mục nghiêng rõ về i+1, **ngược chiều** với đối chứng. Baseline A được train bằng nhãn offset0, nên nếu có thiên lệch thì thiên lệch đó đẩy dự đoán về phía mục i. Việc dự đoán vẫn khớp i+1 hơn càng củng cố giả thuyết offset1. Kết quả này cùng chiều với hai quan sát độc lập: mục rỗng nằm ở frame 0 (ADR-0004), và thăm dò bằng mắt 26/34.
+- Không đổi luật sau khi đã xem kết quả. Bằng chứng quyết định tiếp theo là tập chuẩn CVAT (#24): đo trực tiếp trên ảnh, đối chứng 80 frame.
+
+## Việc tiếp theo
+1. #24: An vẽ tập chuẩn (gói `cvat_package.zip`, run 11), Quang chấm bằng `scripts/dataset/score_cvat_gold.py` sau khi annotation đã được commit.
+2. Nếu CVAT kết luận offset1: xuất `e1-yolo-v2` (#37), train lại mốc A và mô hình được chọn trên v2, cập nhật ADR (bản mới) — dự kiến W5.
+3. (Tùy chọn, thăm dò) train baseline A trên `e1-yolo-v2` để xem mAP@0.5:0.95 thay đổi thế nào. Kết quả chỉ để tham khảo, vì nhãn val của v1 và v2 khác nhau nên hai mAP không cùng thước đo.

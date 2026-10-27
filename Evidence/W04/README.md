@@ -1,6 +1,6 @@
 # Evidence W04 — Tuning + augmentation, so sánh baseline
 
-Milestone **Tuan4** · Tạo bởi `scripts/reporting/build_evidence.py` tại commit `980b3cb` · 2026-10-27
+Milestone **Tuan4** · Tạo bởi `scripts/reporting/build_evidence.py` tại commit `1a71f5b` · 2026-10-27
 
 **Phạm vi:** Kiểm chứng chiều lệch nhãn (run 06, ADR-0006), tập chuẩn CVAT, config và train các mô hình so sánh (A+aug, A@960, B), bảng so sánh.
 
@@ -9,8 +9,8 @@ Milestone **Tuan4** · Tạo bởi `scripts/reporting/build_evidence.py` tại c
 ## Nội dung thư mục
 | File | Mô tả |
 |---|---|
-| `metrics.csv` | 0 chỉ số; mỗi dòng có `source` (file gốc trong repo), `producer` (script), `run_commit` |
-| `test-results.json` | 22 kiểm tra chạy lại lúc tạo Evidence: **22 PASS / 0 FAIL** |
+| `metrics.csv` | 12 chỉ số; mỗi dòng có `source` (file gốc trong repo), `producer` (script), `run_commit` |
+| `test-results.json` | 27 kiểm tra chạy lại lúc tạo Evidence: **27 PASS / 0 FAIL** |
 | `figures/` | Hình dùng trong báo cáo tuần |
 | `manifest.json` | SHA-256 của mọi tệp trong thư mục này và của tệp nguồn |
 
