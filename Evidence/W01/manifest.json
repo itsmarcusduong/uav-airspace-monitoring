@@ -1,0 +1,47 @@
+{
+  "week": "W01",
+  "milestone": "Tuan1",
+  "repo_commit": "980b3cbecc40634e3052940afb29fd72f2f50271",
+  "generated_at": "2026-10-27T15:08:37+00:00",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "cd231f0af67f242ba824b352046fe943c67b5a6b6af4b658a2eb8a69f2985be3",
+      "bytes": 1298
+    },
+    {
+      "path": "figures/fig_w01_sample_classes.png",
+      "sha256": "bca1d96be4c05479f9e4708375137092f488c18a134668b75f1cafa4fe60155c",
+      "bytes": 29735
+    },
+    {
+      "path": "metrics.csv",
+      "sha256": "d320e6e60e6296fd7d66e89bf57a46b20536b0c04c99be612a995dc11c8e6f26",
+      "bytes": 503
+    },
+    {
+      "path": "test-results.json",
+      "sha256": "e5c844e5393a08039dc19ed938fecccb4d16bfb7ceacb282fece35b1df67feef",
+      "bytes": 1287
+    }
+  ],
+  "sources": [
+    {
+      "path": "data/manifests/dataset_manifest_v1.csv",
+      "sha256": "a55f899e62ac0ead2f5aa08ef9a4e04fca2c2fbba7a35c88ba87733978fc149a"
+    },
+    {
+      "path": "data/manifests/license_matrix.csv",
+      "sha256": "0ef9b20a678be42909a2ce7ff0c5ad578a114a19f54e00b22b8eb63a84afa997"
+    },
+    {
+      "path": "data/samples/index_100_frames.csv",
+      "sha256": "e1a6ae299b02faf070cf55fb27c821dc604cc6c7997b2b73a5ce4cea3a812f48"
+    },
+    {
+      "path": "docs/w1/validation_report.md",
+      "sha256": "30f9165bf57d7dbc81363395b7b9a5b5a9759c328edcc1c4661e379635d19a45"
+    }
+  ],
+  "external_artifacts": []
+}

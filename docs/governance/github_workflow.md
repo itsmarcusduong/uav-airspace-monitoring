@@ -2,8 +2,15 @@
 
 Áp dụng cho cả hai thành viên từ W4. Căn cứ: Đề cương mục 10, `AGENTS.md`. Mục tiêu: mỗi thay đổi truy được Issue → nhánh → commit → PR → review → merge, và người review kiểm tra được nhanh.
 
+## 0. Cấu trúc bắt buộc theo GVHD (từ W4)
+- Milestone tên `TuanN` (Tuan4, Tuan5, …).
+- Mỗi Issue gắn **một** sinh viên và **một** kết quả: `WN-xx – <Họ tên> – <kết quả>`, ví dụ `W4-04 – Lê Ngọc An – Config detector B, A+aug và giao thức so sánh W4`. Việc chung hai người thì tách thành hai issue.
+- Mỗi PR có reviewer là thành viên còn lại.
+- Cuối tuần gắn tag `wNN` (w04, w05, …) trên commit cuối của tuần trên `main`.
+- Thư mục `Evidence/WXX/` gồm `README.md`, `metrics.csv`, `test-results.*`, `figures/`, `manifest.json`, tạo bằng `scripts/reporting/build_evidence.py` (xem `Evidence/README.md`).
+
 ## 1. Một việc = một Issue = một nhánh
-- Mỗi việc bắt đầu từ một Issue trong milestone của tuần. Tên Issue: `W<tuần>-<số thứ tự> <mô tả ngắn>`, ví dụ `W3-04 Giao thức train và config baseline A`.
+- Mỗi việc bắt đầu từ một Issue trong milestone của tuần, đặt tên theo mục 0.
 - Nhánh **luôn tạo mới từ `main` đã cập nhật**, đặt tên `issue-<số issue>-<chủ-đề-không-dấu>`:
 
 | Đúng | Sai |

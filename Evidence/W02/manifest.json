@@ -1,0 +1,60 @@
+{
+  "week": "W02",
+  "milestone": "Tuan2",
+  "repo_commit": "980b3cbecc40634e3052940afb29fd72f2f50271",
+  "generated_at": "2026-10-27T15:08:37+00:00",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "f35f5fe6713296da24551aebafb6d32d1dc77b6b30dd27ccf1181a2c3cb405a4",
+      "bytes": 1400
+    },
+    {
+      "path": "figures/fig_overview.png",
+      "sha256": "03c7de5016334e3bdd295789fe60c41148b1683af70809a649be7f1b62b11fc8",
+      "bytes": 85562
+    },
+    {
+      "path": "figures/fig_split_v1_by_class.png",
+      "sha256": "928ebea37e5debb39160f436adcc3062441ca2e8facbd992eb53d78724a8a184",
+      "bytes": 40446
+    },
+    {
+      "path": "metrics.csv",
+      "sha256": "931f6ea89974c0a55939da7b27d2a90690dda8da24c4d59f167578ccee68d1e7",
+      "bytes": 1629
+    },
+    {
+      "path": "test-results.json",
+      "sha256": "fc4050bd69fbb44582c5f358feb51bfbfbf6b53b400d782573c3b4b212868e48",
+      "bytes": 1336
+    }
+  ],
+  "sources": [
+    {
+      "path": "data/splits/video_split_v1.csv",
+      "sha256": "a7c68acd66dbd2cf2bfcf43819f2dcc0046c4f6c956c88ec2f4c1862f9bb383f"
+    },
+    {
+      "path": "data/splits/video_split_v1_manifest.json",
+      "sha256": "4e3d6bae2540945207046addda122b494715810f2a5cd051fcf53b1073fa6d0e"
+    },
+    {
+      "path": "reports/w2/figures/fig_overview.png",
+      "sha256": "03c7de5016334e3bdd295789fe60c41148b1683af70809a649be7f1b62b11fc8"
+    },
+    {
+      "path": "reports/w2/figures/fig_split_v1_by_class.png",
+      "sha256": "928ebea37e5debb39160f436adcc3062441ca2e8facbd992eb53d78724a8a184"
+    },
+    {
+      "path": "results/W02/kaggle_run_01/annotation_audit_summary.json",
+      "sha256": "cda5f04e2478ed6be9accdcb8617bce09b915bed5573606047fa25ada1e98e47"
+    },
+    {
+      "path": "results/W02/kaggle_run_01/stage_status.json",
+      "sha256": "017513d91551315e3a99a9df3718541f72ef47b87347e155d2f75b6164acb90e"
+    }
+  ],
+  "external_artifacts": []
+}

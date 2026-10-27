@@ -1,0 +1,42 @@
+{
+  "week": "W02",
+  "generated_by": "scripts/reporting/build_evidence.py",
+  "repo_commit": "980b3cbecc40634e3052940afb29fd72f2f50271",
+  "summary": {
+    "total": 5,
+    "passed": 5,
+    "failed": 0
+  },
+  "checks": [
+    {
+      "check": "kaggle_run01_all_stages_ok",
+      "status": "PASS",
+      "detail": "{'env': 'OK', 'checksums': 'OK', 'workbook': 'OK', 'inventory_labels': 'OK', 'audit': 'OK', 'stats': 'OK', 'split': 'OK', 'plots': 'OK', 'review_sheets': 'OK'}",
+      "source": "results/W02/kaggle_run_01/stage_status.json"
+    },
+    {
+      "check": "checksum_no_mismatch_no_missing",
+      "status": "PASS",
+      "detail": "1303 file",
+      "source": "results/W02/kaggle_run_01/stage_status.json"
+    },
+    {
+      "check": "split_each_video_once",
+      "status": "PASS",
+      "detail": "650 dong",
+      "source": "data/splits/video_split_v1.csv"
+    },
+    {
+      "check": "split_counts_match_manifest",
+      "status": "PASS",
+      "detail": "{'train': 454, 'test': 98, 'val': 98}",
+      "source": "data/splits/video_split_v1.csv"
+    },
+    {
+      "check": "split_sha256_matches_manifest",
+      "status": "PASS",
+      "detail": "SHA-256 manifest tinh tren ban CRLF (Windows/Kaggle) = 7e39940eb9488809; Git luu ban LF a7c68acd66dbd2cf",
+      "source": "data/splits/video_split_v1_manifest.json"
+    }
+  ]
+}

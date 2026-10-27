@@ -1,0 +1,35 @@
+{
+  "week": "W04",
+  "milestone": "Tuan4",
+  "repo_commit": "980b3cbecc40634e3052940afb29fd72f2f50271",
+  "generated_at": "2026-10-27T15:08:37+00:00",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "20f7d939bc976d8d708b8699e752e301e184ed58a5f02c66ffa40becbc9d2161",
+      "bytes": 1300
+    },
+    {
+      "path": "figures/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "metrics.csv",
+      "sha256": "eb16d9ad1da42cca67e337530030665f7a18d828ded26401a67e40a2c611f823",
+      "bytes": 63
+    },
+    {
+      "path": "test-results.json",
+      "sha256": "33e7a09618c9ed1f69c06cdf58e2ef006a14fbf15f9aaf4161776ad4fadc5a7d",
+      "bytes": 4207
+    },
+    {
+      "path": "test-results.xml",
+      "sha256": "446ce134ac2c87dd585a9b7b6f102e956e37691dcd752f4a00b0a214f90da347",
+      "bytes": 2658
+    }
+  ],
+  "sources": [],
+  "external_artifacts": []
+}
