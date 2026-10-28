@@ -1,0 +1,50 @@
+{
+  "env": {
+    "status": "OK",
+    "python": "3.13.15 (main, Aug  6 2026, 11:06:22) [GCC 13.3.0]",
+    "platform": "Linux-6.18.55+-x86_64-with-glibc2.39",
+    "commit": "1a71f5bdba154818310a741fe38fd14fe86fb946",
+    "config_file": "rtdetr_l_640.yaml",
+    "config_sha256": "c98137e2a8e35d1ec61b6e73341d6f4df46c00545460c7e3133a1a02948d1aec",
+    "torch": "2.11.0+cu128",
+    "cuda_available": true,
+    "gpu": "Tesla T4",
+    "ultralytics": "8.4.183",
+    "nvidia_smi": "Tesla T4, 15360 MiB, 580.178.04\nTesla T4, 15360 MiB, 580.178.04"
+  },
+  "data": {
+    "status": "OK",
+    "data_yaml": "/kaggle/working/data_runtime.yaml",
+    "dataset_version": "e1-yolo-v1",
+    "fingerprint": "d0ac7e230b385132c4bbec90eb5af2c5740a478fec6c79aeb245acca032c27de",
+    "images": 6869,
+    "train_images": 5667,
+    "val_images": 1202
+  },
+  "train": {
+    "status": "OK",
+    "train_dir": "/kaggle/working/runs/rtdetr_l_640"
+  },
+  "val": {
+    "status": "OK"
+  },
+  "metrics": {
+    "status": "OK",
+    "map50": 0.65941,
+    "map50_95": 0.27684
+  },
+  "artefacts": {
+    "status": "OK",
+    "files": 17
+  },
+  "weights": {
+    "status": "OK",
+    "best.pt": "fd0310797016",
+    "last.pt": "706f92e78663"
+  },
+  "bundle": {
+    "status": "OK",
+    "zip": "train_rtdetr_l_640.zip",
+    "sha256": "0eece2ab4e3a9ab0ae6a51083760410cd653adae082daf7120d4dd263439cfbd"
+  }
+}

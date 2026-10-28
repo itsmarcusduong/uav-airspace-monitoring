@@ -1,0 +1,42 @@
+{
+  "inputs": {
+    "status": "OK",
+    "val_images": 1202,
+    "pred_images": 1196,
+    "category_offset": 1,
+    "predictions_sha256": "90221f3ec12120d0b4b0c5713727de381bc497e014dea9446c52218f12dcc8c0",
+    "manifest_sha256": "4766ab0dca05b473088fdd36fe64f65de6caa02e1676267c73898619ea205b37",
+    "commit": "1a71f5bdba154818310a741fe38fd14fe86fb946"
+  },
+  "curves": {
+    "status": "OK",
+    "epochs_run": 35,
+    "best_epoch_by_map50_95": 20,
+    "map50_95_at_best": 0.3517
+  },
+  "operating_points": {
+    "status": "OK",
+    "selection_rule": "max Drone F1 on val; tie -> higher conf (training_protocol.md muc 7)",
+    "conf_selected_on_val": 0.3,
+    "Drone_P": 0.8622,
+    "Drone_R": 0.899,
+    "Drone_F1": 0.8802,
+    "macro_F1": 0.8106,
+    "all_P": 0.8383,
+    "all_R": 0.8253,
+    "reference_conf_max_macro_F1": 0.3,
+    "reference_macro_F1": 0.8106,
+    "drone_class_id": 2
+  },
+  "breakdown_selected": {
+    "status": "OK",
+    "conf": 0.3,
+    "recall_small_all": 0.8821,
+    "negatives": {
+      "negative_images": 40,
+      "images_with_fp": 39,
+      "conf": 0.3
+    },
+    "videos": 38
+  }
+}

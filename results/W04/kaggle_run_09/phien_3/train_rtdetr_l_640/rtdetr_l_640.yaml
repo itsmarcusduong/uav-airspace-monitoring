@@ -1,0 +1,30 @@
+# RT-DETR-l @640 — đối chứng detector dựa trên Transformer (Thuyết minh 7.2, [6]); chạy nếu còn hạn mức GPU.
+# Batch 8 vì bộ nhớ T4 15 GB; train và suy luận chậm hơn YOLO nhiều. Không đổi sau khi đã chạy.
+experiment: rtdetr_l_640
+dataset_version: e1-yolo-v1          # phải trùng dataset_card.json của dữ liệu xuất (Kaggle run 03)
+model: rtdetr-l.pt                  # COCO-pretrained; license AGPL-3.0 (Ultralytics)
+ultralytics_version: ""              # điền từ env.json của run train đầu tiên; các run sau cài đúng bản này
+
+train:                               # tham số truyền thẳng vào YOLO.train()
+  imgsz: 640
+  epochs: 50
+  patience: 15                       # dừng sớm nếu fitness trên val không cải thiện 15 epoch
+  batch: 8
+  seed: 20261013
+  deterministic: true
+  workers: 4
+  optimizer: auto
+  pretrained: true
+  close_mosaic: 10
+  cache: false
+  plots: true
+  val: true
+
+val:                                 # đánh giá best.pt trên split val (test bị khóa đến đánh giá cuối)
+  split: val
+  imgsz: 640
+  batch: 8
+  conf: 0.001                        # ngưỡng thấp để tính mAP/PR đầy đủ; ngưỡng vận hành chọn sau trên val
+  iou: 0.6                           # NMS IoU
+  plots: true
+  save_json: true

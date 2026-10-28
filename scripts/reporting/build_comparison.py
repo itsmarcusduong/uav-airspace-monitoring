@@ -35,6 +35,17 @@ def f3(v):
     return f"{v:.3f}" if isinstance(v, (int, float)) else "—"
 
 
+def health(res: list) -> tuple:
+    """Suc khoe qua trinh train tu results.csv: epoch dau tien co loss NaN (neu co) va do lech chuan mAP@0.5:0.95 tren val
+    giua cac epoch (bo 5 epoch dau) — thuoc do nhieu cua val, dung khi dien giai chenh lech nho giua cac mo hinh."""
+    first_nan = next((int(float(r["epoch"])) for r in res
+                      if any("loss" in k and str(v).strip().lower() == "nan" for k, v in r.items())), None)
+    key = next((k for k in res[0] if k.strip() == "metrics/mAP50-95(B)"), None) if res else None
+    vals = [float(r[key]) for r in res[5:] if key and str(r[key]).strip().lower() != "nan"]
+    sd = (sum((v - sum(vals) / len(vals)) ** 2 for v in vals) / (len(vals) - 1)) ** 0.5 if len(vals) > 2 else ""
+    return first_nan, (round(sd, 4) if sd != "" else "")
+
+
 def one(train: Path, analysis: Path, root: Path) -> dict:
     st = json.loads((train / "stage_status.json").read_text(encoding="utf-8"))
     env = json.loads((train / "env.json").read_text(encoding="utf-8"))
@@ -52,6 +63,7 @@ def one(train: Path, analysis: Path, root: Path) -> dict:
     bad = [k for k, v in st.items() if v.get("status") != "OK"] + [k for k, v in sa["status"].items() if v != "OK"]
     if bad:
         raise SystemExit(f"{train}: stage loi {bad}")
+    first_nan, sd = health(res)
     return {"model": cfg["experiment"], "weights": cfg["model"], "imgsz": cfg["train"]["imgsz"], "batch": cfg["train"]["batch"],
             "split": "val", "map50": o["map50"], "map50_95": o["map50_95"],
             "ap50_Drone": g(pc, "Drone", "ap50"), "ap50_95_Drone": g(pc, "Drone", "ap50_95"),
@@ -62,6 +74,8 @@ def one(train: Path, analysis: Path, root: Path) -> dict:
             "inference_ms": o["speed_ms_per_image"].get("inference"), "epochs_run": len(res),
             "best_epoch": sa["stages"]["curves"]["best_epoch_by_map50_95"],
             "train_minutes": round(float(res[-1]["time"]) / 60, 1) if "time" in res[-1] else "",
+            "train_health": "OK" if first_nan is None else f"INVALID: loss NaN tu epoch {first_nan}",
+            "val_map50_95_epoch_sd": sd,
             "gpu": env.get("gpu"), "ultralytics": env.get("ultralytics"), "fingerprint": st["data"]["fingerprint"][:16],
             "run_commit": env.get("commit", "")[:7], "source": rel(mf, root)}
 
@@ -91,9 +105,9 @@ def main() -> int:
     a.out.mkdir(parents=True, exist_ok=True)
     with (a.out / "comparison_w4.csv").open("w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=list(rows[0])); w.writeheader(); w.writerows(rows)
-    hdr = "| Mô hình | imgsz | mAP@0.5 | mAP@0.5:0.95 | AP@0.5 Drone | F1 Drone @ngưỡng | ngưỡng | recall nhỏ | ms/ảnh | epoch (best) |\n|---|---|---|---|---|---|---|---|---|---|\n"
+    hdr = "| Mô hình | imgsz | mAP@0.5 | mAP@0.5:0.95 | AP@0.5 Drone | F1 Drone @ngưỡng | ngưỡng | recall nhỏ | ms/ảnh | epoch (best) | train |\n|---|---|---|---|---|---|---|---|---|---|---|\n"
     body = "".join(f"| {r['model']} ({r['weights']}) | {r['imgsz']} | {f3(r['map50'])} | {f3(r['map50_95'])} | {f3(r['ap50_Drone'])} | "
-                   f"{f3(r['Drone_F1_op'])} | {r['conf_op']} | {r['recall_small_op']} | {r['inference_ms']:.2f} | {r['epochs_run']} ({r['best_epoch']}) |\n" for r in rows)
+                   f"{f3(r['Drone_F1_op'])} | {r['conf_op']} | {r['recall_small_op']} | {r['inference_ms']:.2f} | {r['epochs_run']} ({r['best_epoch']}) | {r['train_health']} |\n" for r in rows)
     note = (f"\nTất cả trên **val** (lạc quan: val dùng để dừng sớm, chọn checkpoint và ngưỡng); cùng dữ liệu (fingerprint `{rows[0]['fingerprint']}…`), "
             f"cùng seed và ngân sách 50 epoch/patience 15; GPU {rows[0]['gpu']}. Thời gian suy luận đo trong bước val (batch), không phải FPS pipeline.\n")
     (a.out / "comparison_w4.md").write_text(hdr + body + note, encoding="utf-8")
@@ -102,9 +116,22 @@ def main() -> int:
     import matplotlib.pyplot as plt
     pal = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#7a5cd6", "#d64b78"]
     fig, ax = plt.subplots(figsize=(6.8, 3.4))
-    for i, r in enumerate(rows):
-        ax.scatter(r["inference_ms"], r["map50_95"], s=70, color=pal[i % len(pal)], edgecolor="white", linewidth=1.5, zorder=3)
-        ax.annotate(f"{r['model']}\n@{r['imgsz']}", (r["inference_ms"], r["map50_95"]), textcoords="offset points", xytext=(6, 4), fontsize=7)
+    ys = [r["map50_95"] for r in rows]
+    gap = 0.06 * (max(ys) - min(ys) or 0.01)          # khoang cach toi thieu giua hai nhan gan nhau (don vi truc y)
+    placed = []                                          # (x, y_nhan) da dat, de tranh chong nhan
+    for i, r in sorted(enumerate(rows), key=lambda t: -t[1]["map50_95"]):
+        x, y = r["inference_ms"], r["map50_95"]
+        valid = r["train_health"] == "OK"
+        ax.scatter(x, y, s=70, color=pal[i % len(pal)] if valid else "white", edgecolor="white" if valid else pal[i % len(pal)],
+                   linewidth=1.5, zorder=3)
+        ly = y
+        while any(abs(px - x) < 3 and abs(py - ly) < gap for px, py in placed):
+            ly -= gap
+        placed.append((x, ly))
+        ax.annotate(f"{r['model']} @{r['imgsz']}" + ("" if valid else " (train lỗi NaN)"), (x, y), xytext=(x + 0.8, ly), textcoords="data", fontsize=7, va="center",
+                    arrowprops=dict(arrowstyle="-", color="#9a9893", lw=0.6) if ly != y else None)
+    ax.axvline(25, color="#9a9893", lw=0.8, ls="--")
+    ax.text(25.4, max(ys), "giới hạn 25 ms\n(luật chọn)", fontsize=7, color="#6b6a66", va="top")
     ax.set_xlabel("thời gian suy luận (ms/ảnh, bước val, T4)"); ax.set_ylabel("mAP@0.5:0.95 (val)")
     ax.grid(color="#d9d8d4", lw=.6); ax.set_axisbelow(True)
     for s in ("top", "right"):

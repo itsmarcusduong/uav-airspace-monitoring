@@ -46,3 +46,9 @@ Ghi chú: Ultralytics dùng batch danh nghĩa `nbs=64` và tích lũy gradient, 
 2. Trong các mô hình đạt ràng buộc: chọn mAP@0.5:0.95 cao nhất trên val; tiêu chí phụ là F1 lớp Drone tại ngưỡng vận hành.
 3. Một seed, một lần chạy: chênh lệch mAP@0.5:0.95 < 0,01 coi là **hòa** → chọn mô hình nhanh hơn.
 4. Nếu mọi mô hình đều có AP@0.5:0.95 lớp Drone thấp và recall hộp nhỏ không cải thiện so với A, ưu tiên cải thiện **dữ liệu** (căn nhãn theo ADR-0006, sửa video nhãn lỗi, thêm ảnh nền trống cho W7) trước khi thử mô hình lớn hơn.
+
+## 5. Kết quả run 09 và áp dụng luật (28/10/2026)
+- Bảng so sánh: `results/W04/comparison_w4.md` / `.csv`; hình `results/W04/fig_w4_accuracy_vs_latency.png`, `fig_w4_ap_by_class.png`; bằng chứng gốc `results/W04/kaggle_run_09/phien_{1,2,3}/`.
+- Quyết định và lý do: **ADR-0007**. Theo luật mục 4: `yolo11n_640` và `baseline_A` hòa (chênh mAP@0.5:0.95 0,005 < 0,01), nên chọn mô hình nhanh hơn là `baseline_A`. Luật 4 bị kích hoạt, nên W7 ưu tiên cải thiện dữ liệu.
+- `rtdetr_l_640` **không hợp lệ**: loss NaN từ epoch 3. Không dùng để kết luận về RT-DETR.
+- Bổ sung sau khi có kết quả (không đổi luật): `build_comparison.py` thêm cột `train_health` (phát hiện loss NaN) và `val_map50_95_epoch_sd` (độ nhiễu val giữa các epoch) để đọc bảng đúng.

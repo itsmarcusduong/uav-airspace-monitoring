@@ -1,0 +1,16 @@
+{
+  "best.pt": {
+    "sha256": "fd031079701678d2418812fbe8f5164cad66c5926b2d70caff3b309d7e1f0618",
+    "bytes": 66227453,
+    "kaggle_path": "/kaggle/working/runs/rtdetr_l_640/weights/best.pt",
+    "drive_link": "https://drive.google.com/file/d/1QrIXDpR738QRTqHBaRMwh0NngS7DppRS/view",
+    "drive_check": "SHA-256 ban tai ve may khop (28/10/2026); kich thuoc tren Drive khop bytes"
+  },
+  "last.pt": {
+    "sha256": "706f92e78663e2dfacad7586b4686e6871da454b0fe10efbd6edf470073d19da",
+    "bytes": 66227453,
+    "kaggle_path": "/kaggle/working/runs/rtdetr_l_640/weights/last.pt",
+    "drive_link": "https://drive.google.com/file/d/1CP97pJInfSjHOFi94aORbK_UPDomzZac/view",
+    "drive_check": "SHA-256 ban tai ve may khop (28/10/2026); kich thuoc tren Drive khop bytes"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "dataset": "e1-yolo-v1",
+  "fingerprint": "d0ac7e230b385132c4bbec90eb5af2c5740a478fec6c79aeb245acca032c27de",
+  "configs": [
+    "baseline_A_aug.yaml",
+    "baseline_A_960.yaml",
+    "yolo11n_640.yaml"
+  ],
+  "runs": {
+    "baseline_A_aug": {
+      "train_rc": 0,
+      "analysis_rc": 0,
+      "minutes": 19.0
+    },
+    "baseline_A_960": {
+      "train_rc": 0,
+      "analysis_rc": 0,
+      "minutes": 81.4
+    },
+    "yolo11n_640": {
+      "train_rc": 0,
+      "analysis_rc": 0,
+      "minutes": 31.6
+    }
+  }
+}

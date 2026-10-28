@@ -1,0 +1,47 @@
+{
+  "dataset_version": "e1-yolo-v1",
+  "source": "Svanstrom Drone-detection-dataset (CC0-1.0 theo repo)",
+  "split_version": "v1",
+  "modalities": [
+    "V"
+  ],
+  "splits_exported": [
+    "train",
+    "val"
+  ],
+  "stride": 10,
+  "plus1_policy": "offset0",
+  "iou_min": 0.5,
+  "iou_frac": 0.9,
+  "exclude_review_flag": true,
+  "jpeg_quality": 95,
+  "seed": 20261013,
+  "inputs": {
+    "split_csv_sha256": "7e39940eb948880951a05edf199887ec6b42ae557c85088d63a561a49604e5e2",
+    "audit_sha256": "e6c99e0f2b885108dc47def53c98a1785901c00e977a0d2d456e576b3aae61da",
+    "review_sha256": "780833ea8f0722060f11f8a8bdd0d34143e90b4081c6ade8e25318b117d12004",
+    "videos_in_split": 650,
+    "split_counts": {
+      "train": 454,
+      "test": 98,
+      "val": 98
+    }
+  },
+  "videos_included": {
+    "train|out": 21,
+    "train|in": 178,
+    "val|out": 5,
+    "val|in": 38
+  },
+  "images": 6869,
+  "frames_skipped": {},
+  "content_fingerprint_sha256": "d0ac7e230b385132c4bbec90eb5af2c5740a478fec6c79aeb245acca032c27de",
+  "classes": [
+    "Airplane",
+    "Bird",
+    "Drone",
+    "Helicopter"
+  ],
+  "problems": [],
+  "commit": "9597fce22219073880f0ff8a47ba16c7cbd39a21"
+}
