@@ -79,3 +79,19 @@ def test_comparison_health_detects_nan_and_noise():
     assert first is None and 0.009 < sd < 0.012
     bad = [dict(r) for r in ok]; bad[2]["train/box_loss"] = "nan"
     assert bc.health(bad)[0] == 3
+
+
+def test_seed_rule_decisions():
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts" / "reporting"))
+    import build_seed_comparison as bs
+
+    def s(m, ms, f1):
+        return {"map": {"mean": m}, "ms": {"mean": ms}, "f1": {"mean": f1}}
+    assert bs.family("yolo11n_640_s20261029") == "yolo11n_640" and bs.family("baseline_A") == "baseline_A"
+    assert bs.decide(s(0.34, 3.2, 0.85), s(0.352, 3.3, 0.80), "A", "B")["choice"] == "B"      # hon >= 0.01 mAP
+    assert bs.decide(s(0.34, 3.0, 0.85), s(0.345, 3.6, 0.90), "A", "B")["choice"] == "A"      # hoa mAP, A nhanh hon >= 10%
+    assert bs.decide(s(0.34, 3.2, 0.85), s(0.345, 3.25, 0.87), "A", "B")["choice"] == "B"     # hoa toc do, F1 hon >= 0.01
+    assert bs.decide(s(0.34, 3.2, 0.85), s(0.345, 3.25, 0.855), "A", "B")["choice"] == "A"    # hoa het -> giu A
+    assert bs.decide(s(0.34, 30.0, 0.85), s(0.30, 3.2, 0.80), "A", "B")["choice"] == "B"      # A vuot 25 ms

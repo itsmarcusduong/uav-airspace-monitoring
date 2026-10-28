@@ -55,5 +55,5 @@ Luật 4 bị kích hoạt: không mô hình nào cải thiện rõ trên lớp 
 ## Hệ quả
 - W5: tracker (ByteTrack chính, BoT-SORT đối chứng, ADR-0005) dùng `baseline_A` best.pt của W03 (`results/W03/kaggle_run_04/train_evidence/weights_manifest.json`).
 - #40 (An): viết phân tích bảng so sánh và model card cho detector B dựa trên bảng này. Phần phân tích phải nói rõ RT-DETR không hợp lệ và val nhiễu.
-- Lập issue W5: chạy 3 seed cho A và YOLO11n (Kaggle, khoảng 2–3 giờ GPU), chọn lại theo cùng luật.
+- Lập issue W5 (#59): chạy 3 seed cho A và YOLO11n (Kaggle run 13), chọn lại theo luật nhiều seed ghi trước ở `docs/w4/training_protocol_w4.md` mục 6 (29/10/2026). Mục 6 định nghĩa thêm "hòa về tốc độ" (< 10%) và tiêu chí phụ F1 Drone. Kết quả sẽ ghi vào bản cập nhật của ADR này.
 - #37 đóng: không xuất `e1-yolo-v2` trong W4 (ADR-0006).

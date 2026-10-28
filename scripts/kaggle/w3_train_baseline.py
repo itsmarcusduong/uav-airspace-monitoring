@@ -165,17 +165,28 @@ def main() -> int:
     ap.add_argument("--commit", default="UNKNOWN")
     ap.add_argument("--out-name", default="w3_train_evidence", help="ten thu muc/zip bang chung (nhieu model trong mot phien)")
     ap.add_argument("--model-override", default="", help="chi de kiem thu (vd yolov8n.yaml); khong dung cho run chinh thuc")
+    ap.add_argument("--seed", type=int, default=None,
+                    help="ghi de train.seed (chay nhieu seed, ADR-0007); them hau to _s<seed> vao ten experiment")
     args = ap.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     import yaml
     cfg = yaml.safe_load(args.config.read_text(encoding="utf-8"))
     if args.model_override:
         cfg["model"] = args.model_override
+    if args.seed is not None:
+        cfg.setdefault("train", {})["seed"] = args.seed
+        cfg["experiment"] = f"{cfg['experiment']}_s{args.seed}"
+        cfg["seed_override"] = {"seed": args.seed, "base_config": args.config.name, "base_config_sha256": sha256(args.config)}
     ev = args.out / args.out_name; runs = (args.out / "runs").resolve()  # tuyet doi: Ultralytics 8.4 them "detect/" neu duong dan tuong doi
     if ev.exists():
         shutil.rmtree(ev)
     ev.mkdir(parents=True)
-    shutil.copy2(args.config, ev / args.config.name)
+    if args.seed is None:
+        shutil.copy2(args.config, ev / args.config.name)
+    else:                                   # luu cau hinh hieu luc (ten experiment co hau to seed) de bang so sanh doc dung
+        (ev / f"{cfg['experiment']}.yaml").write_text(
+            f"# Cau hinh hieu luc: {args.config.name} voi train.seed = {args.seed} (--seed)\n" + yaml.safe_dump(cfg, allow_unicode=True, sort_keys=False),
+            encoding="utf-8")
     status: dict = {}
 
     def run(name, fn):
