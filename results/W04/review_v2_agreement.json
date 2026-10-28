@@ -1,0 +1,41 @@
+{
+  "rater_a": "verdict",
+  "rater_b": "review_quang_v2",
+  "videos": 40,
+  "agree": 35,
+  "percent_agree": 87.5,
+  "cohen_kappa": 0.3976,
+  "confusion": {
+    "OK|OK": 33,
+    "OK|SAI_NHAN": 5,
+    "SAI_NHAN|SAI_NHAN": 2
+  },
+  "disagreements": [
+    {
+      "video_id": "IR_BIRD_012",
+      "verdict": "OK",
+      "review_quang_v2": "SAI_NHAN"
+    },
+    {
+      "video_id": "IR_BIRD_035",
+      "verdict": "OK",
+      "review_quang_v2": "SAI_NHAN"
+    },
+    {
+      "video_id": "IR_BIRD_036",
+      "verdict": "OK",
+      "review_quang_v2": "SAI_NHAN"
+    },
+    {
+      "video_id": "IR_DRONE_101",
+      "verdict": "OK",
+      "review_quang_v2": "SAI_NHAN"
+    },
+    {
+      "video_id": "V_DRONE_100",
+      "verdict": "OK",
+      "review_quang_v2": "SAI_NHAN"
+    }
+  ],
+  "source": "results/W03/review/review_assignment_w3.csv"
+}

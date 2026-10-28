@@ -56,3 +56,14 @@ def test_load_preds_detects_one_based(tmp_path):
                  '{"image_id":"a","category_id":4,"bbox":[0,0,1,1],"score":0.5}]')
     preds, off = an.load_preds(p, 4)
     assert off == 1 and [q[0] for q in preds["a"]] == [0, 3]
+
+
+def test_review_agreement_kappa():
+    import review_agreement as ra
+    rows = [{"video_id": f"v{i}", "verdict": a, "review_quang_v2": b}
+            for i, (a, b) in enumerate([("OK", "OK")] * 6 + [("SAI_NHAN", "SAI_NHAN")] * 2 + [("OK", "SAI_NHAN")] * 2 + [("", "OK")])]
+    r = ra.agreement(rows, "verdict", "review_quang_v2")
+    assert r["videos"] == 10 and r["agree"] == 8
+    # po = 0.8; pe = (8*6 + 2*4)/100 = 0.56; kappa = 0.24/0.44
+    assert r["cohen_kappa"] == round(0.24 / 0.44, 4)
+    assert [d["video_id"] for d in r["disagreements"]] == ["v8", "v9"]
