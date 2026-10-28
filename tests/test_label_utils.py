@@ -67,3 +67,15 @@ def test_review_agreement_kappa():
     # po = 0.8; pe = (8*6 + 2*4)/100 = 0.56; kappa = 0.24/0.44
     assert r["cohen_kappa"] == round(0.24 / 0.44, 4)
     assert [d["video_id"] for d in r["disagreements"]] == ["v8", "v9"]
+
+
+def test_comparison_health_detects_nan_and_noise():
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts" / "reporting"))
+    import build_comparison as bc
+    ok = [{"epoch": str(e), "train/box_loss": "1.0", "metrics/mAP50-95(B)": str(0.30 + (0.02 if e % 2 else 0))} for e in range(1, 13)]
+    first, sd = bc.health(ok)
+    assert first is None and 0.009 < sd < 0.012
+    bad = [dict(r) for r in ok]; bad[2]["train/box_loss"] = "nan"
+    assert bc.health(bad)[0] == 3

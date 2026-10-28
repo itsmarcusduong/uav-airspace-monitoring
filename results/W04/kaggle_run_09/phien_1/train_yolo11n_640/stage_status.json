@@ -1,0 +1,50 @@
+{
+  "env": {
+    "status": "OK",
+    "python": "3.13.15 (main, Aug  6 2026, 11:06:22) [GCC 13.3.0]",
+    "platform": "Linux-6.18.55+-x86_64-with-glibc2.39",
+    "commit": "1a71f5bdba154818310a741fe38fd14fe86fb946",
+    "config_file": "yolo11n_640.yaml",
+    "config_sha256": "11963e4df253c1573c85af96ab26a4508eea6fecc44fa47af2cf120ca5f323ab",
+    "torch": "2.11.0+cu128",
+    "cuda_available": true,
+    "gpu": "Tesla T4",
+    "ultralytics": "8.4.183",
+    "nvidia_smi": "Tesla T4, 15360 MiB, 580.178.04\nTesla T4, 15360 MiB, 580.178.04"
+  },
+  "data": {
+    "status": "OK",
+    "data_yaml": "/kaggle/working/data_runtime.yaml",
+    "dataset_version": "e1-yolo-v1",
+    "fingerprint": "d0ac7e230b385132c4bbec90eb5af2c5740a478fec6c79aeb245acca032c27de",
+    "images": 6869,
+    "train_images": 5667,
+    "val_images": 1202
+  },
+  "train": {
+    "status": "OK",
+    "train_dir": "/kaggle/working/runs/yolo11n_640"
+  },
+  "val": {
+    "status": "OK"
+  },
+  "metrics": {
+    "status": "OK",
+    "map50": 0.83092,
+    "map50_95": 0.34702
+  },
+  "artefacts": {
+    "status": "OK",
+    "files": 17
+  },
+  "weights": {
+    "status": "OK",
+    "best.pt": "80ff77c7b434",
+    "last.pt": "02da011021ef"
+  },
+  "bundle": {
+    "status": "OK",
+    "zip": "train_yolo11n_640.zip",
+    "sha256": "eff13f18aaaf9a3fb15b1cae8e00d687c1e3c442a133e86201f9e4ad40a10559"
+  }
+}
