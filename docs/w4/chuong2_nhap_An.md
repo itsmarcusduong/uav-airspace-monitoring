@@ -16,7 +16,7 @@ $$
 
 NMS giúp giảm dự đoán trùng trước khi chuyển hộp cho tracker, nhưng kết quả nhạy với ngưỡng confidence và IoU; nếu ngưỡng quá chặt, các vật thể gần nhau có thể bị gộp nhầm, còn ngưỡng quá lỏng có thể để lại nhiều hộp trùng [1].
 
-Một hướng khác là DETR, biểu diễn phát hiện như dự đoán một tập đối tượng bằng Transformer và ghép cặp dự đoán–nhãn theo cách tối ưu trong quá trình huấn luyện. Vì đầu ra được tối ưu như một tập, DETR không cần NMS theo cách truyền thống. RT-DETR cải tiến thiết kế để phù hợp hơn với yêu cầu thời gian thực; bài báo được trích trong đề cương báo cáo so sánh trực tiếp các detector dựa trên Transformer và YOLO [6]. Trong phạm vi đồ án, RT-DETR là phương án đối chiếu về kiến trúc; không suy ra trước kết quả hay ưu thế thực nghiệm của phương án nào.
+Một hướng khác là DETR, biểu diễn phát hiện như dự đoán một tập đối tượng bằng Transformer và ghép cặp dự đoán–nhãn theo cách tối ưu trong quá trình huấn luyện. Vì đầu ra được tối ưu như một tập, DETR không cần NMS theo cách truyền thống. RT-DETR cải tiến thiết kế để phù hợp hơn với yêu cầu thời gian thực. Bài báo RT-DETR [6] so sánh trực tiếp các detector dựa trên Transformer với YOLO. Trong phạm vi đồ án, RT-DETR là phương án đối chiếu về kiến trúc; không suy ra trước kết quả hay ưu thế thực nghiệm của phương án nào.
 
 ### 2.1.2. Theo dõi đa đối tượng theo hướng tracking-by-detection
 
@@ -45,6 +45,7 @@ flowchart LR
 ```
 
 **Hình 2.1.** Quy trình tracking-by-detection do tác giả tự dựng, khái quát từ SORT [14] và bước liên kết hộp confidence thấp của ByteTrack [2]. Hình không mô tả đầy đủ mọi biến thể hay tham số của các thuật toán.
+<!-- Ghi chú cho Quang: xuất sơ đồ Mermaid thành PNG khi tích hợp vào bản Word/PDF. -->
 
 ### 2.1.3. Các độ đo phát hiện và theo dõi
 
@@ -67,8 +68,6 @@ Bảng 2.1 so sánh dữ liệu và tracker theo nhiệm vụ, phương pháp, m
 
 | Công trình/dữ liệu | Nhiệm vụ | Dữ liệu | Phương pháp | Metric được dùng/báo cáo | Hạn chế | Khác biệt so với đồ án |
 |---|---|---|---|---|---|---|
-| Công trình/dữ liệu | Nhiệm vụ | Dữ liệu | Phương pháp | Metric được dùng/báo cáo | Hạn chế | Khác biệt so với đồ án |
-|---|---|---|---|---|---|---|
 | Svanström và cộng sự [11] | Phát hiện UAV đa cảm biến | Video mặt đất, khả kiến/hồng ngoại; UAV, chim, máy bay, trực thăng. | Dataset và nhãn theo khung hình; không phải benchmark MOT chuẩn hóa. | Không có metric MOT chung; detector cần AP với split/IoU nêu rõ. | Miền cảnh, cảm biến, căn chỉnh nhãn và điều kiện cấp phép cần được xét. | Gần hình học quan sát và có lớp âm tính liên quan; đánh giá trên split đồ án riêng. |
 | Anti-UAV [13] | Theo dõi UAV đơn mục tiêu | Chuỗi RGB/hồng ngoại có nhãn theo dõi UAV. | Benchmark visual tracking một mục tiêu. | Success và precision theo giao thức tracker. | Không bao quát MOT hoặc phân lớp nhiều loại vật thể bay. | Tham khảo bám UAV/che khuất; không thay thế đánh giá đa lớp, đa mục tiêu. |
 | VisDrone-DET [4] | Phát hiện đối tượng | Ảnh UAV nhìn xuống; người, phương tiện và vật thể mặt đất nhỏ. | Benchmark phát hiện VisDrone-DET. | AP theo giao thức thử thách. | Góc nhìn và lớp mục tiêu khác đồ án; cảnh đông đúc, che khuất. | Tham khảo vật thể nhỏ; UAV là camera, không phải vật thể cần phát hiện. |
@@ -83,7 +82,7 @@ Nhìn chung, benchmark MOT giúp tham khảo cách đo nhưng không thay thế 
 
 Các mục [1]–[12] được giữ theo danh mục của bản v0.3. Các nguồn mới dưới đây tiếp tục số thứ tự để hỗ trợ phần 2.1–2.2:
 
-[13] N. Jiang, K. Wang, X. Peng, X. Yu, Q. Wang, J. Xing, G. Li, G. Guo, Q. Ye, J. Jiao, J. Zhao, and Z. Han, “Anti-UAV: A Large-Scale Benchmark for Vision-Based UAV Tracking,” *IEEE Transactions on Multimedia*, vol. 25, pp. 486–500, 2023. https://doi.org/10.1109/TMM.2021.3128047
+[13] N. Jiang, K. Wang, X. Peng, X. Yu, Q. Wang, J. Xing, G. Li, G. Guo, Q. Ye, J. Jiao, J. Zhao, and Z. Han, “Anti-UAV: A Large-Scale Benchmark for Vision-Based UAV Tracking,” *IEEE Transactions on Multimedia*, vol. 25, pp. 486–500, 2023. https://doi.org/10.1109/TMM.2021.3128047. Preprint: https://arxiv.org/abs/2101.08466
 
 [14] A. Bewley, Z. Ge, L. Ott, F. Ramos, and B. Upcroft, “Simple Online and Realtime Tracking,” in *Proceedings of the IEEE International Conference on Image Processing (ICIP)*, pp. 3464–3468, 2016. https://arxiv.org/abs/1602.00763
 
