@@ -84,3 +84,34 @@ def test_score_cvat_gold_detects_offset1(tmp_path, monkeypatch):
     assert s["groups"]["Drone|plus1"]["videos_i1_better"] == 6
     assert s["groups"]["control_equal"]["videos_i1_better"] == 0
     assert s["label_quality"]["frac_best_iou_ge_0_5"] == 1.0
+
+
+def test_score_cvat_gold_center_metric_ignores_tight_boxes(tmp_path, monkeypatch):
+    """Hop ve sat (nho hon nhan goc) van phai cho ket qua tam dung chieu; phan tham do khong co verdict."""
+    rows, ann = [], {}
+    for k in range(12):
+        kind = "plus1" if k < 6 else "equal"
+        li, lj = [100 + 5 * k, 100, 40, 40], [106 + 5 * k, 100, 40, 40]
+        truth = lj if kind == "plus1" else li
+        gid = f"gold_{k:04d}"
+        rows.append({"gold_id": gid, "video_id": f"V_X_{k:03d}", "class_name": "Drone" if kind == "plus1" else "Airplane",
+                     "kind": kind, "frame_index": 10, "width": 640, "height": 512,
+                     "label_i": json.dumps(li), "label_i1": json.dumps(lj), "image_sha256": "x"})
+        cx, cy = truth[0] + 20, truth[1] + 20
+        ann[gid] = f"0 {cx / 640} {cy / 512} {12 / 640} {12 / 512}\n"   # hop 12x12 trong nhan 40x40
+    buf = io.StringIO(); wr = csv.DictWriter(buf, fieldnames=list(rows[0])); wr.writeheader(); wr.writerows(rows)
+    with zipfile.ZipFile(tmp_path / "key.zip", "w") as z:
+        z.writestr("gold_key.csv", buf.getvalue())
+    with zipfile.ZipFile(tmp_path / "ann.zip", "w") as z:
+        for gid, txt in ann.items():
+            z.writestr(f"obj_train_data/{gid}.txt", txt)
+    monkeypatch.setattr(sys, "argv", ["x", "--annotations", str(tmp_path / "ann.zip"), "--key", str(tmp_path / "key.zip"),
+                                      "--out", str(tmp_path / "sc")])
+    assert sg.main() == 0
+    s = json.loads((tmp_path / "sc" / "gold_score.json").read_text())
+    ex = s["exploratory_center"]
+    assert ex["groups"]["Drone|plus1"]["videos_closer_to_i1"] == 6
+    assert ex["groups"]["control_equal"]["videos_closer_to_i1"] == 0
+    assert ex["box_vs_label"]["median_center_dist_px"] == 0
+    assert ex["box_vs_label"]["median_area_ratio_annot_over_label_i"] == pytest.approx(144 / 1600, abs=1e-3)
+    assert "verdict" not in ex

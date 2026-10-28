@@ -1,0 +1,59 @@
+{
+  "frames": 168,
+  "status_counts": {
+    "ok": 165,
+    "no_box": 3,
+    "multi_box": 0
+  },
+  "label_quality": {
+    "median_best_iou": 0.3572,
+    "frac_best_iou_ge_0_5": 0.2667
+  },
+  "groups": {
+    "Drone|plus1": {
+      "videos": 40,
+      "videos_i1_better": 25,
+      "sign_test_p": 0.1538599441628321
+    },
+    "control_equal": {
+      "videos": 25,
+      "videos_i1_better": 7,
+      "sign_test_p": 0.043285250663757324
+    },
+    "Bird|plus1": {
+      "videos": 3,
+      "videos_i1_better": 2,
+      "sign_test_p": 1.0
+    }
+  },
+  "control_ok": false,
+  "verdict": {
+    "Drone|plus1": "UNDETERMINED (doi chung khong dat)",
+    "Bird|plus1": "UNDETERMINED (doi chung khong dat)"
+  },
+  "exploratory_center": {
+    "note": "THAM DO, them sau khi xem ket qua; khong dung de ra quyet dinh thay luat dat truoc (ADR-0006)",
+    "box_vs_label": {
+      "median_center_dist_px": 2.18,
+      "frac_center_dist_le_10px": 0.9515,
+      "median_area_ratio_annot_over_label_i": 0.327
+    },
+    "groups": {
+      "Drone|plus1": {
+        "videos": 75,
+        "videos_closer_to_i1": 61,
+        "sign_test_p": 3.807704084089984e-08
+      },
+      "control_equal": {
+        "videos": 55,
+        "videos_closer_to_i1": 20,
+        "sign_test_p": 0.058064146792409066
+      },
+      "Bird|plus1": {
+        "videos": 10,
+        "videos_closer_to_i1": 7,
+        "sign_test_p": 0.34375
+      }
+    }
+  }
+}
