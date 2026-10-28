@@ -1,6 +1,6 @@
 # ADR-0002: Kế hoạch tuần W2–W6 và phạm vi modality
 
-- Trạng thái: **Accepted** (An duyệt 26/10/2026; còn chờ Quang và GVHD theo yêu cầu ban đầu)
+- Trạng thái: **Accepted** (An 26/10, Quang 27/10); mục 1–2 **Superseded by ADR-0005**; GVHD xác nhận qua #7.
 - Ngày: 11/10/2026
 
 ## Bối cảnh
@@ -17,7 +17,7 @@
 Số liệu W3 trở đi tách V/IR. Nếu GVHD muốn gộp, chỉ cần gộp ở bước huấn luyện, không đổi split.
 
 ## Còn mở
-Chờ Quang và GVHD xác nhận theo yêu cầu ban đầu; phần review của An không thay thế các xác nhận này.
+GVHD xác nhận qua #7.
 
 ## Review (26/10/2026)
 **Người review:** Lê Ngọc An

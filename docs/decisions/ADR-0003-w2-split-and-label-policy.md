@@ -23,7 +23,7 @@ Trùng cảnh giữa các split không kiểm soát được (562 cặp video g�
 ## Review (26/10/2026)
 **Người review:** Lê Ngọc An
 
-- Mục 1: **Accepted** — `docs/w2/split_protocol.md` xác nhận đơn vị split là video, phân tầng theo modality × class với tỷ lệ 70/15/15 và seed 20261217; test được khóa tới W11. Đây là giao thức đề xuất, việc đóng băng vẫn theo điều kiện An và Quang cùng duyệt, tag commit và ghi SHA-256 vào manifest/báo cáo.
+- Mục 1: **Accepted** — `docs/w2/split_protocol.md` xác nhận đơn vị split là video, phân tầng theo modality × class với tỷ lệ 70/15/15 và seed 20261217; test khóa tới đánh giá cuối (W10). Đây là giao thức đề xuất, việc đóng băng vẫn theo điều kiện An và Quang cùng duyệt, tag commit và ghi SHA-256 vào manifest/báo cáo.
 - Mục 2: Superseded by ADR-0004 (mục 5–6); không áp dụng đề xuất loại toàn bộ video dư một mục nhãn.
 - Mục 3: **Accepted** — frame ngoài phạm vi nhãn không được xem là âm tính, phù hợp chính sách dữ liệu ở ADR-0004.
 - Mục 4: **Cập nhật theo ADR-0004** — chỉ video không bbox đã được xem và không thấy vật thể mới được giữ làm ảnh âm tính.
