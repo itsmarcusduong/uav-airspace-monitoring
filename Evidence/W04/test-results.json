@@ -1,7 +1,7 @@
 {
   "week": "W04",
   "generated_by": "scripts/reporting/build_evidence.py",
-  "repo_commit": "591521522d8ec81d10d7e8ed809769dd698a29da",
+  "repo_commit": "8f91d93f2a8a47f9616bfa71ccb73953a864b005",
   "summary": {
     "total": 54,
     "passed": 54,
@@ -203,19 +203,19 @@
     {
       "check": "pytest::tests.test_label_utils::test_to_box_malformed_is_not_absent[w3_export_yolo-bad1]",
       "status": "PASS",
-      "detail": "0.000s",
+      "detail": "0.001s",
       "source": "tests/"
     },
     {
       "check": "pytest::tests.test_label_utils::test_to_box_malformed_is_not_absent[w3_review_sheets-bad0]",
       "status": "PASS",
-      "detail": "0.000s",
+      "detail": "0.001s",
       "source": "tests/"
     },
     {
       "check": "pytest::tests.test_label_utils::test_to_box_malformed_is_not_absent[w3_review_sheets-bad1]",
       "status": "PASS",
-      "detail": "0.000s",
+      "detail": "0.001s",
       "source": "tests/"
     },
     {
@@ -233,7 +233,7 @@
     {
       "check": "pytest::tests.test_label_utils::test_iou_basic",
       "status": "PASS",
-      "detail": "0.001s",
+      "detail": "0.006s",
       "source": "tests/"
     },
     {
@@ -245,13 +245,13 @@
     {
       "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[2 0.5 0.5 0.1]",
       "status": "PASS",
-      "detail": "0.000s",
+      "detail": "0.001s",
       "source": "tests/"
     },
     {
       "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[7 0.5 0.5 0.1 0.1]",
       "status": "PASS",
-      "detail": "0.000s",
+      "detail": "0.001s",
       "source": "tests/"
     },
     {
@@ -269,25 +269,25 @@
     {
       "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[2.0 0.5 0.5 0.1 0.1]",
       "status": "PASS",
-      "detail": "0.000s",
+      "detail": "0.001s",
       "source": "tests/"
     },
     {
       "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[x 0.5 0.5 0.1 0.1]",
       "status": "PASS",
-      "detail": "0.000s",
+      "detail": "0.001s",
       "source": "tests/"
     },
     {
       "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[2 nan 0.5 0.1 0.1]",
       "status": "PASS",
-      "detail": "0.000s",
+      "detail": "0.001s",
       "source": "tests/"
     },
     {
       "check": "pytest::tests.test_label_utils::test_load_preds_detects_one_based",
       "status": "PASS",
-      "detail": "0.002s",
+      "detail": "0.004s",
       "source": "tests/"
     },
     {
@@ -299,7 +299,7 @@
     {
       "check": "pytest::tests.test_label_utils::test_comparison_health_detects_nan_and_noise",
       "status": "PASS",
-      "detail": "0.001s",
+      "detail": "0.006s",
       "source": "tests/"
     },
     {

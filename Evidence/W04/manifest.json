@@ -1,13 +1,13 @@
 {
   "week": "W04",
   "milestone": "Tuan4",
-  "repo_commit": "591521522d8ec81d10d7e8ed809769dd698a29da",
-  "generated_at": "2026-10-28T16:55:33+00:00",
+  "repo_commit": "8f91d93f2a8a47f9616bfa71ccb73953a864b005",
+  "generated_at": "2026-10-28T17:18:43+00:00",
   "files": [
     {
       "path": "README.md",
-      "sha256": "b9814b8ac1b7bc424dc92a0d42cae1ea35f73b67dd6de44f27d31fe8208dff56",
-      "bytes": 2759
+      "sha256": "aa2353df5b6b379404e33b6667e86d9ee012c7744ab842b91e06e931ea69373c",
+      "bytes": 2871
     },
     {
       "path": "figures/fig_w4_accuracy_vs_latency.png",
@@ -26,12 +26,12 @@
     },
     {
       "path": "test-results.json",
-      "sha256": "9e3e4f9acf76d8f1cae2c0920ee1835b75e0783a6a96637534910a7599e25bc3",
+      "sha256": "7143c50be63992924f4aa8447a8662f857a5b5625319573f813605355c11c9b3",
       "bytes": 10685
     },
     {
       "path": "test-results.xml",
-      "sha256": "4d3fe58286e97fb944d1e6f65aa6d2acd0c5ab9c601122f0b82ddc1a11ae2108",
+      "sha256": "4474a76057bb91b272a533602673f10f58194db8f35a4697ac02277468a59240",
       "bytes": 2990
     }
   ],

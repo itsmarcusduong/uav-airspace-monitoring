@@ -1,10 +1,10 @@
 # Evidence W04 — Tuning + augmentation, so sánh baseline
 
-Milestone **Tuan4** · Tạo bởi `scripts/reporting/build_evidence.py` tại commit `5915215` · 2026-10-28
+Milestone **Tuan4** · Tạo bởi `scripts/reporting/build_evidence.py` tại commit `8f91d93` · 2026-10-28
 
 **Phạm vi:** Kiểm chứng chiều lệch nhãn (run 06 và tập chuẩn CVAT, ADR-0006), train và so sánh 6 mô hình trên cùng dữ liệu (run 09), áp luật chọn đặt trước (ADR-0007).
 
-**Liên kết:** Issue #24, #36–#42, #48, #49; PR #43–#47, #50–#55. Kế hoạch: docs/w4/W4_PLAN.md. ADR-0006, ADR-0007. Giao thức: docs/w4/training_protocol_w4.md. Repo: https://github.com/itsmarcusduong/uav-airspace-monitoring
+**Liên kết:** Issue #24, #36–#42, #48, #49; PR #43–#47, #50–#55. Báo cáo: reports/w4/ (báo cáo công việc, v0.4). Trạng thái: docs/status/W04_planned_done_evidence.md. Kế hoạch: docs/w4/W4_PLAN.md. ADR-0006, ADR-0007. Giao thức: docs/w4/training_protocol_w4.md. Repo: https://github.com/itsmarcusduong/uav-airspace-monitoring
 
 ## Nội dung thư mục
 | File | Mô tả |
