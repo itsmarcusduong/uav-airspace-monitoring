@@ -1,0 +1,6 @@
+week,metric,value,unit,split,model,source,producer,run_commit
+W01,datasets_surveyed,4,dataset,,,data/manifests/dataset_manifest_v1.csv,scripts/dataset/build_manifest.py,
+W01,license_rows_usable,3,row,,,data/manifests/license_matrix.csv,,
+W01,license_rows_needs_review_or_fallback,3,row,,,data/manifests/license_matrix.csv,,
+W01,sample_frames,100,frame,,,data/samples/index_100_frames.csv,scripts/dataset/extract_samples.py,
+W01,sample_source_videos,100,video,,,data/samples/index_100_frames.csv,,

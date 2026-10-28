@@ -268,9 +268,10 @@ def main() -> int:
     ap.add_argument("--train-evidence", type=Path, required=True)
     ap.add_argument("--out", type=Path, default=Path("/kaggle/working"))
     ap.add_argument("--commit", default="UNKNOWN")
+    ap.add_argument("--out-name", default="w3_analysis", help="ten thu muc/zip ket qua (nhieu model trong mot phien)")
     a = ap.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
-    out = a.out / "w3_analysis"
+    out = a.out / a.out_name
     if out.exists():
         shutil.rmtree(out)
     out.mkdir(parents=True)
@@ -299,12 +300,12 @@ def main() -> int:
         ops = run("operating_points", lambda: stage_ops(ctx["gt"], ctx["preds"], out)) or {}
         thr = ops.get("conf_selected_on_val", 0.25)
         run("breakdown_selected", lambda: stage_breakdown(ctx["gt"], ctx["preds"], thr, out))
-    mj = a.train_evidence / "baseline_A_val_metrics.json"
+    mj = next(iter(sorted(a.train_evidence.glob("*_val_metrics.json"))), a.train_evidence / "baseline_A_val_metrics.json")
     summary = {"status": {k: v["status"] for k, v in status.items()}, "stages": status,
                "ultralytics_metrics": json.loads(mj.read_text(encoding="utf-8")) if mj.is_file() else None,
                "note": "Danh gia tren VAL; nguong chon tren VAL nen so lieu lac quan. Test bi khoa. Nhan val da duoc kiem tra dinh dang (5 truong, class id, toa do chuan hoa) va khop has_bbox voi manifest truoc khi tinh metric."}
     (out / "analysis_summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False, default=str), encoding="utf-8")
-    z = a.out / "w3_analysis.zip"
+    z = a.out / f"{a.out_name}.zip"
     with zipfile.ZipFile(z, "w", zipfile.ZIP_DEFLATED) as zf:
         for p in sorted(out.rglob("*")):
             zf.write(p, p.relative_to(out.parent))

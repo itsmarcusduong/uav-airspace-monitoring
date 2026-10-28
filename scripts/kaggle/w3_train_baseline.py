@@ -88,9 +88,14 @@ def stage_data(data_dir: Path, ev: Path, cfg: dict) -> dict:
             "val_images": len(list((data_dir / "images" / "val").glob("*.jpg")))}
 
 
+def load_model(weights: str):
+    """YOLO (v8/11) hoac RT-DETR (Ultralytics): chon lop theo ten trong so."""
+    from ultralytics import RTDETR, YOLO
+    return RTDETR(weights) if Path(weights).name.lower().startswith("rtdetr") else YOLO(weights)
+
+
 def stage_train(cfg: dict, data_yaml: str, runs: Path) -> dict:
-    from ultralytics import YOLO
-    model = YOLO(cfg["model"])
+    model = load_model(cfg["model"])
     model.train(data=data_yaml, project=str(runs), name=cfg["experiment"], exist_ok=True, **cfg.get("train", {}))
     wdir = runs / cfg["experiment"] / "weights"
     if not (wdir / "best.pt").is_file():
@@ -99,11 +104,10 @@ def stage_train(cfg: dict, data_yaml: str, runs: Path) -> dict:
 
 
 def stage_val(cfg: dict, data_yaml: str, runs: Path):
-    from ultralytics import YOLO
     best = runs / cfg["experiment"] / "weights" / "best.pt"
     vcfg = dict(cfg.get("val", {}))
     vcfg["split"] = "val"                       # khong cho phep doi sang test o W3
-    return YOLO(str(best)).val(data=data_yaml, project=str(runs), name=cfg["experiment"] + "_val", exist_ok=True, **vcfg)
+    return load_model(str(best)).val(data=data_yaml, project=str(runs), name=cfg["experiment"] + "_val", exist_ok=True, **vcfg)
 
 
 def stage_metrics(m, ev: Path, cfg: dict) -> dict:
@@ -115,14 +119,14 @@ def stage_metrics(m, ev: Path, cfg: dict) -> dict:
         rows.append({"class_id": int(c), "class_name": names.get(int(c), str(c)),
                      "precision": as_float(box.p[k]), "recall": as_float(box.r[k]),
                      "ap50": as_float(box.ap50[k]), "ap50_95": as_float(box.ap[k])})
-    with (ev / "baseline_A_val_per_class.csv").open("w", newline="", encoding="utf-8") as fh:
+    with (ev / f"{cfg['experiment']}_val_per_class.csv").open("w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=["class_id", "class_name", "precision", "recall", "ap50", "ap50_95"])
         w.writeheader(); w.writerows(rows)
     overall = {"experiment": cfg["experiment"], "split": "val", "precision_mean": as_float(box.mp),
                "recall_mean": as_float(box.mr), "map50": as_float(box.map50), "map50_95": as_float(box.map),
                "speed_ms_per_image": {k: as_float(v) for k, v in (getattr(m, "speed", {}) or {}).items()},
                "note": "Danh gia tren VAL; val cung dung de dung som/chon best.pt nen so lieu lac quan. Test bi khoa."}
-    (ev / "baseline_A_val_metrics.json").write_text(json.dumps({"overall": overall, "per_class": rows}, indent=2,
+    (ev / f"{cfg['experiment']}_val_metrics.json").write_text(json.dumps({"overall": overall, "per_class": rows}, indent=2,
                                                                 ensure_ascii=False), encoding="utf-8")
     return {"map50": overall["map50"], "map50_95": overall["map50_95"]}
 
@@ -159,6 +163,7 @@ def main() -> int:
     ap.add_argument("--config", type=Path, required=True)
     ap.add_argument("--out", type=Path, default=Path("/kaggle/working"))
     ap.add_argument("--commit", default="UNKNOWN")
+    ap.add_argument("--out-name", default="w3_train_evidence", help="ten thu muc/zip bang chung (nhieu model trong mot phien)")
     ap.add_argument("--model-override", default="", help="chi de kiem thu (vd yolov8n.yaml); khong dung cho run chinh thuc")
     args = ap.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
@@ -166,7 +171,7 @@ def main() -> int:
     cfg = yaml.safe_load(args.config.read_text(encoding="utf-8"))
     if args.model_override:
         cfg["model"] = args.model_override
-    ev = args.out / "w3_train_evidence"; runs = (args.out / "runs").resolve()  # tuyet doi: Ultralytics 8.4 them "detect/" neu duong dan tuong doi
+    ev = args.out / args.out_name; runs = (args.out / "runs").resolve()  # tuyet doi: Ultralytics 8.4 them "detect/" neu duong dan tuong doi
     if ev.exists():
         shutil.rmtree(ev)
     ev.mkdir(parents=True)
@@ -199,7 +204,7 @@ def main() -> int:
         run("weights", lambda: stage_weights(runs, ev, cfg))
 
     def bundle():
-        z = args.out / "w3_train_evidence.zip"
+        z = args.out / f"{args.out_name}.zip"
         with zipfile.ZipFile(z, "w", zipfile.ZIP_DEFLATED) as zf:
             for p in sorted(ev.rglob("*")):
                 if p.is_file():

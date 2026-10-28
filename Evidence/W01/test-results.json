@@ -1,0 +1,48 @@
+{
+  "week": "W01",
+  "generated_by": "scripts/reporting/build_evidence.py",
+  "repo_commit": "980b3cbecc40634e3052940afb29fd72f2f50271",
+  "summary": {
+    "total": 6,
+    "passed": 6,
+    "failed": 0
+  },
+  "checks": [
+    {
+      "check": "manifest_has_required_columns",
+      "status": "PASS",
+      "detail": "25 cot",
+      "source": "data/manifests/dataset_manifest_v1.csv"
+    },
+    {
+      "check": "manifest_unique_dataset_ids",
+      "status": "PASS",
+      "detail": "4 dong",
+      "source": "data/manifests/dataset_manifest_v1.csv"
+    },
+    {
+      "check": "samples_exactly_100",
+      "status": "PASS",
+      "detail": "100 dong",
+      "source": "data/samples/index_100_frames.csv"
+    },
+    {
+      "check": "samples_unique_ids",
+      "status": "PASS",
+      "detail": "",
+      "source": "data/samples/index_100_frames.csv"
+    },
+    {
+      "check": "license_every_row_has_status",
+      "status": "PASS",
+      "detail": "Counter({'usable': 3, 'needs_review': 2, 'fallback': 1})",
+      "source": "data/manifests/license_matrix.csv"
+    },
+    {
+      "check": "w1_validation_report_passed",
+      "status": "PASS",
+      "detail": "validate_manifest.py ngay 2026-10-04 (anh mau khong luu trong Git)",
+      "source": "docs/w1/validation_report.md"
+    }
+  ]
+}

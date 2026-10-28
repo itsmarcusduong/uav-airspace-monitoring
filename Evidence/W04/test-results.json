@@ -1,0 +1,174 @@
+{
+  "week": "W04",
+  "generated_by": "scripts/reporting/build_evidence.py",
+  "repo_commit": "1a71f5bdba154818310a741fe38fd14fe86fb946",
+  "summary": {
+    "total": 27,
+    "passed": 27,
+    "failed": 0
+  },
+  "checks": [
+    {
+      "check": "run06_all_stages_ok",
+      "status": "PASS",
+      "detail": "['inputs', 'pairs', 'per_video', 'decide']",
+      "source": "results/W04/kaggle_run_06/w4_offset_check/stage_status.json"
+    },
+    {
+      "check": "run06_uses_run04_predictions",
+      "status": "PASS",
+      "detail": "5e5b0c320b6d4d73",
+      "source": "results/W03/kaggle_run_04/train_evidence/val/predictions.json.gz"
+    },
+    {
+      "check": "run06_uses_run03b_v2_manifest",
+      "status": "PASS",
+      "detail": "4766ab0dca05b473",
+      "source": "results/W03/kaggle_run_03b_v2/export_evidence/yolo_manifest.csv.gz"
+    },
+    {
+      "check": "manifest_03b_v2_content_eq_03b",
+      "status": "PASS",
+      "detail": "noi dung giai nen trung tung byte (chi khac header gzip)",
+      "source": "results/W03/kaggle_run_03b/export_evidence/yolo_manifest.csv.gz"
+    },
+    {
+      "check": "run06_covers_all_val_images",
+      "status": "PASS",
+      "detail": "1202 anh",
+      "source": "results/W04/kaggle_run_06/w4_offset_check/offset_check_summary.json"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_to_box_valid_and_absent[w3_export_yolo]",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_to_box_valid_and_absent[w3_review_sheets]",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_to_box_malformed_is_not_absent[w3_export_yolo-bad0]",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_to_box_malformed_is_not_absent[w3_export_yolo-bad1]",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_to_box_malformed_is_not_absent[w3_review_sheets-bad0]",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_to_box_malformed_is_not_absent[w3_review_sheets-bad1]",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_review_sheet_rejects_nonpositive_size",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_label_kind",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_iou_basic",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_valid",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[2 0.5 0.5 0.1]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[7 0.5 0.5 0.1 0.1]",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[2 1.5 0.5 0.1 0.1]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[2 0.5 0.5 0 0.1]",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[2.0 0.5 0.5 0.1 0.1]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[x 0.5 0.5 0.1 0.1]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[2 nan 0.5 0.1 0.1]",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_load_preds_detects_one_based",
+      "status": "PASS",
+      "detail": "0.006s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_offset_methods::test_sign_test_p",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_offset_methods::test_offset_check_end_to_end[1-offset1]",
+      "status": "PASS",
+      "detail": "0.013s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_offset_methods::test_offset_check_end_to_end[0-offset0]",
+      "status": "PASS",
+      "detail": "0.015s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_offset_methods::test_score_cvat_gold_detects_offset1",
+      "status": "PASS",
+      "detail": "0.006s",
+      "source": "tests/"
+    }
+  ]
+}

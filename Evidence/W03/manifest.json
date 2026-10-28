@@ -1,0 +1,144 @@
+{
+  "week": "W03",
+  "milestone": "Tuan3",
+  "repo_commit": "1a71f5bdba154818310a741fe38fd14fe86fb946",
+  "generated_at": "2026-10-27T15:43:55+00:00",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "6592a46962943c8811f5ce32e154cc8bcc34eee0e5a3553311492fac35c61535",
+      "bytes": 1891
+    },
+    {
+      "path": "figures/fig_w3_data_funnel.png",
+      "sha256": "ed8874c3c7e38950d8e3dff5165ff18b8b496e240272376a642fc817cc6358be",
+      "bytes": 72529
+    },
+    {
+      "path": "figures/fig_w3_learning_curves.png",
+      "sha256": "f8e17d40df1ea8ddad6eb671588e35349a430da15e2ea73a22e0eb99bf7a9575",
+      "bytes": 105067
+    },
+    {
+      "path": "figures/fig_w3_offset_sensitivity.png",
+      "sha256": "8e04529a3e0749c9ed34ad6ee12ff732943979dcaecae51ff7852133cb8f6fa2",
+      "bytes": 102838
+    },
+    {
+      "path": "figures/fig_w3_per_class_ap.png",
+      "sha256": "e477b65a23e0967704a646bd68824424c96270b4587ea129969589be19fadfbf",
+      "bytes": 41698
+    },
+    {
+      "path": "figures/fig_w3_recall_by_size.png",
+      "sha256": "41ec3b0d726033333cb3f542e324eebc13c6724549abb82b4c03c19475d99514",
+      "bytes": 49733
+    },
+    {
+      "path": "metrics.csv",
+      "sha256": "fed131eb68c867aa0069e91ee195db9c593ca51c0b296770d5363d1aa91230a2",
+      "bytes": 5814
+    },
+    {
+      "path": "test-results.json",
+      "sha256": "4b3518237e36d60b3bbdeebdd8034bdc2f2e40ff5e80f0731539b9779d110059",
+      "bytes": 2158
+    }
+  ],
+  "sources": [
+    {
+      "path": "reports/w3/figures/fig_w3_data_funnel.png",
+      "sha256": "ed8874c3c7e38950d8e3dff5165ff18b8b496e240272376a642fc817cc6358be"
+    },
+    {
+      "path": "reports/w3/figures/fig_w3_learning_curves.png",
+      "sha256": "f8e17d40df1ea8ddad6eb671588e35349a430da15e2ea73a22e0eb99bf7a9575"
+    },
+    {
+      "path": "reports/w3/figures/fig_w3_offset_sensitivity.png",
+      "sha256": "8e04529a3e0749c9ed34ad6ee12ff732943979dcaecae51ff7852133cb8f6fa2"
+    },
+    {
+      "path": "reports/w3/figures/fig_w3_per_class_ap.png",
+      "sha256": "e477b65a23e0967704a646bd68824424c96270b4587ea129969589be19fadfbf"
+    },
+    {
+      "path": "reports/w3/figures/fig_w3_recall_by_size.png",
+      "sha256": "41ec3b0d726033333cb3f542e324eebc13c6724549abb82b4c03c19475d99514"
+    },
+    {
+      "path": "results/W03/kaggle_run_03a/export_evidence/offset_sensitivity_summary.json",
+      "sha256": "20be9a0f302aa39ab8a4ea532d19b6dc82c314873ac5307e3bcc2c3661447813"
+    },
+    {
+      "path": "results/W03/kaggle_run_03a/export_evidence/stage_status.json",
+      "sha256": "fd6afd85f5d6cdc6f9a43d8d75a33c46cb483e3d7b1ab17011e69c2d93e13192"
+    },
+    {
+      "path": "results/W03/kaggle_run_03a/review_v2/stage_status.json",
+      "sha256": "78ad38d49f66ca73885dbf7edcfb7b6a84d8c8577935a15e86ecf06096c50e91"
+    },
+    {
+      "path": "results/W03/kaggle_run_03b/export_evidence/dataset_card.json",
+      "sha256": "057ab44b38fc32ebecb491e1d3b542c106abeac0f467764b2b46e48cb2217b7a"
+    },
+    {
+      "path": "results/W03/kaggle_run_03b/export_evidence/dataset_stats.csv",
+      "sha256": "e22b17b99dffff672ef790f0f4c629c1cdbaec66872a6fbb92f412d69c6cdc22"
+    },
+    {
+      "path": "results/W03/kaggle_run_03b/export_evidence/stage_status.json",
+      "sha256": "52360000c289c84b9c6f517adb657e395355de2e40c234543321a053f5f68d96"
+    },
+    {
+      "path": "results/W03/kaggle_run_03b_v2/export_evidence/stage_status.json",
+      "sha256": "eb24c12db61121f3220dd21d5a343efa773bbe8aa1f4402c06e7d3a97960e00f"
+    },
+    {
+      "path": "results/W03/kaggle_run_04/train_evidence/baseline_A_val_metrics.json",
+      "sha256": "05d9caef82eb6a431d1ecf811f96ec0aaf26aa9490683f09e879514d9e071231"
+    },
+    {
+      "path": "results/W03/kaggle_run_04/train_evidence/stage_status.json",
+      "sha256": "ad8c4d342c6b7c7913996acc1c7ca00973ec4c7c5474aa17f7500f28eb6d7a03"
+    },
+    {
+      "path": "results/W03/kaggle_run_04/train_evidence/train/results.csv",
+      "sha256": "284cdd23ea2e9ae19bacd01c06411506733f92787b9ac10664b8040a1c55ae8d"
+    },
+    {
+      "path": "results/W03/kaggle_run_04/train_evidence/weights_manifest.json",
+      "sha256": "857eaf0af26551474d158df858ae32816329d46fe6a144a338925913eb0e5b31"
+    },
+    {
+      "path": "results/W03/kaggle_run_05/analysis/analysis_summary.json",
+      "sha256": "80c311c30374d5ce72448ecb69110c606fdf6238d90002c23f91864759d70945"
+    },
+    {
+      "path": "results/W03/kaggle_run_05/analysis/recall_by_size.csv",
+      "sha256": "41be7f3cad67d059a2db3969f18a995ef709288b20319d186087cd83d7a39f76"
+    },
+    {
+      "path": "results/W03/kaggle_run_05/analysis/stage_status.json",
+      "sha256": "351dbb45410b3ca4c991d22a9a2b49da2bacd61ad0c60f3d4a3d329e013f142d"
+    },
+    {
+      "path": "results/W03/review/review_v2_summary.json",
+      "sha256": "11284f18e737005ae12ddafadf2438e2db317873edd813690de9e4c0e5a11e25"
+    }
+  ],
+  "external_artifacts": [
+    {
+      "name": "baseline_A/best.pt",
+      "link": "https://drive.google.com/file/d/1D_BcgNf37nBW9hMDkclLz4q9ViKFvfNB/view",
+      "sha256": "65dd67fb8968eb3ddbe4b50187f02cfdbbef95a3f2a92e768ac0725178c826ab",
+      "bytes": 6495530
+    },
+    {
+      "name": "baseline_A/last.pt",
+      "link": "https://drive.google.com/file/d/1M33LPmTQ80sTF92HHAy060a849DfFCYg/view",
+      "sha256": "b5785db00f3a7d613508b8deacbaa71deb1cd8c548c8a08d8736189c4213de29",
+      "bytes": 6495530
+    }
+  ]
+}
