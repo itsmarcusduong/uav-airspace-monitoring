@@ -1,0 +1,18 @@
+# E1 W5 (#58): chot truoc run 12b; chi thay track_buffer so voi default.
+
+tracker_type: botsort
+track_high_thresh: 0.25
+track_low_thresh: 0.1
+new_track_thresh: 0.25
+track_buffer: 45 # 30 -> 45: giu ID qua mat dau ngan (1,5 giay o 30 fps); chot truoc, khong sweep tham so
+match_thresh: 0.8
+fuse_score: True
+
+# BoT-SORT specifics
+gmc_method: sparseOptFlow
+
+# ReID model related thresh
+proximity_thresh: 0.5
+appearance_thresh: 0.8
+with_reid: False
+model: auto

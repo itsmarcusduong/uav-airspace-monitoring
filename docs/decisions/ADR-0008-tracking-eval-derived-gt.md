@@ -1,6 +1,6 @@
 # ADR-0008: Đánh giá liên kết của tracker bằng GT dẫn xuất "1 track/video"
 
-- Trạng thái: **Proposed** (Quang soạn 29/10/2026, issue #57). An duyệt hoặc sửa trong #58 **trước** khi chạy run 12b. Run 12 (cấu hình mặc định) được phép chạy theo bản này.
+- Trạng thái: **Accepted** (An duyệt 29/10/2026 trong issue #58, trước run 12b). Run 12 (cấu hình mặc định) được phép chạy theo bản này.
 - Liên quan: ADR-0005 mục 3 (ByteTrack chính, BoT-SORT đối chiếu; không báo HOTA/IDF1 làm kết quả chính), ADR-0006 (offset0), ADR-0007 (detector = baseline A).
 
 ## Bối cảnh
@@ -31,12 +31,13 @@
 6. **Cấu hình chạy.**
    - Detector: baseline A best.pt (SHA `65dd67fb…`), imgsz 640, conf 0,1 đưa vào tracker (≤ `track_low_thresh`, để ByteTrack dùng được hộp điểm thấp), NMS IoU 0,7.
    - Tracker biến thể `default`: bản sao cấu hình mặc định Ultralytics (`configs/tracker_*_default.yaml`). Job ghi lại khác biệt so với bản Ultralytics đang chạy.
-   - Biến thể `e1` do An chỉnh trong #58, chạy ở run 12b.
+   - Biến thể `e1` do An chốt trước run 12b trong #58: `track_buffer: 45` cho cả hai tracker, các tham số khác giữ mặc định. 45 frame tương ứng 1,5 giây ở video 30 fps, cho phép nối lại sau khoảng mất ngắn; đây là một lựa chọn định trước, không dò nhiều bộ tham số.
 7. **So sánh ByteTrack và BoT-SORT** (đặt trước khi có kết quả).
    - Tiêu chí chính: ID switch / 1000 frame GT ở IoU 0,5.
    - Tiêu chí phụ: trung vị độ phủ ID chính.
-   - Chênh lệch ID switch < 20% (tương đối), hoặc < 1 / 1000 frame (tuyệt đối), coi là **hòa**.
-   - Khi hòa, giữ ByteTrack (tracker chính theo ADR-0005, rẻ hơn vì không cần GMC).
+   - Chênh lệch ID switch < 20% tương đối (`|A-B| / max(A,B)`, bằng 0 nếu cả hai cùng 0), hoặc < 1 / 1000 frame GT tuyệt đối, coi là **hòa**.
+   - Khi hòa, giữ ByteTrack (tracker chính theo ADR-0005, rẻ hơn vì không cần GMC). Ngoài vùng hòa, tracker có ID switch / 1000 frame GT thấp hơn thắng; độ phủ ID chính là số liệu phụ để diễn giải, không đảo ngược luật hòa đã định trước.
+   - Luật chọn chỉ so ByteTrack-e1 với BoT-SORT-e1. Cấu hình `default` là mốc tham chiếu từ run 12, không phải phương án để chọn hậu nghiệm thay cho e1.
    - So sánh theo video: ghi số video mỗi tracker tốt hơn.
 
 ## Hệ quả
