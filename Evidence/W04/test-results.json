@@ -1,13 +1,157 @@
 {
   "week": "W04",
   "generated_by": "scripts/reporting/build_evidence.py",
-  "repo_commit": "1a71f5bdba154818310a741fe38fd14fe86fb946",
+  "repo_commit": "8f91d93f2a8a47f9616bfa71ccb73953a864b005",
   "summary": {
-    "total": 27,
-    "passed": 27,
+    "total": 54,
+    "passed": 54,
     "failed": 0
   },
   "checks": [
+    {
+      "check": "comparison_same_fingerprint",
+      "status": "PASS",
+      "detail": "d0ac7e230b385132",
+      "source": "results/W04/comparison_w4.csv"
+    },
+    {
+      "check": "comparison_same_ultralytics_and_gpu",
+      "status": "PASS",
+      "detail": "8.4.183 / Tesla T4",
+      "source": "results/W04/comparison_w4.csv"
+    },
+    {
+      "check": "comparison_val_only",
+      "status": "PASS",
+      "detail": "test khoa",
+      "source": "results/W04/comparison_w4.csv"
+    },
+    {
+      "check": "run09_phien_1_return_codes_zero",
+      "status": "PASS",
+      "detail": "baseline_A_aug, baseline_A_960, yolo11n_640",
+      "source": "results/W04/kaggle_run_09/phien_1/w4_compare_runs.json"
+    },
+    {
+      "check": "run09_baseline_A_aug_stages_ok",
+      "status": "PASS",
+      "detail": "8+4 stage",
+      "source": "results/W04/kaggle_run_09/phien_1/train_baseline_A_aug/stage_status.json"
+    },
+    {
+      "check": "run09_baseline_A_aug_fingerprint_eq_run03b",
+      "status": "PASS",
+      "detail": "d0ac7e230b385132",
+      "source": "results/W04/kaggle_run_09/phien_1/train_baseline_A_aug/dataset_card.json"
+    },
+    {
+      "check": "run09_baseline_A_aug_weights_sha_and_link",
+      "status": "PASS",
+      "detail": "best.pt, last.pt",
+      "source": "results/W04/kaggle_run_09/phien_1/train_baseline_A_aug/weights_manifest.json"
+    },
+    {
+      "check": "run09_baseline_A_960_stages_ok",
+      "status": "PASS",
+      "detail": "8+4 stage",
+      "source": "results/W04/kaggle_run_09/phien_1/train_baseline_A_960/stage_status.json"
+    },
+    {
+      "check": "run09_baseline_A_960_fingerprint_eq_run03b",
+      "status": "PASS",
+      "detail": "d0ac7e230b385132",
+      "source": "results/W04/kaggle_run_09/phien_1/train_baseline_A_960/dataset_card.json"
+    },
+    {
+      "check": "run09_baseline_A_960_weights_sha_and_link",
+      "status": "PASS",
+      "detail": "best.pt, last.pt",
+      "source": "results/W04/kaggle_run_09/phien_1/train_baseline_A_960/weights_manifest.json"
+    },
+    {
+      "check": "run09_yolo11n_640_stages_ok",
+      "status": "PASS",
+      "detail": "8+4 stage",
+      "source": "results/W04/kaggle_run_09/phien_1/train_yolo11n_640/stage_status.json"
+    },
+    {
+      "check": "run09_yolo11n_640_fingerprint_eq_run03b",
+      "status": "PASS",
+      "detail": "d0ac7e230b385132",
+      "source": "results/W04/kaggle_run_09/phien_1/train_yolo11n_640/dataset_card.json"
+    },
+    {
+      "check": "run09_yolo11n_640_weights_sha_and_link",
+      "status": "PASS",
+      "detail": "best.pt, last.pt",
+      "source": "results/W04/kaggle_run_09/phien_1/train_yolo11n_640/weights_manifest.json"
+    },
+    {
+      "check": "run09_phien_2_return_codes_zero",
+      "status": "PASS",
+      "detail": "detector_B",
+      "source": "results/W04/kaggle_run_09/phien_2/w4_compare_runs.json"
+    },
+    {
+      "check": "run09_detector_B_stages_ok",
+      "status": "PASS",
+      "detail": "8+4 stage",
+      "source": "results/W04/kaggle_run_09/phien_2/train_detector_B/stage_status.json"
+    },
+    {
+      "check": "run09_detector_B_fingerprint_eq_run03b",
+      "status": "PASS",
+      "detail": "d0ac7e230b385132",
+      "source": "results/W04/kaggle_run_09/phien_2/train_detector_B/dataset_card.json"
+    },
+    {
+      "check": "run09_detector_B_weights_sha_and_link",
+      "status": "PASS",
+      "detail": "best.pt, last.pt",
+      "source": "results/W04/kaggle_run_09/phien_2/train_detector_B/weights_manifest.json"
+    },
+    {
+      "check": "run09_phien_3_return_codes_zero",
+      "status": "PASS",
+      "detail": "rtdetr_l_640",
+      "source": "results/W04/kaggle_run_09/phien_3/w4_compare_runs.json"
+    },
+    {
+      "check": "run09_rtdetr_l_640_stages_ok",
+      "status": "PASS",
+      "detail": "8+4 stage",
+      "source": "results/W04/kaggle_run_09/phien_3/train_rtdetr_l_640/stage_status.json"
+    },
+    {
+      "check": "run09_rtdetr_l_640_fingerprint_eq_run03b",
+      "status": "PASS",
+      "detail": "d0ac7e230b385132",
+      "source": "results/W04/kaggle_run_09/phien_3/train_rtdetr_l_640/dataset_card.json"
+    },
+    {
+      "check": "run09_rtdetr_l_640_weights_sha_and_link",
+      "status": "PASS",
+      "detail": "best.pt, last.pt",
+      "source": "results/W04/kaggle_run_09/phien_3/train_rtdetr_l_640/weights_manifest.json"
+    },
+    {
+      "check": "cvat_key_sha_eq_run11",
+      "status": "PASS",
+      "detail": "c902a4f3e58e9323",
+      "source": "results/W04/kaggle_run_11/stage_status.json"
+    },
+    {
+      "check": "cvat_all_gold_images_scored",
+      "status": "PASS",
+      "detail": "168 anh",
+      "source": "results/W04/cvat_gold/scoring/gold_score.json"
+    },
+    {
+      "check": "cvat_run11_no_test_split",
+      "status": "PASS",
+      "detail": "test_used=False",
+      "source": "results/W04/kaggle_run_11/stage_status.json"
+    },
     {
       "check": "run06_all_stages_ok",
       "status": "PASS",
@@ -89,7 +233,7 @@
     {
       "check": "pytest::tests.test_label_utils::test_iou_basic",
       "status": "PASS",
-      "detail": "0.000s",
+      "detail": "0.006s",
       "source": "tests/"
     },
     {
@@ -101,7 +245,7 @@
     {
       "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[2 0.5 0.5 0.1]",
       "status": "PASS",
-      "detail": "0.000s",
+      "detail": "0.001s",
       "source": "tests/"
     },
     {
@@ -113,7 +257,7 @@
     {
       "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[2 1.5 0.5 0.1 0.1]",
       "status": "PASS",
-      "detail": "0.000s",
+      "detail": "0.001s",
       "source": "tests/"
     },
     {
@@ -125,13 +269,13 @@
     {
       "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[2.0 0.5 0.5 0.1 0.1]",
       "status": "PASS",
-      "detail": "0.000s",
+      "detail": "0.001s",
       "source": "tests/"
     },
     {
       "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[x 0.5 0.5 0.1 0.1]",
       "status": "PASS",
-      "detail": "0.000s",
+      "detail": "0.001s",
       "source": "tests/"
     },
     {
@@ -142,6 +286,18 @@
     },
     {
       "check": "pytest::tests.test_label_utils::test_load_preds_detects_one_based",
+      "status": "PASS",
+      "detail": "0.004s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_review_agreement_kappa",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_comparison_health_detects_nan_and_noise",
       "status": "PASS",
       "detail": "0.006s",
       "source": "tests/"
@@ -155,19 +311,25 @@
     {
       "check": "pytest::tests.test_offset_methods::test_offset_check_end_to_end[1-offset1]",
       "status": "PASS",
-      "detail": "0.013s",
+      "detail": "0.010s",
       "source": "tests/"
     },
     {
       "check": "pytest::tests.test_offset_methods::test_offset_check_end_to_end[0-offset0]",
       "status": "PASS",
-      "detail": "0.015s",
+      "detail": "0.009s",
       "source": "tests/"
     },
     {
       "check": "pytest::tests.test_offset_methods::test_score_cvat_gold_detects_offset1",
       "status": "PASS",
-      "detail": "0.006s",
+      "detail": "0.004s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_offset_methods::test_score_cvat_gold_center_metric_ignores_tight_boxes",
+      "status": "PASS",
+      "detail": "0.003s",
       "source": "tests/"
     }
   ]

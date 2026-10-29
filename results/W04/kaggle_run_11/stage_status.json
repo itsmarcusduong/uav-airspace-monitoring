@@ -1,0 +1,39 @@
+{
+  "inputs": {
+    "status": "OK",
+    "videos_by_group": {
+      "Airplane|equal": 49,
+      "Bird|plus1": 24,
+      "Drone|plus1": 92,
+      "Helicopter|equal": 51
+    },
+    "split_sha256": "7e39940eb948880951a05edf199887ec6b42ae557c85088d63a561a49604e5e2",
+    "audit_sha256": "e6c99e0f2b885108dc47def53c98a1785901c00e977a0d2d456e576b3aae61da",
+    "review_sha256": "780833ea8f0722060f11f8a8bdd0d34143e90b4081c6ade8e25318b117d12004",
+    "commit": "bb8a695b560481e682c2134413765e9a2085e894",
+    "seed": 20261022,
+    "test_used": false
+  },
+  "select": {
+    "status": "OK",
+    "frames": 168,
+    "by_group": {
+      "Drone|plus1": 85,
+      "Bird|plus1": 22,
+      "Airplane|equal": 23,
+      "Helicopter|equal": 38
+    },
+    "videos": 157
+  },
+  "extract": {
+    "status": "OK",
+    "images": 168
+  },
+  "package": {
+    "status": "OK",
+    "package_zip": "cvat_package.zip",
+    "package_sha256": "2749c65c85525638f77944b0dbd40ac47ec5abe7be9696c6f2b0a337c4ba5029",
+    "key_zip": "gold_KEY.zip",
+    "key_sha256": "c902a4f3e58e9323856a609cc2097173118549bc9e1830da886f3d5d25292ff3"
+  }
+}

@@ -56,3 +56,42 @@ def test_load_preds_detects_one_based(tmp_path):
                  '{"image_id":"a","category_id":4,"bbox":[0,0,1,1],"score":0.5}]')
     preds, off = an.load_preds(p, 4)
     assert off == 1 and [q[0] for q in preds["a"]] == [0, 3]
+
+
+def test_review_agreement_kappa():
+    import review_agreement as ra
+    rows = [{"video_id": f"v{i}", "verdict": a, "review_quang_v2": b}
+            for i, (a, b) in enumerate([("OK", "OK")] * 6 + [("SAI_NHAN", "SAI_NHAN")] * 2 + [("OK", "SAI_NHAN")] * 2 + [("", "OK")])]
+    r = ra.agreement(rows, "verdict", "review_quang_v2")
+    assert r["videos"] == 10 and r["agree"] == 8
+    # po = 0.8; pe = (8*6 + 2*4)/100 = 0.56; kappa = 0.24/0.44
+    assert r["cohen_kappa"] == round(0.24 / 0.44, 4)
+    assert [d["video_id"] for d in r["disagreements"]] == ["v8", "v9"]
+
+
+def test_comparison_health_detects_nan_and_noise():
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts" / "reporting"))
+    import build_comparison as bc
+    ok = [{"epoch": str(e), "train/box_loss": "1.0", "metrics/mAP50-95(B)": str(0.30 + (0.02 if e % 2 else 0))} for e in range(1, 13)]
+    first, sd = bc.health(ok)
+    assert first is None and 0.009 < sd < 0.012
+    bad = [dict(r) for r in ok]; bad[2]["train/box_loss"] = "nan"
+    assert bc.health(bad)[0] == 3
+
+
+def test_seed_rule_decisions():
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts" / "reporting"))
+    import build_seed_comparison as bs
+
+    def s(m, ms, f1):
+        return {"map": {"mean": m}, "ms": {"mean": ms}, "f1": {"mean": f1}}
+    assert bs.family("yolo11n_640_s20261029") == "yolo11n_640" and bs.family("baseline_A") == "baseline_A"
+    assert bs.decide(s(0.34, 3.2, 0.85), s(0.352, 3.3, 0.80), "A", "B")["choice"] == "B"      # hon >= 0.01 mAP
+    assert bs.decide(s(0.34, 3.0, 0.85), s(0.345, 3.6, 0.90), "A", "B")["choice"] == "A"      # hoa mAP, A nhanh hon >= 10%
+    assert bs.decide(s(0.34, 3.2, 0.85), s(0.345, 3.25, 0.87), "A", "B")["choice"] == "B"     # hoa toc do, F1 hon >= 0.01
+    assert bs.decide(s(0.34, 3.2, 0.85), s(0.345, 3.25, 0.855), "A", "B")["choice"] == "A"    # hoa het -> giu A
+    assert bs.decide(s(0.34, 30.0, 0.85), s(0.30, 3.2, 0.80), "A", "B")["choice"] == "B"      # A vuot 25 ms

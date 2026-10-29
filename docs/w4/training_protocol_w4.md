@@ -46,3 +46,22 @@ Ghi chú: Ultralytics dùng batch danh nghĩa `nbs=64` và tích lũy gradient, 
 2. Trong các mô hình đạt ràng buộc: chọn mAP@0.5:0.95 cao nhất trên val; tiêu chí phụ là F1 lớp Drone tại ngưỡng vận hành.
 3. Một seed, một lần chạy: chênh lệch mAP@0.5:0.95 < 0,01 coi là **hòa** → chọn mô hình nhanh hơn.
 4. Nếu mọi mô hình đều có AP@0.5:0.95 lớp Drone thấp và recall hộp nhỏ không cải thiện so với A, ưu tiên cải thiện **dữ liệu** (căn nhãn theo ADR-0006, sửa video nhãn lỗi, thêm ảnh nền trống cho W7) trước khi thử mô hình lớn hơn.
+
+## 5. Kết quả run 09 và áp dụng luật (28/10/2026)
+- Bảng so sánh: `results/W04/comparison_w4.md` / `.csv`; hình `results/W04/fig_w4_accuracy_vs_latency.png`, `fig_w4_ap_by_class.png`; bằng chứng gốc `results/W04/kaggle_run_09/phien_{1,2,3}/`.
+- Quyết định và lý do: **ADR-0007**. Theo luật mục 4: `yolo11n_640` và `baseline_A` hòa (chênh mAP@0.5:0.95 0,005 < 0,01), nên chọn mô hình nhanh hơn là `baseline_A`. Luật 4 bị kích hoạt, nên W7 ưu tiên cải thiện dữ liệu.
+- `rtdetr_l_640` **không hợp lệ**: loss NaN từ epoch 3. Không dùng để kết luận về RT-DETR.
+- Bổ sung sau khi có kết quả (không đổi luật): `build_comparison.py` thêm cột `train_health` (phát hiện loss NaN) và `val_map50_95_epoch_sd` (độ nhiễu val giữa các epoch) để đọc bảng đúng.
+
+## 6. Luật chọn lại sau 3 seed (đặt 29/10/2026, trước khi chạy run 13; issue #59)
+ADR-0007 ghi `baseline_A` và `yolo11n_640` hòa trong phạm vi một seed. Run 13 train thêm hai seed (20261029, 20261030) cho cả hai mô hình. Dữ liệu, config, ngân sách epoch, Ultralytics 8.4.183 và GPU T4 giữ nguyên. Seed 20261013 lấy từ run 04 (A) và run 09 (YOLO11n).
+1. **Chỉ số chính:** trung bình mAP@0.5:0.95 trên val qua 3 seed. Báo kèm độ lệch chuẩn và min–max. Ràng buộc ≤ 25 ms/ảnh giữ nguyên.
+2. **Δ = trung bình(YOLO11n) − trung bình(A).** Nếu |Δ| ≥ 0,01 thì chọn mô hình có trung bình cao hơn.
+3. **Nếu |Δ| < 0,01 (hòa):** so thời gian suy luận trung bình.
+   - Mô hình nhanh hơn ít nhất **10%** thì được chọn.
+   - Nếu chênh tốc độ < 10% (hòa tốc độ), dùng tiêu chí phụ: trung bình F1 lớp Drone tại ngưỡng vận hành. Chọn mô hình cao hơn nếu chênh ≥ 0,01.
+   - Nếu vẫn < 0,01 thì **giữ baseline A**: không đổi detector khi không có bằng chứng.
+4. Run có `train_health` khác `OK` không được thay bằng run khác. Khi đó quyết định dựa trên số seed còn lại và ghi giới hạn.
+5. Bảng và quyết định tạo bằng `scripts/reporting/build_seed_comparison.py`, không tính tay. Kết quả ghi vào ADR-0007 (bản cập nhật).
+
+Mục này bổ sung chỗ còn thiếu của luật mục 4 (không định nghĩa "hòa về tốc độ"). Nó được ghi **trước** khi có số liệu seed 20261029 và 20261030, nhưng **sau** khi đã biết kết quả seed 20261013: tại seed này YOLO11n có F1 Drone cao hơn A 0,024 và chỉ chậm hơn 0,7%. Nhóm ghi rõ điều này để người đọc tự đánh giá; ngưỡng 10% và 0,01 lấy theo cùng mức với các luật trước (mục 4, ADR-0007).

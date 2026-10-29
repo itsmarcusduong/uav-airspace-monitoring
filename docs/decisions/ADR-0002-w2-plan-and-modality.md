@@ -1,6 +1,6 @@
 # ADR-0002: Kế hoạch tuần W2–W6 và phạm vi modality
 
-- Trạng thái: **Proposed** (chờ An + Quang + GVHD)
+- Trạng thái: **Accepted** (An 26/10, Quang 27/10); mục 1–2 **Superseded by ADR-0005**; GVHD: chờ xác nhận qua #7 (ADR-0005).
 - Ngày: 11/10/2026
 
 ## Bối cảnh
@@ -17,4 +17,15 @@
 Số liệu W3 trở đi tách V/IR. Nếu GVHD muốn gộp, chỉ cần gộp ở bước huấn luyện, không đổi split.
 
 ## Còn mở
-Xác nhận của GVHD (chưa có). Không coi ADR này là đã được duyệt.
+Chờ GVHD xác nhận qua #7 (chưa có tới 29/10/2026).
+
+## Review (26/10/2026)
+**Người review:** Lê Ngọc An
+
+- Mục 1: Superseded by ADR-0005 (mục 1–2). Thứ tự tuần hiện hành là W4 tuning + augmentation, W5 tích hợp tracker, W6 geofence + cảnh báo.
+- Mục 2: Superseded by ADR-0005 (mục 1–2). ADR-0005 chọn ByteTrack làm tracker chính và BoT-SORT đối chiếu.
+- Mục 3: **Accepted** — giữ SQLite cho MVP và PostgreSQL làm hướng mở rộng; ADR-0004, ADR-0005 và giao thức split hiện hành không đưa ra quyết định CSDL mâu thuẫn.
+- Mục 4: **Accepted** — nhất quán với ADR-0005 mục 2: Visible là nhánh chính, IR là thí nghiệm phụ và báo cáo riêng, không gộp số liệu.
+- Mục 5: Giữ nguyên; ADR-0004 và ADR-0005 không thay đổi quyết định về tên đề tài.
+
+Duyệt: Lê Ngọc An, 2026-10-26

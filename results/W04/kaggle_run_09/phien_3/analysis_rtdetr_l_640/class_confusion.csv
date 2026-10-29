@@ -1,0 +1,17 @@
+gt,pred,count
+Airplane,Airplane,154
+Airplane,Bird,18
+Airplane,Drone,3
+Airplane,Helicopter,24
+Airplane,missed,90
+Bird,Bird,66
+Bird,Drone,4
+Bird,missed,3
+Drone,Airplane,4
+Drone,Bird,32
+Drone,Drone,399
+Drone,Helicopter,1
+Drone,missed,79
+Helicopter,Drone,2
+Helicopter,Helicopter,265
+Helicopter,missed,18

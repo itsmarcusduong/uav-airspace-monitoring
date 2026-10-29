@@ -1,6 +1,6 @@
 # ADR-0006: Chiều lệch nhãn của video dư một mục (offset0 hay offset1)
 
-- Trạng thái: **Accepted (27/10/2026) — kết luận theo luật: UNDETERMINED, giữ offset0 / `e1-yolo-v1`**. Luật đặt trước (commit `ffb2ed0`, PR #43, 22/10) không được sửa sau khi xem kết quả. Kiểm chứng tiếp bằng tập chuẩn CVAT (#24).
+- Trạng thái: **Accepted (27/10/2026) — kết luận theo luật: UNDETERMINED, giữ offset0 / `e1-yolo-v1`**. Luật đặt trước (commit `ffb2ed0`, PR #43, 22/10) không được sửa sau khi xem kết quả. Kiểm chứng thứ hai bằng tập chuẩn CVAT (#24, 28/10/2026) cũng **UNDETERMINED** theo luật (đối chứng không đạt) — xem mục "Kết quả tập chuẩn CVAT".
 - Liên quan: ADR-0004 (offset0 tạm thời, mục 5–6 và Giới hạn), #24 (tập chuẩn CVAT), #37 (xuất lại nếu đổi).
 
 ## Bối cảnh
@@ -48,7 +48,38 @@ Nguồn: `results/W04/kaggle_run_06/w4_offset_check/` (`offset_check_summary.jso
 - Nhóm Drone dư 1 mục nghiêng rõ về i+1, **ngược chiều** với đối chứng. Baseline A được train bằng nhãn offset0, nên nếu có thiên lệch thì thiên lệch đó đẩy dự đoán về phía mục i. Việc dự đoán vẫn khớp i+1 hơn càng củng cố giả thuyết offset1. Kết quả này cùng chiều với hai quan sát độc lập: mục rỗng nằm ở frame 0 (ADR-0004), và thăm dò bằng mắt 26/34.
 - Không đổi luật sau khi đã xem kết quả. Bằng chứng quyết định tiếp theo là tập chuẩn CVAT (#24): đo trực tiếp trên ảnh, đối chứng 80 frame.
 
+## Kết quả tập chuẩn CVAT (#24, chấm 28/10/2026)
+Nguồn: annotation của An `results/W04/cvat_gold/cvat_gold_an_20261028.zip` (PR #53, commit trước khi mở khóa), khóa `results/W04/cvat_gold/gold_KEY.zip` (SHA-256 `c902a4f3e58e9323856a609cc2097173118549bc9e1830da886f3d5d25292ff3`, run 11), kết quả `results/W04/cvat_gold/scoring/` (`gold_score.json`, `gold_pairs.csv`), script `scripts/dataset/score_cvat_gold.py`.
+
+[Kết quả đo] 168 ảnh từ 157 video; 165 ảnh có đúng 1 hộp, 3 ảnh An để trống vì không thấy vật.
+
+**Luật đặt trước (IoU, giống run 06):**
+
+| Nhóm | Video dùng được | Video nghiêng về mục i+1 | Sign test p | Đạt luật? |
+|---|---|---|---|---|
+| Đối chứng (Airplane, Helicopter khớp số nhãn) | 25 | 7 (18/25 = 72% nghiêng về i) | 0,043 | **Không** (cần ≥ 80% và p < 0,01) |
+| Drone dư 1 mục | 40 | 25 | 0,154 | — (không xét) |
+| Bird dư 1 mục | 3 | 2 | 1,0 | — (dưới 6 video) |
+
+**Kết luận theo luật [DECISION]:** UNDETERMINED → tiếp tục giữ offset0 / `e1-yolo-v1`. Run 06 và CVAT không mâu thuẫn nhau (cả hai đều UNDETERMINED), nên không áp dụng điều khoản "chọn theo CVAT".
+
+**Phát hiện về phương pháp [Kết quả đo]:** hộp An vẽ sát vật hơn nhiều so với nhãn gốc. Diện tích hộp An / hộp nhãn có trung vị 0,33, nhưng tâm hộp gần như trùng (95% ảnh lệch tâm ≤ 10 px, trung vị 2,2 px). Trung vị IoU tốt nhất chỉ 0,36 là do **độ rộng hộp**, không phải do vẽ sai vị trí. IoU vì vậy là thước đo kém nhạy cho câu hỏi lệch 1 frame.
+
+**Phân tích thăm dò — thêm SAU khi xem kết quả, không thay luật [INFERENCE]:** dùng khoảng cách tâm (không phụ thuộc độ rộng hộp), đơn vị vẫn là video (`exploratory_center` trong `gold_score.json`):
+
+| Nhóm | Video | Gần mục i+1 hơn | Sign test p |
+|---|---|---|---|
+| Đối chứng | 55 | 20 (35/55 = 64% gần i) | 0,058 |
+| Drone dư 1 mục | 75 | 61 (81%) | 3,8·10⁻⁸ |
+| Bird dư 1 mục | 10 | 7 | 0,34 |
+
+- Hai phương pháp độc lập (dự đoán của mô hình ở run 06, người vẽ ở CVAT) cùng cho thấy nhóm Drone dư 1 mục nghiêng mạnh về i+1. Trong cả hai, đối chứng nghiêng đúng chiều (về i) nhưng chưa đủ mạnh.
+- Một giải thích có thể cho đối chứng yếu: đối chứng gồm Airplane/Helicopter, hộp lớn (trung vị cạnh nhãn > 50 px), nên sai số tâm khi vẽ tay lớn hơn độ dịch 2 px giữa i và i+1. Chưa kiểm chứng.
+- Kết quả này **không** đủ để đổi dữ liệu theo luật hiện hành. Đổi sang offset1 cho Drone dư 1 mục là một quyết định mới. Nếu làm, cần ADR mới có luật đặt trước (ví dụ: đối chứng là chính các video Drone khớp số nhãn, cùng cỡ vật), An và Quang cùng duyệt. Dự kiến xét ở W7 (hard negatives, chất lượng dữ liệu) cùng với việc sửa video nhãn lỗi.
+
+**Kiểm tra review v2 (40 video, An độc lập):** đồng ý với `review_quang_v2` 35/40 (87,5%), Cohen's κ = 0,40 (`results/W04/review_v2_agreement.json`, script `scripts/dataset/review_agreement.py`). Cả 5 video lệch đều là An `OK` / Quang `SAI_NHAN`. Tiêu chí của An là "thấy vật", của v2 là "hộp chứa vật ở mọi frame đã xem". Hai người cần thống nhất tiêu chí và xem lại 5 video này trước W7.
+
 ## Việc tiếp theo
-1. #24: An vẽ tập chuẩn (gói `cvat_package.zip`, run 11), Quang chấm bằng `scripts/dataset/score_cvat_gold.py` sau khi annotation đã được commit.
-2. Nếu CVAT kết luận offset1: xuất `e1-yolo-v2` (#37), train lại mốc A và mô hình được chọn trên v2, cập nhật ADR (bản mới) — dự kiến W5.
+1. ~~#24: An vẽ tập chuẩn, Quang chấm~~ — xong 28/10/2026 (mục trên).
+2. CVAT không kết luận offset1 theo luật → #37 đóng trong W4 (không xuất `e1-yolo-v2`). Nếu W7 lập ADR mới cho offset1 (mục trên) thì mới xuất v2 và train lại mốc A cùng mô hình được chọn.
 3. (Tùy chọn, thăm dò) train baseline A trên `e1-yolo-v2` để xem mAP@0.5:0.95 thay đổi thế nào. Kết quả chỉ để tham khảo, vì nhãn val của v1 và v2 khác nhau nên hai mAP không cùng thước đo.

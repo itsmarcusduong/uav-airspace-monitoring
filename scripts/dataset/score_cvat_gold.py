@@ -51,6 +51,51 @@ def read_annotations(path: Path) -> dict:
     return ann
 
 
+def _center(b) -> tuple:
+    return (b[0] + b[2] / 2, b[1] + b[3] / 2)
+
+
+def _median(xs):
+    xs = sorted(xs)
+    if not xs:
+        return None
+    m = len(xs) // 2
+    return xs[m] if len(xs) % 2 else (xs[m - 1] + xs[m]) / 2
+
+
+def exploratory_center(key: list, ann: dict, tie: float) -> dict:
+    """THAM DO (them sau khi xem ket qua IoU, KHONG thay luat dat truoc): so khoang cach tam hop An ve toi tam nhan i va i+1.
+
+    Ly do: hop An ve sat vat hon nhieu so voi nhan goc (dien tich nho hon), nen IoU bi chi phoi boi do rong hop, khong
+    chi boi vi tri. Khoang cach tam khong phu thuoc do rong hop. Don vi kiem dinh van la video; khong dua ra verdict.
+    """
+    per_vid, dist, ratio = defaultdict(list), [], []
+    for k in key:
+        boxes = ann.get(k["gold_id"], [])
+        if len(boxes) != 1:
+            continue
+        W, H = float(k["width"]), float(k["height"])
+        cx, cy, w, h = boxes[0]
+        li, lj = json.loads(k["label_i"]), json.loads(k["label_i1"])
+        c = (cx * W, cy * H)
+        d0, d1 = math.dist(c, _center(li)), math.dist(c, _center(lj))
+        dist.append(min(d0, d1))
+        if li[2] * li[3] > 0:
+            ratio.append((w * W * h * H) / (li[2] * li[3]))
+        if abs(d0 - d1) >= tie:
+            g = "control_equal" if k["kind"] == "equal" else f"{k['class_name']}|{k['kind']}"
+            per_vid[(g, k["video_id"])].append(d0 - d1)  # > 0: gan nhan i+1 hon
+    groups = defaultdict(list)
+    for (g, _), ds in per_vid.items():
+        groups[g].append(sum(ds) / len(ds))
+    return {"note": "THAM DO, them sau khi xem ket qua; khong dung de ra quyet dinh thay luat dat truoc (ADR-0006)",
+            "box_vs_label": {"median_center_dist_px": round(_median(dist), 2) if dist else None,
+                             "frac_center_dist_le_10px": round(sum(x <= 10 for x in dist) / len(dist), 4) if dist else None,
+                             "median_area_ratio_annot_over_label_i": round(_median(ratio), 4) if ratio else None},
+            "groups": {g: {"videos": len(d), "videos_closer_to_i1": sum(x > 0 for x in d),
+                           "sign_test_p": sign_p(sum(x > 0 for x in d), len(d))} for g, d in groups.items()}}
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--annotations", type=Path, required=True)
@@ -59,6 +104,7 @@ def main() -> int:
     ap.add_argument("--tie", type=float, default=0.01)
     ap.add_argument("--video-frac", type=float, default=0.80)
     ap.add_argument("--alpha", type=float, default=0.01)
+    ap.add_argument("--center-tie", type=float, default=0.5, help="px; bo frame co |d(i) - d(i+1)| nho hon (phan tham do)")
     a = ap.parse_args()
     a.out.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(a.key) as zf:
@@ -107,7 +153,8 @@ def main() -> int:
     summary = {"frames": len(rows), "status_counts": {s: sum(r["status"] == s for r in rows) for s in ("ok", "no_box", "multi_box")},
                "label_quality": {"median_best_iou": sorted(best)[len(best) // 2] if best else None,
                                  "frac_best_iou_ge_0_5": round(sum(b >= 0.5 for b in best) / len(best), 4) if best else None},
-               "groups": res, "control_ok": control_ok, "verdict": verdict}
+               "groups": res, "control_ok": control_ok, "verdict": verdict,
+               "exploratory_center": exploratory_center(key, ann, a.center_tie)}
     (a.out / "gold_score.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False), encoding="utf-8")
     print(json.dumps(summary, indent=1, ensure_ascii=False))
     return 0

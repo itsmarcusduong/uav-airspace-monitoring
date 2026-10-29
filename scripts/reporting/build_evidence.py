@@ -221,10 +221,69 @@ def w03(w: Week):
 def w04(w: Week):
     cmp_path = ROOT / "results/W04/comparison_w4.csv"
     if cmp_path.is_file():
-        for r in rcsv("results/W04/comparison_w4.csv"):
+        rows = rcsv("results/W04/comparison_w4.csv")
+        for r in rows:
             for k, v in r.items():
-                if k not in ("model", "split", "source", "run_commit") and v != "":
-                    w.m(k, v, split=r.get("split", "val"), model=r["model"], source="results/W04/comparison_w4.csv", run_commit=r.get("run_commit", ""))
+                if k not in ("model", "split", "source", "run_commit", "weights", "gpu", "ultralytics", "fingerprint") and v != "":
+                    w.m(k, v, split=r.get("split", "val"), model=r["model"], source="results/W04/comparison_w4.csv",
+                        producer="scripts/reporting/build_comparison.py", run_commit=r.get("run_commit", ""))
+        w.check("comparison_same_fingerprint", len({r["fingerprint"] for r in rows}) == 1, rows[0]["fingerprint"], "results/W04/comparison_w4.csv")
+        w.check("comparison_same_ultralytics_and_gpu", len({(r["ultralytics"], r["gpu"]) for r in rows}) == 1,
+                f"{rows[0]['ultralytics']} / {rows[0]['gpu']}", "results/W04/comparison_w4.csv")
+        w.check("comparison_val_only", all(r["split"] == "val" for r in rows), "test khoa", "results/W04/comparison_w4.csv")
+        for f, c in (("results/W04/fig_w4_accuracy_vs_latency.png", "mAP@0.5:0.95 và thời gian suy luận (val, T4)"),
+                     ("results/W04/fig_w4_ap_by_class.png", "AP@0.5 theo lớp, 6 mô hình (val)")):
+            w.fig(f, c)
+    R9 = ROOT / "results/W04/kaggle_run_09"
+    for runs in sorted(R9.glob("phien_*/w4_compare_runs.json")):
+        rr = json.loads(runs.read_text(encoding="utf-8")); rel9 = str(runs.relative_to(ROOT))
+        w.check(f"run09_{runs.parent.name}_return_codes_zero", all(v["train_rc"] == 0 and v["analysis_rc"] == 0 for v in rr["runs"].values()),
+                ", ".join(rr["runs"]), rel9)
+        for exp in rr["runs"]:
+            t, an = runs.parent / f"train_{exp}", runs.parent / f"analysis_{exp}"
+            st = json.loads((t / "stage_status.json").read_text(encoding="utf-8"))
+            sa = json.loads((an / "stage_status.json").read_text(encoding="utf-8"))
+            ok = all(v.get("status") == "OK" for v in st.values() if isinstance(v, dict) and "status" in v) and \
+                all(v.get("status") == "OK" for v in sa.values() if isinstance(v, dict) and "status" in v)
+            w.check(f"run09_{exp}_stages_ok", ok, f"{len(st)}+{len(sa)} stage", str((t / 'stage_status.json').relative_to(ROOT)))
+            card = json.loads((t / "dataset_card.json").read_text(encoding="utf-8"))
+            w.check(f"run09_{exp}_fingerprint_eq_run03b", card["content_fingerprint_sha256"] == rr["fingerprint"] ==
+                    rjson("results/W03/kaggle_run_03b/export_evidence/dataset_card.json")["content_fingerprint_sha256"],
+                    card["content_fingerprint_sha256"][:16], str((t / "dataset_card.json").relative_to(ROOT)))
+            wm = json.loads((t / "weights_manifest.json").read_text(encoding="utf-8"))
+            for name, v in wm.items():
+                if name.endswith(".pt"):
+                    w.external.append({"name": f"{exp}/{name}", "link": v.get("drive_link", ""), "sha256": v["sha256"], "bytes": v["bytes"]})
+            w.check(f"run09_{exp}_weights_sha_and_link", all(v.get("sha256") and v.get("drive_link") for k, v in wm.items() if k.endswith(".pt")),
+                    ", ".join(wm), str((t / "weights_manifest.json").relative_to(ROOT)))
+    G = "results/W04/cvat_gold"
+    if (ROOT / G / "scoring/gold_score.json").is_file():
+        gs = rjson(f"{G}/scoring/gold_score.json"); s11 = rjson("results/W04/kaggle_run_11/stage_status.json")
+        src = f"{G}/scoring/gold_score.json"
+        w.m("cvat_frames", gs["frames"], "image", source=src, producer="scripts/dataset/score_cvat_gold.py")
+        w.m("cvat_frames_no_box", gs["status_counts"]["no_box"], "image", source=src)
+        w.m("cvat_median_best_iou", gs["label_quality"]["median_best_iou"], "IoU", source=src)
+        for g, v in gs["groups"].items():
+            w.m("cvat_iou_videos_i1_better", v["videos_i1_better"], "video", split=g, source=src)
+            w.m("cvat_iou_videos", v["videos"], "video", split=g, source=src)
+            w.m("cvat_iou_sign_test_p", v["sign_test_p"], "p", split=g, source=src)
+        w.m("cvat_control_ok", gs["control_ok"], "bool", source=src)
+        for g, v in gs["verdict"].items():
+            w.m("cvat_verdict", v, "", split=g, source=src)
+        ex = gs.get("exploratory_center", {})
+        for k, v in ex.get("box_vs_label", {}).items():
+            w.m(f"cvat_explore_{k}", v, "", source=src)
+        for g, v in ex.get("groups", {}).items():
+            w.m("cvat_explore_videos_closer_to_i1", f"{v['videos_closer_to_i1']}/{v['videos']}", "video", split=g, source=src)
+            w.m("cvat_explore_sign_test_p", v["sign_test_p"], "p", split=g, source=src)
+        w.check("cvat_key_sha_eq_run11", sha256(ROOT / G / "gold_KEY.zip") == s11["package"]["key_sha256"], s11["package"]["key_sha256"][:16],
+                "results/W04/kaggle_run_11/stage_status.json")
+        w.check("cvat_all_gold_images_scored", gs["frames"] == s11["select"]["frames"], f"{gs['frames']} anh", src)
+        w.check("cvat_run11_no_test_split", s11["inputs"]["test_used"] is False, "test_used=False", "results/W04/kaggle_run_11/stage_status.json")
+    if (ROOT / "results/W04/review_v2_agreement.json").is_file():
+        ag = rjson("results/W04/review_v2_agreement.json"); src = "results/W04/review_v2_agreement.json"
+        for k in ("videos", "agree", "percent_agree", "cohen_kappa"):
+            w.m(f"review_v2_an_vs_quang_{k}", ag[k], "", source=src, producer="scripts/dataset/review_agreement.py")
     off = ROOT / "results/W04/kaggle_run_06/w4_offset_check/offset_check_summary.json"
     if off.is_file():
         s = json.loads(off.read_text(encoding="utf-8"))
@@ -293,13 +352,13 @@ INFO = {
     "W03": ("Tuan3", "Train baseline (config, weights, mAP/PR)",
             "Review nhãn v2, xuất e1-yolo-v1, train YOLOv8n@640 (baseline A), phân tích val, model card."),
     "W04": ("Tuan4", "Tuning + augmentation, so sánh baseline",
-            "Kiểm chứng chiều lệch nhãn (run 06, ADR-0006), tập chuẩn CVAT, config và train các mô hình so sánh (A+aug, A@960, B), bảng so sánh."),
+            "Kiểm chứng chiều lệch nhãn (run 06 và tập chuẩn CVAT, ADR-0006), train và so sánh 6 mô hình trên cùng dữ liệu (run 09), áp luật chọn đặt trước (ADR-0007)."),
 }
 LINKS = {
     "W01": "Báo cáo: reports/w1/. Tài liệu: docs/w1/.",
     "W02": "PR #13, #14. Báo cáo: reports/w2/. Tài liệu: docs/w2/, ADR-0002, ADR-0003.",
     "W03": "Issue #10, #11, #16–#21; PR #22, #23, #25, #26, #28, #31–#35. Báo cáo: reports/w3/. ADR-0004, ADR-0005. Model card: docs/w3/model_card_baseline_A.md.",
-    "W04": "Issue #24, #36–#42, #48, #49; PR #43–#47. Kế hoạch: docs/w4/W4_PLAN.md. ADR-0006.",
+    "W04": "Issue #24, #36–#42, #48, #49; PR #43–#47, #50–#55. Báo cáo: reports/w4/ (báo cáo công việc, v0.4). Trạng thái: docs/status/W04_planned_done_evidence.md. Kế hoạch: docs/w4/W4_PLAN.md. ADR-0006, ADR-0007. Giao thức: docs/w4/training_protocol_w4.md.",
 }
 
 
