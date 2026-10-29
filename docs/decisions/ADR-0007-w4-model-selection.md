@@ -1,6 +1,6 @@
 # ADR-0007: Chọn detector cho W5 theo luật đặt trước (kết quả run 09)
 
-- Trạng thái: **Proposed** (Quang soạn 28/10/2026, áp dụng tạm cho W5). Chuyển **Accepted** khi An duyệt trên PR.
+- Trạng thái: **Accepted** (Quang 28/10/2026, An 29/10/2026).
 - Liên quan: #39, #40, #48; giao thức `docs/w4/training_protocol_w4.md` mục 4 (luật đặt trước, commit `2ae4c50`, PR #51, 27/10/2026, trước khi có kết quả); ADR-0005 (chỉ tiêu ≥ 15 FPS); ADR-0006 (dữ liệu `e1-yolo-v1`).
 
 ## Bối cảnh
