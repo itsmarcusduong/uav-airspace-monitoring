@@ -1,0 +1,192 @@
+{
+  "week": "W05",
+  "milestone": "Tuan5",
+  "repo_commit": "b0a93069189eda806af14725bf0b58d3385d9498",
+  "generated_at": "2026-10-30T16:10:44+00:00",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "e03bc1487cb02701df41823bca5172940db095d383f2eba87801da18eaf086df",
+      "bytes": 3301
+    },
+    {
+      "path": "figures/fig_w5_seeds.png",
+      "sha256": "f29f5c05c6b3154d76e25d1588ddb6095d96467a3f853cb14405311b161b5d4d",
+      "bytes": 89241
+    },
+    {
+      "path": "figures/fig_w5_tracking_by_class.png",
+      "sha256": "780405c162397541bbe83d0761a17641f9803d89222ba9cd0839eaaa98583f7f",
+      "bytes": 71612
+    },
+    {
+      "path": "metrics.csv",
+      "sha256": "13de67286656b6bacf6dea6fd7bd572dd5344e2827623dd0db2d48421e7e812b",
+      "bytes": 48865
+    },
+    {
+      "path": "test-results.json",
+      "sha256": "46ec152d1d16b6dd42bea1262452e3b6e87404b3da33527b220f83371061c939",
+      "bytes": 11993
+    },
+    {
+      "path": "test-results.xml",
+      "sha256": "cc2220914b22933135a675e264e7b6a9baf51867d79ebe5eb66ec975b014b5c8",
+      "bytes": 3952
+    }
+  ],
+  "sources": [
+    {
+      "path": "results/W05/fig_w5_seeds.png",
+      "sha256": "f29f5c05c6b3154d76e25d1588ddb6095d96467a3f853cb14405311b161b5d4d"
+    },
+    {
+      "path": "results/W05/fig_w5_tracking_by_class.png",
+      "sha256": "780405c162397541bbe83d0761a17641f9803d89222ba9cd0839eaaa98583f7f"
+    },
+    {
+      "path": "results/W05/kaggle_run_12/w5_track/demo/demo_index.json",
+      "sha256": "a2cb85ad33d28707ba79f86ae17fc77feb53b2fb35e6ce992271a338d3170c5d"
+    },
+    {
+      "path": "results/W05/kaggle_run_12/w5_track/inputs.json",
+      "sha256": "76abfcbd9230b1d427b0e952614376f757f21dac5c70f2580e85788578dff0a5"
+    },
+    {
+      "path": "results/W05/kaggle_run_12/w5_track/stage_status.json",
+      "sha256": "f80a9cb7f6c98ae8fbd151ab91770ffcb0f878840a68105d7bd4c5d612ff09e7"
+    },
+    {
+      "path": "results/W05/kaggle_run_12b/w5_track/inputs.json",
+      "sha256": "bec31fd9c7dccf25fd582d280a4e4ebe5e3e1d9bd36ca4858919096c94592c53"
+    },
+    {
+      "path": "results/W05/kaggle_run_12b/w5_track/stage_status.json",
+      "sha256": "77e68c1cfb56b1d9f165f65e290ff4c3cc4ac7810168f544623702550c8b836c"
+    },
+    {
+      "path": "results/W05/kaggle_run_13/train_baseline_A_s20261029/stage_status.json",
+      "sha256": "44a1274b10b5eadfb58d073e6bff58130a69775da2b608ba952fd8aabba5907d"
+    },
+    {
+      "path": "results/W05/kaggle_run_13/train_baseline_A_s20261029/weights_manifest.json",
+      "sha256": "d60b510f4e2d5e0fe4c58623268fe50aefd6a59b3cb888c6ae4050a9e0a1cdfc"
+    },
+    {
+      "path": "results/W05/kaggle_run_13/train_baseline_A_s20261030/stage_status.json",
+      "sha256": "eb164ad46ef25ac8bfd4933a0e20295beabb5e0ae069a0b61c925fafb7bd6be0"
+    },
+    {
+      "path": "results/W05/kaggle_run_13/train_baseline_A_s20261030/weights_manifest.json",
+      "sha256": "be267a1fd561229cd11f1441770a46a2949b7ea177a6b71f00639012ceb245e1"
+    },
+    {
+      "path": "results/W05/kaggle_run_13/train_yolo11n_640_s20261029/stage_status.json",
+      "sha256": "a6ef88377dc47f8cc176612d4e4f06e2c1f7914802c509b7301e5a309eec7a4a"
+    },
+    {
+      "path": "results/W05/kaggle_run_13/train_yolo11n_640_s20261029/weights_manifest.json",
+      "sha256": "ac314c057d59d8d56319e6610098f357f4bb837d08faf4c5107c83262b293011"
+    },
+    {
+      "path": "results/W05/kaggle_run_13/train_yolo11n_640_s20261030/stage_status.json",
+      "sha256": "30fd7a7a76d74af2f2a9bd90143ed5eb167d4c8be8135258aa4862a9050acaba"
+    },
+    {
+      "path": "results/W05/kaggle_run_13/train_yolo11n_640_s20261030/weights_manifest.json",
+      "sha256": "9a9c8885af0d8d05ae9d543047627f0b20610303535c9b0f2b698958f856584a"
+    },
+    {
+      "path": "results/W05/kaggle_run_13/w5_seed_runs.json",
+      "sha256": "234dd6e72c6eb5e3e09cf8b3dfb3c19d9cf92270f45917839708c22c4b424885"
+    },
+    {
+      "path": "results/W05/seed_comparison.csv",
+      "sha256": "221d4a17221f4e8a680cd080369c45dd3a87aff77e303ec2a8be55c6dcb157ba"
+    },
+    {
+      "path": "results/W05/seed_decision.json",
+      "sha256": "faa5dd07fbce7e8fd618ab3026a727f4215b60336e9aeb0df01f8028377957e3"
+    },
+    {
+      "path": "results/W05/track_comparison.csv",
+      "sha256": "61d96344a1a593ee48ab7567e03706101d6886a692ecdfd7b48f19b891a0a2e9"
+    },
+    {
+      "path": "results/W05/track_decision.json",
+      "sha256": "46a60e14bfe1c5ca3cc513334507a4b5eabef0c3f2afa9aec1b679ee970c913d"
+    },
+    {
+      "path": "results/W05/track_gaps.json",
+      "sha256": "17deb5b84d1b961762ccd7162bec2bb90eb35d2b9ed5c637a71e040a7d11e8ca"
+    }
+  ],
+  "external_artifacts": [
+    {
+      "name": "demo/V_DRONE_096_tracker_bytetrack_default.mp4",
+      "link": "https://drive.google.com/file/d/1Qz-etgvoJsK5Jyk6VjPNIIkN4LbLTbmD/view",
+      "sha256": "29aa4f83df9c5f268b375d687789fdd3225ba04b617510e653cee0d232f6e1e2",
+      "bytes": 1287973
+    },
+    {
+      "name": "demo/V_BIRD_037_tracker_bytetrack_default.mp4",
+      "link": "https://drive.google.com/file/d/1-kZZgVR-M6Y_8lsHH2u-wff8kYJkmrFS/view",
+      "sha256": "19905117a5994eb2007fb0be89c21c1f46dd2a76dc7841cf6f85233ac69f8813",
+      "bytes": 632305
+    },
+    {
+      "name": "demo/V_DRONE_080_tracker_bytetrack_default.mp4",
+      "link": "https://drive.google.com/file/d/1L_enuzQ-C3N6D7xi2rgC9m5vBcdrI2Nh/view",
+      "sha256": "2b8074746a0c172e3d650a2442f5a601fd2a41d6fe541809a7285d5186aff22f",
+      "bytes": 1135243
+    },
+    {
+      "name": "baseline_A_s20261029/best.pt",
+      "link": "https://drive.google.com/file/d/1A2Ex__eSBOvuPj0LGY1I6DtbX1deZDzD/view",
+      "sha256": "7bf592c878f21334601170fc544d205afd5995455c66552b93e932db79691492",
+      "bytes": 6496362
+    },
+    {
+      "name": "baseline_A_s20261029/last.pt",
+      "link": "https://drive.google.com/file/d/19vmRmo0XcSNO49deLANO-x1iQFGkXqUL/view",
+      "sha256": "8461eacddc95ded258e4c8cc8ecd7cf768bae2cad8c616b2b2cf97bdef726489",
+      "bytes": 6496362
+    },
+    {
+      "name": "baseline_A_s20261030/best.pt",
+      "link": "https://drive.google.com/file/d/1urKFrChLJqRzT4M8Bvyxu9T3K5fLkBxz/view",
+      "sha256": "b80e11e39c1d0bbe4ad96307ec6c9578fa76c7aa390bc6e203f65fe65f724159",
+      "bytes": 6496746
+    },
+    {
+      "name": "baseline_A_s20261030/last.pt",
+      "link": "https://drive.google.com/file/d/1pCc7SoM44t8zwSrrV2TbxJtJuy8J_PFN/view",
+      "sha256": "b38e7f2e94ad15fd065bdf440983c2cc2ed0aac5c9fe4524d3bb63e29c11807e",
+      "bytes": 6496746
+    },
+    {
+      "name": "yolo11n_640_s20261029/best.pt",
+      "link": "https://drive.google.com/file/d/1Jo5KwGopdWLlLBXOXEqoJMUarzsRsDjK/view",
+      "sha256": "e54ec659e342259aea382f9e14ba6a95e4078247d887217ce9235308fe84d770",
+      "bytes": 5493146
+    },
+    {
+      "name": "yolo11n_640_s20261029/last.pt",
+      "link": "https://drive.google.com/file/d/1tNFJtUeL68TdGAi1U-mmkHnMDvmUDl6e/view",
+      "sha256": "015c82320da34c7616669c29f832c33c3df675ccf9ef862a68884f21e2e93194",
+      "bytes": 5493146
+    },
+    {
+      "name": "yolo11n_640_s20261030/best.pt",
+      "link": "https://drive.google.com/file/d/12nwiAizDxphbciMc7ogYzV-FWI6CYzp5/view",
+      "sha256": "a3de1e0195e4380aac497612296ed57f67e41ceb5ae3314e82a5ad66b125ef8a",
+      "bytes": 5493658
+    },
+    {
+      "name": "yolo11n_640_s20261030/last.pt",
+      "link": "https://drive.google.com/file/d/140Ok2xbPBEzkW2l_Ts9C5oylydT17D8x/view",
+      "sha256": "0cfc4474e56f74d01388f0b112577f263a955ccf43e0d1b7669d1cff28a00b93",
+      "bytes": 5493658
+    }
+  ]
+}

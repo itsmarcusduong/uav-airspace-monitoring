@@ -309,6 +309,88 @@ def w04(w: Week):
                 f"{st['inputs']['images']} anh", rel)
 
 
+# ----------------------------------------------------------------------------- W05
+def w05(w: Week):
+    import sys
+    sys.path.insert(0, str(ROOT / "scripts" / "reporting"))
+    import build_seed_comparison as bsc  # noqa: E402
+    import build_track_comparison as btc  # noqa: E402
+    a_sha = rjson("results/W03/kaggle_run_04/train_evidence/weights_manifest.json")["best.pt"]["sha256"]
+    fp = rjson("results/W03/kaggle_run_03b/export_evidence/dataset_card.json")["content_fingerprint_sha256"]
+    # --- tracking: run 12 (default), run 12b (e1)
+    for run, sub in (("kaggle_run_12", "default"), ("kaggle_run_12b", "e1")):
+        base = f"results/W05/{run}/w5_track"
+        st, inp, env = rjson(f"{base}/stage_status.json"), rjson(f"{base}/inputs.json"), rjson(f"{base}/env.json")
+        w.check(f"{run}_all_stages_ok", all(v.get("status") == "OK" for v in st.values()), ", ".join(st), f"{base}/stage_status.json")
+        w.check(f"{run}_val_only_test_unused", inp["split"] == "val" and inp["test_used"] is False, f"{inp['videos']} video val", f"{base}/inputs.json")
+        w.check(f"{run}_weights_eq_baseline_A_run04", inp["weights_sha256"] == a_sha, a_sha[:16], f"{base}/inputs.json")
+        diffs = {t: v["diff_vs_ultralytics_default"] for t, v in inp["trackers"].items()}
+        exp = (lambda d: d == {}) if sub == "default" else (lambda d: set(d) == {"track_buffer"} and d["track_buffer"]["e1"] == 45)
+        w.check(f"{run}_tracker_cfg_as_protocol", all(exp(d) for d in diffs.values()), json.dumps(diffs, ensure_ascii=False), f"{base}/inputs.json")
+        n_tracks = sum(1 for _ in (ROOT / base / "tracks").rglob("*.csv"))
+        w.check(f"{run}_track_log_per_video_and_tracker", n_tracks == inp["videos"] * len(inp["trackers"]), f"{n_tracks} file", f"{base}/tracks")
+        w.m("track_videos", inp["videos"], "video", "val", source=f"{base}/inputs.json", producer="scripts/kaggle/w5_track_videos.py", run_commit=env["commit"][:7])
+        w.m("track_gt_frames", inp["gt_frames"], "frame", "val", source=f"{base}/inputs.json", run_commit=env["commit"][:7])
+    tc = rcsv("results/W05/track_comparison.csv")
+    for r in tc:
+        for k in ("idsw_per_1000_gt_frames", "id_switches", "track_recall_pooled", "median_dominant_id_coverage", "videos_single_id", "fragments", "false_tracks"):
+            w.m(f"{k}@iou{r['iou_thr']}", r[k], "", f"val/{r['class']}", r["tracker"], "results/W05/track_comparison.csv", "scripts/reporting/build_track_comparison.py")
+    td = rjson("results/W05/track_decision.json"); d = td["decision"]
+    for t, v in td["fps_median"].items():
+        w.m("fps_median_decode_detect_track", v, "FPS", "val", t, "results/W05/track_decision.json", "scripts/reporting/build_track_comparison.py")
+    re_d = btc.decide(d["a"], d["b"], d["idsw_per_1000"][d["a"]], d["idsw_per_1000"][d["b"]])
+    w.check("adr0008_rule_reproduced", re_d["choice"] == d["choice"] and re_d["tie"] == d["tie"], f"{d['choice']} ({d['reason']})", "results/W05/track_decision.json")
+    w.check("adr0008_decision_pair_is_e1", (d["a"], d["b"]) == ("tracker_bytetrack_e1", "tracker_botsort_e1") and d["reference_only"] is False,
+            f"{d['a']} vs {d['b']}", "results/W05/track_decision.json")
+    w.m("tracker_decision", d["choice"], "", "val", source="results/W05/track_decision.json", producer="scripts/reporting/build_track_comparison.py")
+    gp = rjson("results/W05/track_gaps.json")
+    for pr in gp["pairs"]:
+        w.m("track_logs_identical_run12_vs_12b", f"{pr['identical']}/{pr['files']}", "video", "val", pr["b"]["dir"].split("/")[-1],
+            "results/W05/track_gaps.json", "scripts/reporting/track_gap_stats.py")
+    for f, c in (("results/W05/fig_w5_tracking_by_class.png", "ID switch / 1000 frame GT theo lớp, ByteTrack-e1 và BoT-SORT-e1 (val, IoU 0,5)"),
+                 ("results/W05/fig_w5_seeds.png", "mAP@0.5:0.95 và F1 Drone theo seed, baseline A và YOLO11n (val)")):
+        w.fig(f, c)
+    demo = rjson("results/W05/kaggle_run_12/w5_track/demo/demo_index.json")
+    for x in demo:
+        w.external.append({"name": f"demo/{x['file']}", "link": x.get("drive_link", ""), "sha256": x["sha256"], "bytes": x.get("bytes", 0)})
+    w.check("run12_demo_videos_have_drive_link", all(x.get("drive_link") for x in demo), ", ".join(x["video_id"] for x in demo),
+            "results/W05/kaggle_run_12/w5_track/demo/demo_index.json")
+    # --- seeds: run 13
+    R13 = ROOT / "results/W05/kaggle_run_13"
+    rr = json.loads((R13 / "w5_seed_runs.json").read_text(encoding="utf-8"))
+    w.check("run13_return_codes_zero", all(v["train_rc"] == 0 and v["analysis_rc"] == 0 for v in rr["runs"].values()), ", ".join(rr["runs"]),
+            "results/W05/kaggle_run_13/w5_seed_runs.json")
+    w.check("run13_fingerprint_eq_run03b", rr["fingerprint"] == fp, fp[:16], "results/W05/kaggle_run_13/w5_seed_runs.json")
+    for exp in rr["runs"]:
+        t, an = R13 / f"train_{exp}", R13 / f"analysis_{exp}"
+        st = json.loads((t / "stage_status.json").read_text(encoding="utf-8")); sa = json.loads((an / "stage_status.json").read_text(encoding="utf-8"))
+        ok = all(v.get("status") == "OK" for v in list(st.values()) + list(sa.values()) if isinstance(v, dict) and "status" in v)
+        w.check(f"run13_{exp}_stages_ok", ok, f"{len(st)}+{len(sa)} stage", str((t / "stage_status.json").relative_to(ROOT)))
+        wm = json.loads((t / "weights_manifest.json").read_text(encoding="utf-8"))
+        for name, v in wm.items():
+            if name.endswith(".pt"):
+                w.external.append({"name": f"{exp}/{name}", "link": v.get("drive_link", ""), "sha256": v["sha256"], "bytes": v["bytes"]})
+        w.check(f"run13_{exp}_weights_sha_and_link", all(v.get("sha256") and v.get("drive_link") for k, v in wm.items() if k.endswith(".pt")),
+                ", ".join(wm), str((t / "weights_manifest.json").relative_to(ROOT)))
+    sc = rcsv("results/W05/seed_comparison.csv")
+    for r in sc:
+        for k in ("map50", "map50_95", "ap50_95_Drone", "Drone_F1_op", "inference_ms", "best_epoch"):
+            w.m(k, r[k], "", "val", f"{r['family']}@seed{r['seed']}", "results/W05/seed_comparison.csv", "scripts/reporting/build_seed_comparison.py", r["run_commit"])
+    w.check("seed_comparison_same_fingerprint_gpu_ultralytics", len({(r["fingerprint"], r["gpu"], r["ultralytics"]) for r in sc}) == 1,
+            f"{sc[0]['fingerprint']} / {sc[0]['gpu']} / {sc[0]['ultralytics']}", "results/W05/seed_comparison.csv")
+    w.check("seed_comparison_3_seeds_each", all(sum(r["family"] == f for r in sc) == 3 for f in ("baseline_A", "yolo11n_640")), "3 + 3",
+            "results/W05/seed_comparison.csv")
+    sd = rjson("results/W05/seed_decision.json")
+    for fam, v in sd["summary"].items():
+        for k in ("map", "f1", "ms"):
+            w.m(f"seed_{k}_mean", v[k]["mean"], "", "val", fam, "results/W05/seed_decision.json", "scripts/reporting/build_seed_comparison.py")
+            w.m(f"seed_{k}_sd", v[k]["sd"], "", "val", fam, "results/W05/seed_decision.json", "scripts/reporting/build_seed_comparison.py")
+    re_s = bsc.decide(sd["summary"][sd["a"]], sd["summary"][sd["b"]], sd["a"], sd["b"])
+    w.check("protocol_s6_rule_reproduced", re_s["choice"] == sd["decision"]["choice"], f"{sd['decision']['choice']} ({re_s['reason']})",
+            "results/W05/seed_decision.json")
+    w.m("detector_decision_3_seeds", sd["decision"]["choice"], "", "val", source="results/W05/seed_decision.json", producer="scripts/reporting/build_seed_comparison.py")
+
+
 def _find_count(obj, key):
     if isinstance(obj, dict):
         if key in obj and isinstance(obj[key], int):
@@ -351,6 +433,8 @@ INFO = {
             "Kiểm tra SHA-256 1.303 tệp, EDA 650 video, audit nhãn, split v1 theo video, sàng lọc rò rỉ."),
     "W03": ("Tuan3", "Train baseline (config, weights, mAP/PR)",
             "Review nhãn v2, xuất e1-yolo-v1, train YOLOv8n@640 (baseline A), phân tích val, model card."),
+    "W05": ("Tuan5", "Tích hợp tracker, video test ID ổn định",
+            "Pipeline video → detector → tracker trên 38 video val (run 12, 12b), độ đo liên kết trên GT dẫn xuất (ADR-0008), chọn tracker theo luật đặt trước; 3 seed cho baseline A và YOLO11n (run 13), chọn lại detector (ADR-0007 cập nhật)."),
     "W04": ("Tuan4", "Tuning + augmentation, so sánh baseline",
             "Kiểm chứng chiều lệch nhãn (run 06 và tập chuẩn CVAT, ADR-0006), train và so sánh 6 mô hình trên cùng dữ liệu (run 09), áp luật chọn đặt trước (ADR-0007)."),
 }
@@ -358,6 +442,7 @@ LINKS = {
     "W01": "Báo cáo: reports/w1/. Tài liệu: docs/w1/.",
     "W02": "PR #13, #14. Báo cáo: reports/w2/. Tài liệu: docs/w2/, ADR-0002, ADR-0003.",
     "W03": "Issue #10, #11, #16–#21; PR #22, #23, #25, #26, #28, #31–#35. Báo cáo: reports/w3/. ADR-0004, ADR-0005. Model card: docs/w3/model_card_baseline_A.md.",
+    "W05": "Issue #57–#62; PR #63–#70. Báo cáo: reports/w5/ (báo cáo công việc, v0.5). Trạng thái: docs/status/W05_planned_done_evidence.md. Kế hoạch: docs/w5/W5_PLAN.md. ADR-0007 (cập nhật), ADR-0008. Giao thức: docs/w5/tracking_protocol_w5.md, docs/w4/training_protocol_w4.md mục 6.",
     "W04": "Issue #24, #36–#42, #48, #49; PR #43–#47, #50–#55. Báo cáo: reports/w4/ (báo cáo công việc, v0.4). Trạng thái: docs/status/W04_planned_done_evidence.md. Kế hoạch: docs/w4/W4_PLAN.md. ADR-0006, ADR-0007. Giao thức: docs/w4/training_protocol_w4.md.",
 }
 
@@ -423,7 +508,7 @@ Số liệu trên validation là lạc quan (val dùng để chọn checkpoint/n
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--weeks", nargs="+", default=["W01", "W02", "W03", "W04"])
+    ap.add_argument("--weeks", nargs="+", default=["W01", "W02", "W03", "W04", "W05"])
     ap.add_argument("--pytest-xml", type=Path, help="JUnit XML cua pytest (copy thanh test-results.xml cua tuan cuoi)")
     a = ap.parse_args()
     head = git_head()
@@ -433,7 +518,7 @@ def main() -> int:
         if w.dir.exists():
             shutil.rmtree(w.dir)
         w.dir.mkdir(parents=True)
-        {"W01": w01, "W02": w02, "W03": w03, "W04": w04}[wk](w)
+        {"W01": w01, "W02": w02, "W03": w03, "W04": w04, "W05": w05}[wk](w)
         if a.pytest_xml and wk == a.weeks[-1]:
             shutil.copy2(a.pytest_xml, w.dir / "test-results.xml")
             junit_to_checks(w, a.pytest_xml)
