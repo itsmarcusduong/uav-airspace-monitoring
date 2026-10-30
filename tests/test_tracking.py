@@ -161,3 +161,12 @@ def test_track_gap_bins():
     import track_gap_stats as tg
     assert tg.gaps([0, 1, 5, 40, 41]) == [3, 34]
     assert [tg.bin_of(g) for g in (3, 30, 34, 50)] == ["1-5", "6-30", "31-45", ">45"]
+
+
+def test_track_dup_frames():
+    sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parents[1] / "scripts" / "reporting"))
+    import track_gap_stats as tg
+    rows = [{"frame": 0, "x": 0, "y": 0, "w": 10, "h": 10}, {"frame": 0, "x": 1, "y": 0, "w": 10, "h": 10},
+            {"frame": 1, "x": 0, "y": 0, "w": 10, "h": 10}, {"frame": 1, "x": 50, "y": 50, "w": 10, "h": 10}]
+    n, ious = tg.dup_frames(rows, 0.3)
+    assert n == 1 and abs(ious[0] - 90 / 110) < 1e-9

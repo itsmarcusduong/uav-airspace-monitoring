@@ -11,6 +11,86 @@
         },
         "no_track_gaps": {
           "1-5": 16
+        },
+        "dup_iou": 0.3,
+        "videos_with_overlapping_tracks": 15,
+        "overlapping_track_frames": 416,
+        "overlapping_by_video": {
+          "V_DRONE_080": {
+            "frames": 131,
+            "frames_with_tracks": 300,
+            "median_pair_iou": 0.583
+          },
+          "V_AIRPLANE_047": {
+            "frames": 81,
+            "frames_with_tracks": 325,
+            "median_pair_iou": 0.659
+          },
+          "V_AIRPLANE_030": {
+            "frames": 53,
+            "frames_with_tracks": 319,
+            "median_pair_iou": 0.687
+          },
+          "V_BIRD_041": {
+            "frames": 32,
+            "frames_with_tracks": 305,
+            "median_pair_iou": 0.866
+          },
+          "V_DRONE_010": {
+            "frames": 30,
+            "frames_with_tracks": 301,
+            "median_pair_iou": 0.655
+          },
+          "V_AIRPLANE_007": {
+            "frames": 18,
+            "frames_with_tracks": 298,
+            "median_pair_iou": 0.921
+          },
+          "V_DRONE_088": {
+            "frames": 13,
+            "frames_with_tracks": 316,
+            "median_pair_iou": 0.618
+          },
+          "V_HELICOPTER_039": {
+            "frames": 11,
+            "frames_with_tracks": 308,
+            "median_pair_iou": 0.835
+          },
+          "V_HELICOPTER_005": {
+            "frames": 10,
+            "frames_with_tracks": 311,
+            "median_pair_iou": 0.671
+          },
+          "V_DRONE_025": {
+            "frames": 8,
+            "frames_with_tracks": 305,
+            "median_pair_iou": 0.478
+          },
+          "V_HELICOPTER_010": {
+            "frames": 8,
+            "frames_with_tracks": 162,
+            "median_pair_iou": 0.666
+          },
+          "V_DRONE_023": {
+            "frames": 6,
+            "frames_with_tracks": 301,
+            "median_pair_iou": 0.701
+          },
+          "V_DRONE_060": {
+            "frames": 6,
+            "frames_with_tracks": 308,
+            "median_pair_iou": 0.889
+          },
+          "V_BIRD_025": {
+            "frames": 5,
+            "frames_with_tracks": 319,
+            "median_pair_iou": 0.652
+          },
+          "V_AIRPLANE_048": {
+            "frames": 4,
+            "frames_with_tracks": 302,
+            "median_pair_iou": 0.682
+          }
         }
       },
       "b": {
@@ -22,6 +102,86 @@
         },
         "no_track_gaps": {
           "1-5": 16
+        },
+        "dup_iou": 0.3,
+        "videos_with_overlapping_tracks": 15,
+        "overlapping_track_frames": 416,
+        "overlapping_by_video": {
+          "V_DRONE_080": {
+            "frames": 131,
+            "frames_with_tracks": 300,
+            "median_pair_iou": 0.583
+          },
+          "V_AIRPLANE_047": {
+            "frames": 81,
+            "frames_with_tracks": 325,
+            "median_pair_iou": 0.659
+          },
+          "V_AIRPLANE_030": {
+            "frames": 53,
+            "frames_with_tracks": 319,
+            "median_pair_iou": 0.687
+          },
+          "V_BIRD_041": {
+            "frames": 32,
+            "frames_with_tracks": 305,
+            "median_pair_iou": 0.866
+          },
+          "V_DRONE_010": {
+            "frames": 30,
+            "frames_with_tracks": 301,
+            "median_pair_iou": 0.655
+          },
+          "V_AIRPLANE_007": {
+            "frames": 18,
+            "frames_with_tracks": 298,
+            "median_pair_iou": 0.921
+          },
+          "V_DRONE_088": {
+            "frames": 13,
+            "frames_with_tracks": 316,
+            "median_pair_iou": 0.618
+          },
+          "V_HELICOPTER_039": {
+            "frames": 11,
+            "frames_with_tracks": 308,
+            "median_pair_iou": 0.835
+          },
+          "V_HELICOPTER_005": {
+            "frames": 10,
+            "frames_with_tracks": 311,
+            "median_pair_iou": 0.671
+          },
+          "V_DRONE_025": {
+            "frames": 8,
+            "frames_with_tracks": 305,
+            "median_pair_iou": 0.478
+          },
+          "V_HELICOPTER_010": {
+            "frames": 8,
+            "frames_with_tracks": 162,
+            "median_pair_iou": 0.666
+          },
+          "V_DRONE_023": {
+            "frames": 6,
+            "frames_with_tracks": 301,
+            "median_pair_iou": 0.701
+          },
+          "V_DRONE_060": {
+            "frames": 6,
+            "frames_with_tracks": 308,
+            "median_pair_iou": 0.889
+          },
+          "V_BIRD_025": {
+            "frames": 5,
+            "frames_with_tracks": 319,
+            "median_pair_iou": 0.652
+          },
+          "V_AIRPLANE_048": {
+            "frames": 4,
+            "frames_with_tracks": 302,
+            "median_pair_iou": 0.682
+          }
         }
       },
       "files": 38,
@@ -38,6 +198,81 @@
         },
         "no_track_gaps": {
           "1-5": 14
+        },
+        "dup_iou": 0.3,
+        "videos_with_overlapping_tracks": 14,
+        "overlapping_track_frames": 396,
+        "overlapping_by_video": {
+          "V_DRONE_080": {
+            "frames": 131,
+            "frames_with_tracks": 300,
+            "median_pair_iou": 0.584
+          },
+          "V_AIRPLANE_047": {
+            "frames": 70,
+            "frames_with_tracks": 324,
+            "median_pair_iou": 0.652
+          },
+          "V_AIRPLANE_030": {
+            "frames": 53,
+            "frames_with_tracks": 320,
+            "median_pair_iou": 0.682
+          },
+          "V_DRONE_010": {
+            "frames": 30,
+            "frames_with_tracks": 301,
+            "median_pair_iou": 0.681
+          },
+          "V_BIRD_041": {
+            "frames": 29,
+            "frames_with_tracks": 305,
+            "median_pair_iou": 0.875
+          },
+          "V_AIRPLANE_007": {
+            "frames": 19,
+            "frames_with_tracks": 297,
+            "median_pair_iou": 0.917
+          },
+          "V_DRONE_088": {
+            "frames": 13,
+            "frames_with_tracks": 316,
+            "median_pair_iou": 0.623
+          },
+          "V_HELICOPTER_039": {
+            "frames": 12,
+            "frames_with_tracks": 307,
+            "median_pair_iou": 0.931
+          },
+          "V_HELICOPTER_005": {
+            "frames": 10,
+            "frames_with_tracks": 311,
+            "median_pair_iou": 0.67
+          },
+          "V_HELICOPTER_010": {
+            "frames": 8,
+            "frames_with_tracks": 162,
+            "median_pair_iou": 0.683
+          },
+          "V_DRONE_023": {
+            "frames": 6,
+            "frames_with_tracks": 301,
+            "median_pair_iou": 0.721
+          },
+          "V_DRONE_060": {
+            "frames": 6,
+            "frames_with_tracks": 308,
+            "median_pair_iou": 0.892
+          },
+          "V_BIRD_025": {
+            "frames": 5,
+            "frames_with_tracks": 319,
+            "median_pair_iou": 0.654
+          },
+          "V_AIRPLANE_048": {
+            "frames": 4,
+            "frames_with_tracks": 302,
+            "median_pair_iou": 0.69
+          }
         }
       },
       "b": {
@@ -50,6 +285,81 @@
         },
         "no_track_gaps": {
           "1-5": 14
+        },
+        "dup_iou": 0.3,
+        "videos_with_overlapping_tracks": 14,
+        "overlapping_track_frames": 396,
+        "overlapping_by_video": {
+          "V_DRONE_080": {
+            "frames": 131,
+            "frames_with_tracks": 300,
+            "median_pair_iou": 0.584
+          },
+          "V_AIRPLANE_047": {
+            "frames": 70,
+            "frames_with_tracks": 324,
+            "median_pair_iou": 0.652
+          },
+          "V_AIRPLANE_030": {
+            "frames": 53,
+            "frames_with_tracks": 320,
+            "median_pair_iou": 0.682
+          },
+          "V_DRONE_010": {
+            "frames": 30,
+            "frames_with_tracks": 301,
+            "median_pair_iou": 0.681
+          },
+          "V_BIRD_041": {
+            "frames": 29,
+            "frames_with_tracks": 305,
+            "median_pair_iou": 0.875
+          },
+          "V_AIRPLANE_007": {
+            "frames": 19,
+            "frames_with_tracks": 297,
+            "median_pair_iou": 0.917
+          },
+          "V_DRONE_088": {
+            "frames": 13,
+            "frames_with_tracks": 316,
+            "median_pair_iou": 0.623
+          },
+          "V_HELICOPTER_039": {
+            "frames": 12,
+            "frames_with_tracks": 307,
+            "median_pair_iou": 0.931
+          },
+          "V_HELICOPTER_005": {
+            "frames": 10,
+            "frames_with_tracks": 311,
+            "median_pair_iou": 0.67
+          },
+          "V_HELICOPTER_010": {
+            "frames": 8,
+            "frames_with_tracks": 162,
+            "median_pair_iou": 0.683
+          },
+          "V_DRONE_023": {
+            "frames": 6,
+            "frames_with_tracks": 301,
+            "median_pair_iou": 0.721
+          },
+          "V_DRONE_060": {
+            "frames": 6,
+            "frames_with_tracks": 308,
+            "median_pair_iou": 0.892
+          },
+          "V_BIRD_025": {
+            "frames": 5,
+            "frames_with_tracks": 319,
+            "median_pair_iou": 0.654
+          },
+          "V_AIRPLANE_048": {
+            "frames": 4,
+            "frames_with_tracks": 302,
+            "median_pair_iou": 0.69
+          }
         }
       },
       "files": 38,
