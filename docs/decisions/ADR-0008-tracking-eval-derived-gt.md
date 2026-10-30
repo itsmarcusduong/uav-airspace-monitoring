@@ -44,3 +44,16 @@
 - W5 báo cáo: bảng độ đo theo tracker × ngưỡng IoU, 3 video demo (luật chọn đặt trước trong job: video Drone và Bird có nhiều frame GT nhất, cộng video Drone có nhiều ID switch nhất), FPS tham khảo.
 - W6 (cảnh báo theo quỹ đạo) dùng track log của tracker được giữ.
 - Nếu GVHD yêu cầu HOTA/IDF1: phải có GT nhiều đối tượng. Phương án: An gán nhãn ID cho một tập nhỏ video có nhiều vật thể. Cách làm này cần ADR mới.
+
+## Kết quả áp luật (run 12b, 30/10/2026)
+- [Kết quả đo] Cặp quyết định `ByteTrack-e1` và `BoT-SORT-e1` (detector baseline A, 38 video val):
+  - ID switch / 1000 frame GT ở IoU 0,5: 8,962 và 7,756;
+  - chênh tương đối 13,5%, dưới 20%, nên **hòa**.
+  - Nguồn: `results/W05/track_decision.json`, tạo bằng `scripts/reporting/build_track_comparison.py`.
+- **[DECISION] Giữ ByteTrack-e1** (`configs/tracker_bytetrack_e1.yaml`) cho W6.
+- [Kết quả đo] `track_buffer` 30 → 45 gần như không đổi kết quả:
+  - track log giống hệt run 12 ở 75/76 cặp video;
+  - không có ID nào mất quá 30 frame rồi quay lại, trừ 1 trường hợp ở BoT-SORT;
+  - nguồn: `results/W05/track_gaps.json`.
+- [INFERENCE] ID switch không đến từ mất phát hiện dài. Hướng xử lý ở W6 là track trùng và ngưỡng ghép. Bất kỳ thay đổi nào cũng cần một giao thức mới, đặt trước khi chạy.
+- W6 chạy lại tracking với detector YOLO11n (ADR-0007 bản cập nhật) và ByteTrack-e1. Nếu GVHD yêu cầu, chạy cả BoT-SORT-e1 làm đối chứng.
