@@ -1,0 +1,42 @@
+{
+  "dataset": "e1-yolo-v1",
+  "fingerprint": "d0ac7e230b385132c4bbec90eb5af2c5740a478fec6c79aeb245acca032c27de",
+  "configs": [
+    "baseline_A.yaml",
+    "yolo11n_640.yaml"
+  ],
+  "seeds": [
+    20261029,
+    20261030
+  ],
+  "runs": {
+    "baseline_A_s20261029": {
+      "seed": 20261029,
+      "config": "baseline_A.yaml",
+      "train_rc": 0,
+      "analysis_rc": 0,
+      "minutes": 31.1
+    },
+    "baseline_A_s20261030": {
+      "seed": 20261030,
+      "config": "baseline_A.yaml",
+      "train_rc": 0,
+      "analysis_rc": 0,
+      "minutes": 32.6
+    },
+    "yolo11n_640_s20261029": {
+      "seed": 20261029,
+      "config": "yolo11n_640.yaml",
+      "train_rc": 0,
+      "analysis_rc": 0,
+      "minutes": 19.1
+    },
+    "yolo11n_640_s20261030": {
+      "seed": 20261030,
+      "config": "yolo11n_640.yaml",
+      "train_rc": 0,
+      "analysis_rc": 0,
+      "minutes": 21.6
+    }
+  }
+}

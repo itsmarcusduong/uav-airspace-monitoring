@@ -1,0 +1,102 @@
+{
+  "status": {
+    "inputs": "OK",
+    "curves": "OK",
+    "operating_points": "OK",
+    "breakdown_selected": "OK"
+  },
+  "stages": {
+    "inputs": {
+      "status": "OK",
+      "val_images": 1202,
+      "pred_images": 1200,
+      "category_offset": 1,
+      "predictions_sha256": "fa945b159d044ebf85390c8cbe8b299a8e10d69dbb814621e34ed1b5567e9126",
+      "manifest_sha256": "4766ab0dca05b473088fdd36fe64f65de6caa02e1676267c73898619ea205b37",
+      "commit": "26c94626db6f325befad039be8a654a7488656d2"
+    },
+    "curves": {
+      "status": "OK",
+      "epochs_run": 24,
+      "best_epoch_by_map50_95": 9,
+      "map50_95_at_best": 0.3476
+    },
+    "operating_points": {
+      "status": "OK",
+      "selection_rule": "max Drone F1 on val; tie -> higher conf (training_protocol.md muc 7)",
+      "conf_selected_on_val": 0.35,
+      "Drone_P": 0.7702,
+      "Drone_R": 0.833,
+      "Drone_F1": 0.8004,
+      "macro_F1": 0.7311,
+      "all_P": 0.8094,
+      "all_R": 0.7126,
+      "reference_conf_max_macro_F1": 0.2,
+      "reference_macro_F1": 0.7704,
+      "drone_class_id": 2
+    },
+    "breakdown_selected": {
+      "status": "OK",
+      "conf": 0.35,
+      "recall_small_all": 0.7179,
+      "negatives": {
+        "negative_images": 40,
+        "images_with_fp": 36,
+        "conf": 0.35
+      },
+      "videos": 38
+    }
+  },
+  "ultralytics_metrics": {
+    "overall": {
+      "experiment": "yolo11n_640_s20261029",
+      "split": "val",
+      "precision_mean": 0.74175,
+      "recall_mean": 0.83611,
+      "map50": 0.79134,
+      "map50_95": 0.34175,
+      "speed_ms_per_image": {
+        "preprocess": 0.94983,
+        "inference": 3.20313,
+        "loss": 0.00125,
+        "postprocess": 0.79366
+      },
+      "note": "Danh gia tren VAL; val cung dung de dung som/chon best.pt nen so lieu lac quan. Test bi khoa."
+    },
+    "per_class": [
+      {
+        "class_id": 0,
+        "class_name": "Airplane",
+        "precision": 0.78238,
+        "recall": 0.6469,
+        "ap50": 0.72638,
+        "ap50_95": 0.35671
+      },
+      {
+        "class_id": 1,
+        "class_name": "Bird",
+        "precision": 0.58883,
+        "recall": 0.9863,
+        "ap50": 0.78273,
+        "ap50_95": 0.36665
+      },
+      {
+        "class_id": 2,
+        "class_name": "Drone",
+        "precision": 0.69474,
+        "recall": 0.84854,
+        "ap50": 0.72835,
+        "ap50_95": 0.21974
+      },
+      {
+        "class_id": 3,
+        "class_name": "Helicopter",
+        "precision": 0.90105,
+        "recall": 0.86271,
+        "ap50": 0.92791,
+        "ap50_95": 0.42391
+      }
+    ]
+  },
+  "note": "Danh gia tren VAL; nguong chon tren VAL nen so lieu lac quan. Test bi khoa. Nhan val da duoc kiem tra dinh dang (5 truong, class id, toa do chuan hoa) va khop has_bbox voi manifest truoc khi tinh metric."
+}
