@@ -1,0 +1,6 @@
+video_id,modality,class_name,split_v1,verdict_An_ban_dau,review_quang_v2,verdict_An_xem_lai,frame_bang_chung_An,final,co_so,nguon
+IR_BIRD_012,IR,Bird,train,OK,SAI_NHAN,SAI_NHAN,f205,SAI_NHAN,dong thuan sau xem lai (tieu chi: 1 frame vat ngoai hop/nhan rong la du),https://github.com/itsmarcusduong/uav-airspace-monitoring/issues/24#issuecomment-6487607524
+IR_BIRD_035,IR,Bird,train,OK,SAI_NHAN,SAI_NHAN,f58; f125; f144; f173,SAI_NHAN,dong thuan sau xem lai (tieu chi: 1 frame vat ngoai hop/nhan rong la du),https://github.com/itsmarcusduong/uav-airspace-monitoring/issues/24#issuecomment-6487607524
+IR_BIRD_036,IR,Bird,train,OK,SAI_NHAN,SAI_NHAN,f0; f275,SAI_NHAN,dong thuan sau xem lai (tieu chi: 1 frame vat ngoai hop/nhan rong la du),https://github.com/itsmarcusduong/uav-airspace-monitoring/issues/24#issuecomment-6487607524
+IR_DRONE_101,IR,Drone,train,OK,SAI_NHAN,SAI_NHAN,f320,SAI_NHAN,dong thuan sau xem lai (tieu chi: 1 frame vat ngoai hop/nhan rong la du),https://github.com/itsmarcusduong/uav-airspace-monitoring/issues/24#issuecomment-6487607524
+V_DRONE_100,V,Drone,train,OK,SAI_NHAN,SAI_NHAN,f0; f28,SAI_NHAN,dong thuan sau xem lai (tieu chi: 1 frame vat ngoai hop/nhan rong la du),https://github.com/itsmarcusduong/uav-airspace-monitoring/issues/24#issuecomment-6487607524
