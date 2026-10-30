@@ -154,3 +154,10 @@ def test_track_comparison_tie_rule():
     d = bc.decide("tracker_bytetrack_e1", "tracker_botsort_e1", 2.0, 1.2)           # 40% nhung < 1/1000 -> hoa
     assert d["tie"] and d["choice"] == "tracker_bytetrack_e1"
     assert bc.decide("a_bytetrack", "b", 0.0, 0.0)["tie"]
+
+
+def test_track_gap_bins():
+    sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parents[1] / "scripts" / "reporting"))
+    import track_gap_stats as tg
+    assert tg.gaps([0, 1, 5, 40, 41]) == [3, 34]
+    assert [tg.bin_of(g) for g in (3, 30, 34, 50)] == ["1-5", "6-30", "31-45", ">45"]
