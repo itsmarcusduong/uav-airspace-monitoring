@@ -1,0 +1,29 @@
+{
+  "rule": "ADR-0008 muc 7; docs/w5/tracking_protocol_w5.md",
+  "weights_sha256": "65dd67fb8968eb3ddbe4b50187f02cfdbbef95a3f2a92e768ac0725178c826ab",
+  "fps_median": {
+    "tracker_bytetrack_default": 106.1,
+    "tracker_botsort_default": 74.2
+  },
+  "note": "GT dan xuat 1 track/video; khong phai MOTA/IDF1/HOTA; FPS gom giai ma + detector + tracker",
+  "decision": {
+    "a": "tracker_bytetrack_default",
+    "b": "tracker_botsort_default",
+    "idsw_per_1000": {
+      "tracker_bytetrack_default": 8.962,
+      "tracker_botsort_default": 7.756
+    },
+    "abs_diff": 1.206,
+    "rel_diff": 0.1346,
+    "tie": true,
+    "choice": "tracker_bytetrack_default",
+    "reason": "hoa (tuong doi 0.135 < 0.2) -> giu ByteTrack",
+    "per_video": {
+      "videos": 38,
+      "tracker_bytetrack_default_better": 3,
+      "tracker_botsort_default_better": 6,
+      "equal": 29
+    },
+    "reference_only": true
+  }
+}

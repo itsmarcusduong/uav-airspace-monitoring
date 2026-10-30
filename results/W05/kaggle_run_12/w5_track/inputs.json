@@ -1,0 +1,54 @@
+{
+  "split": "val",
+  "videos": 38,
+  "by_class": {
+    "Airplane": 9,
+    "Bird": 3,
+    "Drone": 17,
+    "Helicopter": 9
+  },
+  "gt_frames": 11604,
+  "weights_sha256": "65dd67fb8968eb3ddbe4b50187f02cfdbbef95a3f2a92e768ac0725178c826ab",
+  "manifest_sha256": "4766ab0dca05b473088fdd36fe64f65de6caa02e1676267c73898619ea205b37",
+  "audit_sha256": "e6c99e0f2b885108dc47def53c98a1785901c00e977a0d2d456e576b3aae61da",
+  "trackers": {
+    "tracker_bytetrack_default": {
+      "sha256": "12ee969111ee310782c2d21a60637bcb47f60479facb7e86a0082960e2dc8c3f",
+      "cfg": {
+        "tracker_type": "bytetrack",
+        "track_high_thresh": 0.25,
+        "track_low_thresh": 0.1,
+        "new_track_thresh": 0.25,
+        "track_buffer": 30,
+        "match_thresh": 0.8,
+        "fuse_score": true
+      },
+      "diff_vs_ultralytics_default": {}
+    },
+    "tracker_botsort_default": {
+      "sha256": "07cd6c5a407feab24ff57f05f48abbbbfc08ce16db856d30a2fffc6ba6ebfcf8",
+      "cfg": {
+        "tracker_type": "botsort",
+        "track_high_thresh": 0.25,
+        "track_low_thresh": 0.1,
+        "new_track_thresh": 0.25,
+        "track_buffer": 30,
+        "match_thresh": 0.8,
+        "fuse_score": true,
+        "gmc_method": "sparseOptFlow",
+        "proximity_thresh": 0.5,
+        "appearance_thresh": 0.8,
+        "with_reid": false,
+        "model": "auto"
+      },
+      "diff_vs_ultralytics_default": {}
+    }
+  },
+  "detector": {
+    "conf": 0.1,
+    "nms_iou": 0.7,
+    "imgsz": 640
+  },
+  "label_offset": "offset0 (ADR-0006)",
+  "test_used": false
+}
