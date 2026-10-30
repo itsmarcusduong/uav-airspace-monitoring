@@ -1,0 +1,378 @@
+{
+  "week": "W05",
+  "generated_by": "scripts/reporting/build_evidence.py",
+  "repo_commit": "b0a93069189eda806af14725bf0b58d3385d9498",
+  "summary": {
+    "total": 61,
+    "passed": 61,
+    "failed": 0
+  },
+  "checks": [
+    {
+      "check": "kaggle_run_12_all_stages_ok",
+      "status": "PASS",
+      "detail": "env, inputs, track, metrics, demo",
+      "source": "results/W05/kaggle_run_12/w5_track/stage_status.json"
+    },
+    {
+      "check": "kaggle_run_12_val_only_test_unused",
+      "status": "PASS",
+      "detail": "38 video val",
+      "source": "results/W05/kaggle_run_12/w5_track/inputs.json"
+    },
+    {
+      "check": "kaggle_run_12_weights_eq_baseline_A_run04",
+      "status": "PASS",
+      "detail": "65dd67fb8968eb3d",
+      "source": "results/W05/kaggle_run_12/w5_track/inputs.json"
+    },
+    {
+      "check": "kaggle_run_12_tracker_cfg_as_protocol",
+      "status": "PASS",
+      "detail": "{\"tracker_bytetrack_default\": {}, \"tracker_botsort_default\": {}}",
+      "source": "results/W05/kaggle_run_12/w5_track/inputs.json"
+    },
+    {
+      "check": "kaggle_run_12_track_log_per_video_and_tracker",
+      "status": "PASS",
+      "detail": "76 file",
+      "source": "results/W05/kaggle_run_12/w5_track/tracks"
+    },
+    {
+      "check": "kaggle_run_12b_all_stages_ok",
+      "status": "PASS",
+      "detail": "env, inputs, track, metrics, demo",
+      "source": "results/W05/kaggle_run_12b/w5_track/stage_status.json"
+    },
+    {
+      "check": "kaggle_run_12b_val_only_test_unused",
+      "status": "PASS",
+      "detail": "38 video val",
+      "source": "results/W05/kaggle_run_12b/w5_track/inputs.json"
+    },
+    {
+      "check": "kaggle_run_12b_weights_eq_baseline_A_run04",
+      "status": "PASS",
+      "detail": "65dd67fb8968eb3d",
+      "source": "results/W05/kaggle_run_12b/w5_track/inputs.json"
+    },
+    {
+      "check": "kaggle_run_12b_tracker_cfg_as_protocol",
+      "status": "PASS",
+      "detail": "{\"tracker_bytetrack_e1\": {\"track_buffer\": {\"e1\": 45, \"ultralytics\": 30}}, \"tracker_botsort_e1\": {\"track_buffer\": {\"e1\": 45, \"ultralytics\": 30}}}",
+      "source": "results/W05/kaggle_run_12b/w5_track/inputs.json"
+    },
+    {
+      "check": "kaggle_run_12b_track_log_per_video_and_tracker",
+      "status": "PASS",
+      "detail": "76 file",
+      "source": "results/W05/kaggle_run_12b/w5_track/tracks"
+    },
+    {
+      "check": "adr0008_rule_reproduced",
+      "status": "PASS",
+      "detail": "tracker_bytetrack_e1 (hoa (tuong doi 0.135 < 0.2) -> giu ByteTrack)",
+      "source": "results/W05/track_decision.json"
+    },
+    {
+      "check": "adr0008_decision_pair_is_e1",
+      "status": "PASS",
+      "detail": "tracker_bytetrack_e1 vs tracker_botsort_e1",
+      "source": "results/W05/track_decision.json"
+    },
+    {
+      "check": "run12_demo_videos_have_drive_link",
+      "status": "PASS",
+      "detail": "V_DRONE_096, V_BIRD_037, V_DRONE_080",
+      "source": "results/W05/kaggle_run_12/w5_track/demo/demo_index.json"
+    },
+    {
+      "check": "run13_return_codes_zero",
+      "status": "PASS",
+      "detail": "baseline_A_s20261029, baseline_A_s20261030, yolo11n_640_s20261029, yolo11n_640_s20261030",
+      "source": "results/W05/kaggle_run_13/w5_seed_runs.json"
+    },
+    {
+      "check": "run13_fingerprint_eq_run03b",
+      "status": "PASS",
+      "detail": "d0ac7e230b385132",
+      "source": "results/W05/kaggle_run_13/w5_seed_runs.json"
+    },
+    {
+      "check": "run13_baseline_A_s20261029_stages_ok",
+      "status": "PASS",
+      "detail": "8+4 stage",
+      "source": "results/W05/kaggle_run_13/train_baseline_A_s20261029/stage_status.json"
+    },
+    {
+      "check": "run13_baseline_A_s20261029_weights_sha_and_link",
+      "status": "PASS",
+      "detail": "best.pt, last.pt",
+      "source": "results/W05/kaggle_run_13/train_baseline_A_s20261029/weights_manifest.json"
+    },
+    {
+      "check": "run13_baseline_A_s20261030_stages_ok",
+      "status": "PASS",
+      "detail": "8+4 stage",
+      "source": "results/W05/kaggle_run_13/train_baseline_A_s20261030/stage_status.json"
+    },
+    {
+      "check": "run13_baseline_A_s20261030_weights_sha_and_link",
+      "status": "PASS",
+      "detail": "best.pt, last.pt",
+      "source": "results/W05/kaggle_run_13/train_baseline_A_s20261030/weights_manifest.json"
+    },
+    {
+      "check": "run13_yolo11n_640_s20261029_stages_ok",
+      "status": "PASS",
+      "detail": "8+4 stage",
+      "source": "results/W05/kaggle_run_13/train_yolo11n_640_s20261029/stage_status.json"
+    },
+    {
+      "check": "run13_yolo11n_640_s20261029_weights_sha_and_link",
+      "status": "PASS",
+      "detail": "best.pt, last.pt",
+      "source": "results/W05/kaggle_run_13/train_yolo11n_640_s20261029/weights_manifest.json"
+    },
+    {
+      "check": "run13_yolo11n_640_s20261030_stages_ok",
+      "status": "PASS",
+      "detail": "8+4 stage",
+      "source": "results/W05/kaggle_run_13/train_yolo11n_640_s20261030/stage_status.json"
+    },
+    {
+      "check": "run13_yolo11n_640_s20261030_weights_sha_and_link",
+      "status": "PASS",
+      "detail": "best.pt, last.pt",
+      "source": "results/W05/kaggle_run_13/train_yolo11n_640_s20261030/weights_manifest.json"
+    },
+    {
+      "check": "seed_comparison_same_fingerprint_gpu_ultralytics",
+      "status": "PASS",
+      "detail": "d0ac7e230b385132 / Tesla T4 / 8.4.183",
+      "source": "results/W05/seed_comparison.csv"
+    },
+    {
+      "check": "seed_comparison_3_seeds_each",
+      "status": "PASS",
+      "detail": "3 + 3",
+      "source": "results/W05/seed_comparison.csv"
+    },
+    {
+      "check": "protocol_s6_rule_reproduced",
+      "status": "PASS",
+      "detail": "yolo11n_640 (hoa mAP va toc do, |delta F1 Drone| >= 0.01)",
+      "source": "results/W05/seed_decision.json"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_to_box_valid_and_absent[w3_export_yolo]",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_to_box_valid_and_absent[w3_review_sheets]",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_to_box_malformed_is_not_absent[w3_export_yolo-bad0]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_to_box_malformed_is_not_absent[w3_export_yolo-bad1]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_to_box_malformed_is_not_absent[w3_review_sheets-bad0]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_to_box_malformed_is_not_absent[w3_review_sheets-bad1]",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_review_sheet_rejects_nonpositive_size",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_label_kind",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_iou_basic",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_valid",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[2 0.5 0.5 0.1]",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[7 0.5 0.5 0.1 0.1]",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[2 1.5 0.5 0.1 0.1]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[2 0.5 0.5 0 0.1]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[2.0 0.5 0.5 0.1 0.1]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[x 0.5 0.5 0.1 0.1]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[2 nan 0.5 0.1 0.1]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_load_preds_detects_one_based",
+      "status": "PASS",
+      "detail": "0.002s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_review_agreement_kappa",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_comparison_health_detects_nan_and_noise",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_seed_rule_decisions",
+      "status": "PASS",
+      "detail": "0.004s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_offset_methods::test_sign_test_p",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_offset_methods::test_offset_check_end_to_end[1-offset1]",
+      "status": "PASS",
+      "detail": "0.009s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_offset_methods::test_offset_check_end_to_end[0-offset0]",
+      "status": "PASS",
+      "detail": "0.009s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_offset_methods::test_score_cvat_gold_detects_offset1",
+      "status": "PASS",
+      "detail": "0.003s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_offset_methods::test_score_cvat_gold_center_metric_ignores_tight_boxes",
+      "status": "PASS",
+      "detail": "0.003s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_tracking::test_id_switch_fragment_and_coverage",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_tracking::test_switch_back_counts_twice_and_missing_gt_frames",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_tracking::test_iou_threshold_and_class_consistency",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_tracking::test_summarize_pools_counts",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_tracking::test_track_job_end_to_end",
+      "status": "PASS",
+      "detail": "1.527s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_tracking::test_track_job_rejects_wrong_weights",
+      "status": "PASS",
+      "detail": "0.033s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_tracking::test_track_comparison_tie_rule",
+      "status": "PASS",
+      "detail": "0.004s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_tracking::test_track_gap_bins",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_tracking::test_track_dup_frames",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    }
+  ]
+}
