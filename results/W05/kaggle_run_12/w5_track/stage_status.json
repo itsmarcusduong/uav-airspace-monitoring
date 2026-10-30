@@ -1,0 +1,50 @@
+{
+  "env": {
+    "status": "OK",
+    "gpu": "Tesla T4",
+    "ultralytics": "8.4.183"
+  },
+  "inputs": {
+    "status": "OK",
+    "videos": 38,
+    "gt_frames": 11604,
+    "by_class": {
+      "Airplane": 9,
+      "Bird": 3,
+      "Drone": 17,
+      "Helicopter": 9
+    }
+  },
+  "track": {
+    "status": "OK",
+    "track_files": 76,
+    "median_fps": 92.38
+  },
+  "metrics": {
+    "status": "OK",
+    "tracker_bytetrack_default@0.5": {
+      "idsw_per_1000": 8.962,
+      "median_dom_cov": 0.823
+    },
+    "tracker_bytetrack_default@0.3": {
+      "idsw_per_1000": 9.135,
+      "median_dom_cov": 0.9402
+    },
+    "tracker_botsort_default@0.5": {
+      "idsw_per_1000": 7.756,
+      "median_dom_cov": 0.7801
+    },
+    "tracker_botsort_default@0.3": {
+      "idsw_per_1000": 7.928,
+      "median_dom_cov": 0.9708
+    }
+  },
+  "demo": {
+    "status": "OK",
+    "videos": [
+      "V_DRONE_096",
+      "V_BIRD_037",
+      "V_DRONE_080"
+    ]
+  }
+}

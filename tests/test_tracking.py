@@ -142,3 +142,15 @@ def test_track_job_rejects_wrong_weights(tmp_path, monkeypatch):
     assert tv.main() == 1
     st = json.loads((tmp_path / "o" / "w5_track" / "stage_status.json").read_text())
     assert st["inputs"]["status"] == "FAILED" and "SHA-256" in st["inputs"]["error"]
+
+
+def test_track_comparison_tie_rule():
+    sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parents[1] / "scripts" / "reporting"))
+    import build_track_comparison as bc
+    d = bc.decide("tracker_bytetrack_e1", "tracker_botsort_e1", 8.962, 7.756)       # 13,5% -> hoa
+    assert d["tie"] and d["choice"] == "tracker_bytetrack_e1" and "tuyet doi" not in d["reason"]
+    d = bc.decide("tracker_bytetrack_e1", "tracker_botsort_e1", 10.0, 7.0)          # 30% va 3/1000 -> BoT-SORT
+    assert not d["tie"] and d["choice"] == "tracker_botsort_e1"
+    d = bc.decide("tracker_bytetrack_e1", "tracker_botsort_e1", 2.0, 1.2)           # 40% nhung < 1/1000 -> hoa
+    assert d["tie"] and d["choice"] == "tracker_bytetrack_e1"
+    assert bc.decide("a_bytetrack", "b", 0.0, 0.0)["tie"]
