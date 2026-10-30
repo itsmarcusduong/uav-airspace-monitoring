@@ -1,0 +1,62 @@
+{
+  "note": "khoang = so frame bi thieu giua hai lan xuat hien; bins 1-5, 6-30, 31-45, >45",
+  "pairs": [
+    {
+      "a": {
+        "dir": "results/W05/kaggle_run_12/w5_track/tracks/tracker_bytetrack_default",
+        "videos": 38,
+        "same_id_gaps": {
+          "1-5": 49,
+          "6-30": 16
+        },
+        "no_track_gaps": {
+          "1-5": 16
+        }
+      },
+      "b": {
+        "dir": "results/W05/kaggle_run_12b/w5_track/tracks/tracker_bytetrack_e1",
+        "videos": 38,
+        "same_id_gaps": {
+          "1-5": 49,
+          "6-30": 16
+        },
+        "no_track_gaps": {
+          "1-5": 16
+        }
+      },
+      "files": 38,
+      "identical": 38,
+      "different": []
+    },
+    {
+      "a": {
+        "dir": "results/W05/kaggle_run_12/w5_track/tracks/tracker_botsort_default",
+        "videos": 38,
+        "same_id_gaps": {
+          "1-5": 46,
+          "6-30": 13
+        },
+        "no_track_gaps": {
+          "1-5": 14
+        }
+      },
+      "b": {
+        "dir": "results/W05/kaggle_run_12b/w5_track/tracks/tracker_botsort_e1",
+        "videos": 38,
+        "same_id_gaps": {
+          "1-5": 46,
+          "6-30": 13,
+          "31-45": 1
+        },
+        "no_track_gaps": {
+          "1-5": 14
+        }
+      },
+      "files": 38,
+      "identical": 37,
+      "different": [
+        "V_HELICOPTER_011.csv"
+      ]
+    }
+  ]
+}

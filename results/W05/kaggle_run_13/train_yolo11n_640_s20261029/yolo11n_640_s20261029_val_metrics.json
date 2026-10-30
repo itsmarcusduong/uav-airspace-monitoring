@@ -1,0 +1,51 @@
+{
+  "overall": {
+    "experiment": "yolo11n_640_s20261029",
+    "split": "val",
+    "precision_mean": 0.74175,
+    "recall_mean": 0.83611,
+    "map50": 0.79134,
+    "map50_95": 0.34175,
+    "speed_ms_per_image": {
+      "preprocess": 0.94983,
+      "inference": 3.20313,
+      "loss": 0.00125,
+      "postprocess": 0.79366
+    },
+    "note": "Danh gia tren VAL; val cung dung de dung som/chon best.pt nen so lieu lac quan. Test bi khoa."
+  },
+  "per_class": [
+    {
+      "class_id": 0,
+      "class_name": "Airplane",
+      "precision": 0.78238,
+      "recall": 0.6469,
+      "ap50": 0.72638,
+      "ap50_95": 0.35671
+    },
+    {
+      "class_id": 1,
+      "class_name": "Bird",
+      "precision": 0.58883,
+      "recall": 0.9863,
+      "ap50": 0.78273,
+      "ap50_95": 0.36665
+    },
+    {
+      "class_id": 2,
+      "class_name": "Drone",
+      "precision": 0.69474,
+      "recall": 0.84854,
+      "ap50": 0.72835,
+      "ap50_95": 0.21974
+    },
+    {
+      "class_id": 3,
+      "class_name": "Helicopter",
+      "precision": 0.90105,
+      "recall": 0.86271,
+      "ap50": 0.92791,
+      "ap50_95": 0.42391
+    }
+  ]
+}

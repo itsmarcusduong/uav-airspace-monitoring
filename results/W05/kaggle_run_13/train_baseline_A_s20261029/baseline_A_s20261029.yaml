@@ -1,0 +1,31 @@
+# Cau hinh hieu luc: baseline_A.yaml voi train.seed = 20261029 (--seed)
+experiment: baseline_A_s20261029
+dataset_version: e1-yolo-v1
+model: yolov8n.pt
+ultralytics_version: ''
+train:
+  imgsz: 640
+  epochs: 50
+  patience: 15
+  batch: 32
+  seed: 20261029
+  deterministic: true
+  workers: 4
+  optimizer: auto
+  pretrained: true
+  close_mosaic: 10
+  cache: false
+  plots: true
+  val: true
+val:
+  split: val
+  imgsz: 640
+  batch: 32
+  conf: 0.001
+  iou: 0.6
+  plots: true
+  save_json: true
+seed_override:
+  seed: 20261029
+  base_config: baseline_A.yaml
+  base_config_sha256: 822b1a3c192800af45653692c4b619037df4d39e962f96b10166aa28afb91bac

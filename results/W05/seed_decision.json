@@ -1,0 +1,93 @@
+{
+  "rule": "docs/w4/training_protocol_w4.md muc 6",
+  "a": "baseline_A",
+  "b": "yolo11n_640",
+  "summary": {
+    "baseline_A": {
+      "seeds": [
+        20261013,
+        20261029,
+        20261030
+      ],
+      "map": {
+        "n": 3,
+        "mean": 0.33794,
+        "sd": 0.00368,
+        "min": 0.33524,
+        "max": 0.34213
+      },
+      "map50": {
+        "n": 3,
+        "mean": 0.77865,
+        "sd": 0.02746,
+        "min": 0.75267,
+        "max": 0.80738
+      },
+      "ms": {
+        "n": 3,
+        "mean": 3.18558,
+        "sd": 0.0619,
+        "min": 3.14908,
+        "max": 3.25705
+      },
+      "f1": {
+        "n": 3,
+        "mean": 0.81943,
+        "sd": 0.03215,
+        "min": 0.7948,
+        "max": 0.8558
+      },
+      "invalid": []
+    },
+    "yolo11n_640": {
+      "seeds": [
+        20261013,
+        20261029,
+        20261030
+      ],
+      "map": {
+        "n": 3,
+        "mean": 0.34403,
+        "sd": 0.00271,
+        "min": 0.34175,
+        "max": 0.34702
+      },
+      "map50": {
+        "n": 3,
+        "mean": 0.79751,
+        "sd": 0.0308,
+        "min": 0.77026,
+        "max": 0.83092
+      },
+      "ms": {
+        "n": 3,
+        "mean": 3.20706,
+        "sd": 0.07211,
+        "min": 3.13699,
+        "max": 3.28105
+      },
+      "f1": {
+        "n": 3,
+        "mean": 0.83367,
+        "sd": 0.04152,
+        "min": 0.8004,
+        "max": 0.8802
+      },
+      "invalid": []
+    }
+  },
+  "decision": {
+    "choice": "yolo11n_640",
+    "reason": "hoa mAP va toc do, |delta F1 Drone| >= 0.01",
+    "steps": [
+      "delta mAP50-95 (yolo11n_640 - baseline_A) = +0.0061",
+      "hoa mAP; chenh toc do tuong doi = 0.007",
+      "hoa toc do; delta F1 Drone = +0.0142"
+    ]
+  },
+  "thresholds": {
+    "map": 0.01,
+    "speed_rel": 0.1,
+    "f1": 0.01
+  }
+}
