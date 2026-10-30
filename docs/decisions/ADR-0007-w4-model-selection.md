@@ -1,6 +1,7 @@
 # ADR-0007: Chọn detector cho W5 theo luật đặt trước (kết quả run 09)
 
-- Trạng thái: **Accepted** (Quang 28/10/2026, An 29/10/2026).
+- Trạng thái: **Accepted** (Quang 28/10/2026, An 29/10/2026) cho phần W4.
+- Cập nhật 30/10/2026 (issue #59, run 13): **Proposed**, Quang soạn, chờ An duyệt. Xem mục "Cập nhật sau 3 seed" ở cuối.
 - Liên quan: #39, #40, #48; giao thức `docs/w4/training_protocol_w4.md` mục 4 (luật đặt trước, commit `2ae4c50`, PR #51, 27/10/2026, trước khi có kết quả); ADR-0005 (chỉ tiêu ≥ 15 FPS); ADR-0006 (dữ liệu `e1-yolo-v1`).
 
 ## Bối cảnh
@@ -50,10 +51,50 @@ Luật 4 bị kích hoạt: không mô hình nào cải thiện rõ trên lớp 
   - Loss thành NaN ở epoch 3 (cuối warmup, lr ≈ 1,2·10⁻³, `amp: true`). Từ đó val mAP bằng 0, và checkpoint "tốt nhất" là epoch 2, gần như vẫn là trọng số COCO.
   - Số trong bảng **không** phản ánh năng lực của RT-DETR.
   - Không chạy lại để chọn mô hình vì RT-DETR-l đã vượt ràng buộc 25 ms. Nếu cần cho phần so sánh trong thuyết minh, chạy lại với `amp: false`, `optimizer: AdamW`, `lr0: 1e-4`. Đây là thay đổi config, phải ghi vào giao thức.
-- **Độ nhiễu của val.** Độ lệch chuẩn mAP@0.5:0.95 giữa các epoch (bỏ 5 epoch đầu) là 0,020–0,036 tùy mô hình (cột `val_map50_95_epoch_sd`). Val chỉ có 98 video, và chọn "epoch tốt nhất" trên val là lấy max của một đường cong nhiễu. Vì vậy chênh lệch dưới khoảng 0,02 giữa các mô hình không nên diễn giải là khác biệt thật.
+- **Độ nhiễu của val.** Độ lệch chuẩn mAP@0.5:0.95 giữa các epoch (bỏ 5 epoch đầu) là 0,020–0,036 tùy mô hình (cột `val_map50_95_epoch_sd`). Val của `e1-yolo-v1` chỉ có 38 video khả kiến (1.202 ảnh; split v1 có 98 video val tính cả IR), và chọn "epoch tốt nhất" trên val là lấy max của một đường cong nhiễu. Vì vậy chênh lệch dưới khoảng 0,02 giữa các mô hình không nên diễn giải là khác biệt thật.
 
 ## Hệ quả
 - W5: tracker (ByteTrack chính, BoT-SORT đối chứng, ADR-0005) dùng `baseline_A` best.pt của W03 (`results/W03/kaggle_run_04/train_evidence/weights_manifest.json`).
 - #40 (An): viết phân tích bảng so sánh và model card cho detector B dựa trên bảng này. Phần phân tích phải nói rõ RT-DETR không hợp lệ và val nhiễu.
 - Lập issue W5 (#59): chạy 3 seed cho A và YOLO11n (Kaggle run 13), chọn lại theo luật nhiều seed ghi trước ở `docs/w4/training_protocol_w4.md` mục 6 (29/10/2026). Mục 6 định nghĩa thêm "hòa về tốc độ" (< 10%) và tiêu chí phụ F1 Drone. Kết quả sẽ ghi vào bản cập nhật của ADR này.
 - #37 đóng: không xuất `e1-yolo-v2` trong W4 (ADR-0006).
+
+## Cập nhật sau 3 seed (run 13, 30/10/2026)
+
+### Bối cảnh
+- [Kết quả đo] Kaggle run 13 (`w5_run13_seeds.ipynb`, commit `26c9462`) train thêm seed 20261029 và 20261030 cho `baseline_A` và `yolo11n_640`.
+  - Cùng dữ liệu `e1-yolo-v1` (fingerprint `d0ac7e23…`), Ultralytics 8.4.183, Tesla T4, 50 epoch / patience 15. Cả 4 run có `train_health = OK`.
+  - Seed 20261013 lấy từ run 04 (A) và run 09 (YOLO11n).
+- Bảng và quyết định tạo bằng `scripts/reporting/build_seed_comparison.py`: `results/W05/seed_comparison.csv`, `seed_summary.csv`, `seed_comparison.md`, `seed_decision.json`. Bằng chứng gốc nằm ở `results/W05/kaggle_run_13/`. Weights có SHA-256 và link Drive trong `train_*/weights_manifest.json`.
+- Mọi số đo trên **val**, lạc quan như đã nêu ở trên. Test vẫn khóa.
+
+| Mô hình | Seed | mAP@0.5:0.95 TB ± SD | min–max | ms/ảnh TB | F1 Drone TB (± SD) |
+|---|---|---|---|---|---|
+| baseline_A | 20261013, 20261029, 20261030 | 0,3379 ± 0,0037 | 0,3352–0,3421 | 3,19 | 0,819 (± 0,032) |
+| yolo11n_640 | 20261013, 20261029, 20261030 | 0,3440 ± 0,0027 | 0,3417–0,3470 | 3,21 | 0,834 (± 0,042) |
+
+### Áp dụng luật `docs/w4/training_protocol_w4.md` mục 6
+1. Δ mAP@0.5:0.95 = +0,0061, nhỏ hơn 0,01 nên **hòa**.
+2. Chênh tốc độ tương đối 0,7%, nhỏ hơn 10% nên **hòa tốc độ**.
+3. Δ F1 Drone = +0,0142, lớn hơn hoặc bằng 0,01 nên chọn `yolo11n_640`.
+
+**[DECISION] Theo đúng luật mục 6: đổi detector sang `yolo11n_640` (YOLO11n @640).**
+
+### Ghi chú trung thực
+- **Thời điểm đặt luật.** Mục 6 được viết sau khi đã biết kết quả seed 20261013, nhưng trước khi có seed 20261029 và 20261030 (đã ghi trong giao thức).
+- **Bằng chứng ở tiêu chí phụ yếu.**
+  - Δ F1 Drone (0,014) nhỏ hơn độ lệch chuẩn giữa các seed của từng mô hình (0,032 và 0,042).
+  - So cặp theo seed: YOLO11n cao hơn ở 2/3 seed (+0,024; −0,007; +0,026).
+  - F1 đo tại ngưỡng vận hành chọn riêng cho từng run trên val (0,25–0,40).
+- **Bằng chứng ở mAP ổn định hơn.** So cặp theo seed, YOLO11n cao hơn A ở cả 3 seed (+0,0049; +0,0053; +0,0081), nhưng mỗi mức đều dưới ngưỡng hòa 0,01.
+- **Kết luận thực tế.** Hai mô hình gần như tương đương trên val. Đổi detector không ảnh hưởng giao diện detector → tracker; chỉ thay file weights.
+
+### Hệ quả
+- **W5 run 12b giữ baseline A** (`65dd67fb…`), đúng giao thức `docs/w5/tracking_protocol_w5.md`. So sánh tracker cần giữ detector cố định; nếu đổi detector giữa run 12 và 12b, khác biệt sẽ bị lẫn với yếu tố detector.
+- **W6:** chạy lại tracking với YOLO11n và cấu hình tracker được giữ sau run 12b (W5_PLAN mục 3). Track log cho geofence và cảnh báo lấy từ lượt chạy này.
+- **Chọn weights YOLO11n cho W6.** [DECISION, Proposed]
+  - Dùng seed có mAP@0.5:0.95 **trung vị** trong 3 seed: `yolo11n_640_s20261030` (0,3433; best.pt SHA `a3de1e01…`).
+  - Lý do: lấy seed cao nhất trên val (20261013, 0,3470) là chọn cực đại trên một đại lượng nhiễu, làm số val lạc quan thêm. Trung vị đại diện hơn cho cấu hình.
+  - Luật này đặt sau khi đã biết mAP của 3 seed, trước khi chạy tracking với YOLO11n. An duyệt hoặc đề xuất luật khác trong PR.
+- **Model card baseline A** giữ nguyên làm mốc. Cần thêm model card cho YOLO11n trước khi dùng ở W6.
+- **Trước W11:** đánh giá cuối trên test dùng detector đã chọn ở đây. Không chọn lại detector trên test.

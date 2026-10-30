@@ -1,0 +1,31 @@
+# Cau hinh hieu luc: yolo11n_640.yaml voi train.seed = 20261030 (--seed)
+experiment: yolo11n_640_s20261030
+dataset_version: e1-yolo-v1
+model: yolo11n.pt
+ultralytics_version: ''
+train:
+  imgsz: 640
+  epochs: 50
+  patience: 15
+  batch: 32
+  seed: 20261030
+  deterministic: true
+  workers: 4
+  optimizer: auto
+  pretrained: true
+  close_mosaic: 10
+  cache: false
+  plots: true
+  val: true
+val:
+  split: val
+  imgsz: 640
+  batch: 32
+  conf: 0.001
+  iou: 0.6
+  plots: true
+  save_json: true
+seed_override:
+  seed: 20261030
+  base_config: yolo11n_640.yaml
+  base_config_sha256: 11963e4df253c1573c85af96ab26a4508eea6fecc44fa47af2cf120ca5f323ab
