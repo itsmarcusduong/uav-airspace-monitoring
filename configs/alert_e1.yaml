@@ -1,0 +1,19 @@
+# Luat canh bao W6 (ADR-0009). Gia tri khoi diem lay tu Thuyet minh muc 10.2; KHONG hieu chinh tren ket qua run 14.
+version: alert_e1_v1
+drone_class: 2                 # Airplane=0, Bird=1, Drone=2, Helicopter=3
+conf_min: 0.25                 # nguong van hanh cua yolo11n_640_s20261030 (results/W05/seed_comparison.csv, conf_op)
+point: center                  # center = tam hop (chinh); box = hop giao polygon (phan tich do nhay)
+# R1 - theo track
+confirm_k: 3                   # xac nhan: >= 3 frame co bang chung Drone ...
+confirm_n: 5                   # ... trong 5 frame lien tiep gan nhat
+dwell_s: 0.3                   # track da xac nhan o trong ROI lien tuc toi thieu 0,3 giay moi canh bao
+end_timeout_s: 1.0             # dong canh bao khi khong con bang chung trong ROI qua 1 giay
+dup_iou: 0.3                   # track moi chong hop >= 0,3 voi track dang canh bao -> cung su kien (track trung, doi ID)
+relink_s: 1.0                  # noi su kien neu track moi xuat hien trong 1 giay sau khi track cu mat
+predict_window: 10             # canh bao som (tham do): uoc luong van toc tu 10 dong gan nhat cua track
+predict_horizon_s: 1.0         # ... ngoai suy 1 giay
+# Chung cho R0 va R1
+merge_gap_s: 1.0               # hai canh bao cach nhau <= 1 giay duoc gop (chong lap)
+# GT su kien va ghep
+gt_dwell_s: 0.3                # su kien GT: tam hop nhan Drone trong ROI lien tuc >= 0,3 giay
+match_tolerance_s: 1.0         # canh bao khop su kien neu giao [bat dau - 1 s, ket thuc + 1 s]
