@@ -34,17 +34,17 @@
           "V_BIRD_041": {
             "frames": 32,
             "frames_with_tracks": 305,
-            "median_pair_iou": 0.866
+            "median_pair_iou": 0.864
           },
           "V_DRONE_010": {
             "frames": 30,
             "frames_with_tracks": 301,
-            "median_pair_iou": 0.655
+            "median_pair_iou": 0.65
           },
           "V_AIRPLANE_007": {
             "frames": 18,
             "frames_with_tracks": 298,
-            "median_pair_iou": 0.921
+            "median_pair_iou": 0.92
           },
           "V_DRONE_088": {
             "frames": 13,
@@ -64,22 +64,22 @@
           "V_DRONE_025": {
             "frames": 8,
             "frames_with_tracks": 305,
-            "median_pair_iou": 0.478
+            "median_pair_iou": 0.469
           },
           "V_HELICOPTER_010": {
             "frames": 8,
             "frames_with_tracks": 162,
-            "median_pair_iou": 0.666
+            "median_pair_iou": 0.642
           },
           "V_DRONE_023": {
             "frames": 6,
             "frames_with_tracks": 301,
-            "median_pair_iou": 0.701
+            "median_pair_iou": 0.695
           },
           "V_DRONE_060": {
             "frames": 6,
             "frames_with_tracks": 308,
-            "median_pair_iou": 0.889
+            "median_pair_iou": 0.888
           },
           "V_BIRD_025": {
             "frames": 5,
@@ -89,7 +89,7 @@
           "V_AIRPLANE_048": {
             "frames": 4,
             "frames_with_tracks": 302,
-            "median_pair_iou": 0.682
+            "median_pair_iou": 0.675
           }
         }
       },
@@ -125,17 +125,17 @@
           "V_BIRD_041": {
             "frames": 32,
             "frames_with_tracks": 305,
-            "median_pair_iou": 0.866
+            "median_pair_iou": 0.864
           },
           "V_DRONE_010": {
             "frames": 30,
             "frames_with_tracks": 301,
-            "median_pair_iou": 0.655
+            "median_pair_iou": 0.65
           },
           "V_AIRPLANE_007": {
             "frames": 18,
             "frames_with_tracks": 298,
-            "median_pair_iou": 0.921
+            "median_pair_iou": 0.92
           },
           "V_DRONE_088": {
             "frames": 13,
@@ -155,22 +155,22 @@
           "V_DRONE_025": {
             "frames": 8,
             "frames_with_tracks": 305,
-            "median_pair_iou": 0.478
+            "median_pair_iou": 0.469
           },
           "V_HELICOPTER_010": {
             "frames": 8,
             "frames_with_tracks": 162,
-            "median_pair_iou": 0.666
+            "median_pair_iou": 0.642
           },
           "V_DRONE_023": {
             "frames": 6,
             "frames_with_tracks": 301,
-            "median_pair_iou": 0.701
+            "median_pair_iou": 0.695
           },
           "V_DRONE_060": {
             "frames": 6,
             "frames_with_tracks": 308,
-            "median_pair_iou": 0.889
+            "median_pair_iou": 0.888
           },
           "V_BIRD_025": {
             "frames": 5,
@@ -180,7 +180,7 @@
           "V_AIRPLANE_048": {
             "frames": 4,
             "frames_with_tracks": 302,
-            "median_pair_iou": 0.682
+            "median_pair_iou": 0.675
           }
         }
       },
@@ -221,7 +221,7 @@
           "V_DRONE_010": {
             "frames": 30,
             "frames_with_tracks": 301,
-            "median_pair_iou": 0.681
+            "median_pair_iou": 0.674
           },
           "V_BIRD_041": {
             "frames": 29,
@@ -241,7 +241,7 @@
           "V_HELICOPTER_039": {
             "frames": 12,
             "frames_with_tracks": 307,
-            "median_pair_iou": 0.931
+            "median_pair_iou": 0.915
           },
           "V_HELICOPTER_005": {
             "frames": 10,
@@ -251,17 +251,17 @@
           "V_HELICOPTER_010": {
             "frames": 8,
             "frames_with_tracks": 162,
-            "median_pair_iou": 0.683
+            "median_pair_iou": 0.666
           },
           "V_DRONE_023": {
             "frames": 6,
             "frames_with_tracks": 301,
-            "median_pair_iou": 0.721
+            "median_pair_iou": 0.709
           },
           "V_DRONE_060": {
             "frames": 6,
             "frames_with_tracks": 308,
-            "median_pair_iou": 0.892
+            "median_pair_iou": 0.89
           },
           "V_BIRD_025": {
             "frames": 5,
@@ -271,7 +271,7 @@
           "V_AIRPLANE_048": {
             "frames": 4,
             "frames_with_tracks": 302,
-            "median_pair_iou": 0.69
+            "median_pair_iou": 0.671
           }
         }
       },
@@ -308,7 +308,7 @@
           "V_DRONE_010": {
             "frames": 30,
             "frames_with_tracks": 301,
-            "median_pair_iou": 0.681
+            "median_pair_iou": 0.674
           },
           "V_BIRD_041": {
             "frames": 29,
@@ -328,7 +328,7 @@
           "V_HELICOPTER_039": {
             "frames": 12,
             "frames_with_tracks": 307,
-            "median_pair_iou": 0.931
+            "median_pair_iou": 0.915
           },
           "V_HELICOPTER_005": {
             "frames": 10,
@@ -338,17 +338,17 @@
           "V_HELICOPTER_010": {
             "frames": 8,
             "frames_with_tracks": 162,
-            "median_pair_iou": 0.683
+            "median_pair_iou": 0.666
           },
           "V_DRONE_023": {
             "frames": 6,
             "frames_with_tracks": 301,
-            "median_pair_iou": 0.721
+            "median_pair_iou": 0.709
           },
           "V_DRONE_060": {
             "frames": 6,
             "frames_with_tracks": 308,
-            "median_pair_iou": 0.892
+            "median_pair_iou": 0.89
           },
           "V_BIRD_025": {
             "frames": 5,
@@ -358,7 +358,7 @@
           "V_AIRPLANE_048": {
             "frames": 4,
             "frames_with_tracks": 302,
-            "median_pair_iou": 0.69
+            "median_pair_iou": 0.671
           }
         }
       },

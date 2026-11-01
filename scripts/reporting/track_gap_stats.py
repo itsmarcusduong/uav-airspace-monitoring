@@ -20,6 +20,7 @@ import argparse
 import csv
 import json
 import logging
+import statistics
 import sys
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -76,7 +77,7 @@ def dir_stats(d: Path, dup_iou: float = 0.3) -> dict:
         n, ious = dup_frames(rows, dup_iou)
         if n:
             dups[f.stem] = {"frames": n, "frames_with_tracks": len({r["frame"] for r in rows}),
-                            "median_pair_iou": round(sorted(ious)[len(ious) // 2], 3)}
+                            "median_pair_iou": round(statistics.median(ious), 3)}
     dups = dict(sorted(dups.items(), key=lambda kv: -kv[1]["frames"]))
     return {"dir": d.as_posix(), "videos": len(files), "same_id_gaps": dict(same_id), "no_track_gaps": dict(no_track),
             "dup_iou": dup_iou, "videos_with_overlapping_tracks": len(dups), "overlapping_track_frames": sum(v["frames"] for v in dups.values()),
