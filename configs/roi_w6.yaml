@@ -1,0 +1,14 @@
+# ROI mo phong cho W6 (ADR-0009, issue #75). Toa do anh chuan hoa [0, 1], goc tren-trai, x sang phai, y xuong duoi.
+# Svanstrom khong co cau hinh camera/vung that: cung mot bo polygon ap cho moi video; day KHONG phai vung cam bay phap ly.
+version: roi_w6_v1
+primary: center_hex
+rois:
+  - name: full_frame
+    note: toan khung hinh; chi kiem tra logic xac nhan theo thoi gian (moi vi tri deu trong vung)
+    polygon: [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0.0, 1.0]]
+  - name: center_hex
+    note: vung chinh; luc giac giua khung, co canh xien de kiem tra polygon khong phai hinh chu nhat
+    polygon: [[0.25, 0.10], [0.75, 0.10], [0.90, 0.50], [0.75, 0.90], [0.25, 0.90], [0.10, 0.50]]
+  - name: lower_half
+    note: nua duoi khung (gia lap vung tiep can gan mat dat/duong bang)
+    polygon: [[0.0, 0.5], [1.0, 0.5], [1.0, 1.0], [0.0, 1.0]]

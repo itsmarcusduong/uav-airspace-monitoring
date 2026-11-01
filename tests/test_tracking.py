@@ -170,3 +170,48 @@ def test_track_dup_frames():
             {"frame": 1, "x": 0, "y": 0, "w": 10, "h": 10}, {"frame": 1, "x": 50, "y": 50, "w": 10, "h": 10}]
     n, ious = tg.dup_frames(rows, 0.3)
     assert n == 1 and abs(ious[0] - 90 / 110) < 1e-9
+
+
+def test_track_dup_median_even_count(tmp_path):
+    """Review cua An (#71): trung vi voi so phan tu chan phai la trung binh hai phan tu giua."""
+    sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parents[1] / "scripts" / "reporting"))
+    import track_gap_stats as tg
+    d = tmp_path / "t"; d.mkdir()
+    rows = ["frame,id,cls,conf,x,y,w,h",
+            "0,1,2,0.9,0,0,10,10", "0,2,2,0.9,1,0,10,10",      # IoU 90/110
+            "1,1,2,0.9,0,0,10,10", "1,2,2,0.9,5,0,10,10"]      # IoU 50/150
+    (d / "V.csv").write_text("\n".join(rows) + "\n")
+    s = tg.dir_stats(d, 0.3)
+    assert s["overlapping_by_video"]["V"]["median_pair_iou"] == round((90 / 110 + 50 / 150) / 2, 3)
+
+
+class _FakeModelW6(_FakeModel):
+    def predict(self, source, **kw):
+        assert kw["stream"] is True
+        for f in range(10):
+            x, y, w, h = box(f)
+            yield type("R", (), {"boxes": _Boxes([(x, y, w, h, 0)])})()
+
+
+def test_track_job_w6_dumps(tmp_path, monkeypatch):
+    raw, man, audit, cfgs, weights = _make_inputs(tmp_path)
+    monkeypatch.setattr(tv, "load_labels", lambda p: [box(f) for f in range(10)])
+    monkeypatch.setattr(tv, "load_model", lambda w: _FakeModelW6())
+    out = tmp_path / "out"
+    monkeypatch.setattr(sys, "argv", ["x", "--data-root", str(raw), "--manifest", str(man), "--audit", str(audit),
+                                      "--weights", str(weights), "--weights-sha", tv.sha256(weights), "--trackers", str(cfgs[0]),
+                                      "--out", str(out), "--commit", "b" * 40, "--device", "cpu", "--tag", "w6_run14",
+                                      "--save-detections", "--save-gt", "--save-matches", "--demo", "0"])
+    assert tv.main() == 0
+    ev = out / "w6_run14"
+    st = json.loads((ev / "stage_status.json").read_text())
+    assert list(st) == ["env", "inputs", "track", "metrics", "detect", "dump", "demo", "bundle"]
+    assert all(v["status"] == "OK" for v in st.values()), st
+    assert st["detect"]["detections"] == 30 and st["dump"]["match_files"] == 3
+    meta = list(csv.DictReader((ev / "meta.csv").open()))
+    assert meta[0]["fps"] == "30.0" and meta[0]["width"] == "320" and meta[0]["gt_frames"] == "10"
+    assert len(list(csv.DictReader((ev / "dets" / "V_DRONE_001.csv").open()))) == 10
+    m = list(csv.DictReader((ev / "matches" / "tracker_bytetrack_default" / "V_DRONE_001.csv").open()))
+    assert [r["id"] for r in m[5:8]] == ["1", "2", "2"] and m[0]["matched"] == "True"
+    with zipfile.ZipFile(out / "w6_run14_evidence.zip") as z:
+        assert "w6_run14/gt/V_BIRD_001.csv" in z.namelist()

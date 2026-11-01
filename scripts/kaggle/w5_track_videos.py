@@ -14,6 +14,12 @@ Dau ra (--out/w5_track/):
   env.json, inputs.json, stage_status.json
   -> w5_track_evidence.zip, w5_track_demo.zip
 
+Tuy chon them tu W6 (run 14, issue #74; mac dinh tat nen run 12/12b tai lap y nguyen):
+  --tag w6_run14            ten thu muc va tien to zip (mac dinh w5_track)
+  --save-detections         dets/<video>.csv: detection tho moi frame (model.predict, conf >= --conf) cho luat detector-only
+  --save-gt                 gt/<video>.csv (frame,x,y,w,h; offset0) va meta.csv (fps, kich thuoc, so frame) cho GT su kien
+  --save-matches            matches/<tracker>/<video>.csv: ghep GT-track tung frame (IoU 0,5) de dinh vi tung ID switch
+
     python w5_track_videos.py --data-root <raw> --manifest yolo_manifest.csv.gz --audit annotation_audit.csv \
         --weights best.pt --weights-sha 65dd67fb... --trackers tracker_bytetrack_default.yaml tracker_botsort_default.yaml \
         --out /kaggle/working --commit <sha>
@@ -36,11 +42,14 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from w3_export_yolo import find_video_dir, load_labels, sha256  # noqa: E402
-from w5_track_metrics import summarize, video_metrics  # noqa: E402
+from w5_track_metrics import match_frames, summarize, video_metrics  # noqa: E402
 
 LOG = logging.getLogger("w5_track")
 CLASSES = ["Airplane", "Bird", "Drone", "Helicopter"]
 TRACK_FIELDS = ["frame", "id", "cls", "conf", "x", "y", "w", "h"]
+DET_FIELDS = ["frame", "cls", "conf", "x", "y", "w", "h"]
+GT_FIELDS = ["frame", "x", "y", "w", "h"]
+MATCH_FIELDS = ["frame", "has_gt", "matched", "id", "cls", "iou", "n_tracks"]
 IOU_THRS = (0.5, 0.3)
 
 
@@ -74,6 +83,33 @@ def track_video(model, video: Path, tracker_cfg: Path, a) -> tuple[list[dict], i
                              "x": round(x1, 2), "y": round(y1, 2), "w": round(x2 - x1, 2), "h": round(y2 - y1, 2)})
         n += 1
     return rows, n, time.perf_counter() - t0
+
+
+def detect_video(model, video: Path, a) -> tuple[list[dict], int]:
+    """Detection tho (khong tracker) moi frame, cung conf/NMS/imgsz voi tracking; dau vao cho luat detector-only (ADR-0009)."""
+    rows, n = [], 0
+    for r in model.predict(source=str(video), conf=a.conf, iou=a.iou, imgsz=a.imgsz, device=a.device, stream=True, verbose=False):
+        b = r.boxes
+        if b is not None and len(b):
+            for xyxy, c, s in zip(b.xyxy.tolist(), b.cls.tolist(), b.conf.tolist()):
+                x1, y1, x2, y2 = xyxy
+                rows.append({"frame": n, "cls": int(c), "conf": round(float(s), 4),
+                             "x": round(x1, 2), "y": round(y1, 2), "w": round(x2 - x1, 2), "h": round(y2 - y1, 2)})
+        n += 1
+    return rows, n
+
+
+def video_meta(video: Path) -> dict:
+    import cv2
+    cap = cv2.VideoCapture(str(video))
+    if not cap.isOpened():
+        raise RuntimeError(f"khong mo duoc {video}")
+    m = {"fps": round(cap.get(cv2.CAP_PROP_FPS) or 0.0, 3), "width": int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)),
+         "height": int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))}
+    cap.release()
+    if m["fps"] <= 0 or m["width"] <= 0:
+        raise RuntimeError(f"{video}: khong doc duoc fps/kich thuoc {m}")
+    return m
 
 
 def render_demo(video: Path, gt: list, tracks: list[dict], out: Path, title: str) -> int:
@@ -128,9 +164,13 @@ def main() -> int:
     ap.add_argument("--max-videos", type=int, default=0, help="chi de kiem thu")
     ap.add_argument("--out", type=Path, default=Path("/kaggle/working"))
     ap.add_argument("--commit", default="UNKNOWN")
+    ap.add_argument("--tag", default="w5_track", help="ten thu muc bang chung va tien to zip")
+    ap.add_argument("--save-detections", action="store_true")
+    ap.add_argument("--save-gt", action="store_true")
+    ap.add_argument("--save-matches", action="store_true")
     a = ap.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
-    ev = a.out / "w5_track"
+    ev = a.out / a.tag
     if ev.exists():
         shutil.rmtree(ev)
     ev.mkdir(parents=True)
@@ -252,6 +292,39 @@ def main() -> int:
         return {k: {"idsw_per_1000": v["all"]["idsw_per_1000_gt_frames"], "median_dom_cov": v["all"]["median_dominant_id_coverage"]}
                 for k, v in summary.items()}
 
+    def detect():
+        model = load_model(str(a.weights))
+        n_rows, bad = 0, []
+        for v in ctx["videos"]:
+            rows, n = detect_video(model, v["mp4"], a)
+            write_csv(ev / "dets" / f"{v['video_id']}.csv", rows, DET_FIELDS)
+            n_rows += len(rows)
+            if n != v["frames"]:
+                bad.append(f"{v['video_id']}: {n} != {v['frames']}")
+        if bad:
+            raise ValueError("so frame predict khac audit: " + "; ".join(bad[:5]))
+        return {"videos": len(ctx["videos"]), "detections": n_rows}
+
+    def dump():
+        out = {}
+        if a.save_gt:
+            meta = []
+            for v in ctx["videos"]:
+                write_csv(ev / "gt" / f"{v['video_id']}.csv",
+                          [{"frame": i, "x": g[0], "y": g[1], "w": g[2], "h": g[3]} for i, g in enumerate(v["gt"]) if g is not None], GT_FIELDS)
+                meta.append({"video_id": v["video_id"], "class_name": v["class_name"], "frames": v["frames"],
+                             "gt_frames": sum(g is not None for g in v["gt"]), **video_meta(v["mp4"])})
+            write_csv(ev / "meta.csv", meta, list(meta[0]))
+            out["gt_videos"] = len(meta)
+        if a.save_matches:
+            for t in ctx["trackers"]:
+                for v in ctx["videos"]:
+                    m = match_frames(v["gt"], v["tracks"][t["name"]], 0.5)
+                    write_csv(ev / "matches" / t["name"] / f"{v['video_id']}.csv",
+                              [{k: r[k] for k in MATCH_FIELDS} for r in m], MATCH_FIELDS)
+            out["match_files"] = len(ctx["trackers"]) * len(ctx["videos"])
+        return out
+
     def demo():
         if a.demo <= 0:
             return {"skipped": True}
@@ -279,7 +352,7 @@ def main() -> int:
         return {"videos": [d["video_id"] for d in done]}
 
     def bundle():
-        z1, z2 = a.out / "w5_track_evidence.zip", a.out / "w5_track_demo.zip"
+        z1, z2 = a.out / f"{a.tag}_evidence.zip", a.out / f"{a.tag}_demo.zip"
         with zipfile.ZipFile(z1, "w", zipfile.ZIP_DEFLATED) as zf:
             for p in sorted(ev.rglob("*")):
                 if p.is_file() and p.suffix != ".mp4":
@@ -291,7 +364,13 @@ def main() -> int:
 
     run("env", env)
     if run("inputs", inputs) is not None and run("track", track) is not None and run("metrics", metrics) is not None:
-        run("demo", demo)
+        ok = True
+        if a.save_detections:
+            ok = run("detect", detect) is not None
+        if ok and (a.save_gt or a.save_matches):
+            ok = run("dump", dump) is not None
+        if ok:
+            run("demo", demo)
     run("bundle", bundle)
     print(json.dumps({k: v.get("status") for k, v in status.items()}, indent=2))
     return 0 if all(v.get("status") == "OK" for v in status.values()) else 1
