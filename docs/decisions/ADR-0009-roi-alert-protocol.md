@@ -1,6 +1,6 @@
 # ADR-0009: Giao thức cảnh báo theo vùng (geofence) và quỹ đạo, tuần 6
 
-- Trạng thái: **Proposed** (Quang soạn 01/11/2026, issue #76). An duyệt hoặc sửa trong #75 **trước** khi chạy `evaluate_alerts.py` trên kết quả run 14. Sau khi đã xem kết quả cảnh báo, không sửa luật, ngưỡng hay ROI của ADR này. Thay đổi nào cũng phải viết thành ADR mới.
+- Trạng thái: **Accepted** (Quang 01/11/2026, An 01/11/2026).
 - Liên quan:
   - ADR-0005: chỉ tiêu cảnh báo, W6 = geofence + cảnh báo theo trajectory.
   - ADR-0007 (bản cập nhật): detector YOLO11n `s20261030`.
@@ -36,7 +36,7 @@
      - 0,25 là ngưỡng vận hành của `yolo11n_640_s20261030` (`results/W05/seed_comparison.csv`, cột `conf_op`).
    - **R1, theo track:** chạy tuần tự từng frame, mỗi frame chỉ dùng dữ liệu đến frame đó.
      - **Bằng chứng:** một dòng track có lớp Drone và conf ≥ 0,25.
-     - **Xác nhận:** track có ≥ 3 bằng chứng trong 5 frame gần nhất. Lớp đa số của track (tính từ đầu track) phải là Drone.
+     - **Xác nhận:** track có ≥ 3 bằng chứng trong 5 frame gần nhất. Lớp xuất hiện nhiều nhất của track (tính từ đầu track) phải là Drone; nếu đồng hạng thì chưa đạt điều kiện này.
      - **Cảnh báo:** track đã xác nhận có bằng chứng trong ROI liên tục ≥ 0,3 giây (9 frame ở 30 fps).
      - **Kết thúc:** không còn bằng chứng trong ROI quá 1 giây.
      - **Chống lặp và nối sự kiện:**

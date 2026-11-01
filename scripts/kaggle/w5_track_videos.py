@@ -251,7 +251,8 @@ def main() -> int:
                 "gt_frames": sum(sum(g is not None for g in v["gt"]) for v in videos), "weights_sha256": sha256(a.weights),
                 "manifest_sha256": sha256(a.manifest), "audit_sha256": sha256(a.audit),
                 "trackers": {t["name"]: {"sha256": t["sha256"], "cfg": t["cfg"], "diff_vs_ultralytics_default": t["diff_vs_default"]} for t in trk},
-                "detector": {"conf": a.conf, "nms_iou": a.iou, "imgsz": a.imgsz}, "label_offset": "offset0 (ADR-0006)", "test_used": False}
+                "detector": {"conf": a.conf, "nms_iou": a.iou, "imgsz": a.imgsz}, "label_offset": "offset0 (ADR-0006)",
+                "test_used": a.split == "test"}
         (ev / "inputs.json").write_text(json.dumps(info, indent=2, ensure_ascii=False), encoding="utf-8")
         return {k: info[k] for k in ("videos", "gt_frames", "by_class")}
 
