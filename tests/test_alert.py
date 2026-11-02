@@ -54,8 +54,17 @@ def test_r0_detector_only():
 
 def test_r1_enter_roi_after_dwell():
     t = [tr(f, 1, OUT) for f in range(20)] + [tr(f, 1, IN) for f in range(20, 60)]
+    d = [det(f, OUT) for f in range(20)] + [det(f, IN) for f in range(20, 60)]
     al, _ = ae.r1_alerts(t, 100, FPS, HEX, W, H, CFG)
+    assert [(a["start"], a["end"]) for a in ae.r0_alerts(d, 100, FPS, HEX, W, H, CFG)] == [(20, 59)]
     assert len(al) == 1 and al[0]["start"] == 28 and al[0]["end"] == 59 and al[0]["kind"] == "vao_vung"
+
+
+def test_r1_track_appears_inside_roi():
+    tracks = [tr(f, 1, IN) for f in range(20)]
+    al, _ = ae.r1_alerts(tracks, 30, FPS, HEX, W, H, CFG)
+    assert [(a["start"], a["end"]) for a in ae.r0_alerts([det(f, IN) for f in range(20)], 30, FPS, HEX, W, H, CFG)] == [(0, 19)]
+    assert len(al) == 1 and al[0]["start"] == 8 and al[0]["kind"] == "xuat_hien_trong_vung"
 
 
 def test_r1_needs_confirmation_and_drone_majority():
@@ -67,12 +76,37 @@ def test_r1_needs_confirmation_and_drone_majority():
     assert ae.r1_alerts(mostly_bird, 100, FPS, HEX, W, H, CFG)[0] == []   # lop da so khong phai Drone
 
 
+def test_r1_class_tie_does_not_count_as_drone_majority():
+    tracks = [tr(f, 1, IN, cls=2 if f % 2 == 0 else 0) for f in range(60)]
+    dets = [det(f, IN) for f in range(0, 60, 2)]
+    assert len(ae.r0_alerts(dets, 60, FPS, HEX, W, H, CFG)) == 1
+    assert ae.r1_alerts(tracks, 60, FPS, HEX, W, H, CFG)[0] == []
+
+
+def test_r1_short_detection_gaps_restart_dwell():
+    one_frame_gap = [tr(f, 1, IN) for f in range(8)] + [tr(f, 1, IN) for f in range(9, 18)]
+    two_frame_gap = [tr(f, 1, IN) for f in range(8)] + [tr(f, 1, IN) for f in range(10, 19)]
+
+    one_frame_dets = [det(f, IN) for f in range(8)] + [det(f, IN) for f in range(9, 18)]
+    two_frame_dets = [det(f, IN) for f in range(8)] + [det(f, IN) for f in range(10, 19)]
+    assert [(a["start"], a["end"]) for a in ae.r0_alerts(one_frame_dets, 30, FPS, HEX, W, H, CFG)] == [(0, 17)]
+    assert [(a["start"], a["end"]) for a in ae.r0_alerts(two_frame_dets, 30, FPS, HEX, W, H, CFG)] == [(0, 18)]
+
+    one_alert, _ = ae.r1_alerts(one_frame_gap, 30, FPS, HEX, W, H, CFG)
+    two_alerts, _ = ae.r1_alerts(two_frame_gap, 30, FPS, HEX, W, H, CFG)
+    assert len(one_alert) == 1 and one_alert[0]["start"] == 17
+    assert len(two_alerts) == 1 and two_alerts[0]["start"] == 18
+
+
 def test_r1_duplicate_tracks_and_id_change_one_event():
     dup = [tr(f, 1, IN) for f in range(40)] + [tr(f, 2, (IN[0] + 3, IN[1])) for f in range(5, 40)]
     al, _ = ae.r1_alerts(dup, 100, FPS, HEX, W, H, CFG)
+    assert len(ae.r0_alerts([det(f, IN) for f in range(40)], 100, FPS, HEX, W, H, CFG)) == 1
     assert len(al) == 1 and al[0]["tracks"] == [1, 2]
     swap = [tr(f, 1, IN) for f in range(30)] + [tr(f, 7, IN) for f in range(45, 80)]
     al, _ = ae.r1_alerts(swap, 100, FPS, HEX, W, H, CFG)
+    swap_dets = [det(f, IN) for f in range(30)] + [det(f, IN) for f in range(45, 80)]
+    assert len(ae.r0_alerts(swap_dets, 100, FPS, HEX, W, H, CFG)) == 1
     assert len(al) == 1 and al[0]["tracks"] == [1, 7] and al[0]["end"] == 79
 
 
@@ -80,8 +114,23 @@ def test_r1_short_loss_keeps_event_long_absence_splits():
     gap10 = [tr(f, 1, IN) for f in range(30)] + [tr(f, 1, IN) for f in range(41, 60)]
     assert len(ae.r1_alerts(gap10, 100, FPS, HEX, W, H, CFG)[0]) == 1
     leave = [tr(f, 1, IN) for f in range(30)] + [tr(f, 1, OUT) for f in range(30, 110)] + [tr(f, 1, IN) for f in range(110, 140)]
+    leave_dets = [det(f, IN) for f in range(30)] + [det(f, OUT) for f in range(30, 110)] + [det(f, IN) for f in range(110, 140)]
     al, _ = ae.r1_alerts(leave, 150, FPS, HEX, W, H, CFG)
+    assert [(a["start"], a["end"]) for a in ae.r0_alerts(leave_dets, 150, FPS, HEX, W, H, CFG)] == [(0, 29), (110, 139)]
     assert [(a["start"], a["end"]) for a in al] == [(8, 29), (118, 139)]
+
+
+def test_roi_boundary_center_vs_box_rules():
+    boundary_box = {"x": 40, "y": 240, "w": 40, "h": 40}
+    boxes = [{"frame": f, "cls": 2, "conf": 0.8, **boundary_box} for f in range(20)]
+    tracks = [{"frame": f, "id": 1, "cls": 2, "conf": 0.8, **boundary_box} for f in range(20)]
+    box_cfg = {**CFG, "point": "box"}
+
+    assert ae.r0_alerts(boxes, 30, FPS, HEX, W, H, CFG) == []
+    assert len(ae.r0_alerts(boxes, 30, FPS, HEX, W, H, box_cfg)) == 1
+    assert ae.r1_alerts(tracks, 30, FPS, HEX, W, H, CFG)[0] == []
+    box_alerts, _ = ae.r1_alerts(tracks, 30, FPS, HEX, W, H, box_cfg)
+    assert len(box_alerts) == 1 and box_alerts[0]["start"] == 8
 
 
 def test_r1_prewarning_from_trajectory():
@@ -115,7 +164,8 @@ def _write_evidence(ev: Path):
     ea.wcsv(ev / "meta.csv", [{"video_id": v, "class_name": c, "frames": 90, "gt_frames": 60, "fps": FPS, "width": W, "height": H}
                               for v, c in vids.items()], ["video_id", "class_name", "frames", "gt_frames", "fps", "width", "height"])
     (ev / "stage_status.json").write_text(json.dumps({s: {"status": "OK"} for s in ("env", "inputs", "track", "metrics", "detect", "dump")}))
-    (ev / "inputs.json").write_text(json.dumps({"test_used": False, "weights_sha256": "a" * 64, "trackers": {"tracker_bytetrack_e1": {}}}))
+    (ev / "inputs.json").write_text(json.dumps({"split": "val", "test_used": False, "weights_sha256": "a" * 64,
+                                                "trackers": {"tracker_bytetrack_e1": {}}}))
 
 
 def test_evaluate_end_to_end(tmp_path, monkeypatch):
@@ -139,6 +189,15 @@ def test_evaluate_rejects_wrong_weights_and_missing_stage(tmp_path):
         ea.load_evidence(ev, "tracker_bytetrack_e1", "b" * 64)
     (ev / "stage_status.json").write_text(json.dumps({"env": {"status": "OK"}}))
     with pytest.raises(ValueError, match="detect"):
+        ea.load_evidence(ev, "tracker_bytetrack_e1")
+
+
+def test_evaluate_rejects_non_val_split_even_if_flag_says_not_test(tmp_path):
+    ev = tmp_path / "e"; _write_evidence(ev)
+    inputs = json.loads((ev / "inputs.json").read_text())
+    inputs["split"] = "test"
+    (ev / "inputs.json").write_text(json.dumps(inputs))
+    with pytest.raises(ValueError, match="split=val"):
         ea.load_evidence(ev, "tracker_bytetrack_e1")
 
 

@@ -1,0 +1,17 @@
+# Ca kiểm thử ROI và cảnh báo W6
+
+Các ca dưới đây dùng dữ liệu tổng hợp ở 30 fps trên ROI `center_hex`, trừ ca biên có chạy cả `center` và `box`. `R0` phát cảnh báo trên detection Drone đủ ngưỡng; `R1` yêu cầu xác nhận, lớp Drone có số phiếu cao nhất và thời gian lưu trú liên tục. Các kết quả này kiểm tra luật đã chốt trong ADR-0009, không phải kết quả đánh giá run 14.
+
+| Tình huống | Dữ liệu vào (track/detection) | Kết quả mong đợi R0 | Kết quả mong đợi R1 | Test |
+|---|---|---|---|---|
+| UAV bay vào vùng | Detection Drone nằm ngoài ROI ở frame 0–19, trong ROI ở frame 20–59; một track ID 1 có cùng chuỗi vị trí | Một cảnh báo từ frame 20; không cần xác nhận hay dwell | Một cảnh báo từ frame 28, loại `vao_vung` | `test_r1_enter_roi_after_dwell` |
+| UAV xuất hiện ngay trong vùng | Detection Drone và track ID 1 ở trong ROI từ frame 0–19, không có quan sát ngoài vùng trước đó | Một cảnh báo từ frame 0 | Một cảnh báo từ frame 8, loại `xuat_hien_trong_vung` | `test_r1_track_appears_inside_roi` |
+| UAV ra khỏi vùng rồi vào lại | Track ID 1 ở trong ROI frame 0–29, ngoài ROI frame 30–109, rồi vào ROI frame 110–139; detection Drone theo cùng vị trí | Hai cảnh báo, frame 0–29 và 110–139 (khoảng cách vượt cửa sổ gộp 1 giây) | Hai cảnh báo, frame 8–29 và 118–139; khoảng rời ROI dài hơn timeout và cửa sổ nối sự kiện | `test_r1_short_loss_keeps_event_long_absence_splits` |
+| Chim ở trong vùng | Detection Drone không có; track ID 1 có lớp Bird trong ROI liên tục 60 frame | Không cảnh báo vì không có detection Drone | Không cảnh báo vì không đủ bằng chứng Drone | `test_r0_detector_only`, `test_r1_needs_confirmation_and_drone_majority` |
+| Detection Drone chập chờn 1–2 frame | Track ID 1 ở trong ROI 8 frame, mất dấu 1 hoặc 2 frame, sau đó có lại liên tục ít nhất 9 frame; detection Drone hiện diện ở các frame có track | Một cảnh báo do R0 gộp các khoảng cách xa dưới 1 giây | Một cảnh báo sau khi chuỗi dwell liên tục mới đạt 9 frame: frame 17 với mất 1 frame, frame 18 với mất 2 frame | `test_r0_detector_only`, `test_r1_short_detection_gaps_restart_dwell` |
+| Hai track trùng trên cùng vật | ID 1 theo UAV trong ROI; ID 2 xuất hiện chồng hộp với ID 1 (IoU ≥ 0,3) trong thời gian cảnh báo | Detection liên tục tạo một cảnh báo đã gộp | Một cảnh báo duy nhất chứa cả ID 1 và 2 | `test_r1_duplicate_tracks_and_id_change_one_event` |
+| Đổi ID sau khi mất dấu ngắn | ID 1 cảnh báo trong ROI đến frame 29; ID 7 tiếp tục cùng vị trí sau khoảng mất dấu ngắn | Detection được gộp thành một cảnh báo trong cửa sổ 1 giây | Một sự kiện nối ID 1 và ID 7, không tạo cảnh báo lặp | `test_r1_duplicate_tracks_and_id_change_one_event` |
+| Lớp dao động Drone/Airplane | Một track trong ROI có lớp Drone/Airplane luân phiên với số phiếu bằng nhau; detection Drone vẫn xuất hiện | Có cảnh báo từ các detection Drone (các khoảng cách 1 frame được gộp) | Không cảnh báo vì Drone không có số phiếu cao nhất duy nhất | `test_r1_class_tie_does_not_count_as_drone_majority` |
+| Sát biên polygon: tâm ngoài, hộp cắt biên | Hộp từ `(40, 240)` kích thước `40×40` px; tâm nằm ngoài `center_hex`, hộp giao polygon | `center`: không cảnh báo; `box`: một cảnh báo | `center`: không cảnh báo; `box`: một cảnh báo từ frame 8 | `test_roi_boundary_center_vs_box_rules` |
+
+`full_frame` và hình học polygon (điểm trên cạnh được tính là bên trong) được kiểm tra riêng; ca biên nêu trên xác nhận khác biệt giữa điểm tâm và phép giao hộp trong cả hai luật cảnh báo.
