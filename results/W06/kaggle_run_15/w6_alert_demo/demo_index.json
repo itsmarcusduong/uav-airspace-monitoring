@@ -1,0 +1,23 @@
+[
+  {
+    "video_id": "V_DRONE_060",
+    "rule": "Drone, canh bao R1 vao_vung dai nhat",
+    "frames": 308,
+    "file": "V_DRONE_060_alert.mp4",
+    "sha256": "e3f821a1d9f5bd1906b614d82daff945b0bf167090b50e7bc53a87e77f0698d3"
+  },
+  {
+    "video_id": "V_HELICOPTER_031",
+    "rule": "khong phai Drone, canh bao sai R0 dai nhat, R1 khong canh bao",
+    "frames": 304,
+    "file": "V_HELICOPTER_031_alert.mp4",
+    "sha256": "ea28922b6d1a01ac9af00caa58a6e82a9d3c1a84b9d9efde46089f38284ea50a"
+  },
+  {
+    "video_id": "V_DRONE_025",
+    "rule": "Drone, nhieu ID switch nhat (run 14)",
+    "frames": 305,
+    "file": "V_DRONE_025_alert.mp4",
+    "sha256": "126b325da86464b3c124112d8e0788cdedcd3160435b02ec05b1b4428d325b3e"
+  }
+]

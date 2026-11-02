@@ -39,3 +39,7 @@ def test_evidence_folder(tmp_path):
     assert cs.check_evidence(d) == []
     (d / "metrics.csv").write_text("changed")
     assert any("SHA-256" in m for _, m in cs.check_evidence(d))
+
+
+def test_tag_weeks_follow_de_cuong():
+    assert cs.TAG_WEEKS == {4, 8, 11, 14}

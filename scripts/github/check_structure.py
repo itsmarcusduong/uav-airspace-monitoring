@@ -9,10 +9,14 @@ Mau GVHD cho moi tuan N:
   └── Tag/commit cuoi tuan: wNN
   Evidence/WNN/ gom README.md, metrics.csv, test-results.*, figures/, manifest.json
 
+Tag: BAT BUOC o W4, W8, W11, W14 (De cuong muc 10: "tag milestone toi thieu o cac tuan W4, W8, W11, W14").
+Cac tuan khac: "tag/commit cuoi tuan" -> script in commit cuoi tuan tren main (theo han milestone) de ghi vao bao cao;
+neu tuan do co tag thi kiem tag nam tren main. Ap dung tu W6 (ADR-0010); khong ra soat lai cac tuan da qua.
+
 Script chi DOC (GitHub REST API cong khai + thu muc Evidence trong repo) va in bang PASS/WARN/FAIL theo tuan.
 Chay truoc khi gan tag cuoi tuan va truoc khi nop bao cao:
 
-    python scripts/github/check_structure.py --weeks 1-6 [--out docs/status/github_structure_check.md]
+    python scripts/github/check_structure.py --weeks 6 --current 6 [--out docs/status/W06_github_structure.md]
 
 Muc FAIL = sai mau GVHD (phai sua). WARN = nen sua nhung khong sai mau (vd. PR chua co review cua nguoi con lai).
 """
@@ -34,6 +38,7 @@ REPO = "itsmarcusduong/uav-airspace-monitoring"
 MEMBERS = {"Dương Minh Quang": "itsmarcusduong", "Lê Ngọc An": "NgocAnMaster"}
 EVIDENCE_REQUIRED = ["README.md", "metrics.csv", "manifest.json"]
 TITLE_RE = re.compile(r"^W(\d+)-(\d+) – (?P<name>[^–]+?) – (?P<result>.+)$")
+TAG_WEEKS = {4, 8, 11, 14}
 LOG = logging.getLogger("check_structure")
 
 
@@ -118,6 +123,16 @@ def tag_on_main(tag: str) -> str | None:
         return None
 
 
+def week_end_commit(due_on: str | None) -> str | None:
+    """Commit cuoi cung tren origin/main truoc han milestone (due_on cua GitHub la 00:00 UTC ngay het han)."""
+    if not due_on:
+        return None
+    day = due_on[:10]
+    r = subprocess.run(["git", "-C", str(ROOT), "log", "--first-parent", "origin/main", f"--before={day}T23:59:59+07:00", "-1",
+                        "--format=%h %cd", "--date=format:%d/%m %H:%M"], capture_output=True, text=True)
+    return r.stdout.strip() or None
+
+
 def parse_weeks(s: str) -> list[int]:
     if "-" in s:
         a, b = s.split("-")
@@ -127,7 +142,7 @@ def parse_weeks(s: str) -> list[int]:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--weeks", default="1-6", help="vd 1-6 hoac 4,5")
+    ap.add_argument("--weeks", default="6", help="vd 6 hoac 6-8 (ap dung tu W6, khong ra soat lai tuan cu)")
     ap.add_argument("--current", type=int, default=0, help="tuan dang lam: chua bat buoc tag va Evidence cua tuan nay")
     ap.add_argument("--out", type=Path, help="ghi bang ket qua ra file markdown")
     a = ap.parse_args()
@@ -170,14 +185,18 @@ def main() -> int:
                 add(w, f"PR #{p['number']}", lv, msg)
         tag = f"w{w:02d}"
         if w != a.current:
-            if tag not in tags:
-                add(w, f"Tag {tag}", "FAIL", "chua co tag cuoi tuan")
-            elif not tag_on_main(tag):
+            if tag in tags and not tag_on_main(tag):
                 add(w, f"Tag {tag}", "FAIL", "tag khong nam tren main")
+            elif tag not in tags and w in TAG_WEEKS:
+                add(w, f"Tag {tag}", "FAIL", "tuan bat buoc co tag (De cuong muc 10: W4, W8, W11, W14)")
+            elif tag not in tags:
+                add(w, "Commit cuoi tuan", "INFO", f"{week_end_commit(ms.get('due_on')) or 'khong tim thay'} (tuan nay khong bat buoc tag)")
             for lv, msg in check_evidence(ROOT / "Evidence" / f"W{w:02d}"):
                 add(w, f"Evidence/W{w:02d}", lv, msg)
-        if not any(r["week"] == w for r in rows):
-            add(w, "Tuan", "PASS", f"{len(iss)} issue, {len(prs)} PR, tag {tag if w != a.current else '(chua den cuoi tuan)'}")
+        elif w in TAG_WEEKS:
+            add(w, f"Tag {tag}", "INFO", "tuan nay BAT BUOC gan tag khi chot tuan")
+        if not any(r["week"] == w and r["level"] in ("FAIL", "WARN") for r in rows):
+            add(w, "Tuan", "PASS", f"{len(iss)} issue, {len(prs)} PR" + ("" if w != a.current else " (dang lam, chua kiem tag/Evidence)"))
     n_fail = sum(r["level"] == "FAIL" for r in rows)
     md = ["| Tuần | Mục | Mức | Chi tiết |", "|---|---|---|---|"] + [f"| W{r['week']:02d} | {r['item']} | {r['level']} | {r['msg']} |" for r in rows]
     md += ["", f"FAIL: {n_fail}, WARN: {sum(r['level'] == 'WARN' for r in rows)}. Tạo bằng `scripts/github/check_structure.py --weeks {a.weeks}`."]

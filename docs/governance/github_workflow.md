@@ -6,21 +6,23 @@
 - Milestone tên `TuanN` (Tuan4, Tuan5, …).
 - Mỗi Issue gắn **một** sinh viên và **một** kết quả: `WN-xx – <Họ tên> – <kết quả>`, ví dụ `W4-04 – Lê Ngọc An – Config detector B, A+aug và giao thức so sánh W4`. Việc chung hai người thì tách thành hai issue.
 - Mỗi PR có reviewer là thành viên còn lại.
-- Cuối tuần gắn tag `wNN` (w04, w05, …) trên commit cuối của tuần trên `main`.
+- Tag/commit cuối tuần:
+  - **bắt buộc tag** `wNN` (kèm release) ở W4, W8, W11, W14 (Đề cương mục 10);
+  - các tuần khác ghi SHA **commit cuối tuần** trên `main` (merge PR báo cáo tuần) vào báo cáo; tag là tùy chọn.
 - Thư mục `Evidence/WXX/` gồm `README.md`, `metrics.csv`, `test-results.*`, `figures/`, `manifest.json`, tạo bằng `scripts/reporting/build_evidence.py` (xem `Evidence/README.md`).
-- Milestone `Tuan1` cũng tuân theo mẫu (issue bổ sung #84, #85). Tag cho mọi tuần, kể cả `w01`–`w03` (ADR-0010).
-- **Trước khi gắn tag và nộp báo cáo**, chạy `python scripts/github/check_structure.py --weeks 1-N --current N`. Không được có dòng FAIL.
+- Áp dụng từ W6, không rà soát lại tuần cũ (ADR-0010).
+- **Mỗi tuần**, chạy `python scripts/github/check_structure.py --weeks N --current N` khi mở và trong tuần, rồi `--weeks N` khi chốt. Không được có dòng FAIL. Dòng WARN (PR chưa được người còn lại review) thì nhắc review trong tuần.
 
 ```
 Milestone: TuanN
 ├── Issue #xx – Dương Minh Quang – <kết quả>
 ├── Issue #yy – Lê Ngọc An – <kết quả>
 ├── PR #.. → reviewer là thành viên còn lại
-└── Tag/commit cuối tuần: wNN
+└── Tag/commit cuối tuần: wNN (tag bắt buộc ở W4, W8, W11, W14)
 Evidence/WNN/ → README.md, metrics.csv, test-results.*, figures/, manifest.json
 ```
 
-### Gắn tag cuối tuần (GitHub Desktop)
+### Gắn tag W8, W11, W14 (GitHub Desktop)
 History → chuột phải commit cuối tuần trên `main` (merge PR báo cáo tuần) → **Create Tag…** → `wNN` → **Push origin** (Desktop hỏi đẩy tag thì chọn đồng ý). Sau đó GitHub → Releases → **Draft a new release** → chọn tag `wNN` → tiêu đề `WN — v0.N` → đính kèm 2 PDF → Publish.
 
 ## 1. Một việc = một Issue = một nhánh

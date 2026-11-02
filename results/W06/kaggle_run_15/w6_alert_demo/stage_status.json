@@ -1,0 +1,27 @@
+{
+  "env": {
+    "status": "OK",
+    "cv2": "4.14.0"
+  },
+  "inputs": {
+    "status": "OK",
+    "videos": 38,
+    "roi": "center_hex",
+    "roi_sha256": "d34a2cccae756b2c2a3d869210a4c486ff5861b8efdb1db0b3f420b8d914ffc2",
+    "alert_sha256": "547ceebf81fecd839be7ad25c26eb6ead65663e13e173c7bb6926286ea9bdb86",
+    "weights_sha256": "a3de1e0195e4380aac497612296ed57f67e41ceb5ae3314e82a5ad66b125ef8a"
+  },
+  "select": {
+    "status": "OK",
+    "picked": [
+      "V_DRONE_060",
+      "V_HELICOPTER_031",
+      "V_DRONE_025"
+    ],
+    "alerts": 56
+  },
+  "render": {
+    "status": "OK",
+    "videos": 3
+  }
+}
