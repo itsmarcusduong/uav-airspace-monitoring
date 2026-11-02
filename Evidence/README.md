@@ -20,3 +20,11 @@ python scripts/reporting/build_evidence.py --weeks W01 W02 W03 W04 --pytest-xml 
 ```
 
 GitHub mỗi tuần: milestone `TuanN`; mỗi Issue một sinh viên và một kết quả (`WN-xx – <Họ tên> – <kết quả>`); PR có reviewer là thành viên còn lại; tag cuối tuần `wNN` (ví dụ `w04`).
+
+Kiểm tra cấu trúc theo mẫu GVHD (milestone, issue một sinh viên, PR có reviewer, tag `wNN`, thư mục Evidence) trước khi gắn tag:
+
+```
+python scripts/github/check_structure.py --weeks 1-N --current N
+```
+Quyết định: `docs/decisions/ADR-0010-github-evidence-structure.md`.
+
