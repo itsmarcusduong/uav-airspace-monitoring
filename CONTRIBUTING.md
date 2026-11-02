@@ -16,7 +16,7 @@ The PR description must contain: linked Issue, scope, test/validation command, e
 
 - Milestones are named `Tuan1` … `Tuan14`. Every issue has exactly one student and one result: `WN-xx – <Họ tên> – <kết quả>`, with that student as the only assignee.
 - Every PR requests review from the other member.
-- Every week ends with a tag `wNN` on the last commit of the week on `main`, plus a release `WN — v0.N` with the two PDFs. Releases also mark W4, W8, W11 and W14.
+- Week-end tag/commit: a tag `wNN` plus release `WN — v0.N` is mandatory at W4, W8, W11 and W14 (Đề cương §10). Other weeks cite the SHA of the last commit of the week on `main`; a tag is optional.
 - `Evidence/WNN/` contains `README.md`, `metrics.csv`, `test-results.*`, `figures/`, `manifest.json` (built by `scripts/reporting/build_evidence.py`).
-- Before tagging, run `python scripts/github/check_structure.py --weeks 1-N --current N`; it must report no FAIL.
+- From W6, run `python scripts/github/check_structure.py --weeks N --current N` during the week and `--weeks N` at week end; it must report no FAIL.
 - A weekly report cites the merged PR or the tag, never an unreviewed local change.

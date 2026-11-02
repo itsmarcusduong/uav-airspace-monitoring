@@ -1,0 +1,42 @@
+{
+  "note": "phan tich tham do sau khi xem ket qua W6; khong doi luat nao",
+  "track_pairs_iou": 0.3,
+  "tracks": {
+    "baseline_A": {
+      "dir": "results/W05/kaggle_run_12b/w5_track/tracks/tracker_bytetrack_e1",
+      "cross_class": 70,
+      "same_class": 354
+    },
+    "yolo11n": {
+      "dir": "results/W06/kaggle_run_14/w6_run14/tracks/tracker_bytetrack_e1",
+      "same_class": 2000,
+      "cross_class": 50
+    }
+  },
+  "raw_drone_on_other_class": {
+    "V_AIRPLANE_007": {
+      "frames_drone": 10,
+      "frames_drone_on_other_class": 9
+    },
+    "V_AIRPLANE_037": {
+      "frames_drone": 44,
+      "frames_drone_on_other_class": 44
+    },
+    "V_AIRPLANE_052": {
+      "frames_drone": 6,
+      "frames_drone_on_other_class": 1
+    },
+    "V_HELICOPTER_031": {
+      "frames_drone": 40,
+      "frames_drone_on_other_class": 29
+    },
+    "V_HELICOPTER_039": {
+      "frames_drone": 26,
+      "frames_drone_on_other_class": 26
+    }
+  },
+  "raw_drone_on_other_class_total": {
+    "frames_drone": 126,
+    "frames_drone_on_other_class": 109
+  }
+}
