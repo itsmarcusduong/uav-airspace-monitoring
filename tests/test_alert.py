@@ -211,3 +211,27 @@ def test_decide_rules():
     assert ea.decide(s, "r")["verdict"] == "FAIL"                     # recall -0,10
     s["r|center|R0"] = {"false_alerts_nondrone": 0, "event_recall": 0.9}
     assert ea.decide(s, "r")["verdict"] == "UNDETERMINED"
+
+
+def test_alert_demo_job(tmp_path, monkeypatch):
+    """Job 15 tren du lieu tong hop: chon video theo luat dat truoc, ve, dong goi; khong dung du lieu that."""
+    import cv2
+    import numpy as np
+    sys.path.insert(0, str(ROOT / "scripts" / "kaggle"))
+    import w6_alert_demo as jd
+    ev = tmp_path / "w6_run14"; _write_evidence(ev)
+    with (ev / "per_video_metrics.csv").open("w") as fh:
+        fh.write("tracker,iou_thr,video_id,id_switches\ntracker_bytetrack_e1,0.5,V_DRONE_001,3\ntracker_bytetrack_e1,0.5,V_BIRD_001,0\n")
+    (ev / "stage_status.json").write_text(json.dumps({s: {"status": "OK"} for s in ("env", "inputs", "dump")}))
+    vd = tmp_path / "raw" / "Data" / "Video_V"; vd.mkdir(parents=True)
+    for v in ("V_DRONE_001", "V_BIRD_001"):
+        w = cv2.VideoWriter(str(vd / f"{v}.mp4"), cv2.VideoWriter_fourcc(*"mp4v"), FPS, (W, H))
+        for _ in range(90):
+            w.write(np.zeros((H, W, 3), np.uint8))
+        w.release()
+        (vd / f"{v}_LABELS.mat").write_bytes(b"x")
+    monkeypatch.setattr(sys, "argv", ["x", "--data-root", str(tmp_path / "raw"), "--evidence", str(ev), "--roi", str(ROOT / "configs/roi_w6.yaml"),
+                                      "--alert", str(ROOT / "configs/alert_e1.yaml"), "--out", str(tmp_path / "o"), "--commit", "c" * 40])
+    assert jd.main() == 0
+    idx = json.loads((tmp_path / "o" / "w6_alert_demo" / "demo_index.json").read_text())
+    assert [d["video_id"] for d in idx] == ["V_BIRD_001", "V_DRONE_001"]   # khong co canh bao vao_vung -> luat 2, 3 and all(d["frames"] == 90 for d in idx)
