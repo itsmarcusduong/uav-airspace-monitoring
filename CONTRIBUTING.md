@@ -12,6 +12,11 @@ Create/select one Issue in the current weekly milestone. Assign one primary owne
 
 The PR description must contain: linked Issue, scope, test/validation command, evidence path/link, limitations, and reviewer approval. Merge only after the other member reviews it. Configure GitHub branch protection for `main`: require a pull request, one approving review, resolved conversations and passing checks when checks exist.
 
-## Milestones and releases
+## Milestones, tags and evidence (GVHD template, ADR-0010)
 
-Create milestones W1-W14. Tag releases at W4, W8, W11 and W14 after review. A weekly report cites either the merged PR or the release/tag, never an unreviewed local change.
+- Milestones are named `Tuan1` … `Tuan14`. Every issue has exactly one student and one result: `WN-xx – <Họ tên> – <kết quả>`, with that student as the only assignee.
+- Every PR requests review from the other member.
+- Week-end tag/commit: a tag `wNN` plus release `WN — v0.N` is mandatory at W4, W8, W11 and W14 (Đề cương §10). Other weeks cite the SHA of the last commit of the week on `main`; a tag is optional.
+- `Evidence/WNN/` contains `README.md`, `metrics.csv`, `test-results.*`, `figures/`, `manifest.json` (built by `scripts/reporting/build_evidence.py`).
+- From W6, run `python scripts/github/check_structure.py --weeks N --current N` during the week and `--weeks N` at week end; it must report no FAIL.
+- A weekly report cites the merged PR or the tag, never an unreviewed local change.

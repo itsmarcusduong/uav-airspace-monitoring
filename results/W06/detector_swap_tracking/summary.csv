@@ -1,0 +1,11 @@
+detector,class,idsw_per_1000_gt_frames,id_switches,track_recall_pooled,median_dominant_id_coverage,videos_single_id,fragments,false_tracks,videos
+baseline_A,all,8.962,104,0.8577,0.823,19,340,12,38
+yolo11n_s20261030,all,18.011,209,0.8425,0.7534,12,295,19,38
+baseline_A,Airplane,19.993,57,0.7671,0.505,1,58,1,9
+yolo11n_s20261030,Airplane,17.538,50,0.7941,0.48,0,52,5,9
+baseline_A,Bird,0.0,0,0.988,0.9877,3,4,6,3
+yolo11n_s20261030,Bird,2.667,2,0.7867,0.978,2,6,2,3
+baseline_A,Drone,6.72,35,0.8752,0.8567,11,234,2,17
+yolo11n_s20261030,Drone,24.002,125,0.8763,0.8317,7,200,12,17
+baseline_A,Helicopter,4.293,12,0.8826,0.8961,4,44,3,9
+yolo11n_s20261030,Helicopter,11.449,32,0.8436,0.9286,3,37,0,9

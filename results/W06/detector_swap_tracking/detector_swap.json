@@ -1,0 +1,36 @@
+{
+  "tracker": "tracker_bytetrack_e1",
+  "a": {
+    "label": "baseline_A",
+    "weights_sha256": "65dd67fb8968eb3ddbe4b50187f02cfdbbef95a3f2a92e768ac0725178c826ab",
+    "evidence": "results/W05/kaggle_run_12b/w5_track"
+  },
+  "b": {
+    "label": "yolo11n_s20261030",
+    "weights_sha256": "a3de1e0195e4380aac497612296ed57f67e41ceb5ae3314e82a5ad66b125ef8a",
+    "evidence": "results/W06/kaggle_run_14/w6_run14"
+  },
+  "videos": 38,
+  "gt_frames": 11604,
+  "per_video": {
+    "b_worse": 16,
+    "b_better": 7,
+    "equal": 15
+  },
+  "overlap": {
+    "baseline_A": {
+      "videos": 15,
+      "frames": 416
+    },
+    "yolo11n_s20261030": {
+      "videos": 25,
+      "frames": 2012
+    }
+  },
+  "b_idsw_in_videos_with_ge30_overlap_frames": {
+    "videos": 16,
+    "idsw": 180,
+    "idsw_total": 209
+  },
+  "note": "GT dan xuat 1 track/video (ADR-0008), val; mo ta, khong phai luat chon"
+}

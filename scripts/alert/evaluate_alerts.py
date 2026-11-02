@@ -60,6 +60,8 @@ def load_evidence(ev: Path, tracker: str, expect_sha: str = "") -> tuple[list[di
         if need not in st:
             raise ValueError(f"thieu stage {need}: chay job voi --save-detections --save-gt")
     inp = json.loads((ev / "inputs.json").read_text(encoding="utf-8"))
+    if inp.get("split") != "val":
+        raise ValueError(f"chi chap nhan evidence split=val, nhan duoc {inp.get('split')!r}")
     if inp.get("test_used") is not False:
         raise ValueError("inputs.json khong xac nhan test_used=False")
     if expect_sha and inp["weights_sha256"] != expect_sha:

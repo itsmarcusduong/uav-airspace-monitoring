@@ -188,7 +188,11 @@ def r1_alerts(tracks: list[dict], n_frames: int, fps: float, poly, width, height
             s.centers.append((f, cx, cy))
             while len(s.centers) > window:
                 s.centers.popleft()
-            drone_major = s.votes.most_common(1)[0][0] == cfg["drone_class"]
+            drone_votes = s.votes[cfg["drone_class"]]
+            drone_major = drone_votes > max(
+                (votes for cls, votes in s.votes.items() if cls != cfg["drone_class"]),
+                default=0,
+            )
             # canh bao som (tham do): track xac nhan, lop Drone, dang ngoai ROI, ngoai suy vao ROI trong horizon
             if s.confirmed and drone_major and not inside and not s.prewarned and len(s.centers) >= 2:
                 (f0, x0, y0), (f1, x1, y1) = s.centers[0], s.centers[-1]

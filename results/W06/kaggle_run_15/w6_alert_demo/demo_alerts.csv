@@ -1,0 +1,57 @@
+video_id,rule,alert,start_f,end_f,tracks,kind
+V_AIRPLANE_007,R0,0,96,96,,detector
+V_AIRPLANE_007,R0,1,220,223,,detector
+V_AIRPLANE_037,R0,0,143,269,,detector
+V_AIRPLANE_052,R0,0,73,91,,detector
+V_AIRPLANE_052,R0,1,132,132,,detector
+V_DRONE_004,R0,0,0,300,,detector
+V_DRONE_004,R1,0,8,300,1 19,xuat_hien_trong_vung
+V_DRONE_010,R0,0,8,300,,detector
+V_DRONE_010,R1,0,80,300,4,xuat_hien_trong_vung
+V_DRONE_011,R0,0,0,300,,detector
+V_DRONE_011,R1,0,8,300,1,xuat_hien_trong_vung
+V_DRONE_018,R0,0,0,61,,detector
+V_DRONE_018,R0,1,195,301,,detector
+V_DRONE_018,R1,0,8,61,1,xuat_hien_trong_vung
+V_DRONE_018,R1,1,202,301,1,vao_vung
+V_DRONE_023,R0,0,0,300,,detector
+V_DRONE_023,R1,0,8,300,1,xuat_hien_trong_vung
+V_DRONE_025,R0,0,10,167,,detector
+V_DRONE_025,R0,1,253,278,,detector
+V_DRONE_025,R1,0,19,167,1,vao_vung
+V_DRONE_025,R1,1,262,267,1,vao_vung
+V_DRONE_029,R0,0,0,300,,detector
+V_DRONE_029,R1,0,8,300,1,xuat_hien_trong_vung
+V_DRONE_032,R0,0,0,313,,detector
+V_DRONE_032,R1,0,8,313,1,xuat_hien_trong_vung
+V_DRONE_044,R0,0,0,308,,detector
+V_DRONE_044,R1,0,8,308,1,xuat_hien_trong_vung
+V_DRONE_049,R0,0,0,306,,detector
+V_DRONE_049,R1,0,8,306,1 6,xuat_hien_trong_vung
+V_DRONE_060,R0,0,0,202,,detector
+V_DRONE_060,R0,1,234,307,,detector
+V_DRONE_060,R1,0,12,186,1,vao_vung
+V_DRONE_060,R1,1,242,307,1,vao_vung
+V_DRONE_077,R0,0,0,186,,detector
+V_DRONE_077,R0,1,245,315,,detector
+V_DRONE_077,R1,0,8,186,1 14,xuat_hien_trong_vung
+V_DRONE_077,R1,1,253,315,14,vao_vung
+V_DRONE_078,R0,0,0,59,,detector
+V_DRONE_078,R0,1,124,299,,detector
+V_DRONE_078,R1,0,8,59,1,xuat_hien_trong_vung
+V_DRONE_078,R1,1,141,146,6,vao_vung
+V_DRONE_078,R1,2,204,299,13,xuat_hien_trong_vung
+V_DRONE_080,R0,0,0,0,,detector
+V_DRONE_080,R0,1,83,207,,detector
+V_DRONE_080,R0,2,278,299,,detector
+V_DRONE_080,R1,0,91,207,1,vao_vung
+V_DRONE_080,R1,1,286,299,1,vao_vung
+V_DRONE_088,R0,0,0,315,,detector
+V_DRONE_088,R1,0,8,315,1 17,xuat_hien_trong_vung
+V_DRONE_095,R0,0,0,292,,detector
+V_DRONE_095,R1,0,8,291,1,xuat_hien_trong_vung
+V_DRONE_096,R0,0,26,295,,detector
+V_DRONE_096,R1,0,48,223,6,xuat_hien_trong_vung
+V_DRONE_096,R1,1,285,295,22,xuat_hien_trong_vung
+V_HELICOPTER_031,R0,0,73,302,,detector
+V_HELICOPTER_039,R0,0,197,269,,detector

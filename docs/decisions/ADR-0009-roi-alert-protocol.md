@@ -1,6 +1,7 @@
 # ADR-0009: Giao thức cảnh báo theo vùng (geofence) và quỹ đạo, tuần 6
 
-- Trạng thái: **Proposed** (Quang soạn 01/11/2026, issue #76). An duyệt hoặc sửa trong #75 **trước** khi chạy `evaluate_alerts.py` trên kết quả run 14. Sau khi đã xem kết quả cảnh báo, không sửa luật, ngưỡng hay ROI của ADR này. Thay đổi nào cũng phải viết thành ADR mới.
+- Trạng thái: **Accepted** (Quang 01/11/2026, An 01/11/2026).
+  - Luật, ngưỡng và ROI được chốt trước khi chạy `evaluate_alerts.py` trên run 14 (PR #81 merge 02/11 17:03 UTC, đánh giá chạy sau đó). Sau khi đã xem kết quả, không sửa luật, ngưỡng hay ROI của ADR này. Thay đổi nào cũng phải viết thành ADR mới.
 - Liên quan:
   - ADR-0005: chỉ tiêu cảnh báo, W6 = geofence + cảnh báo theo trajectory.
   - ADR-0007 (bản cập nhật): detector YOLO11n `s20261030`.
@@ -36,7 +37,7 @@
      - 0,25 là ngưỡng vận hành của `yolo11n_640_s20261030` (`results/W05/seed_comparison.csv`, cột `conf_op`).
    - **R1, theo track:** chạy tuần tự từng frame, mỗi frame chỉ dùng dữ liệu đến frame đó.
      - **Bằng chứng:** một dòng track có lớp Drone và conf ≥ 0,25.
-     - **Xác nhận:** track có ≥ 3 bằng chứng trong 5 frame gần nhất. Lớp đa số của track (tính từ đầu track) phải là Drone.
+     - **Xác nhận:** track có ≥ 3 bằng chứng trong 5 frame gần nhất. Lớp xuất hiện nhiều nhất của track (tính từ đầu track) phải là Drone; nếu đồng hạng thì chưa đạt điều kiện này.
      - **Cảnh báo:** track đã xác nhận có bằng chứng trong ROI liên tục ≥ 0,3 giây (9 frame ở 30 fps).
      - **Kết thúc:** không còn bằng chứng trong ROI quá 1 giây.
      - **Chống lặp và nối sự kiện:**
@@ -71,3 +72,25 @@
 - W6: run 14 (#74), An duyệt ADR này và viết ca kiểm thử (#75), đánh giá cảnh báo và video demo có vẽ ROI và cảnh báo (#76), An phân tích lỗi cảnh báo (#78).
 - W7: bổ sung video âm tính hoặc hard negative để tiến tới ≥ 2 giờ; mọi hiệu chỉnh ngưỡng phải có giao thức mới.
 - W8: mô-đun `alert_engine` được dùng lại trong pipeline đầu-cuối (API, dashboard, nhật ký sự kiện).
+
+## Kết quả áp luật (run 14, 02/11/2026)
+Nguồn: `results/W06/alert_eval/alert_summary.{json,md}`, tạo bằng `scripts/alert/evaluate_alerts.py`, với `roi_w6_v1` (SHA `b8babbbc…`) và `alert_e1_v1` (SHA `2d4cee9f…`). Bằng chứng run 14: `results/W06/kaggle_run_14/`.
+
+| ROI chính `center_hex`, điểm tâm | Sự kiện GT | Event recall | Cảnh báo | Event precision | Cảnh báo sai (21 video không có Drone) | Cảnh báo sai (video Drone) | Độ trễ trung vị |
+|---|---|---|---|---|---|---|---|
+| R0 detector-only | 23 | 1,0 | 31 | 0,742 | 7 | 1 | −0,033 s |
+| R1 theo track | 23 | 1,0 | 25 | 1,0 | 0 | 0 | 0,233 s |
+
+- **[DECISION] Theo luật mục 6: PASS.** Cảnh báo sai trên video không có Drone giảm 100% (7 → 0); event recall không giảm (1,0 → 1,0).
+- Cái giá của R1:
+  - trễ hơn khoảng 0,27 s (đúng bằng thời gian xác nhận 3/5 frame cộng thời gian ở trong vùng 0,3 s);
+  - có 2 cảnh báo lặp trên 23 sự kiện.
+- Kết quả ở các ROI phụ và biến thể điểm `box` cùng chiều: R1 không có cảnh báo sai nào trên video không có Drone.
+  - Ngoại lệ: ở `lower_half`/`box`, R1 có 4 cảnh báo không khớp trên video Drone.
+- 7 cảnh báo sai của R0 nằm ở V_AIRPLANE_007, _037, _052, V_HELICOPTER_031, _039. Đây là detection lớp Drone ngắn hạn trên máy bay hoặc trực thăng, mà R1 loại nhờ điều kiện xác nhận và lớp đa số.
+- Quỹ đạo: 25 cảnh báo R1 gồm 9 `vao_vung` và 16 `xuat_hien_trong_vung` ([INFERENCE] nhiều video bắt đầu khi vật đã ở trong ROI). Có 8 cảnh báo sớm (thăm dò, không dùng để quyết định).
+- **Giới hạn** (mục 7):
+  - 21 video không có Drone chỉ khoảng 3,7 phút, nên con số 114,6 cảnh báo sai/giờ của R0 là ngoại suy từ 7 cảnh báo;
+  - 0 cảnh báo sai của R1 không chứng minh R1 không bao giờ báo sai;
+  - cần ≥ 2 giờ video âm tính (W7) mới so được với chỉ tiêu.
+
