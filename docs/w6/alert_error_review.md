@@ -4,7 +4,7 @@
 
 Đánh giá trên validation, ROI chính `center_hex`, điểm đại diện `center`, theo cấu hình đã khóa trong ADR-0009. Nguồn số liệu là `results/W06/alert_eval/alert_log.csv`, `per_video_alerts.csv`, `gt_events.csv`, các detection/track/GT của run 14 và `results/W06/duplicate_boxes.json`.
 
-Quang cung cấp `V_VIDS_3.zip`, gồm ba MP4 gốc và ba file MATLAB MCOS `*_LABELS.mat`. SHA-256 của ZIP là `e227e65b1d7c9119405964b6c06ea00279350aec72bf0bedf0e4f74dd0c61288`. Dùng `mcos_decoder` để giải mã nhãn; đối chiếu với GT CSV của run 14 cho thấy mọi hộp nhãn trong khung hình MP4 đều trùng chính xác (IoU 1,0). Hai file MAT Drone có thêm một phần tử nhãn cuối so với số frame MP4; phần tử ngoài phạm vi video không được dùng.
+Quang cung cấp hai archive video gốc kèm nhãn MATLAB MCOS `*_LABELS.mat`. `V_VIDS_3.zip` có SHA-256 `e227e65b1d7c9119405964b6c06ea00279350aec72bf0bedf0e4f74dd0c61288`; `V_VIDS_4.zip` có SHA-256 `25cf4284d8714357af6aee5c81e5ac498d4397e0086d5b9efdc1ee237e7fee86`. Dùng `mcos_decoder` để giải mã nhãn; đối chiếu với GT CSV của run 14 cho thấy các hộp nhãn trong frame video khớp chính xác. `V_DRONE_080` có 300 frame video, 301 slot nhãn, trong đó frame 0 rỗng và slot cuối nằm ngoài video; chỉ so sánh 300 frame thật.
 
 Các hình dưới đây lấy mẫu frame có ghi số frame, vẽ ROI vàng, GT trắng, detection Drone màu tím, detection lớp khác màu xanh lá và track màu cam:
 
@@ -13,6 +13,18 @@ Các hình dưới đây lấy mẫu frame có ghi số frame, vẽ ROI vàng, G
 ![V_DRONE_025, các frame trong hai cảnh báo R1](figures/V_DRONE_025_alert_review.jpg)
 
 ![V_DRONE_060, các frame trong hai cảnh báo R1](figures/V_DRONE_060_alert_review.jpg)
+
+Các clip bổ sung xác minh các alert R0 còn lại:
+
+![V_AIRPLANE_007, hộp Drone nhầm trên máy bay](figures/V_AIRPLANE_007_alert_review.jpg)
+
+![V_AIRPLANE_037, hộp Drone nhầm trên máy bay](figures/V_AIRPLANE_037_alert_review.jpg)
+
+![V_AIRPLANE_052, hộp Drone nhầm trên máy bay](figures/V_AIRPLANE_052_alert_review.jpg)
+
+![V_HELICOPTER_039, hộp Drone nhầm trên trực thăng](figures/V_HELICOPTER_039_alert_review.jpg)
+
+![V_DRONE_080, cảnh báo sai frame 0 tách khỏi UAV thật](figures/V_DRONE_080_alert_review.jpg)
 
 ## Kết quả tổng thể và giới hạn phép đo
 
@@ -34,17 +46,17 @@ Các frame trong bảng là khoảng alert ghi trong log; số detection là cá
 
 | Video | Frame cảnh báo | Detection Drone trong ROI | Frame có overlap lớp khác | Đánh giá nguyên nhân |
 |---|---:|---:|---:|---|
-| `V_AIRPLANE_007` | 96–96 | 1 | 1 | Phù hợp với nhầm lớp/hộp trùng khác lớp; không có video trong ZIP để xác nhận trực quan. |
-| `V_AIRPLANE_007` | 220–223 | 3 | 3 | Phù hợp với nhầm lớp/hộp trùng khác lớp; khoảng gộp có một frame không có detection Drone. |
-| `V_AIRPLANE_037` | 143–269 | 44 | 44 | Hộp Drone chồng lớp khác ở cả 44 frame có detection; phù hợp với nhầm lớp kéo dài, chưa kiểm tra video. |
-| `V_AIRPLANE_052` | 73–91 | 5 | 1 | Có overlap ở một frame, nhưng bốn frame còn lại không; nguyên nhân hỗn hợp/chưa xác định nếu không xem clip. |
-| `V_AIRPLANE_052` | 132–132 | 1 | 0 | Detection Drone đơn lẻ, không có overlap lớp khác. Chưa đủ bằng chứng để kết luận nhầm lớp hay vật không gán nhãn. |
+| `V_AIRPLANE_007` | 96–96 | 1 | 1 | Đã xem clip: vật thể được gán nhãn Airplane; Drone detection trùng một phần hộp GT (IoU 0,378), phù hợp với nhầm lớp kèm định vị hộp kém. |
+| `V_AIRPLANE_007` | 220–223 | 3 | 3 | Đã xem clip: Drone detections theo cùng máy bay được gán nhãn (IoU GT ≥ 0,5 ở cả 3 frame có detection); frame 221 không có Drone detection nhưng alert được gộp qua gap. |
+| `V_AIRPLANE_037` | 143–269 | 44 | 44 | Đã xem clip: máy bay được gán nhãn; cả 44 frame có Drone detection đều chồng GT IoU ≥ 0,5 (IoU GT tốt nhất trung vị 0,858). Đây là nhầm lớp kéo dài. |
+| `V_AIRPLANE_052` | 73–91 | 5 | 1 | Đã xem clip: máy bay được gán nhãn; 5 Drone detections đều chồng GT IoU ≥ 0,5. Detector dao động lớp theo frame; overlap giữa các detection không cần thiết để nhận ra đây là nhầm lớp. |
+| `V_AIRPLANE_052` | 132–132 | 1 | 0 | Đã xem clip: vật thể được gán nhãn Airplane và Drone detection chồng hộp GT (IoU 0,786). Không có detection Airplane cùng frame, nên đây là nhầm lớp, không phải hộp trùng cross-class. |
 | `V_HELICOPTER_031` | 73–302 | 40 | 29 | Đã xem video: cả 40 hộp Drone có IoU ≥ 0,5 với GT trực thăng (IoU trung vị 0,807). Đây là nhầm lớp Drone trên trực thăng; cảnh báo kéo dài do R0 gộp các đoạn theo cửa sổ 1 giây. Track ID 1 mang lớp Helicopter nên R1 không cảnh báo. |
-| `V_HELICOPTER_039` | 197–269 | 26 | 26 | Phù hợp với nhầm lớp/hộp trùng khác lớp; chưa có video trong ZIP để xác nhận trực quan. |
+| `V_HELICOPTER_039` | 197–269 | 26 | 26 | Đã xem clip: vật thể là trực thăng; 24/26 frame có Drone detection chồng GT IoU ≥ 0,5, cả 26 frame có detection lớp Helicopter chồng với detection Drone. Đây là nhầm lớp kéo dài. |
 
 Trong bảy cảnh báo sai R0 trên video không Drone, sáu khoảng có ít nhất một overlap lớp khác. Tổng cộng có 120 frame chứa detection Drone trong các khoảng này; 104 frame có overlap IoU ≥ 0,5. Riêng `V_HELICOPTER_031`, bằng chứng GT và video xác nhận trực tiếp lỗi lớp. Không quy 15 detection Drone không overlap còn lại cho cùng một nguyên nhân nếu chưa xem video tương ứng.
 
-R0 còn một cảnh báo không khớp trên video Drone `V_DRONE_080`, frame 0. Sự kiện GT trong ROI bắt đầu frame 83; alert đơn frame này nằm ngoài dung sai ghép ±30 frame. Video không có trong ZIP, nên đây là sai khác thời điểm giữa detection và GT theo benchmark, chưa thể kết luận đó là detection giả hay một UAV thật bị thiếu nhãn.
+R0 còn một cảnh báo không khớp trên video Drone `V_DRONE_080`, frame 0. Clip cho thấy một UAV thật ở ngoài ROI, cùng vị trí với hộp GT bắt đầu từ frame 1; riêng hộp Drone conf 0,511 tạo alert trong ROI nằm trên vùng trời trống và không trùng GT. Bằng chứng trực quan ủng hộ một false positive rời rạc, không phải UAV thật bị bỏ sót trong GT. Dung sai ghép ±30 frame không khớp alert này với hai sự kiện Drone về sau.
 
 ## Video demo R1
 
@@ -57,7 +69,7 @@ R0 còn một cảnh báo không khớp trên video Drone `V_DRONE_080`, frame 0
 ## Đề xuất W7 (chưa thay ngưỡng)
 
 1. Thu thêm video âm tính/hard negative độc lập đến ít nhất 2 giờ; báo số sự kiện theo video và độ bất định ở cấp video. Không dùng 3,7 phút val để tuyên bố tỷ lệ cảnh báo sai triển khai.
-2. Với `V_AIRPLANE_052` frame 132 và `V_DRONE_080` frame 0, xem video gốc/đối chiếu nhãn trước khi gán nguyên nhân; bổ sung cảnh báo theo video, frame, lớp và trạng thái overlap vào log phân tích.
+2. Đã xem video gốc và đối chiếu GT cho các alert R0 trong `V_VIDS_3.zip`/`V_VIDS_4.zip`; không dùng kết quả này để đổi ngưỡng đã khóa. Phân tích riêng 38/40 ảnh val âm tính có FP vẫn cần ảnh gốc (hiện report chỉ có số đếm, không có ảnh hay danh sách đường dẫn ảnh).
 3. Thử riêng biệt NMS không phân lớp và giảm NMS IoU như ghi ở PR #87, trên protocol mới có đối chứng. Tách chỉ số detection/classification khỏi theo dõi và cảnh báo; giữ nguyên ngưỡng ADR-0009 trong báo cáo W6.
 4. Báo cả event recall, tổng cảnh báo, cảnh báo lặp và ghép sự kiện một-một (hoặc nêu rõ chính sách nhiều-cảnh-báo/một-sự-kiện), cùng độ trễ. Không suy diễn độ chính xác theo sự kiện chỉ từ `event_precision=1,0` hiện tại.
 
@@ -66,5 +78,5 @@ R0 còn một cảnh báo không khớp trên video Drone `V_DRONE_080`, frame 0
 - `results/W06/alert_eval/alert_log.csv`, `per_video_alerts.csv`, `gt_events.csv`, `alert_summary.json`, `README.md`.
 - `results/W06/kaggle_run_14/w6_run14/dets/`, `tracks/tracker_bytetrack_e1/`, `gt/`, `inputs.json`.
 - `results/W06/duplicate_boxes.json`; `scripts/reporting/duplicate_box_stats.py`.
-- Video/nhãn người dùng cung cấp trong `V_VIDS_3.zip` (SHA-256 ở trên); ảnh đối chiếu mẫu trong `docs/w6/figures/`.
+- Video/nhãn người dùng cung cấp trong `V_VIDS_3.zip` và `V_VIDS_4.zip` (SHA-256 ở trên); ảnh đối chiếu mẫu trong `docs/w6/figures/`.
 - ADR-0009 mục 6–7; giới hạn dữ liệu val và ngưỡng giữ nguyên theo protocol.
