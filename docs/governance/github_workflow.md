@@ -8,6 +8,20 @@
 - Mỗi PR có reviewer là thành viên còn lại.
 - Cuối tuần gắn tag `wNN` (w04, w05, …) trên commit cuối của tuần trên `main`.
 - Thư mục `Evidence/WXX/` gồm `README.md`, `metrics.csv`, `test-results.*`, `figures/`, `manifest.json`, tạo bằng `scripts/reporting/build_evidence.py` (xem `Evidence/README.md`).
+- Milestone `Tuan1` cũng tuân theo mẫu (issue bổ sung #84, #85). Tag cho mọi tuần, kể cả `w01`–`w03` (ADR-0010).
+- **Trước khi gắn tag và nộp báo cáo**, chạy `python scripts/github/check_structure.py --weeks 1-N --current N`. Không được có dòng FAIL.
+
+```
+Milestone: TuanN
+├── Issue #xx – Dương Minh Quang – <kết quả>
+├── Issue #yy – Lê Ngọc An – <kết quả>
+├── PR #.. → reviewer là thành viên còn lại
+└── Tag/commit cuối tuần: wNN
+Evidence/WNN/ → README.md, metrics.csv, test-results.*, figures/, manifest.json
+```
+
+### Gắn tag cuối tuần (GitHub Desktop)
+History → chuột phải commit cuối tuần trên `main` (merge PR báo cáo tuần) → **Create Tag…** → `wNN` → **Push origin** (Desktop hỏi đẩy tag thì chọn đồng ý). Sau đó GitHub → Releases → **Draft a new release** → chọn tag `wNN` → tiêu đề `WN — v0.N` → đính kèm 2 PDF → Publish.
 
 ## 1. Một việc = một Issue = một nhánh
 - Mỗi việc bắt đầu từ một Issue trong milestone của tuần, đặt tên theo mục 0.
