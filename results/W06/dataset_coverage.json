@@ -1,0 +1,140 @@
+{
+  "note": "so lieu tu split v1 + run 13 (val) + run 14 (val); test khoa, chi dem video/frame cua test, khong mo nhan",
+  "inputs": {
+    "split": "data/splits/video_split_v1.csv",
+    "meta": "results/W06/kaggle_run_14/w6_run14/meta.csv",
+    "analysis": "results/W05/kaggle_run_13/analysis_yolo11n_640_s20261030"
+  },
+  "visible": {
+    "modality": "V",
+    "fps": 30.0,
+    "by_split": {
+      "test": {
+        "Airplane": {
+          "videos": 9,
+          "frames": 2833,
+          "minutes": 1.57
+        },
+        "Bird": {
+          "videos": 8,
+          "frames": 2500,
+          "minutes": 1.39
+        },
+        "Drone": {
+          "videos": 17,
+          "frames": 5282,
+          "minutes": 2.93
+        },
+        "Helicopter": {
+          "videos": 9,
+          "frames": 2832,
+          "minutes": 1.57
+        }
+      },
+      "train": {
+        "Airplane": {
+          "videos": 41,
+          "frames": 12901,
+          "minutes": 7.17
+        },
+        "Bird": {
+          "videos": 35,
+          "frames": 11057,
+          "minutes": 6.14
+        },
+        "Drone": {
+          "videos": 80,
+          "frames": 24989,
+          "minutes": 13.88
+        },
+        "Helicopter": {
+          "videos": 43,
+          "frames": 13407,
+          "minutes": 7.45
+        }
+      },
+      "val": {
+        "Airplane": {
+          "videos": 9,
+          "frames": 2851,
+          "minutes": 1.58
+        },
+        "Bird": {
+          "videos": 8,
+          "frames": 2561,
+          "minutes": 1.42
+        },
+        "Drone": {
+          "videos": 17,
+          "frames": 5225,
+          "minutes": 2.9
+        },
+        "Helicopter": {
+          "videos": 9,
+          "frames": 2795,
+          "minutes": 1.55
+        }
+      }
+    },
+    "non_drone_minutes": {
+      "test": 4.54,
+      "train": 20.76,
+      "val": 4.56
+    },
+    "non_drone_minutes_all_splits": 29.86,
+    "target_negative_minutes": 120.0,
+    "target_reachable_with_svanstrom_only": false,
+    "drone_videos_val": 17
+  },
+  "run14_val_non_drone": {
+    "videos": 21,
+    "frames": 6596,
+    "minutes": 3.66,
+    "resolution": [
+      "640x512"
+    ]
+  },
+  "detector_val_confusion": {
+    "matrix": {
+      "Airplane": {
+        "Airplane": 186,
+        "Drone": 15,
+        "Helicopter": 12,
+        "missed": 76
+      },
+      "Bird": {
+        "Airplane": 4,
+        "Bird": 54,
+        "Helicopter": 9,
+        "missed": 6
+      },
+      "Drone": {
+        "Drone": 427,
+        "missed": 88
+      },
+      "Helicopter": {
+        "Helicopter": 236,
+        "missed": 49
+      }
+    },
+    "non_drone_gt_predicted_as_drone": {
+      "Airplane": {
+        "gt_boxes": 289,
+        "pred_drone": 15
+      },
+      "Bird": {
+        "gt_boxes": 73,
+        "pred_drone": 0
+      },
+      "Helicopter": {
+        "gt_boxes": 285,
+        "pred_drone": 0
+      }
+    }
+  },
+  "detector_val_negative_images": {
+    "negative_images": 40,
+    "images_with_fp": 38,
+    "conf": 0.25
+  }
+}
