@@ -1,7 +1,7 @@
 # ADR-0007: Chọn detector cho W5 theo luật đặt trước (kết quả run 09)
 
 - Trạng thái: **Accepted** (Quang 28/10/2026, An 29/10/2026) cho phần W4.
-- Cập nhật 30/10/2026 (issue #59, run 13): **Proposed**, Quang soạn, chờ An duyệt. Xem mục "Cập nhật sau 3 seed" ở cuối.
+- Cập nhật 30/10/2026 (issue #59, run 13): **Accepted** (Quang 30/10/2026; An approve ở PR #67 ngày 30/10/2026, gồm cả luật chọn weights theo seed trung vị). Xem mục "Cập nhật sau 3 seed" ở cuối.
 - Liên quan: #39, #40, #48; giao thức `docs/w4/training_protocol_w4.md` mục 4 (luật đặt trước, commit `2ae4c50`, PR #51, 27/10/2026, trước khi có kết quả); ADR-0005 (chỉ tiêu ≥ 15 FPS); ADR-0006 (dữ liệu `e1-yolo-v1`).
 
 ## Bối cảnh
@@ -92,9 +92,19 @@ Luật 4 bị kích hoạt: không mô hình nào cải thiện rõ trên lớp 
 ### Hệ quả
 - **W5 run 12b giữ baseline A** (`65dd67fb…`), đúng giao thức `docs/w5/tracking_protocol_w5.md`. So sánh tracker cần giữ detector cố định; nếu đổi detector giữa run 12 và 12b, khác biệt sẽ bị lẫn với yếu tố detector.
 - **W6:** chạy lại tracking với YOLO11n và cấu hình tracker được giữ sau run 12b (W5_PLAN mục 3). Track log cho geofence và cảnh báo lấy từ lượt chạy này.
-- **Chọn weights YOLO11n cho W6.** [DECISION, Proposed]
+- **Chọn weights YOLO11n cho W6.** [DECISION, Accepted (An, PR #67)]
   - Dùng seed có mAP@0.5:0.95 **trung vị** trong 3 seed: `yolo11n_640_s20261030` (0,3433; best.pt SHA `a3de1e01…`).
   - Lý do: lấy seed cao nhất trên val (20261013, 0,3470) là chọn cực đại trên một đại lượng nhiễu, làm số val lạc quan thêm. Trung vị đại diện hơn cho cấu hình.
   - Luật này đặt sau khi đã biết mAP của 3 seed, trước khi chạy tracking với YOLO11n. An duyệt hoặc đề xuất luật khác trong PR.
 - **Model card baseline A** giữ nguyên làm mốc. Cần thêm model card cho YOLO11n trước khi dùng ở W6.
 - **Trước W11:** đánh giá cuối trên test dùng detector đã chọn ở đây. Không chọn lại detector trên test.
+
+### Phát hiện sau khi đổi detector (run 14, 02/11/2026) [Kết quả đo]
+Nguồn: `results/W06/detector_swap_tracking/`, tạo bằng `scripts/reporting/compare_detector_tracking.py`. So sánh cùng ByteTrack-e1, cùng 38 video val; run 12b dùng baseline A, run 14 dùng YOLO11n.
+
+- ID switch / 1000 frame GT tăng từ 8,96 lên 18,01. Riêng lớp Drone tăng từ 6,72 lên 24,00. Số video chỉ có 1 ID giảm từ 19/38 xuống 12/38.
+- Frame có hai track chồng nhau tăng từ 416 (15 video) lên 2.012 (25 video). Với YOLO11n, 16 video có ≥ 30 frame chồng nhau chiếm 180/209 ID switch.
+- [INFERENCE] YOLO11n sinh nhiều hộp trùng trên cùng vật hơn (vượt qua NMS 0,7), nên tracker tạo track trùng. Chất lượng phát hiện trên ảnh (mAP) không phản ánh độ ổn định ID.
+- **Không đổi quyết định:** luật mục 6 chỉ dựa trên độ đo detection, và so sánh này được làm sau. Luật cảnh báo R1 (ADR-0009) gộp track trùng nên vẫn PASS.
+- **Việc cho W7:** xử lý track trùng (NMS, gộp hộp), có giao thức đặt trước. Nếu GVHD yêu cầu đưa độ ổn định tracking vào tiêu chí chọn detector, cần ADR mới.
+
