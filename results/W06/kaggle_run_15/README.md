@@ -22,10 +22,12 @@
 
 ## Phát hiện khi xem lại [Kết quả đo]
 Nguồn: `results/W06/duplicate_boxes.json`, tạo bằng `scripts/reporting/duplicate_box_stats.py`. Đây là phân tích thăm dò làm sau khi xem kết quả, không đổi luật nào.
-- **Nguồn cảnh báo sai của R0:** trên 5 video không có Drone có cảnh báo sai, 109/126 frame có detection Drone (conf ≥ 0,25) nằm chồng (IoU ≥ 0,5) lên một detection lớp khác trên cùng vật.
-  - [INFERENCE] Đây là hộp trùng **khác lớp**: NMS của Ultralytics chạy riêng từng lớp nên giữ cả hai hộp.
+- **Nguồn cảnh báo sai của R0:** 5 video không có Drone có detection Drone (conf ≥ 0,25, toàn khung, mọi frame), cũng chính là 5 video có cảnh báo sai R0. Trong đó 109/126 frame có detection Drone chồng (IoU ≥ 0,5) lên một detection lớp khác.
+  - [INFERENCE] Phần lớn là hộp trùng **khác lớp**: NMS của Ultralytics chạy riêng từng lớp nên giữ cả hai hộp.
+  - Sửa theo review của An (#87, #90): chồng hình học không chứng minh cùng một vật. An đã xem video và xác nhận các cửa sổ cảnh báo sai là nhầm lớp trên máy bay/trực thăng đã gán nhãn; `V_AIRPLANE_052` frame 132 là nhầm lớp **không** kèm hộp lớp khác. Đếm riêng trong cửa sổ cảnh báo và trong `center_hex`, An được 104/120 frame (`docs/w6/alert_error_review.md`); hai con số khác nhau vì khác phạm vi đếm.
   - Track mang lớp đúng, nên R1 lọc được.
-- **Track trùng của YOLO11n:** 2.000/2.050 cặp track chồng nhau (IoU ≥ 0,3) là **cùng lớp**. Baseline A có 354/424.
+- **Track trùng của YOLO11n:** 54/58 cặp ID track từng chồng nhau (IoU ≥ 0,3) là **cùng lớp** (baseline A: 28/42). Tính theo cặp-frame (mỗi cặp hộp chồng nhau trong mỗi frame đếm một lần): 2.000/2.050 (baseline A: 354/424).
+  - Sửa theo review của An (#87): bản trước ghi "2.000/2.050 cặp track", nhưng đó là số cặp-frame, không phải số cặp track. Số cặp ID mới tính lại bằng cùng script (`*_id_pairs` trong `duplicate_boxes.json`).
   - [INFERENCE] Đây là cơ chế khác: NMS IoU 0,7 để lọt hộp cùng lớp.
 - Hệ quả cho W7 (cần giao thức đặt trước): thử NMS không phân lớp, và thử hạ NMS IoU. Đánh giá từng thay đổi riêng, có đối chứng.
 - Giới hạn của video demo: lớp phủ chỉ vẽ track, không vẽ detection thô, nên người xem không thấy hộp Drone làm R0 báo sai. Lần dựng demo sau nên vẽ thêm detection Drone thô.

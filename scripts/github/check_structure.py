@@ -89,6 +89,14 @@ def check_evidence(d: Path) -> list[tuple[str, str]]:
                or hashlib.sha256((d / f["path"]).read_bytes()).hexdigest() != f["sha256"]]
         if bad:
             out.append(("FAIL", f"manifest.json khong khop SHA-256: {bad[:3]}"))
+        # manifest phai bao phu moi file evidence (review #86): file bat buoc, test-results.*, moi file trong figures/
+        expected = {f for f in EVIDENCE_REQUIRED if f != "manifest.json" and (d / f).is_file()}
+        expected |= {p.name for p in d.glob("test-results.*")}
+        if fig.is_dir():
+            expected |= {p.relative_to(d).as_posix() for p in fig.rglob("*") if p.is_file() and p.name != ".gitkeep"}
+        missing = sorted(expected - {f["path"] for f in files})
+        if missing:
+            out.append(("FAIL", f"manifest.json khong liet ke: {missing[:3]}" + (f" (+{len(missing) - 3})" if len(missing) > 3 else "")))
     tr = d / "test-results.json"
     if tr.is_file():
         s = json.loads(tr.read_text(encoding="utf-8")).get("summary", {})

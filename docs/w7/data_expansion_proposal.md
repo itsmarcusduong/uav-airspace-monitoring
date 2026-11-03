@@ -1,7 +1,7 @@
 # Đề xuất bổ sung dữ liệu W7–W12 (issue #88)
 
 - Người soạn: Dương Minh Quang, 03/11/2026. Reviewer: Lê Ngọc An.
-- Trạng thái: **đề xuất để thảo luận**. Quyết định nằm ở `docs/decisions/ADR-0011-external-data-plan.md` (Proposed). Chưa tải hay train gì.
+- Trạng thái: An đã trả lời trên PR #89 (03/11). Quyết định chốt ở `docs/decisions/ADR-0011-external-data-plan.md` (**Accepted**, đã đưa hai sửa đổi của An vào). Chưa tải hay train gì.
 - Số liệu Svanström: `results/W06/dataset_coverage.json`, tạo bằng `scripts/reporting/dataset_coverage_stats.py` từ `data/splits/video_split_v1.csv`, run 13 (`analysis_yolo11n_640_s20261030`) và run 14 (`meta.csv`).
 
 ## 1. Kết luận
@@ -40,7 +40,7 @@ Detector đang dùng (YOLO11n `s20261030`, val, lạc quan vì val dùng để c
 **[INFERENCE] Đọc số liệu một cách phản biện:**
 - *Chưa có bằng chứng thiếu dữ liệu train là nút thắt.* AP@0.5:0.95 của Drone thấp (0,26–0,28) có nguyên nhân đã biết: 60,5% hộp Drone < 32×32 px và nhãn lệch 1 frame (ADR-0006). Thêm ảnh Drone từ nguồn khác không sửa hai nguyên nhân này, lại đổi quy ước nhãn.
 - *Chưa có bằng chứng chim bị nhầm thành Drone.* Bird→Drone = 0/73 hộp, nhưng 73 hộp này chỉ đến từ 3 video Bird trong val, nên bằng chứng rất yếu theo cả hai chiều. Không thêm dữ liệu chim vào train chỉ vì "drone vs bird nghe hợp lý". Cần tập âm tính lớn hơn để đo.
-- *38/40 ảnh "âm tính" có FP chưa chắc là FP thật.* Ảnh âm tính của Svanström là frame không có nhãn, có thể vật vẫn còn trong khung (nhãn thiếu hoặc lệch). Phần phân tích nhầm lẫn W7 phải xem tận mắt 38 ảnh này trước khi kết luận cần hard negative.
+- *38/40 ảnh "âm tính" có FP không phải FP nền* (đã kiểm sau, `docs/w6/val_negative_frames.md`). 20 ảnh là frame 0 trước frame có nhãn đầu tiên: 18/18 detection chồng hộp GT frame 1. 20 ảnh còn lại là `V_BIRD_041` sau frame 107, khi nhãn hết nhưng track chim vẫn liên tục tới frame 304. Svanström vì vậy không có ảnh nền trống đáng tin để đo FP, nên tập âm tính ngoài càng cần.
 - *Thống kê yếu.* 17 video Drone val và 23 sự kiện GT cảnh báo cho khoảng tin cậy rộng. Kết quả "0 cảnh báo sai" của R1 trên 3,66 phút không chứng minh R1 không báo sai (Thuyết minh mục 13 nói rõ điều này).
 
 ## 3. Nguồn đã khảo sát
@@ -68,7 +68,7 @@ Thứ tự tuần theo thang chấm cột E1 (ADR-0005, 4A). Đề cương và T
 | Tuần | Thang chấm | Việc dữ liệu đề xuất | Đổi mô hình? |
 |---|---|---|---|
 | W6 (tới 07/11) | geofence + cảnh báo | Tài liệu này, ADR-0011 Proposed, An duyệt; gửi yêu cầu Drone-vs-Bird; đọc điều khoản FBD-SV, DUT, Anti-UAV. Chưa tải. | Không |
-| **W7** (08–14/11) | **hard negatives + phân tích nhầm lẫn** | An: phân tích nhầm lẫn trên val, xem tận mắt 38 ảnh âm tính có FP. Quang: quay và lập manifest `e1-neg-v1`, job Kaggle đo cảnh báo sai/giờ (R0, R1) bằng mô hình hiện tại. Thí nghiệm train `e1-yolo-v2` chỉ chạy khi điều kiện kích hoạt bị chạm. | Chỉ khi kích hoạt và đạt luật |
+| **W7** (08–14/11) | **hard negatives + phân tích nhầm lẫn** | An: phân tích nhầm lẫn trên val, xem tận mắt 38 ảnh âm tính có FP. Quang: quay và lập manifest `e1-neg-v1`, job Kaggle đo cảnh báo sai/giờ (R0, R1) bằng mô hình hiện tại. Thí nghiệm train `e1-yolo-v1-hn` chỉ chạy khi điều kiện kích hoạt bị chạm. | Chỉ khi kích hoạt và đạt luật |
 | W8–W9 | E2E/dashboard, FPS | Không đổi dữ liệu. Nếu W7 chọn v2 thì chạy lại tracking và cảnh báo một lần (script có sẵn). | Không |
 | W10 | test detection + tracking | Test Svanström mở một lần. Cảnh báo sai/giờ cuối trên phần đánh giá của `e1-neg-v1`. | Không |
 | W11 | bền vững, freeze, benchmark cố định | Đánh giá OOD: DUT (gồm tập con đêm/hoàng hôn), Anti-UAV300 RGB, Drone-vs-Bird nếu có; biến đổi tổng hợp của test. | Không (đã freeze) |
@@ -78,7 +78,7 @@ Thứ tự tuần theo thang chấm cột E1 (ADR-0005, 4A). Đề cương và T
 | Loại bổ sung | Việc phải làm | Có phải so sánh lại W3–W6? | Ước lượng |
 |---|---|---|---|
 | Tập âm tính chỉ để đánh giá (G1) | Quay, cắt, manifest + SHA-256; một job Kaggle chạy detector + ByteTrack-e1 + `evaluate_alerts` (không cần GT hộp) | Không | Khoảng 2 giờ video ≈ 216 nghìn frame. Detector 3,3 ms/ảnh → khoảng 15–30 phút GPU. Phần tốn là công quay: 8 buổi × ≥ 20 phút (2 buổi `neg_train`, 6 buổi `neg_eval` ≈ 120 phút) |
-| Thí nghiệm hard negative (chỉ khi kích hoạt) | `e1-yolo-v2` = v1 + frame âm tính của các buổi train; YOLO11n cùng cấu hình, 3 seed; `build_seed_comparison.py`; chạy lại tracking/cảnh báo như run 14 | Chỉ so v2 với v1 trên cùng val (một yếu tố) | Run 13: YOLO11n mất 19–22 phút/seed trên 5.667 ảnh. Thêm 2–3 nghìn ảnh → khoảng 30 phút/seed, 3 seed ≈ 1,5 giờ GPU |
+| Thí nghiệm hard negative (chỉ khi kích hoạt) | `e1-yolo-v1-hn` = v1 + frame âm tính của các buổi train; YOLO11n cùng cấu hình, 3 seed; `build_seed_comparison.py`; chạy lại tracking/cảnh báo như run 14 | Chỉ so v2 với v1 trên cùng val (một yếu tố) | Run 13: YOLO11n mất 19–22 phút/seed trên 5.667 ảnh. Thêm 2–3 nghìn ảnh → khoảng 30 phút/seed, 3 seed ≈ 1,5 giờ GPU |
 | Đánh giá OOD W11 | Script chuyển nhãn DUT/Anti-UAV sang định dạng GT của `w5_track_metrics`; một job Kaggle | Không | 1 job, chủ yếu tốn công viết bộ chuyển đổi và pytest |
 | **Không đề xuất:** trộn ảnh Drone ngoài vào train trước W11 | Kiểm nhãn bộ mới, cân bằng lớp, đổi fingerprint, train lại mọi cấu hình, so sánh lại tracker và cảnh báo | **Có, toàn bộ** | Cao, lợi ích chưa có bằng chứng |
 
