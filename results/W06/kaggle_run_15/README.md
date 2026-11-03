@@ -7,7 +7,7 @@
   - `configs/roi_w6.yaml` và `configs/alert_e1.yaml`. SHA ghi trong `stage_status.json` (`d34a2ccc…`, `547ceebf…`) là SHA của bản CRLF do file đi qua Windows. Bản LF trong repo có SHA `b8babbbc…`, `2d4cee9f…`; nội dung giống nhau (notebook kiểm tra SHA sau khi chuẩn hóa xuống dòng).
 - Các stage env, inputs, select, render đều `OK`.
 - Gói bằng chứng `w6_alert_demo_evidence.zip`, SHA `9f2c257886d35f5a685a46f28cc5cfd224a3b9e55e25eb602211bd4637f3ec5e`.
-- Gói video `w6_alert_demo_videos.zip` (SHA `84a8fa87…`, 3 mp4) chỉ lưu trên Drive `demo/W06`, không đưa vào Git.
+- Gói video `w6_alert_demo_videos.zip` (SHA `84a8fa87…`, 3 mp4) chỉ lưu trên Drive `demo/W06` (https://drive.google.com/drive/folders/1YrKaXrpSpG9vCAopr-kqlOe5KFm9PN_t), không đưa vào Git. Link từng file, kích thước và SHA-256 ở `w6_alert_demo/demo_index.json`.
 
 ## Kiểm tra chéo
 - `w6_alert_demo/demo_alerts.csv` (56 cảnh báo R0 + R1, ROI `center_hex`, điểm tâm) trùng từng dòng với `results/W06/alert_eval/alert_log.csv` (cùng ROI và điểm). Cảnh báo vẽ trên video đúng là cảnh báo đã được chấm điểm.
