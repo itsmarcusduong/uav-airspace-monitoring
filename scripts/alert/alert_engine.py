@@ -241,10 +241,13 @@ def r1_alerts(tracks: list[dict], n_frames: int, fps: float, poly, width, height
 # ----------------------------------------------------------------------------- danh gia su kien
 def match_events(alerts: list[dict], events: list[tuple[int, int]], tol: int) -> dict:
     """Canh bao khop su kien neu giao [s - tol, e + tol]. Moi su kien: canh bao khop dau tien = TP, cac canh bao khop them = lap.
-    Canh bao khong khop su kien nao = canh bao sai."""
+    Canh bao khong khop su kien nao = canh bao sai. `first_alerts` = so canh bao la canh bao dau tien cua it nhat mot su kien
+    (dung cho event precision mot-mot: canh bao lap khong duoc tinh dung; review #83)."""
     hit = [[i for i, a in enumerate(alerts) if a["start"] <= e + tol and a["end"] >= s - tol] for s, e in events]
     matched = {i for h in hit for i in h}
-    latency = [alerts[min(h, key=lambda i: alerts[i]["start"])]["start"] - s for (s, _), h in zip(events, hit) if h]
+    first = [min(h, key=lambda i: alerts[i]["start"]) for h in hit if h]
+    latency = [alerts[i]["start"] - s for (s, _), i in zip([ev for ev, h in zip(events, hit) if h], first)]
     return {"events": len(events), "detected": sum(1 for h in hit if h), "alerts": len(alerts), "matched_alerts": len(matched),
+            "first_alerts": len(set(first)),
             "false_alerts": len(alerts) - len(matched), "duplicates": sum(max(0, len(h) - 1) for h in hit),
             "latency_frames": latency, "false_alert_ids": [i for i in range(len(alerts)) if i not in matched]}

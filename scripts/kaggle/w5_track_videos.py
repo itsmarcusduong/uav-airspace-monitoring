@@ -168,12 +168,16 @@ def main() -> int:
     ap.add_argument("--save-detections", action="store_true")
     ap.add_argument("--save-gt", action="store_true")
     ap.add_argument("--save-matches", action="store_true")
+    ap.add_argument("--overwrite", action="store_true", help="cho phep xoa thu muc bang chung cung tag (mac dinh: dung lai)")
     a = ap.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     ev = a.out / a.tag
-    if ev.exists():
+    if ev.exists() and any(ev.iterdir()):
+        if not a.overwrite:
+            raise SystemExit(f"{ev} da co bang chung; dung --tag khac hoac them --overwrite neu chac chan muon xoa (review #80)")
+        LOG.warning("--overwrite: xoa %s", ev)
         shutil.rmtree(ev)
-    ev.mkdir(parents=True)
+    ev.mkdir(parents=True, exist_ok=True)
     status, ctx = {}, {}
 
     def run(name, fn):

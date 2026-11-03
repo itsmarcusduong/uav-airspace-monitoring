@@ -33,28 +33,37 @@ def iou(a, b) -> float:
     return i / u if u > 0 else 0.0
 
 
-def rows_by_frame(p: Path) -> dict[int, list[tuple[int, float, tuple]]]:
+def rows_by_frame(p: Path) -> dict[int, list[tuple]]:
+    """frame -> [(cls, conf, (x, y, w, h), id)]; id = None voi detection tho (khong co cot id)."""
     by = defaultdict(list)
     with p.open(encoding="utf-8") as fh:
         for r in csv.DictReader(fh):
-            by[int(r["frame"])].append((int(r["cls"]), float(r.get("conf") or 0), tuple(float(r[k]) for k in "xywh")))
+            by[int(r["frame"])].append((int(r["cls"]), float(r.get("conf") or 0), tuple(float(r[k]) for k in "xywh"), r.get("id")))
     return by
 
 
 def pair_classes(by: dict, thr: float) -> Counter:
-    c = Counter()
+    """Dem theo hai don vi (review #87):
+    - `*_pair_frames`: moi cap hop chong nhau trong moi frame tinh mot lan (cap-frame, KHONG phai so cap track);
+    - `*_id_pairs`: so cap ID track khac nhau tung chong nhau; cap xep cung/khac lop theo da so frame chong nhau cua no."""
+    c, per_pair = Counter(), defaultdict(Counter)
     for boxes in by.values():
         for i in range(len(boxes)):
             for j in range(i + 1, len(boxes)):
                 if iou(boxes[i][2], boxes[j][2]) >= thr:
-                    c["same_class" if boxes[i][0] == boxes[j][0] else "cross_class"] += 1
+                    kind = "same_class" if boxes[i][0] == boxes[j][0] else "cross_class"
+                    c[f"{kind}_pair_frames"] += 1
+                    if boxes[i][3] is not None and boxes[j][3] is not None:
+                        per_pair[tuple(sorted((boxes[i][3], boxes[j][3])))][kind] += 1
+    for k in per_pair.values():
+        c["same_class_id_pairs" if k["same_class"] >= k["cross_class"] else "cross_class_id_pairs"] += 1
     return c
 
 
 def drone_on_other(by: dict, conf: float) -> tuple[int, int]:
     """(so frame co Drone >= conf, so frame trong do Drone chong IoU >= 0,5 len detection lop khac)."""
-    fr = [f for f, d in by.items() if any(c == DRONE and s >= conf for c, s, _ in d)]
-    co = [f for f in fr if any(c != DRONE and iou(b, b2) >= 0.5 for c, _, b in by[f] for c2, s2, b2 in by[f] if c2 == DRONE and s2 >= conf)]
+    fr = [f for f, d in by.items() if any(c == DRONE and s >= conf for c, s, _, _ in d)]
+    co = [f for f in fr if any(c != DRONE and iou(b, b2) >= 0.5 for c, _, b, _ in by[f] for c2, s2, b2, _ in by[f] if c2 == DRONE and s2 >= conf)]
     return len(fr), len(co)
 
 

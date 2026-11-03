@@ -22,6 +22,7 @@ import csv
 import hashlib
 import json
 import logging
+import math
 import statistics
 import sys
 from pathlib import Path
@@ -108,9 +109,9 @@ def evaluate(vids: list[dict], rois: list[dict], cfg: dict, points=("center", "b
                                 **{k: m[k] for k in ("events", "detected", "alerts", "matched_alerts", "false_alerts", "duplicates")}})
                     key = f"{roi['name']}|{pt}|{rule}"
                     g = agg.setdefault(key, {"roi": roi["name"], "point": pt, "rule": rule, "events": 0, "detected": 0, "alerts": 0,
-                                             "matched_alerts": 0, "false_alerts": 0, "false_alerts_nondrone": 0, "duplicates": 0,
+                                             "matched_alerts": 0, "first_alerts": 0, "false_alerts": 0, "false_alerts_nondrone": 0, "duplicates": 0,
                                              "latency_s": [], "hours_nondrone": 0.0, "hours_all": 0.0, "videos_with_false_alert": 0})
-                    for k in ("events", "detected", "alerts", "matched_alerts", "false_alerts", "duplicates"):
+                    for k in ("events", "detected", "alerts", "matched_alerts", "first_alerts", "false_alerts", "duplicates"):
                         g[k] += m[k]
                     g["latency_s"] += [x / fps for x in m["latency_frames"]]
                     g["hours_all"] += n / fps / 3600
@@ -122,11 +123,25 @@ def evaluate(vids: list[dict], rois: list[dict], cfg: dict, points=("center", "b
         lat = g.pop("latency_s")
         summary[k] = {**g, "event_recall": round(g["detected"] / g["events"], 4) if g["events"] else None,
                       "event_precision": round(g["matched_alerts"] / g["alerts"], 4) if g["alerts"] else None,
+                      "event_precision_1to1": round(g["first_alerts"] / g["alerts"], 4) if g["alerts"] else None,
                       "false_alerts_drone_videos": g["false_alerts"] - g["false_alerts_nondrone"],
+                      "false_alerts_per_hour_nondrone_upper95": round(poisson_upper(g["false_alerts_nondrone"]) / g["hours_nondrone"], 1)
+                      if g["hours_nondrone"] else None,
                       "false_alerts_per_hour_nondrone": round(g["false_alerts_nondrone"] / g["hours_nondrone"], 2) if g["hours_nondrone"] else None,
                       "latency_median_s": round(statistics.median(lat), 3) if lat else None,
                       "hours_nondrone": round(g["hours_nondrone"], 4), "hours_all": round(g["hours_all"], 4)}
     return log, per, summary, gtrows, pre
+
+
+def poisson_upper(k: int, conf: float = 0.95) -> float:
+    """Can tren mot phia cua trung binh Poisson khi quan sat k su kien (P(X <= k; mu) = 1 - conf), tim bang chia doi.
+    k = 0 -> -ln(0,05) = 2,996. Gia dinh cac su kien doc lap va dong nhat, nen chi la chi bao (review #83)."""
+    cdf = lambda mu: sum(math.exp(-mu) * mu ** i / math.factorial(i) for i in range(k + 1))
+    lo, hi = 0.0, 10.0 + 10 * k
+    for _ in range(200):
+        mid = (lo + hi) / 2
+        lo, hi = (mid, hi) if cdf(mid) > 1 - conf else (lo, mid)
+    return hi
 
 
 def decide(summary: dict, roi: str, point: str = "center") -> dict:
@@ -150,11 +165,11 @@ def decide(summary: dict, roi: str, point: str = "center") -> dict:
 
 
 def to_md(summary: dict, dec: dict) -> str:
-    L = ["| ROI | Diem | Luat | Su kien GT | Event recall | Canh bao | Event precision | Canh bao sai (video khong Drone) | "
-         "Canh bao sai / gio (khong Drone) | Canh bao sai (video Drone) | Lap | Do tre trung vi (s) |", "|" + "---|" * 12]
+    L = ["| ROI | Diem | Luat | Su kien GT | Event recall | Canh bao | Event precision | Event precision 1-1 | Canh bao sai (video khong Drone) | "
+         "Canh bao sai / gio (khong Drone) | Can tren 95% / gio | Canh bao sai (video Drone) | Lap | Do tre trung vi (s) |", "|" + "---|" * 14]
     for k, s in summary.items():
-        L.append(f"| {s['roi']} | {s['point']} | {s['rule']} | {s['events']} | {s['event_recall']} | {s['alerts']} | {s['event_precision']} | "
-                 f"{s['false_alerts_nondrone']} | {s['false_alerts_per_hour_nondrone']} | {s['false_alerts_drone_videos']} | {s['duplicates']} | "
+        L.append(f"| {s['roi']} | {s['point']} | {s['rule']} | {s['events']} | {s['event_recall']} | {s['alerts']} | {s['event_precision']} | {s['event_precision_1to1']} | "
+                 f"{s['false_alerts_nondrone']} | {s['false_alerts_per_hour_nondrone']} | {s['false_alerts_per_hour_nondrone_upper95']} | {s['false_alerts_drone_videos']} | {s['duplicates']} | "
                  f"{s['latency_median_s']} |")
     L += ["", f"**Quyet dinh theo luat (ROI {dec['roi']}, diem {dec['point']}):** {dec['verdict']} - {dec['reason']}"]
     return "\n".join(L) + "\n"
