@@ -4,13 +4,17 @@
   "tracks": {
     "baseline_A": {
       "dir": "results/W05/kaggle_run_12b/w5_track/tracks/tracker_bytetrack_e1",
-      "cross_class": 70,
-      "same_class": 354
+      "cross_class_pair_frames": 70,
+      "cross_class_id_pairs": 14,
+      "same_class_pair_frames": 354,
+      "same_class_id_pairs": 28
     },
     "yolo11n": {
       "dir": "results/W06/kaggle_run_14/w6_run14/tracks/tracker_bytetrack_e1",
-      "same_class": 2000,
-      "cross_class": 50
+      "same_class_pair_frames": 2000,
+      "same_class_id_pairs": 54,
+      "cross_class_pair_frames": 50,
+      "cross_class_id_pairs": 4
     }
   },
   "raw_drone_on_other_class": {

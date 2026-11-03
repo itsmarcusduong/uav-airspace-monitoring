@@ -215,3 +215,19 @@ def test_track_job_w6_dumps(tmp_path, monkeypatch):
     assert [r["id"] for r in m[5:8]] == ["1", "2", "2"] and m[0]["matched"] == "True"
     with zipfile.ZipFile(out / "w6_run14_evidence.zip") as z:
         assert "w6_run14/gt/V_BIRD_001.csv" in z.namelist()
+
+
+def test_track_job_refuses_to_overwrite_evidence(tmp_path, monkeypatch):
+    """Review #80: chay lai cung tag khong duoc am tham xoa bang chung cu; chi xoa khi co --overwrite."""
+    ev = tmp_path / "o" / "w5_track"
+    ev.mkdir(parents=True)
+    (ev / "old.txt").write_text("bang chung cu")
+    base = ["x", "--data-root", "r", "--manifest", "m", "--audit", "a", "--weights", "w", "--weights-sha", "0" * 64,
+            "--trackers", "t", "--out", str(tmp_path / "o"), "--device", "cpu"]
+    monkeypatch.setattr(sys, "argv", base)
+    with pytest.raises(SystemExit, match="--overwrite"):
+        tv.main()
+    assert (ev / "old.txt").is_file()
+    monkeypatch.setattr(sys, "argv", base + ["--overwrite"])
+    assert tv.main() == 1                      # input sai -> FAILED, nhung thu muc cu da duoc xoa co chu dich
+    assert not (ev / "old.txt").exists()

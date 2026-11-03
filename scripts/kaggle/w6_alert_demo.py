@@ -130,13 +130,17 @@ def main() -> int:
     ap.add_argument("--tracker", default="tracker_bytetrack_e1")
     ap.add_argument("--out", type=Path, default=Path("/kaggle/working"))
     ap.add_argument("--commit", default="UNKNOWN")
+    ap.add_argument("--overwrite", action="store_true", help="cho phep xoa thu muc bang chung cung tag (mac dinh: dung lai)")
     a = ap.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     import yaml
     ev = a.out / "w6_alert_demo"
-    if ev.exists():
+    if ev.exists() and any(ev.iterdir()):
+        if not a.overwrite:
+            raise SystemExit(f"{ev} da co bang chung; dung --tag khac hoac them --overwrite neu chac chan muon xoa (review #80)")
+        LOG.warning("--overwrite: xoa %s", ev)
         shutil.rmtree(ev)
-    ev.mkdir(parents=True)
+    ev.mkdir(parents=True, exist_ok=True)
     status, ctx = {}, {}
 
     def run(name, fn):

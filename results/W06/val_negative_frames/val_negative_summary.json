@@ -1,0 +1,48 @@
+{
+  "note": "tham do sau khi xem ket qua; anh am tinh tai dung tu run 14 (offset0, stride 10)",
+  "conf": 0.25,
+  "negative_frames": 40,
+  "with_det": 38,
+  "by_cause": {
+    "before_first_label": {
+      "frames": 20,
+      "with_det": 18,
+      "det_iou_ge_0.3_with_nearest_gt": 18
+    },
+    "after_last_label": {
+      "frames": 20,
+      "with_det": 20,
+      "det_iou_ge_0.3_with_nearest_gt": 1
+    }
+  },
+  "videos": {
+    "V_BIRD_025": 1,
+    "V_BIRD_037": 1,
+    "V_BIRD_041": 21,
+    "V_DRONE_004": 1,
+    "V_DRONE_010": 1,
+    "V_DRONE_011": 1,
+    "V_DRONE_018": 1,
+    "V_DRONE_023": 1,
+    "V_DRONE_025": 1,
+    "V_DRONE_029": 1,
+    "V_DRONE_032": 1,
+    "V_DRONE_044": 1,
+    "V_DRONE_049": 1,
+    "V_DRONE_060": 1,
+    "V_DRONE_077": 1,
+    "V_DRONE_078": 1,
+    "V_DRONE_080": 1,
+    "V_DRONE_088": 1,
+    "V_DRONE_095": 1,
+    "V_DRONE_096": 1
+  },
+  "run13_images_with_pred": 38,
+  "run13_vs_run14_same_has_pred": 40,
+  "check_run13": {
+    "negative_images": 40,
+    "images_with_fp": 38,
+    "conf": 0.25,
+    "match": true
+  }
+}

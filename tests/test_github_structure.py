@@ -41,5 +41,22 @@ def test_evidence_folder(tmp_path):
     assert any("SHA-256" in m for _, m in cs.check_evidence(d))
 
 
+def test_evidence_manifest_must_cover_files(tmp_path):
+    """Review #86: bo metrics.csv (hoac mot hinh) khoi manifest thi phai FAIL, du SHA cac file con lai dung."""
+    import hashlib
+    d = tmp_path / "W09"
+    (d / "figures").mkdir(parents=True)
+    for f in ("README.md", "metrics.csv", "test-results.json"):
+        (d / f).write_text("{}" if f.endswith(".json") else "x")
+    (d / "figures" / "a.png").write_bytes(b"p")
+    keep = [p for p in d.rglob("*") if p.is_file() and p.name not in ("metrics.csv",)]
+    files = [{"path": p.relative_to(d).as_posix(), "sha256": hashlib.sha256(p.read_bytes()).hexdigest()} for p in keep]
+    (d / "manifest.json").write_text(json.dumps({"files": files}))
+    msgs = [m for lv, m in cs.check_evidence(d) if lv == "FAIL"]
+    assert any("metrics.csv" in m and "khong liet ke" in m for m in msgs)
+    (d / "manifest.json").write_text(json.dumps({"files": []}))
+    assert any("khong liet ke" in m for _, m in cs.check_evidence(d))
+
+
 def test_tag_weeks_follow_de_cuong():
     assert cs.TAG_WEEKS == {4, 8, 11, 14}
