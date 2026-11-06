@@ -1,0 +1,152 @@
+{
+  "week": "W06",
+  "milestone": "Tuan6",
+  "repo_commit": "1afba4b3d9ebefc2468f60b03154a235ff25f19a",
+  "generated_at": "2026-11-06T19:07:13+00:00",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "6e2b5690e313886d3c4f7cb533095b5c10bf560f5b8a7196938880b1f3e37358",
+      "bytes": 2907
+    },
+    {
+      "path": "figures/fig_w6_alerts.png",
+      "sha256": "644babaa2489f00afd79f03575343358a5a250e77c12959ac9b31dcb6cc63b15",
+      "bytes": 62970
+    },
+    {
+      "path": "figures/fig_w6_detector_swap.png",
+      "sha256": "c039263325372768e84a23d93bad63c448d695d89cd68665825061436c5b1e3c",
+      "bytes": 76723
+    },
+    {
+      "path": "metrics.csv",
+      "sha256": "4ddf74f218734ee6019807cf994d2b2550252641bdea37376db7d81ccd5af20c",
+      "bytes": 8234
+    },
+    {
+      "path": "test-results.json",
+      "sha256": "523413fd0189ff46927fb19f51300464021ca916705dd0e051d0a7cd47028985",
+      "bytes": 15705
+    },
+    {
+      "path": "test-results.xml",
+      "sha256": "4c99d3186fc7bb25150648956d6455453214d9da027f8acb67a789b97da6e984",
+      "bytes": 7290
+    }
+  ],
+  "sources": [
+    {
+      "path": "docs/decisions/ADR-0009-roi-alert-protocol.md",
+      "sha256": "60399a1a2de5e6e147b6c7f07a0c0e00426258e0b2bb8e4c902d0601ff97b7e0"
+    },
+    {
+      "path": "docs/decisions/ADR-0011-external-data-plan.md",
+      "sha256": "5af6a8757ab399088793501c627c4cf7a56adff119d9e9e796f7237303fe614f"
+    },
+    {
+      "path": "results/W06/alert_eval/alert_summary.json",
+      "sha256": "03b7525a1bdf1a739377834bd212c399f315646b448734f587cabe0419b9ba35"
+    },
+    {
+      "path": "results/W06/dataset_coverage.json",
+      "sha256": "28b58e41e0afb36dbff33a5065bb54c028bf64369e244b33aa49b6aca8fcdde5"
+    },
+    {
+      "path": "results/W06/detector_swap_tracking/summary.csv",
+      "sha256": "190b4ee88cc0ea4bbb86415ba8051d31e134849e3fb87a4b25c604f21fb0f210"
+    },
+    {
+      "path": "results/W06/duplicate_boxes.json",
+      "sha256": "7d94890f758513322359d1a4cce5295d186483358230acd9016d126c30877f93"
+    },
+    {
+      "path": "results/W06/fig_w6_alerts.png",
+      "sha256": "644babaa2489f00afd79f03575343358a5a250e77c12959ac9b31dcb6cc63b15"
+    },
+    {
+      "path": "results/W06/fig_w6_detector_swap.png",
+      "sha256": "c039263325372768e84a23d93bad63c448d695d89cd68665825061436c5b1e3c"
+    },
+    {
+      "path": "results/W06/kaggle_run_14/w6_run14/demo/demo_index.json",
+      "sha256": "13b5a80d180698707287d303c2c964b933dcdb58b81c61628f7a7332c68d7e87"
+    },
+    {
+      "path": "results/W06/kaggle_run_14/w6_run14/inputs.json",
+      "sha256": "3c7a2d5412f88969ebd2d82e5ff3b8b18033fe9dffa49345e69f4cce2e32cf0e"
+    },
+    {
+      "path": "results/W06/kaggle_run_14/w6_run14/stage_status.json",
+      "sha256": "a579dc839147c45a076bac4e164481a9118ac03130a54fd1db41f34092e97065"
+    },
+    {
+      "path": "results/W06/kaggle_run_14/w6_run14/track_summary.json",
+      "sha256": "3c5f3861357b70f77f745761c627479a4e69476505e9c83032d37642e29bae18"
+    },
+    {
+      "path": "results/W06/kaggle_run_15/w6_alert_demo/demo_alerts.csv",
+      "sha256": "0f234ef7ff72d25f72e98eb9dbbb7f2c92d5f332c6d7c0126e7bd5b9f5eb1fc9"
+    },
+    {
+      "path": "results/W06/kaggle_run_15/w6_alert_demo/demo_index.json",
+      "sha256": "50ba06251335bb549cce25283298f52310fc220456ee83475cd69626d63c5876"
+    },
+    {
+      "path": "results/W06/kaggle_run_15/w6_alert_demo/stage_status.json",
+      "sha256": "ae28d14a566aa3d3599435e11da59b70172828a27a19f0a4656726960f449283"
+    },
+    {
+      "path": "results/W06/val_negative_frames/manual_review_classification.csv",
+      "sha256": "0ae8a0a2e194616d05e6e68c8af9daa60d24b5b5a147b828fccdb2671d139c9c"
+    },
+    {
+      "path": "results/W06/val_negative_frames/val_negative_summary.json",
+      "sha256": "66d24089f296f284d79ddef93b517104d2828904ab2b3555feff8f6b701639c5"
+    }
+  ],
+  "external_artifacts": [
+    {
+      "name": "demo/W06/V_DRONE_096_tracker_bytetrack_e1.mp4",
+      "link": "https://drive.google.com/file/d/1IiL7iFlHkgjTE4-iZmo7NNGnkF8i9JjV/view",
+      "sha256": "2d87c58269321cd1dedaf294c145f935683c1c3ab25e07e6d39d98645b59f60c",
+      "bytes": 1142349
+    },
+    {
+      "name": "demo/W06/V_BIRD_037_tracker_bytetrack_e1.mp4",
+      "link": "https://drive.google.com/file/d/18uLGu_3nzyslT3LSq9pt5H7UjU5RLU9P/view",
+      "sha256": "1c85be2f4d952a4ea9adb2ca9157b316b5515d2c6b03b9589a557b221e801854",
+      "bytes": 651420
+    },
+    {
+      "name": "demo/W06/V_DRONE_025_tracker_bytetrack_e1.mp4",
+      "link": "https://drive.google.com/file/d/1kUlHcRCg-FCzgKFrmUqc-vsvffrQhWZQ/view",
+      "sha256": "63364f4e520181530472801bbcc414d3254c924c7b6605622be3a6f1622aadd5",
+      "bytes": 1006692
+    },
+    {
+      "name": "demo/W06/V_DRONE_060_alert.mp4",
+      "link": "https://drive.google.com/file/d/1XM4HFSUL0eFf7ko5V_4rhDdHzXgq6lnW/view",
+      "sha256": "e3f821a1d9f5bd1906b614d82daff945b0bf167090b50e7bc53a87e77f0698d3",
+      "bytes": 1454954
+    },
+    {
+      "name": "demo/W06/V_HELICOPTER_031_alert.mp4",
+      "link": "https://drive.google.com/file/d/1Jm4GNnm2cidimVK-_mbFvcD4sLzxQPA2/view",
+      "sha256": "ea28922b6d1a01ac9af00caa58a6e82a9d3c1a84b9d9efde46089f38284ea50a",
+      "bytes": 1775388
+    },
+    {
+      "name": "demo/W06/V_DRONE_025_alert.mp4",
+      "link": "https://drive.google.com/file/d/1gfQP90KMLPznmy6IdS1vN7qGyNj8t9xc/view",
+      "sha256": "126b325da86464b3c124112d8e0788cdedcd3160435b02ec05b1b4428d325b3e",
+      "bytes": 1461719
+    },
+    {
+      "name": "kaggle_run_16/w6_negframes.zip (gui An, khong len Drive)",
+      "link": "",
+      "sha256": "67ec70c18fafe29002bb2e524629d4d6c391fe4f61071c86f46910f8e5185195",
+      "bytes": 0
+    }
+  ]
+}
