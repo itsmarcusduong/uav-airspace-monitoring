@@ -109,9 +109,9 @@ def evaluate(vids: list[dict], rois: list[dict], cfg: dict, points=("center", "b
                                 **{k: m[k] for k in ("events", "detected", "alerts", "matched_alerts", "false_alerts", "duplicates")}})
                     key = f"{roi['name']}|{pt}|{rule}"
                     g = agg.setdefault(key, {"roi": roi["name"], "point": pt, "rule": rule, "events": 0, "detected": 0, "alerts": 0,
-                                             "matched_alerts": 0, "first_alerts": 0, "false_alerts": 0, "false_alerts_nondrone": 0, "duplicates": 0,
+                                             "matched_alerts": 0, "matched_1to1": 0, "false_alerts": 0, "false_alerts_nondrone": 0, "duplicates": 0,
                                              "latency_s": [], "hours_nondrone": 0.0, "hours_all": 0.0, "videos_with_false_alert": 0})
-                    for k in ("events", "detected", "alerts", "matched_alerts", "first_alerts", "false_alerts", "duplicates"):
+                    for k in ("events", "detected", "alerts", "matched_alerts", "matched_1to1", "false_alerts", "duplicates"):
                         g[k] += m[k]
                     g["latency_s"] += [x / fps for x in m["latency_frames"]]
                     g["hours_all"] += n / fps / 3600
@@ -123,7 +123,7 @@ def evaluate(vids: list[dict], rois: list[dict], cfg: dict, points=("center", "b
         lat = g.pop("latency_s")
         summary[k] = {**g, "event_recall": round(g["detected"] / g["events"], 4) if g["events"] else None,
                       "event_precision": round(g["matched_alerts"] / g["alerts"], 4) if g["alerts"] else None,
-                      "event_precision_1to1": round(g["first_alerts"] / g["alerts"], 4) if g["alerts"] else None,
+                      "event_precision_1to1": round(g["matched_1to1"] / g["alerts"], 4) if g["alerts"] else None,
                       "false_alerts_drone_videos": g["false_alerts"] - g["false_alerts_nondrone"],
                       "false_alerts_per_hour_nondrone_upper95": round(poisson_upper(g["false_alerts_nondrone"]) / g["hours_nondrone"], 1)
                       if g["hours_nondrone"] else None,
