@@ -7,8 +7,19 @@
   - Nguồn nhãn: GT theo frame của run 14 (offset0, như `e1-yolo-v1`).
 - Ảnh gốc và ảnh vẽ hộp: Kaggle run 16 (`scripts/kaggle/w6_negative_frames_export.py`) xuất `w6_negframes.zip`. Ảnh không đưa vào Git.
 
+## Kết quả An xem ảnh (07/11, PR #94)
+An xem đủ 40 ảnh gốc của Kaggle run 16; kết quả ở `results/W06/val_negative_frames/manual_review_classification.csv`:
+- **Cả 40 ảnh đều có vật thật nhưng nhãn rỗng** (`vat_that_thieu_nhan`), kể cả 2 ảnh đối chứng `V_DRONE_010` f0 và `V_DRONE_096` f0. Ở 2 ảnh này drone có thật nhưng mô hình bỏ sót.
+- `V_DRONE_080` f0: ngoài drone thật còn một hộp Drone trên trời trống. Đây là FP nền duy nhất trong 40 ảnh.
+- `V_BIRD_041` f110–300: có hai con chim thật suốt chuỗi, tức 40 object-frame.
+  - 42 hộp dự đoán: 38 ghép một-một với vật, 4 hộp trùng vật (FP theo phép ghép, không phải FP nền).
+  - 2 object-frame bị bỏ sót.
+  - 36 hộp lớp Bird, 6 hộp nhầm thành Airplane.
+- Quang kiểm bằng script: số dự đoán và lớp từng dòng trùng `val_negative_frames.csv`; các tổng nhất quán.
+- Đây vẫn là phân loại thủ công thăm dò. Không sửa GT, không tính lại metric.
+
 ## Kết luận
-**[INFERENCE, chờ An xem ảnh] 38/40 ảnh "âm tính" có FP gần như toàn bộ là ảnh có vật thật nhưng nhãn rỗng, không phải FP trên nền trời.**
+**38/40 ảnh "âm tính" có FP không phải FP trên nền trời:** cả 40 ảnh đều có vật thật nhưng nhãn rỗng (An đã xác nhận bằng mắt). Phần dưới là suy luận ban đầu, trước khi xem ảnh.
 - Chỉ tìm được **1 FP thật** trong 38 ảnh: `V_DRONE_080` frame 0, hộp Drone 0,587 trên vùng trời trống. Đây chính là cảnh báo sai R0 An đã xác nhận ở #90.
 - Vì vậy con số "38/40" không dùng được để đánh giá FP nền. Svanström cũng không có ảnh nền trống đáng tin, nên tập âm tính ngoài (ADR-0011) càng cần.
 

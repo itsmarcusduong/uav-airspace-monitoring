@@ -63,7 +63,20 @@
 
 7. **Báo cáo theo nguồn** (sửa theo An): cảnh báo sai/giờ, cận trên Poisson 95% và tỷ lệ frame có detection Drone báo **riêng** cho từng nguồn (video tự quay theo `session_id`, FBD-SV, Svanström val) kèm thời lượng. Không gộp thành một ước lượng vận hành duy nhất; nếu có dòng "tổng" thì ghi rõ là cộng dồn.
 
-8. **Lịch quay W7** (An đề xuất trên PR #89; chưa xác nhận thời tiết): `neg_eval` 08/11 (Quang), 09/11 (An), 10/11 (Quang sáng, An chiều), 11/11 (Quang sáng, An chiều); `neg_train` 12/11 (Quang), 13/11 (An). Mốc kiểm tra thời lượng: 11/11.
+8. **Lịch quay W7** (An đề xuất trên PR #89; Quang xác nhận 03/11; An xác nhận 07/11, kèm dời buổi `neg_train` của An từ 13/11 sang chiều 12/11; chưa tính thời tiết):
+
+   | Ngày | Quang | An |
+   |---|---|---|
+   | CN 08/11 | 08:00 `neg_eval` #1 | — |
+   | T2 09/11 | — | 09:00 `neg_eval` #1 |
+   | T3 10/11 | 07:30 `neg_eval` #2 | 16:30 `neg_eval` #2 |
+   | T4 11/11 | 08:00 `neg_eval` #3 | 16:00 `neg_eval` #3 |
+   | T5 12/11 | sáng `neg_train` | chiều `neg_train` |
+
+   - Mốc kiểm tra thời lượng: 11/11.
+   - Hai buổi `neg_train` vẫn là buổi cuối của mỗi người, nên luật ở mục 2 không đổi.
+   - Dời sang 12/11 để nếu điều kiện mục 3 bị chạm vẫn còn 13–14/11 để train 3 seed và chạy lại tracking/cảnh báo.
+   - Buổi bị hủy (thời tiết, có vật nghi UAV) được quay bù ở ngày gần nhất và giữ đúng vai trò; ghi ngày thực tế vào manifest.
 
 ## Hệ quả
 - Không thay đổi chỉ tiêu ADR-0005, luật cảnh báo ADR-0009 hay detector ADR-0007, trừ khi luật mục 4 chọn v2.
