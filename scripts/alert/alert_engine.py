@@ -239,15 +239,33 @@ def r1_alerts(tracks: list[dict], n_frames: int, fps: float, poly, width, height
 
 
 # ----------------------------------------------------------------------------- danh gia su kien
+def max_matching(hit: list[list[int]], n_alerts: int) -> int:
+    """Ghep cap hai phia lon nhat (thuat toan Kuhn, duong tang). hit[e] = cac canh bao khop su kien e.
+    Duyet su kien va canh bao theo thu tu chi so (canh bao som truoc) nen ket qua tat dinh."""
+    owner = [-1] * n_alerts
+
+    def augment(e: int, seen: list[bool]) -> bool:
+        for i in sorted(hit[e]):
+            if not seen[i]:
+                seen[i] = True
+                if owner[i] < 0 or augment(owner[i], seen):
+                    owner[i] = e
+                    return True
+        return False
+
+    return sum(augment(e, [False] * n_alerts) for e in range(len(hit)))
+
+
 def match_events(alerts: list[dict], events: list[tuple[int, int]], tol: int) -> dict:
     """Canh bao khop su kien neu giao [s - tol, e + tol]. Moi su kien: canh bao khop dau tien = TP, cac canh bao khop them = lap.
-    Canh bao khong khop su kien nao = canh bao sai. `first_alerts` = so canh bao la canh bao dau tien cua it nhat mot su kien
-    (dung cho event precision mot-mot: canh bao lap khong duoc tinh dung; review #83)."""
+    Canh bao khong khop su kien nao = canh bao sai. `matched_1to1` = kich thuoc ghep cap mot-mot lon nhat giua canh bao va
+    su kien (moi canh bao toi da mot su kien va nguoc lai), dung cho event precision mot-mot (review #83, sua theo review #91:
+    ban truoc chon canh bao som nhat cho tung su kien roi dem ID duy nhat, nen co the thap sai khi cua so su kien chong nhau)."""
     hit = [[i for i, a in enumerate(alerts) if a["start"] <= e + tol and a["end"] >= s - tol] for s, e in events]
     matched = {i for h in hit for i in h}
     first = [min(h, key=lambda i: alerts[i]["start"]) for h in hit if h]
     latency = [alerts[i]["start"] - s for (s, _), i in zip([ev for ev, h in zip(events, hit) if h], first)]
     return {"events": len(events), "detected": sum(1 for h in hit if h), "alerts": len(alerts), "matched_alerts": len(matched),
-            "first_alerts": len(set(first)),
+            "matched_1to1": max_matching(hit, len(alerts)),
             "false_alerts": len(alerts) - len(matched), "duplicates": sum(max(0, len(h) - 1) for h in hit),
             "latency_frames": latency, "false_alert_ids": [i for i in range(len(alerts)) if i not in matched]}
