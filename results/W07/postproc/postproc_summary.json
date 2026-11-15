@@ -1,0 +1,18 @@
+{
+  "adr": "ADR-0012",
+  "evidence": "results/W06/kaggle_run_14/w6_run14",
+  "predictions": "results/W05/kaggle_run_13/train_yolo11n_640_s20261030/val/predictions.json.gz",
+  "variants": {
+    "none": {
+      "tag": "V0",
+      "dets_kept": 19567,
+      "dets_in": 19567,
+      "idsw_per_1000": 18.183,
+      "R0_false_nondrone": 7,
+      "R1_events": "23/23",
+      "R1_false_nondrone": 0,
+      "Drone_P": 0.8373,
+      "Drone_R": 0.8291
+    }
+  }
+}
