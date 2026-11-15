@@ -16,7 +16,7 @@ Chỉ ghi điều trang chính thức hoặc nguồn được dẫn nói. Không
 |---|---|---|---|
 | FBD-SV-2024 | 483 clip chim bay từ camera giám sát, 1280×720, 25 fps, bbox + track ID | figshare ghi "for learning and research purposes only, not for commercial use" (không có tên license) | Âm tính, chỉ đánh giá (giữ như ADR-0011) |
 | Wikimedia Commons (video) | Kho media có giấy phép ghi **riêng từng tệp** (CC0, CC BY, CC BY-SA, public domain) | Theo từng tệp; ghi tên tác giả, license, URL vào manifest | Âm tính: bầu trời, máy bay, chim. Chỉ nhận tệp có license tự do ghi rõ |
-| Pixabay (video) | Video tự do của người dùng đóng góp | Theo một bài tổng hợp, Pixabay cho phép dùng nội dung để huấn luyện AI/ML; cấm gộp thành dịch vụ ảnh cạnh tranh. Trang license gốc không truy cập được từ môi trường này → `needs_review` | Âm tính, sau khi Quang đọc trang license gốc |
+| Pixabay (video) | Video tự do của người dùng đóng góp | Bản tóm tắt Content License (Quang đọc trang gốc 16/11/2026): được dùng miễn phí, không bắt buộc ghi công, được sửa/chuyển thành tác phẩm mới. Cấm: bán hoặc phân phối nội dung ở dạng "standalone" (giữ gần nguyên như trên web), dùng thương mại nội dung có nhãn hiệu, dùng sai trái hoặc gây hiểu lầm. Bản tóm tắt **không nhắc** tới huấn luyện AI/ML; bài tổng hợp trước đó nói có cho phép, chưa đối chiếu với bản license đầy đủ. Ảnh có người nhận diện được cần thêm đồng ý của bên thứ ba. → `usable` cho đánh giá và dữ liệu âm tính nội bộ, không phân phối lại clip | Âm tính. Không đưa clip hay frame gốc vào Git hay Drive công khai; chỉ dùng clip không có người, logo hay nhãn hiệu |
 | Pexels (video) | Video tự do | Cho phép dùng và sửa; không thấy điều khoản về AI/ML; cấm gộp thành dịch vụ cạnh tranh → `needs_review` | Dự phòng |
 | UAVDB (Zenodo 14534940) | Ảnh RGB 1080p từ camera mặt đất cố định, UAV rất nhỏ (13–53 px), 18.061 ảnh. Dựng từ bộ multi-view drone tracking của ETH Zurich | Zenodo ghi CC BY 4.0. License của bộ gốc ETH chưa kiểm → `needs_review` | OOD dương tính ở W11, bổ sung cho Anti-UAV300 RGB |
 | YouTube, YouTube-8M, AOD 4 (dựng từ YouTube-8M + Anti-UAV + Roboflow) | — | Không rõ hoặc không cho phép | **Loại** |
@@ -26,7 +26,7 @@ Chỉ ghi điều trang chính thức hoặc nguồn được dẫn nói. Không
 1. **Bỏ video tự quay.** `e1-neg-v1` gồm, theo thứ tự ưu tiên:
    1. FBD-SV-2024 (toàn bộ, chỉ đánh giá);
    2. video Wikimedia Commons có license tự do;
-   3. video Pixabay, sau khi kiểm trang license gốc;
+   3. video Pixabay (bản tóm tắt license đã kiểm 16/11; chỉ clip không có người, logo, nhãn hiệu);
    4. 21 video val không Drone của Svanström.
    - Mục tiêu ≥ 120 phút; nếu thiếu thì báo thời lượng thực có.
    - Pexels chỉ dùng khi ba nguồn đầu không đủ.
