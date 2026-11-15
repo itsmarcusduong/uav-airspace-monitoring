@@ -3,6 +3,7 @@
 - Trạng thái: **Accepted** (Quang 03/11/2026; An 03/11/2026, comment trên PR #89, kèm hai sửa đổi đã đưa vào mục 4 và mục 7).
   - Luật ở mục 3–4 được chốt **trước** khi có bất kỳ video âm tính nào; chưa chạy detector trên dữ liệu bổ sung. Sau khi xem kết quả không sửa luật; thay đổi nào cũng phải viết thành ADR mới.
   - Đổi tên dữ liệu thí nghiệm từ `e1-yolo-v2` thành `e1-yolo-v1-hn`, vì tên `e1-yolo-v2` đã dành cho bản xuất offset1 ở ADR-0006.
+  - **16/11/2026:** mục 2 (nguồn của `e1-neg-v1`, video tự quay) và mục 8 (lịch quay) được đề xuất thay bằng ADR-0013 (nguồn video công khai có license, thu thập ở W8, đo ở W9). Các mục khác không đổi.
 - Liên quan:
   - #88 (W6-07), `docs/w7/data_expansion_proposal.md`, `results/W06/dataset_coverage.json`;
   - ADR-0003 (split theo video), ADR-0005 (chỉ tiêu, khả kiến là nhánh chính, test khóa tới W10), ADR-0007 (YOLO11n `s20261030`), ADR-0009 (luật cảnh báo R0/R1).
