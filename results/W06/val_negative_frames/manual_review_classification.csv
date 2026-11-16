@@ -1,0 +1,41 @@
+﻿sample_no,video_id,frame,conclusion,note,n_visible_objects,n_pred_total,n_pred_on_object,n_pred_fp,n_pred_background_fp,n_pred_duplicate,n_objects_missed,n_class_correct,n_class_wrong,predicted_classes
+1,V_BIRD_025,0,vat_that_thieu_nhan,Chim that hien ro; frame truoc moc nhan dau tien.,,,,,,,,,,
+2,V_BIRD_037,0,vat_that_thieu_nhan,Chim that hien ro; frame truoc moc nhan dau tien.,,,,,,,,,,
+3,V_BIRD_041,0,vat_that_thieu_nhan,Chim that hien ro; frame truoc moc nhan dau tien.,,,,,,,,,,
+4,V_BIRD_041,110,vat_that_thieu_nhan,Chim that trong khung sau frame nhan cuoi 107. Hai chim that trong khung; detection chi bat duoc mot chim.,2,1,1,0,0,0,1,1,0,Bird
+5,V_BIRD_041,120,vat_that_thieu_nhan,Chim that trong khung sau frame nhan cuoi 107. Hai chim that; ca hai detection lop Bird.,2,2,2,0,0,0,0,2,0,Bird Bird
+6,V_BIRD_041,130,vat_that_thieu_nhan,"Chim that trong khung sau frame nhan cuoi 107. Hai chim that; co mot hop du tren cung chim (duplicate), khong phai vat the nen troi.",2,3,2,1,0,1,0,2,1,Bird Airplane Bird
+7,V_BIRD_041,140,vat_that_thieu_nhan,"Chim that trong khung sau frame nhan cuoi 107. Hai chim that; co mot hop du tren cung chim (duplicate), khong phai vat the nen troi.",2,3,2,1,0,1,0,2,1,Airplane Bird Bird
+8,V_BIRD_041,150,vat_that_thieu_nhan,Chim that trong khung sau frame nhan cuoi 107. Hai chim that; ca hai detection lop Bird.,2,2,2,0,0,0,0,2,0,Bird Bird
+9,V_BIRD_041,160,vat_that_thieu_nhan,Chim that trong khung sau frame nhan cuoi 107. Hai chim that; ca hai detection lop Bird.,2,2,2,0,0,0,0,2,0,Bird Bird
+10,V_BIRD_041,170,vat_that_thieu_nhan,"Chim that trong khung sau frame nhan cuoi 107. Hai chim that; co mot hop du tren cung chim (duplicate), khong phai vat the nen troi.",2,3,2,1,0,1,0,2,1,Bird Airplane Bird
+11,V_BIRD_041,180,vat_that_thieu_nhan,"Chim that trong khung sau frame nhan cuoi 107. Hai chim that; co mot hop du tren cung chim (duplicate), khong phai vat the nen troi.",2,3,2,1,0,1,0,2,1,Bird Airplane Bird
+12,V_BIRD_041,190,vat_that_thieu_nhan,Chim that trong khung sau frame nhan cuoi 107. Hai chim that; ca hai detection lop Bird.,2,2,2,0,0,0,0,2,0,Bird Bird
+13,V_BIRD_041,200,vat_that_thieu_nhan,Chim that trong khung sau frame nhan cuoi 107. Hai chim that; ca hai detection lop Bird.,2,2,2,0,0,0,0,2,0,Bird Bird
+14,V_BIRD_041,210,vat_that_thieu_nhan,Chim that trong khung sau frame nhan cuoi 107. Hai chim that; ca hai detection lop Bird.,2,2,2,0,0,0,0,2,0,Bird Bird
+15,V_BIRD_041,220,vat_that_thieu_nhan,Chim that trong khung sau frame nhan cuoi 107. Hai chim that; ca hai detection lop Bird.,2,2,2,0,0,0,0,2,0,Bird Bird
+16,V_BIRD_041,230,vat_that_thieu_nhan,Chim that trong khung sau frame nhan cuoi 107. Hai chim that trong khung; detection chi bat duoc mot chim.,2,1,1,0,0,0,1,1,0,Bird
+17,V_BIRD_041,240,vat_that_thieu_nhan,Chim that trong khung sau frame nhan cuoi 107. Hai chim that; ca hai detection lop Bird.,2,2,2,0,0,0,0,2,0,Bird Bird
+18,V_BIRD_041,250,vat_that_thieu_nhan,Chim that trong khung sau frame nhan cuoi 107. Hai chim that; ca hai detection lop Bird.,2,2,2,0,0,0,0,2,0,Bird Bird
+19,V_BIRD_041,260,vat_that_thieu_nhan,Chim that trong khung sau frame nhan cuoi 107. Hai chim that; ca hai detection lop Bird.,2,2,2,0,0,0,0,2,0,Bird Bird
+20,V_BIRD_041,270,vat_that_thieu_nhan,Chim that trong khung sau frame nhan cuoi 107. Hai chim that; ca hai detection lop Bird.,2,2,2,0,0,0,0,2,0,Bird Bird
+21,V_BIRD_041,280,vat_that_thieu_nhan,Chim that trong khung sau frame nhan cuoi 107. Hai chim that; detection lop Airplane la nham lop tren chim.,2,2,2,0,0,0,0,1,1,Bird Airplane
+22,V_BIRD_041,290,vat_that_thieu_nhan,Chim that trong khung sau frame nhan cuoi 107. Hai chim that; detection lop Airplane la nham lop tren chim.,2,2,2,0,0,0,0,1,1,Bird Airplane
+23,V_BIRD_041,300,vat_that_thieu_nhan,Chim that trong khung sau frame nhan cuoi 107. Hai chim that; ca hai detection lop Bird.,2,2,2,0,0,0,0,2,0,Bird Bird
+24,V_DRONE_004,0,vat_that_thieu_nhan,Drone that hien ro; frame truoc moc nhan dau tien.,,,,,,,,,,
+25,V_DRONE_010,0,vat_that_thieu_nhan,Drone that gan khop hop GT frame 1; anh doi chung khong co prediction.,,,,,,,,,,
+26,V_DRONE_011,0,vat_that_thieu_nhan,Drone that hien ro; frame truoc moc nhan dau tien.,,,,,,,,,,
+27,V_DRONE_018,0,vat_that_thieu_nhan,Drone that hien ro; frame truoc moc nhan dau tien.,,,,,,,,,,
+28,V_DRONE_023,0,vat_that_thieu_nhan,Drone that hien ro; frame truoc moc nhan dau tien.,,,,,,,,,,
+29,V_DRONE_025,0,vat_that_thieu_nhan,Drone that hien ro; frame truoc moc nhan dau tien.,,,,,,,,,,
+30,V_DRONE_029,0,vat_that_thieu_nhan,Drone that hien ro; frame truoc moc nhan dau tien.,,,,,,,,,,
+31,V_DRONE_032,0,vat_that_thieu_nhan,Drone that hien ro; frame truoc moc nhan dau tien.,,,,,,,,,,
+32,V_DRONE_044,0,vat_that_thieu_nhan,Drone that hien ro; frame truoc moc nhan dau tien.,,,,,,,,,,
+33,V_DRONE_049,0,vat_that_thieu_nhan,Drone that hien ro; frame truoc moc nhan dau tien.,,,,,,,,,,
+34,V_DRONE_060,0,vat_that_thieu_nhan,Drone that hien ro; frame truoc moc nhan dau tien.,,,,,,,,,,
+35,V_DRONE_077,0,vat_that_thieu_nhan,Drone that hien ro; frame truoc moc nhan dau tien.,,,,,,,,,,
+36,V_DRONE_078,0,vat_that_thieu_nhan,Drone that hien ro; frame truoc moc nhan dau tien.,,,,,,,,,,
+37,V_DRONE_080,0,vat_that_thieu_nhan,Drone that khop GT frame 1; dong thoi prediction Drone 0.587 tai x=393 y=302 la FP rieng khong thay vat tuong ung.,,,,,,,,,,
+38,V_DRONE_088,0,vat_that_thieu_nhan,Drone that hien ro; frame truoc moc nhan dau tien.,,,,,,,,,,
+39,V_DRONE_095,0,vat_that_thieu_nhan,Drone that hien ro; frame truoc moc nhan dau tien.,,,,,,,,,,
+40,V_DRONE_096,0,vat_that_thieu_nhan,Drone that gan khop hop GT frame 1; anh doi chung khong co prediction.,,,,,,,,,,

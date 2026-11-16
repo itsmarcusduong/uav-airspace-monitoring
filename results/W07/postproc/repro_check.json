@@ -1,0 +1,120 @@
+{
+  "note": "(gia tri run 14/run 13, gia tri tinh lai offline)",
+  "track_logs": {
+    "tolerance_px": 0.02,
+    "videos": 38,
+    "videos_identical": 37,
+    "rows_a": 13402,
+    "rows_matched": 13380,
+    "row_match_rate": 0.99836
+  },
+  "track_logs_differing": {
+    "V_AIRPLANE_037": {
+      "rows_a": 370,
+      "rows_b": 369,
+      "rows_matched": 348
+    }
+  },
+  "idsw_per_1000": [
+    18.011,
+    18.183
+  ],
+  "alerts_center_hex_center": {
+    "R0": {
+      "events": [
+        23,
+        23
+      ],
+      "detected": [
+        23,
+        23
+      ],
+      "alerts": [
+        31,
+        31
+      ],
+      "false_alerts": [
+        8,
+        8
+      ],
+      "false_alerts_nondrone": [
+        7,
+        7
+      ],
+      "duplicates": [
+        0,
+        0
+      ]
+    },
+    "R1": {
+      "events": [
+        23,
+        23
+      ],
+      "detected": [
+        23,
+        23
+      ],
+      "alerts": [
+        25,
+        25
+      ],
+      "false_alerts": [
+        0,
+        0
+      ],
+      "false_alerts_nondrone": [
+        0,
+        0
+      ],
+      "duplicates": [
+        2,
+        2
+      ]
+    }
+  },
+  "alerts_identical": true,
+  "detection_conf025_all_images": {
+    "Airplane": {
+      "P": [
+        0.7351,
+        0.7351
+      ],
+      "R": [
+        0.6817,
+        0.6817
+      ]
+    },
+    "Bird": {
+      "P": [
+        0.5481,
+        0.5481
+      ],
+      "R": [
+        0.7808,
+        0.7808
+      ]
+    },
+    "Drone": {
+      "P": [
+        0.8118,
+        0.8118
+      ],
+      "R": [
+        0.8291,
+        0.8291
+      ]
+    },
+    "Helicopter": {
+      "P": [
+        0.8281,
+        0.8281
+      ],
+      "R": [
+        0.8281,
+        0.8281
+      ]
+    }
+  },
+  "detection_identical": true
+}

@@ -391,6 +391,92 @@ def w05(w: Week):
     w.m("detector_decision_3_seeds", sd["decision"]["choice"], "", "val", source="results/W05/seed_decision.json", producer="scripts/reporting/build_seed_comparison.py")
 
 
+def w06(w: Week):
+    import sys
+    sys.path.insert(0, str(ROOT / "scripts" / "alert"))
+    import evaluate_alerts as ea  # noqa: E402
+    yolo = rjson("results/W05/kaggle_run_13/train_yolo11n_640_s20261030/weights_manifest.json")["best.pt"]["sha256"]
+    lf = lambda rel: hashlib.sha256((ROOT / rel).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+    # --- run 14: YOLO11n + ByteTrack-e1, detection tho, GT, ghep theo frame
+    B = "results/W06/kaggle_run_14/w6_run14"
+    st, inp, env = rjson(f"{B}/stage_status.json"), rjson(f"{B}/inputs.json"), rjson(f"{B}/env.json")
+    rc = env["commit"][:7]
+    w.check("run14_all_stages_ok", all(v.get("status") == "OK" for v in st.values()), ", ".join(st), f"{B}/stage_status.json")
+    w.check("run14_val_only_test_unused", inp["split"] == "val" and inp["test_used"] is False, f"{inp['videos']} video val", f"{B}/inputs.json")
+    w.check("run14_weights_eq_yolo11n_s20261030", inp["weights_sha256"] == yolo, yolo[:16], f"{B}/inputs.json")
+    diffs = {t: v["diff_vs_ultralytics_default"] for t, v in inp["trackers"].items()}
+    w.check("run14_tracker_is_bytetrack_e1", list(diffs) == ["tracker_bytetrack_e1"] and set(diffs["tracker_bytetrack_e1"]) == {"track_buffer"},
+            json.dumps(diffs, ensure_ascii=False), f"{B}/inputs.json")
+    n = {d: sum(1 for _ in (ROOT / B / d).rglob("*.csv")) for d in ("dets", "gt", "tracks", "matches")}
+    w.check("run14_one_file_per_video", all(v == inp["videos"] for v in n.values()), json.dumps(n), B)
+    ts = rjson(f"{B}/track_summary.json")["summary"]["tracker_bytetrack_e1@0.5"]
+    for k in ("all", "Drone"):
+        for f in ("idsw_per_1000_gt_frames", "id_switches", "track_recall_pooled", "videos_single_id", "false_tracks"):
+            w.m(f"{f}@iou0.5", ts[k][f], "", f"val/{k}", "yolo11n_s20261030+bytetrack_e1", f"{B}/track_summary.json", "scripts/kaggle/w5_track_videos.py", rc)
+    w.m("track_gt_frames", inp["gt_frames"], "frame", "val", source=f"{B}/inputs.json", run_commit=rc)
+    # --- doi detector: baseline A (run 12b) vs YOLO11n (run 14), cung ByteTrack-e1
+    sw = rcsv("results/W06/detector_swap_tracking/summary.csv")
+    yall = next(r for r in sw if r["detector"] == "yolo11n_s20261030" and r["class"] == "all")
+    w.check("detector_swap_matches_run14", abs(float(yall["idsw_per_1000_gt_frames"]) - ts["all"]["idsw_per_1000_gt_frames"]) < 1e-3,
+            f"{yall['idsw_per_1000_gt_frames']} vs {ts['all']['idsw_per_1000_gt_frames']}", "results/W06/detector_swap_tracking/summary.csv")
+    for r in sw:
+        w.m("idsw_per_1000_gt_frames@iou0.5", r["idsw_per_1000_gt_frames"], "", f"val/{r['class']}", r["detector"],
+            "results/W06/detector_swap_tracking/summary.csv", "scripts/reporting/compare_detector_tracking.py")
+    dup = rjson("results/W06/duplicate_boxes.json")
+    for lab, v in dup["tracks"].items():
+        for k in ("same_class_id_pairs", "cross_class_id_pairs", "same_class_pair_frames", "cross_class_pair_frames"):
+            w.m(f"overlapping_tracks_{k}", v.get(k, 0), "pair", "val", lab, "results/W06/duplicate_boxes.json", "scripts/reporting/duplicate_box_stats.py")
+    # --- canh bao (ADR-0009): R0 vs R1
+    A = "results/W06/alert_eval/alert_summary.json"
+    al = rjson(A)
+    w.check("alert_configs_eq_adr0009", al["roi_config"]["sha256"] == lf("configs/roi_w6.yaml") and al["alert_config"]["sha256"] == lf("configs/alert_e1.yaml"),
+            f"roi {al['roi_config']['sha256'][:12]} / alert {al['alert_config']['sha256'][:12]}", A)
+    w.check("alert_eval_val_only_yolo11n", al["test_used"] is False and al["weights_sha256"] == yolo and al["evidence"] == B, f"{al['videos']} video", A)
+    re_d = ea.decide(al["summary"], "center_hex", "center")
+    w.check("adr0009_rule_reproduced", re_d["verdict"] == al["decision"]["verdict"] == "PASS", re_d["reason"], A)
+    for rule in ("R0", "R1"):
+        g = al["summary"][f"center_hex|center|{rule}"]
+        for k in ("events", "detected", "event_recall", "alerts", "event_precision_1to1", "false_alerts_nondrone", "false_alerts_drone_videos",
+                  "duplicates", "false_alerts_per_hour_nondrone", "false_alerts_per_hour_nondrone_upper95", "latency_median_s", "hours_nondrone"):
+            w.m(f"alert_{k}", g[k], "", "val", f"{rule}@center_hex/center", A, "scripts/alert/evaluate_alerts.py")
+    for adr in ("ADR-0009-roi-alert-protocol.md", "ADR-0011-external-data-plan.md"):
+        txt = (ROOT / "docs/decisions" / adr).read_text(encoding="utf-8")
+        w.check(f"{adr.split('-')[0]}-{adr.split('-')[1]}_accepted", "**Accepted**" in txt.split("\n## ")[0], "", f"docs/decisions/{adr}")
+    # --- run 15: video demo canh bao
+    D = "results/W06/kaggle_run_15/w6_alert_demo"
+    s15 = rjson(f"{D}/stage_status.json")
+    w.check("run15_all_stages_ok", all(v.get("status") == "OK" for v in s15.values()), ", ".join(s15), f"{D}/stage_status.json")
+    w.check("run15_weights_eq_yolo11n_s20261030", s15["inputs"]["weights_sha256"] == yolo, yolo[:16], f"{D}/stage_status.json")
+    log = {(r["video_id"], r["rule"], r["start_f"], r["end_f"]) for r in rcsv("results/W06/alert_eval/alert_log.csv")
+           if r["roi"] == "center_hex" and r["point"] == "center"}
+    dem = {(r["video_id"], r["rule"], r["start_f"], r["end_f"]) for r in rcsv(f"{D}/demo_alerts.csv")}
+    w.check("run15_demo_alerts_eq_alert_log", dem == log, f"{len(dem)} canh bao", f"{D}/demo_alerts.csv")
+    for idx in (f"{B}/demo/demo_index.json", f"{D}/demo_index.json"):
+        demo = rjson(idx)
+        for x in demo:
+            w.external.append({"name": f"demo/W06/{x['file']}", "link": x.get("drive_link", ""), "sha256": x["sha256"], "bytes": x.get("bytes", 0)})
+        w.check(f"{idx.split('/')[2]}_demo_videos_have_drive_link", all(x.get("drive_link") for x in demo), ", ".join(x["video_id"] for x in demo), idx)
+    # --- du lieu: do phu Svanstrom, 40 anh val am tinh
+    cov = rjson("results/W06/dataset_coverage.json")["visible"]
+    w.m("non_drone_minutes_all_splits", cov["non_drone_minutes_all_splits"], "min", "train+val+test", source="results/W06/dataset_coverage.json",
+        producer="scripts/reporting/dataset_coverage_stats.py")
+    w.m("target_negative_minutes", cov["target_negative_minutes"], "min", source="results/W06/dataset_coverage.json")
+    V = "results/W06/val_negative_frames"
+    vs = rjson(f"{V}/val_negative_summary.json")
+    w.check("val_negatives_match_run13_count", vs["check_run13"]["match"] is True, f"{vs['negative_frames']} anh, {vs['with_det']} co du doan", f"{V}/val_negative_summary.json")
+    mr = rcsv(f"{V}/manual_review_classification.csv")
+    keys = {(r["video_id"], r["frame"]) for r in rcsv(f"{V}/val_negative_frames.csv")}
+    w.check("manual_review_covers_40_negatives", {(r["video_id"], r["frame"]) for r in mr} == keys and len(mr) == 40, f"{len(mr)} dong", f"{V}/manual_review_classification.csv")
+    c = Counter(r["conclusion"] for r in mr)
+    for k, v in sorted(c.items()):
+        w.m(f"val_negative_manual_{k}", v, "image", "val", source=f"{V}/manual_review_classification.csv")
+    w.external.append({"name": "kaggle_run_16/w6_negframes.zip (gui An, khong len Drive)", "link": "",
+                       "sha256": "67ec70c18fafe29002bb2e524629d4d6c391fe4f61071c86f46910f8e5185195", "bytes": 0})
+    for f, cap in (("results/W06/fig_w6_alerts.png", "R0 và R1, ROI center_hex, điểm tâm: cảnh báo sai, lặp, bỏ sót (val, run 14)"),
+                   ("results/W06/fig_w6_detector_swap.png", "ID switch / 1000 frame GT theo lớp khi đổi detector, cùng ByteTrack-e1 (val)")):
+        w.fig(f, cap)
+
+
 def _find_count(obj, key):
     if isinstance(obj, dict):
         if key in obj and isinstance(obj[key], int):
@@ -435,6 +521,8 @@ INFO = {
             "Review nhãn v2, xuất e1-yolo-v1, train YOLOv8n@640 (baseline A), phân tích val, model card."),
     "W05": ("Tuan5", "Tích hợp tracker, video test ID ổn định",
             "Pipeline video → detector → tracker trên 38 video val (run 12, 12b), độ đo liên kết trên GT dẫn xuất (ADR-0008), chọn tracker theo luật đặt trước; 3 seed cho baseline A và YOLO11n (run 13), chọn lại detector (ADR-0007 cập nhật)."),
+    "W06": ("Tuan6", "Geofence + cảnh báo theo trajectory",
+            "Run 14: YOLO11n s20261030 + ByteTrack-e1 trên 38 video val, lưu detection thô, GT, ghép theo frame; mô-đun ROI/cảnh báo R0 (chỉ detector) và R1 (theo track) theo giao thức đặt trước ADR-0009; video demo cảnh báo (run 15); phân tích lỗi cảnh báo, hộp trùng, 40 ảnh val âm tính (run 16); kế hoạch dữ liệu W7–W12 (ADR-0011)."),
     "W04": ("Tuan4", "Tuning + augmentation, so sánh baseline",
             "Kiểm chứng chiều lệch nhãn (run 06 và tập chuẩn CVAT, ADR-0006), train và so sánh 6 mô hình trên cùng dữ liệu (run 09), áp luật chọn đặt trước (ADR-0007)."),
 }
@@ -443,6 +531,7 @@ LINKS = {
     "W02": "PR #13, #14. Báo cáo: reports/w2/. Tài liệu: docs/w2/, ADR-0002, ADR-0003.",
     "W03": "Issue #10, #11, #16–#21; PR #22, #23, #25, #26, #28, #31–#35. Báo cáo: reports/w3/. ADR-0004, ADR-0005. Model card: docs/w3/model_card_baseline_A.md.",
     "W05": "Issue #57–#62; PR #63–#70. Báo cáo: reports/w5/ (báo cáo công việc, v0.5). Trạng thái: docs/status/W05_planned_done_evidence.md. Kế hoạch: docs/w5/W5_PLAN.md. ADR-0007 (cập nhật), ADR-0008. Giao thức: docs/w5/tracking_protocol_w5.md, docs/w4/training_protocol_w4.md mục 6.",
+    "W06": "Issue #74–#79, #88; PR #80–#83, #86, #87, #89–#95. Báo cáo: reports/w6/ (báo cáo công việc, v0.6). Trạng thái: docs/status/W06_planned_done_evidence.md. Kế hoạch: docs/w6/W6_PLAN.md. ADR-0009, ADR-0010, ADR-0011. Phân tích: docs/w6/alert_error_review.md, docs/w6/val_negative_frames.md, docs/w7/data_expansion_proposal.md.",
     "W04": "Issue #24, #36–#42, #48, #49; PR #43–#47, #50–#55. Báo cáo: reports/w4/ (báo cáo công việc, v0.4). Trạng thái: docs/status/W04_planned_done_evidence.md. Kế hoạch: docs/w4/W4_PLAN.md. ADR-0006, ADR-0007. Giao thức: docs/w4/training_protocol_w4.md.",
 }
 
@@ -518,7 +607,7 @@ def main() -> int:
         if w.dir.exists():
             shutil.rmtree(w.dir)
         w.dir.mkdir(parents=True)
-        {"W01": w01, "W02": w02, "W03": w03, "W04": w04, "W05": w05}[wk](w)
+        {"W01": w01, "W02": w02, "W03": w03, "W04": w04, "W05": w05, "W06": w06}[wk](w)
         if a.pytest_xml and wk == a.weeks[-1]:
             shutil.copy2(a.pytest_xml, w.dir / "test-results.xml")
             junit_to_checks(w, a.pytest_xml)

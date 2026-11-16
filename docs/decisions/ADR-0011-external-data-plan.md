@@ -3,6 +3,7 @@
 - Trạng thái: **Accepted** (Quang 03/11/2026; An 03/11/2026, comment trên PR #89, kèm hai sửa đổi đã đưa vào mục 4 và mục 7).
   - Luật ở mục 3–4 được chốt **trước** khi có bất kỳ video âm tính nào; chưa chạy detector trên dữ liệu bổ sung. Sau khi xem kết quả không sửa luật; thay đổi nào cũng phải viết thành ADR mới.
   - Đổi tên dữ liệu thí nghiệm từ `e1-yolo-v2` thành `e1-yolo-v1-hn`, vì tên `e1-yolo-v2` đã dành cho bản xuất offset1 ở ADR-0006.
+  - **16/11/2026:** mục 2 (nguồn của `e1-neg-v1`, video tự quay) và mục 8 (lịch quay) được đề xuất thay bằng ADR-0013 (nguồn video công khai có license, thu thập ở W8, đo ở W9). Các mục khác không đổi.
 - Liên quan:
   - #88 (W6-07), `docs/w7/data_expansion_proposal.md`, `results/W06/dataset_coverage.json`;
   - ADR-0003 (split theo video), ADR-0005 (chỉ tiêu, khả kiến là nhánh chính, test khóa tới W10), ADR-0007 (YOLO11n `s20261030`), ADR-0009 (luật cảnh báo R0/R1).
@@ -63,7 +64,20 @@
 
 7. **Báo cáo theo nguồn** (sửa theo An): cảnh báo sai/giờ, cận trên Poisson 95% và tỷ lệ frame có detection Drone báo **riêng** cho từng nguồn (video tự quay theo `session_id`, FBD-SV, Svanström val) kèm thời lượng. Không gộp thành một ước lượng vận hành duy nhất; nếu có dòng "tổng" thì ghi rõ là cộng dồn.
 
-8. **Lịch quay W7** (An đề xuất trên PR #89; chưa xác nhận thời tiết): `neg_eval` 08/11 (Quang), 09/11 (An), 10/11 (Quang sáng, An chiều), 11/11 (Quang sáng, An chiều); `neg_train` 12/11 (Quang), 13/11 (An). Mốc kiểm tra thời lượng: 11/11.
+8. **Lịch quay W7** (An đề xuất trên PR #89; Quang xác nhận 03/11; An xác nhận 07/11, kèm dời buổi `neg_train` của An từ 13/11 sang chiều 12/11; chưa tính thời tiết):
+
+   | Ngày | Quang | An |
+   |---|---|---|
+   | CN 08/11 | 08:00 `neg_eval` #1 | — |
+   | T2 09/11 | — | 09:00 `neg_eval` #1 |
+   | T3 10/11 | 07:30 `neg_eval` #2 | 16:30 `neg_eval` #2 |
+   | T4 11/11 | 08:00 `neg_eval` #3 | 16:00 `neg_eval` #3 |
+   | T5 12/11 | sáng `neg_train` | chiều `neg_train` |
+
+   - Mốc kiểm tra thời lượng: 11/11.
+   - Hai buổi `neg_train` vẫn là buổi cuối của mỗi người, nên luật ở mục 2 không đổi.
+   - Dời sang 12/11 để nếu điều kiện mục 3 bị chạm vẫn còn 13–14/11 để train 3 seed và chạy lại tracking/cảnh báo.
+   - Buổi bị hủy (thời tiết, có vật nghi UAV) được quay bù ở ngày gần nhất và giữ đúng vai trò; ghi ngày thực tế vào manifest.
 
 ## Hệ quả
 - Không thay đổi chỉ tiêu ADR-0005, luật cảnh báo ADR-0009 hay detector ADR-0007, trừ khi luật mục 4 chọn v2.

@@ -235,3 +235,14 @@ def test_alert_demo_job(tmp_path, monkeypatch):
     assert jd.main() == 0
     idx = json.loads((tmp_path / "o" / "w6_alert_demo" / "demo_index.json").read_text())
     assert [d["video_id"] for d in idx] == ["V_BIRD_001", "V_DRONE_001"]   # khong co canh bao vao_vung -> luat 2, 3 and all(d["frames"] == 90 for d in idx)
+
+
+def test_match_events_one_to_one_is_maximum_matching():
+    """Review #91 (An): phan vi du khi cua so su kien chong nhau; ghep mot-mot lon nhat phai = 2, khong phai 1."""
+    alerts = [{"start": 5, "end": 12}, {"start": 13, "end": 18}]
+    m = ae.match_events(alerts, [(0, 10), (9, 20)], tol=0)
+    assert m["matched_1to1"] == 2 and m["detected"] == 2 and m["false_alerts"] == 0
+    # canh bao lap tren cung mot su kien: chi 1 canh bao duoc ghep
+    m = ae.match_events([{"start": 0, "end": 5}, {"start": 8, "end": 9}], [(0, 10)], tol=0)
+    assert m["matched_1to1"] == 1 and m["duplicates"] == 1
+    assert ae.match_events([], [(0, 10)], tol=0)["matched_1to1"] == 0
