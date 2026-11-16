@@ -1,0 +1,175 @@
+{
+  "note": "THAM DO sau khi xem ket qua (ADR-0012 muc 6); khong doi luat chon",
+  "variants": {
+    "V1_agnostic_nms": {
+      "idsw_by_video": {
+        "better": 19,
+        "worse": 0,
+        "same": 19
+      },
+      "fragments_by_video": {
+        "better": 4,
+        "worse": 7,
+        "same": 27
+      },
+      "idsw_without_top1": {
+        "dropped": [
+          "V_DRONE_025"
+        ],
+        "v0": 151,
+        "variant": 13,
+        "reduction": 0.9139
+      },
+      "idsw_without_top3": {
+        "dropped": [
+          "V_DRONE_025",
+          "V_DRONE_077",
+          "V_AIRPLANE_009"
+        ],
+        "v0": 99,
+        "variant": 13,
+        "reduction": 0.8687
+      },
+      "track_recall_changes_gt_0.01": [
+        {
+          "video_id": "V_AIRPLANE_009",
+          "v0": 0.8369,
+          "variant": 0.8123,
+          "delta": -0.0246,
+          "mean_iou_v0": 0.7645,
+          "mean_iou_variant": 0.7175
+        },
+        {
+          "video_id": "V_AIRPLANE_027",
+          "v0": 0.7944,
+          "variant": 0.9844,
+          "delta": 0.19,
+          "mean_iou_v0": 0.736,
+          "mean_iou_variant": 0.7052
+        },
+        {
+          "video_id": "V_DRONE_023",
+          "v0": 0.99,
+          "variant": 0.9533,
+          "delta": -0.0367,
+          "mean_iou_v0": 0.6831,
+          "mean_iou_variant": 0.6676
+        },
+        {
+          "video_id": "V_DRONE_025",
+          "v0": 0.9211,
+          "variant": 0.8289,
+          "delta": -0.0922,
+          "mean_iou_v0": 0.7354,
+          "mean_iou_variant": 0.7059
+        },
+        {
+          "video_id": "V_HELICOPTER_012",
+          "v0": 0.6306,
+          "variant": 0.4363,
+          "delta": -0.1943,
+          "mean_iou_v0": 0.6366,
+          "mean_iou_variant": 0.6181
+        }
+      ],
+      "removed_detections": {
+        "dets": 19567,
+        "dets_conf_ge_0.25": 12910,
+        "removed": 6912,
+        "removed_conf_ge_0.25": 1692
+      }
+    },
+    "V2_nms_iou": {
+      "idsw_by_video": {
+        "better": 17,
+        "worse": 0,
+        "same": 21
+      },
+      "fragments_by_video": {
+        "better": 2,
+        "worse": 7,
+        "same": 29
+      },
+      "idsw_without_top1": {
+        "dropped": [
+          "V_DRONE_025"
+        ],
+        "v0": 151,
+        "variant": 23,
+        "reduction": 0.8477
+      },
+      "idsw_without_top3": {
+        "dropped": [
+          "V_DRONE_025",
+          "V_DRONE_077",
+          "V_AIRPLANE_009"
+        ],
+        "v0": 99,
+        "variant": 23,
+        "reduction": 0.7677
+      },
+      "track_recall_changes_gt_0.01": [
+        {
+          "video_id": "V_AIRPLANE_009",
+          "v0": 0.8369,
+          "variant": 0.8123,
+          "delta": -0.0246,
+          "mean_iou_v0": 0.7645,
+          "mean_iou_variant": 0.7175
+        },
+        {
+          "video_id": "V_AIRPLANE_027",
+          "v0": 0.7944,
+          "variant": 0.9844,
+          "delta": 0.19,
+          "mean_iou_v0": 0.736,
+          "mean_iou_variant": 0.7052
+        },
+        {
+          "video_id": "V_DRONE_023",
+          "v0": 0.99,
+          "variant": 0.9533,
+          "delta": -0.0367,
+          "mean_iou_v0": 0.6831,
+          "mean_iou_variant": 0.6676
+        },
+        {
+          "video_id": "V_DRONE_025",
+          "v0": 0.9211,
+          "variant": 0.8289,
+          "delta": -0.0922,
+          "mean_iou_v0": 0.7354,
+          "mean_iou_variant": 0.7059
+        },
+        {
+          "video_id": "V_HELICOPTER_012",
+          "v0": 0.6306,
+          "variant": 0.4363,
+          "delta": -0.1943,
+          "mean_iou_v0": 0.6366,
+          "mean_iou_variant": 0.6181
+        }
+      ],
+      "removed_detections": {
+        "dets": 19567,
+        "dets_conf_ge_0.25": 12910,
+        "removed": 6352,
+        "removed_conf_ge_0.25": 1539
+      }
+    }
+  },
+  "duplicates_on_same_val_frames": {
+    "conf": 0.25,
+    "frames": 1194,
+    "video_predict": {
+      "boxes": 1307,
+      "dup_same_class_iou_0.5_0.7": 153,
+      "dup_rate": 0.1171
+    },
+    "image_val": {
+      "boxes": 1183,
+      "dup_same_class_iou_0.5_0.7": 7,
+      "dup_rate": 0.0059
+    }
+  }
+}
