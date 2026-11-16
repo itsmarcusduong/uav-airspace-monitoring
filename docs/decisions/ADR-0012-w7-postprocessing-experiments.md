@@ -1,6 +1,6 @@
 # ADR-0012: Thí nghiệm W7 — hậu xử lý detection chống hộp trùng, đánh giá offline tới tracking và cảnh báo
 
-- Trạng thái: **Proposed** (Quang 16/11/2026). Chuyển **Accepted** khi An duyệt trên PR.
+- Trạng thái: **Accepted** (An 16/11/2026; review follow-up sau khi PR #102 đã merge).
   - Biến thể V1, V2 **chỉ được chạy sau khi ADR này Accepted**. Script `scripts/experiments/w7_postproc.py` tự kiểm trạng thái này và từ chối chạy nếu chưa Accepted.
   - V0 (cổng tái tạo) đã chạy trước khi viết luật, vì V0 không đổi gì.
 - Liên quan:
