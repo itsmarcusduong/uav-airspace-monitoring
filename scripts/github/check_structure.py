@@ -107,7 +107,21 @@ def check_evidence(d: Path) -> list[tuple[str, str]]:
 
 # ----------------------------------------------------------------------------- I/O
 def api(path: str) -> list | dict:
-    """GET GitHub API, tu dong lay het cac trang."""
+    """GET GitHub API, tu dong lay het cac trang.
+
+    Dat E1_USE_GH_CLI=1 de goi qua `gh api`, phan trang bang tham so page (moi truong chi cho phep GitHub qua gh CLI, vd. session cloud)."""
+    if os.environ.get("E1_USE_GH_CLI") == "1":
+        out, page = [], 1
+        while True:
+            sep = "&" if "?" in path else "?"
+            r = subprocess.run(["gh", "api", f"repos/{REPO}/{path}{sep}page={page}"], capture_output=True, text=True, check=True)
+            data = json.loads(r.stdout)
+            if isinstance(data, dict):
+                return data
+            out += data
+            if len(data) < 100:
+                return out
+            page += 1
     out, url = [], f"https://api.github.com/repos/{REPO}/{path}"
     tok = os.environ.get("GITHUB_READ_TOKEN", "")
     while url:

@@ -60,3 +60,22 @@ def test_evidence_manifest_must_cover_files(tmp_path):
 
 def test_tag_weeks_follow_de_cuong():
     assert cs.TAG_WEEKS == {4, 8, 11, 14}
+
+
+def test_api_via_gh_cli_pages_with_page_param(monkeypatch):
+    """Session cloud: GitHub chi qua gh CLI; Link header tro toi repositories/{id} bi proxy chan nen phan trang bang page=."""
+    calls = []
+
+    class R:
+        def __init__(self, out):
+            self.stdout = out
+
+    def fake_run(cmd, **kw):
+        calls.append(cmd[-1])
+        page = int(cmd[-1].rsplit("page=", 1)[1])
+        return R(json.dumps([{"n": i} for i in range(100 if page == 1 else 3)]))
+
+    monkeypatch.setenv("E1_USE_GH_CLI", "1")
+    monkeypatch.setattr(cs.subprocess, "run", fake_run)
+    out = cs.api("issues?state=all&per_page=100")
+    assert len(out) == 103 and calls[0].endswith("issues?state=all&per_page=100&page=1") and calls[1].endswith("&page=2")

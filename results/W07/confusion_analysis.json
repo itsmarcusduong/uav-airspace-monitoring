@@ -1,0 +1,162 @@
+{
+  "conf": 0.25,
+  "images": 1162,
+  "ignored_images": 40,
+  "matches_saved_summary": true,
+  "confusion": {
+    "Airplane->Airplane": 193,
+    "Airplane->Drone": 8,
+    "Airplane->Helicopter": 12,
+    "Airplane->bo_sot": 76,
+    "Bird->Airplane": 2,
+    "Bird->Bird": 56,
+    "Bird->Helicopter": 9,
+    "Bird->bo_sot": 6,
+    "Drone->Drone": 427,
+    "Drone->bo_sot": 88,
+    "Helicopter->Drone": 1,
+    "Helicopter->Helicopter": 235,
+    "Helicopter->bo_sot": 49,
+    "nen->Airplane": 66,
+    "nen->Bird": 10,
+    "nen->Drone": 74,
+    "nen->Helicopter": 29
+  },
+  "nen_to_drone_categories": {
+    "duplicate": {
+      "count": 11,
+      "videos": {
+        "V_AIRPLANE_037": 8,
+        "V_AIRPLANE_052": 1,
+        "V_DRONE_032": 1,
+        "V_DRONE_077": 1
+      }
+    },
+    "mislocalized": {
+      "count": 63,
+      "videos": {
+        "V_AIRPLANE_007": 1,
+        "V_DRONE_004": 5,
+        "V_DRONE_011": 7,
+        "V_DRONE_023": 4,
+        "V_DRONE_025": 6,
+        "V_DRONE_029": 1,
+        "V_DRONE_032": 5,
+        "V_DRONE_044": 1,
+        "V_DRONE_049": 11,
+        "V_DRONE_060": 4,
+        "V_DRONE_078": 1,
+        "V_DRONE_080": 3,
+        "V_DRONE_088": 4,
+        "V_DRONE_095": 10
+      }
+    }
+  },
+  "non_drone_gt_predicted_as_drone": {
+    "Airplane": {
+      "count": 8,
+      "videos": {
+        "V_AIRPLANE_007": 1,
+        "V_AIRPLANE_037": 6,
+        "V_AIRPLANE_052": 1
+      }
+    },
+    "Bird": {
+      "count": 0,
+      "videos": {}
+    },
+    "Helicopter": {
+      "count": 1,
+      "videos": {
+        "V_HELICOPTER_039": 1
+      }
+    }
+  },
+  "bird_fp_by_video": {
+    "V_AIRPLANE_005": 4,
+    "V_BIRD_025": 1,
+    "V_DRONE_077": 3,
+    "V_DRONE_095": 1
+  },
+  "selected_video_counts": {
+    "V_AIRPLANE_005": {
+      "gt": 33,
+      "missed": 26,
+      "fp": 29,
+      "tp": 7
+    },
+    "V_AIRPLANE_007": {
+      "gt": 30,
+      "fp": 24,
+      "missed": 23,
+      "tp": 6
+    },
+    "V_HELICOPTER_012": {
+      "gt": 32,
+      "tp": 15,
+      "fp": 18,
+      "missed": 17
+    },
+    "V_BIRD_041": {
+      "gt": 10,
+      "tp": 9,
+      "fp": 4
+    }
+  },
+  "top_videos_by_fp": [
+    {
+      "video_id": "V_AIRPLANE_005",
+      "gt": 33,
+      "missed": 26,
+      "fp": 29,
+      "tp": 7
+    },
+    {
+      "video_id": "V_AIRPLANE_007",
+      "gt": 30,
+      "fp": 24,
+      "missed": 23,
+      "tp": 6
+    },
+    {
+      "video_id": "V_HELICOPTER_012",
+      "gt": 32,
+      "tp": 15,
+      "fp": 18,
+      "missed": 17
+    },
+    {
+      "video_id": "V_AIRPLANE_037",
+      "gt": 32,
+      "tp": 30,
+      "fp": 14
+    },
+    {
+      "video_id": "V_AIRPLANE_048",
+      "gt": 31,
+      "tp": 19,
+      "fp": 12
+    },
+    {
+      "video_id": "V_DRONE_049",
+      "gt": 30,
+      "tp": 19,
+      "fp": 11,
+      "missed": 11
+    },
+    {
+      "video_id": "V_DRONE_095",
+      "gt": 31,
+      "tp": 20,
+      "fp": 11,
+      "missed": 11
+    },
+    {
+      "video_id": "V_BIRD_037",
+      "gt": 32,
+      "tp": 18,
+      "fp": 10,
+      "missed": 5
+    }
+  ]
+}
