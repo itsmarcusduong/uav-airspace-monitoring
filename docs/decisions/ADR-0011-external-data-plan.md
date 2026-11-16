@@ -23,7 +23,7 @@
 2. **Tập âm tính `e1-neg-v1`** (W7), chỉ để đánh giá cảnh báo sai/giờ:
    - nguồn:
      - phần đánh giá của video tự quay bầu trời không có UAV;
-     - FBD-SV-2024, toàn bộ 483 clip, chỉ đánh giá;
+     - FBD-SV-2024, toàn bộ 483 clip, chỉ đánh giá (ứng viên lịch sử; không tải hoặc dùng khi license/điều khoản chưa được rà soát rõ ràng và ghi nhận; xem ADR-0013 và follow-up);
      - 21 video val không có Drone của Svanström;
      - test Svanström chỉ cộng vào ở W10;
    - mục tiêu ≥ 120 phút; nếu thiếu thì báo thời lượng thực có;
