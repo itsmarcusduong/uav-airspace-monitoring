@@ -63,3 +63,13 @@ def test_variants_gated_by_adr(tmp_path):
     assert not w.adr_accepted(p)
     p.write_text("# ADR\n- Trạng thái: **Accepted**\n## Bối cảnh\n", encoding="utf-8")
     assert w.adr_accepted(p)
+
+
+def test_explore_sign_counts_and_drop_top():
+    sys.path.insert(0, str(ROOT / "scripts" / "experiments"))
+    import w7_postproc_explore as ex
+    v0 = {"a": {"id_switches": "10"}, "b": {"id_switches": "2"}, "c": {"id_switches": "0"}}
+    vx = {"a": {"id_switches": "0"}, "b": {"id_switches": "3"}, "c": {"id_switches": "0"}}
+    assert ex.sign_counts(v0, vx, "id_switches") == {"better": 1, "worse": 1, "same": 1}
+    d = ex.drop_top(v0, vx, 1)
+    assert d["dropped"] == ["a"] and (d["v0"], d["variant"]) == (2, 3) and d["reduction"] == -0.5
