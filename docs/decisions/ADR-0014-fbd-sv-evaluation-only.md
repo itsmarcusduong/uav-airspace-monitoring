@@ -1,6 +1,6 @@
 # ADR-0014: Đưa lại FBD-SV-2024 vào tập âm tính, chỉ để đánh giá
 
-- Trạng thái: **Proposed** (Quang 17/11/2026). Chuyển **Accepted** khi An duyệt trên PR. Chưa Accepted thì không giải nén để dùng, không đưa lên Kaggle và không đo trên FBD-SV-2024 (xem ghi nhận về lần tải sớm ở mục Bối cảnh).
+- Trạng thái: **Proposed** (Quang 17/11/2026). Chuyển **Accepted** khi An duyệt trên PR. Chưa Accepted thì không dùng FBD-SV-2024: không đưa vào thư mục dự án, không đưa lên Kaggle, không đo.
 - Sửa ADR-0013 ở một điểm: FBD-SV-2024 không còn bị loại mà được dùng trong `neg_eval` theo điều kiện ở mục Quyết định. Các mục khác của ADR-0013 giữ nguyên.
 - Liên quan: #113 W8-01, #99, PR #106, ADR-0011, ADR-0013, `data/manifests/license_matrix.csv`.
 
@@ -12,7 +12,6 @@
   - Bản ghi có một tệp `FBD-SV-2024.zip`, 1.790.526.712 byte, MD5 `8a78846b16329466347be71da10d608a`.
   - [WEB SOURCE] Trang Figshare, trang arXiv:2409.00317 (HTML và PDF) không có email tác giả. Bài báo chỉ ghi tác giả liên hệ là Ze-Xi Hua và Heng-Chao Li.
 - [Quyết định của Quang, 17/11] Không có địa chỉ để xin phép, nên không chờ email. Lý do được nêu ở mục Lập luận.
-- [Ghi nhận trung thực] Quang tải `FBD-SV-2024.zip` về máy cá nhân ngày 17/11, **trước** khi ADR này được duyệt, để tiết kiệm thời gian. Tệp chỉ nằm ở [LOCAL]: không giải nén để dùng, không đưa lên Kaggle, không dùng để đo cho tới khi ADR này Accepted. Nếu An không chấp nhận, xóa tệp.
 
 ## Lập luận [INFERENCE — không phải tư vấn pháp lý]
 - Cả hai cách đọc đều cho phép đúng cách dùng của nhóm:
