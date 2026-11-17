@@ -1,8 +1,6 @@
 | Tuần | Mục | Mức | Chi tiết |
 |---|---|---|---|
-| W07 | PR #109 | WARN | thanh vien khac chua review (review sau merge van ghi lai duoc) |
-| W07 | PR #104 | WARN | thanh vien khac chua review (review sau merge van ghi lai duoc) |
-| W07 | PR #103 | WARN | thanh vien khac chua review (review sau merge van ghi lai duoc) |
-| W07 | PR #102 | WARN | thanh vien khac chua review (review sau merge van ghi lai duoc) |
+| W07 | Commit cuoi tuan | INFO | 154a596 07/11 02:15 (tuan nay khong bat buoc tag) |
+| W07 | Tuan | PASS | 5 issue, 10 PR |
 
-FAIL: 0, WARN: 4. Tạo bằng `scripts/github/check_structure.py --weeks 7`.
+FAIL: 0, WARN: 0. Tạo bằng `scripts/github/check_structure.py --weeks 7`.
