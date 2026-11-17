@@ -8,9 +8,11 @@
 - ADR-0013 (sau PR #106) loại FBD-SV-2024 cho tới khi điều khoản được làm rõ và nhóm xem xét lại.
 - Kiểm lại ngày 17/11/2026:
   - [WEB SOURCE] Trang Figshare của bộ dữ liệu có mục "Licence" nhưng để trống. Phần mô tả ghi: "This dataset is for learning and research purposes only, not for commercial use."
-  - [Ghi nhận của An] Metadata của bản ghi Figshare ghi CC BY 4.0. Quang không mở được API từ môi trường cloud; Quang sẽ lưu bản JSON metadata vào `data/manifests/license_evidence/` để đối chiếu.
+  - [WEB SOURCE] Metadata API của bản ghi (`data/manifests/license_evidence/fbd_sv_2024_figshare_27377595.json`, Quang lưu 17/11/2026) ghi `license` = **CC BY 4.0**. Trường `description` vẫn có câu giới hạn học tập, nghiên cứu, không thương mại. Kết quả này khớp với ghi nhận của An.
+  - Bản ghi có một tệp `FBD-SV-2024.zip`, 1.790.526.712 byte, MD5 `8a78846b16329466347be71da10d608a`.
   - [WEB SOURCE] Trang Figshare, trang arXiv:2409.00317 (HTML và PDF) không có email tác giả. Bài báo chỉ ghi tác giả liên hệ là Ze-Xi Hua và Heng-Chao Li.
 - [Quyết định của Quang, 17/11] Không có địa chỉ để xin phép, nên không chờ email. Lý do được nêu ở mục Lập luận.
+- [Ghi nhận trung thực] Quang tải `FBD-SV-2024.zip` về máy cá nhân ngày 17/11, **trước** khi ADR này được duyệt, để tiết kiệm thời gian. Tệp chỉ nằm ở [LOCAL]: không giải nén để dùng, không đưa lên Kaggle, không dùng để đo cho tới khi ADR này Accepted. Nếu An không chấp nhận, xóa tệp.
 
 ## Lập luận [INFERENCE — không phải tư vấn pháp lý]
 - Cả hai cách đọc đều cho phép đúng cách dùng của nhóm:
@@ -26,7 +28,7 @@
    - báo cáo chỉ nêu số đo tổng hợp, báo riêng theo nguồn (ADR-0011 mục 7), trích dẫn bài báo [20] và bản ghi Figshare;
    - lưu bằng chứng license (văn bản mô tả và metadata kèm ngày truy cập) trong `data/manifests/license_evidence/`.
 3. Tiền xử lý theo ADR-0013 mục 2: dữ liệu gốc 1280×720, 25 fps → cắt giữa 5:4, resize 640×512, đưa về 30 fps; chạy trên Kaggle; manifest từng clip có SHA-256.
-4. `license_matrix.csv`: FBD-SV-2024 chuyển sang `usable` (chỉ đánh giá, không thương mại) khi ADR này Accepted.
+4. `license_matrix.csv`: FBD-SV-2024 chuyển sang `usable` (chỉ đánh giá, không thương mại) khi ADR này Accepted. Trước khi dùng, kiểm MD5 của tệp zip tải về với metadata.
 5. Dừng dùng ngay nếu trang dữ liệu hoặc tác giả đổi điều khoản theo hướng không cho phép cách dùng trên. Nếu sau này tìm được email tác giả thì gửi thư xác nhận (bản nháp đã soạn ngày 17/11/2026).
 
 ## Hệ quả
