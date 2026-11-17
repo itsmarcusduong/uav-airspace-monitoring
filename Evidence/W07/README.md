@@ -1,6 +1,6 @@
 # Evidence W07 — Hard negatives + confusion analysis
 
-Milestone **Tuan7** · Tạo bởi `scripts/reporting/build_evidence.py` tại commit `3d65ef3` · 2026-11-16
+Milestone **Tuan7** · Tạo bởi `scripts/reporting/build_evidence.py` tại commit `dcd0555` · 2026-11-17
 
 **Phạm vi:** Cổng tái tạo tracker offline trên detection của run 14; thí nghiệm hậu xử lý detection V0/V1/V2 theo luật đặt trước ADR-0012 (chọn V2, NMS cùng lớp IoU 0,5); phân tích nhầm lẫn và hard negative trên val (An, #98); nguồn video âm tính công khai có giấy phép thay video tự quay (ADR-0013, thu thập W8); Chương III bản 1.
 
