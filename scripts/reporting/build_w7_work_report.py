@@ -140,7 +140,7 @@ for num, who, desc, commits, merge in PRS:
             plain(p, ", ", 8)
     plain(p, "; merge ", 8); add_link(p, merge[:7], f"{REPO}/commit/{merge}", 8)
 p = row("Review chéo")
-plain(p, "Quang approve #105–#108, #111 của An sau khi chạy lại script và test (góp ý ghi trong từng review). An review hậu kiểm (Comment, 17/11) #102, #103, #104, #109, #110: đồng ý, không yêu cầu sửa; xác nhận Q1–Q3 mục 1.2 khớp Thuyết minh 6.2. #102, #103 merge trước review.", 8)
+plain(p, "Quang approve #105–#108, #111 của An sau khi chạy lại script và test (góp ý ghi trong từng review). An review hậu kiểm (Comment, 17/11) #102, #103, #104, #109, #110: đồng ý, không yêu cầu sửa; xác nhận Q1–Q3 mục 1.2 khớp Thuyết minh 6.2. #102, #103 merge trước review. PR #112 (cập nhật hồ sơ sau phản hồi này, đóng #99) chờ An review.", 8)
 p = row("Commit cuối tuần")
 plain(p, "W7 không bắt buộc tag (Đề cương mục 10: W4, W8, W11, W14). Commit nội dung cuối trước báo cáo: ", 8)
 add_link(p, "7060d67", f"{REPO}/commit/7060d67c4322dcd1c99bc401b832410b3e29dfec", 8)
