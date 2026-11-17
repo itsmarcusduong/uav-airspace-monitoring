@@ -477,6 +477,62 @@ def w06(w: Week):
         w.fig(f, cap)
 
 
+def w07(w: Week):
+    """W7: cong tai tao offline, thi nghiem hau xu ly V0/V1/V2 (ADR-0012), phan tich nham lan (An #108), nguon video cong khai (ADR-0013)."""
+    import sys
+    sys.path.insert(0, str(ROOT / "scripts" / "experiments"))
+    import w7_postproc as wp  # noqa: E402
+    P = "results/W07/postproc"
+    rp = rjson(f"{P}/repro_check.json")
+    w.check("repro_track_logs_ge_37_of_38_videos", rp["track_logs"]["videos_identical"] >= 37 and rp["track_logs"]["videos"] == 38,
+            f"{rp['track_logs']['videos_identical']}/{rp['track_logs']['videos']} video, {rp['track_logs']['row_match_rate']}", f"{P}/repro_check.json")
+    w.check("repro_alerts_identical_run14", rp["alerts_identical"] is True, "R0/R1 center_hex/center", f"{P}/repro_check.json")
+    w.check("repro_image_pr_identical_run13", rp["detection_identical"] is True, "P/R theo lop @0,25", f"{P}/repro_check.json")
+    w.check("adr0012_accepted_before_variants", wp.adr_accepted(), "PR #105", "docs/decisions/ADR-0012-w7-postprocessing-experiments.md")
+    ps = rjson(f"{P}/postproc_summary.json")
+    S = {t: rjson(f"{P}/{d}/summary.json") for t, d in (("none", "V0_none"), ("agnostic_nms", "V1_agnostic_nms"), ("nms_iou", "V2_nms_iou"))}
+    redo = wp.decide(S["none"], {k: S[k] for k in ("agnostic_nms", "nms_iou")})
+    w.check("adr0012_decision_reproduced", redo["choice"] == ps["decision"]["choice"] == "nms_iou", redo["reason"], f"{P}/postproc_summary.json")
+    for v, s in S.items():
+        tag = f"{s['tag']}_{v}"
+        w.m("detections_kept", s["dets_kept"], "box", "val", tag, f"{P}/postproc_summary.json", "scripts/experiments/w7_postproc.py")
+        for f in ("idsw_per_1000_gt_frames", "id_switches", "track_recall_pooled", "videos_single_id", "false_tracks", "fragments"):
+            w.m(f"{f}@iou0.5", s["tracking"]["all"][f], "", "val/all", tag, f"{P}/{s['tag']}_{v}/summary.json", "scripts/experiments/w7_postproc.py")
+        for rule in ("R0", "R1"):
+            g = s["alerts"][f"center_hex|center|{rule}"]
+            for k in ("detected", "events", "false_alerts_nondrone", "duplicates", "event_precision_1to1"):
+                w.m(f"alert_{k}", g[k], "", "val", f"{tag}/{rule}", f"{P}/{s['tag']}_{v}/summary.json", "scripts/experiments/w7_postproc.py")
+        d = s["detection"]["per_class"]["Drone"]
+        w.m("drone_recall@conf0.25", d["R"], "", "val (bo 40 anh loi nhan)", tag, f"{P}/{s['tag']}_{v}/summary.json", "scripts/experiments/w7_postproc.py")
+        w.m("drone_precision@conf0.25", d["P"], "", "val (bo 40 anh loi nhan)", tag, f"{P}/{s['tag']}_{v}/summary.json", "scripts/experiments/w7_postproc.py")
+    ex = rjson(f"{P}/exploratory.json")
+    e2 = ex["variants"]["V2_nms_iou"]
+    w.check("v2_no_video_with_more_idsw", e2["idsw_by_video"]["worse"] == 0, json.dumps(e2["idsw_by_video"]), f"{P}/exploratory.json")
+    w.m("exploratory_v2_idsw_reduction_without_top1_video", e2["idsw_without_top1"]["reduction"], "", "val", "V2", f"{P}/exploratory.json", "scripts/experiments/w7_postproc_explore.py")
+    w.m("exploratory_v2_removed_conf_ge_0.25", e2["removed_detections"]["removed_conf_ge_0.25"], "box", "val", "V2", f"{P}/exploratory.json", "scripts/experiments/w7_postproc_explore.py")
+    du = ex["duplicates_on_same_val_frames"]
+    for k in ("video_predict", "image_val"):
+        w.m(f"exploratory_same_class_dup_rate_{k}", du[k]["dup_rate"], "", f"val {du['frames']} frame", source=f"{P}/exploratory.json", producer="scripts/experiments/w7_postproc_explore.py")
+    ca = rjson("results/W07/confusion_analysis.json")
+    w.check("confusion_analysis_matches_v0", ca["matches_saved_summary"] is True and ca["confusion"] == S["none"]["detection"]["confusion"],
+            f"{ca['images']} anh, bo {ca['ignored_images']}", "results/W07/confusion_analysis.json")
+    for k, v in ca["nen_to_drone_categories"].items():
+        w.m(f"nen_to_drone_{k}", v["count"], "box", "val", "V0", "results/W07/confusion_analysis.json", "scripts/reporting/w7_confusion_analysis.py")
+    for k, v in ca["non_drone_gt_predicted_as_drone"].items():
+        w.m(f"{k}_predicted_as_drone", v["count"], "box", "val", "V0", "results/W07/confusion_analysis.json", "scripts/reporting/w7_confusion_analysis.py")
+    txt = (ROOT / "docs/decisions/ADR-0013-public-negative-sources.md").read_text(encoding="utf-8").split("\n## ")[0]
+    w.check("adr0013_status_recorded", "**Proposed**" in txt or "**Accepted**" in txt,
+            "Accepted" if "**Accepted**" in txt else "Proposed (cho An duyet)", "docs/decisions/ADR-0013-public-negative-sources.md")
+    lm = {r["dataset_id"]: r for r in rcsv("data/manifests/license_matrix.csv")}
+    w.check("license_matrix_has_adr0013_sources", all(k in lm for k in ("DS-WIKIMEDIA-COMMONS", "DS-PIXABAY-VIDEO", "DS-PEXELS-VIDEO", "DS-UAVDB")),
+            ", ".join(f"{k}:{lm[k]['status']}" for k in ("DS-WIKIMEDIA-COMMONS", "DS-PIXABAY-VIDEO", "DS-PEXELS-VIDEO", "DS-UAVDB") if k in lm), "data/manifests/license_matrix.csv")
+    for f, cap in (("results/W07/fig_w7_postproc.png", "ID switch / 1000 frame GT theo lớp của V0/V1/V2 (val, offline)"),
+                   ("results/W07/fig_w7_idsw_by_video.png", "ID switch theo video, V0 và V2"),
+                   ("results/W07/fig_w7_confusion.png", "Ma trận nhầm V0, conf 0,25, val bỏ 40 ảnh lỗi nhãn"),
+                   ("results/W07/fig_w7_pipeline.png", "Pipeline mục 3.3 (bản nháp của An)")):
+        w.fig(f, cap)
+
+
 def _find_count(obj, key):
     if isinstance(obj, dict):
         if key in obj and isinstance(obj[key], int):
@@ -523,6 +579,8 @@ INFO = {
             "Pipeline video → detector → tracker trên 38 video val (run 12, 12b), độ đo liên kết trên GT dẫn xuất (ADR-0008), chọn tracker theo luật đặt trước; 3 seed cho baseline A và YOLO11n (run 13), chọn lại detector (ADR-0007 cập nhật)."),
     "W06": ("Tuan6", "Geofence + cảnh báo theo trajectory",
             "Run 14: YOLO11n s20261030 + ByteTrack-e1 trên 38 video val, lưu detection thô, GT, ghép theo frame; mô-đun ROI/cảnh báo R0 (chỉ detector) và R1 (theo track) theo giao thức đặt trước ADR-0009; video demo cảnh báo (run 15); phân tích lỗi cảnh báo, hộp trùng, 40 ảnh val âm tính (run 16); kế hoạch dữ liệu W7–W12 (ADR-0011)."),
+    "W07": ("Tuan7", "Hard negatives + confusion analysis",
+            "Cổng tái tạo tracker offline trên detection của run 14; thí nghiệm hậu xử lý detection V0/V1/V2 theo luật đặt trước ADR-0012 (chọn V2, NMS cùng lớp IoU 0,5); phân tích nhầm lẫn và hard negative trên val (An, #98); nguồn video âm tính công khai có giấy phép thay video tự quay (ADR-0013, thu thập W8); Chương III bản 1."),
     "W04": ("Tuan4", "Tuning + augmentation, so sánh baseline",
             "Kiểm chứng chiều lệch nhãn (run 06 và tập chuẩn CVAT, ADR-0006), train và so sánh 6 mô hình trên cùng dữ liệu (run 09), áp luật chọn đặt trước (ADR-0007)."),
 }
@@ -532,6 +590,7 @@ LINKS = {
     "W03": "Issue #10, #11, #16–#21; PR #22, #23, #25, #26, #28, #31–#35. Báo cáo: reports/w3/. ADR-0004, ADR-0005. Model card: docs/w3/model_card_baseline_A.md.",
     "W05": "Issue #57–#62; PR #63–#70. Báo cáo: reports/w5/ (báo cáo công việc, v0.5). Trạng thái: docs/status/W05_planned_done_evidence.md. Kế hoạch: docs/w5/W5_PLAN.md. ADR-0007 (cập nhật), ADR-0008. Giao thức: docs/w5/tracking_protocol_w5.md, docs/w4/training_protocol_w4.md mục 6.",
     "W06": "Issue #74–#79, #88; PR #80–#83, #86, #87, #89–#95. Báo cáo: reports/w6/ (báo cáo công việc, v0.6). Trạng thái: docs/status/W06_planned_done_evidence.md. Kế hoạch: docs/w6/W6_PLAN.md. ADR-0009, ADR-0010, ADR-0011. Phân tích: docs/w6/alert_error_review.md, docs/w6/val_negative_frames.md, docs/w7/data_expansion_proposal.md.",
+    "W07": "Issue #97–#101; PR #102–#109 và PR chốt tuần. Báo cáo: reports/w7/ (báo cáo công việc, v0.7). Trạng thái: docs/status/W07_planned_done_evidence.md. Kế hoạch: docs/w7/W7_PLAN.md. ADR-0012, ADR-0013. Phân tích: docs/w7/postproc_results.md, docs/w7/confusion_analysis.md.",
     "W04": "Issue #24, #36–#42, #48, #49; PR #43–#47, #50–#55. Báo cáo: reports/w4/ (báo cáo công việc, v0.4). Trạng thái: docs/status/W04_planned_done_evidence.md. Kế hoạch: docs/w4/W4_PLAN.md. ADR-0006, ADR-0007. Giao thức: docs/w4/training_protocol_w4.md.",
 }
 
@@ -607,7 +666,7 @@ def main() -> int:
         if w.dir.exists():
             shutil.rmtree(w.dir)
         w.dir.mkdir(parents=True)
-        {"W01": w01, "W02": w02, "W03": w03, "W04": w04, "W05": w05, "W06": w06}[wk](w)
+        {"W01": w01, "W02": w02, "W03": w03, "W04": w04, "W05": w05, "W06": w06, "W07": w07}[wk](w)
         if a.pytest_xml and wk == a.weeks[-1]:
             shutil.copy2(a.pytest_xml, w.dir / "test-results.xml")
             junit_to_checks(w, a.pytest_xml)

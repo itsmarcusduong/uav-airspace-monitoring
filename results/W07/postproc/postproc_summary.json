@@ -13,6 +13,59 @@
       "R1_false_nondrone": 0,
       "Drone_P": 0.8373,
       "Drone_R": 0.8291
+    },
+    "agnostic_nms": {
+      "tag": "V1",
+      "dets_kept": 12655,
+      "dets_in": 19567,
+      "idsw_per_1000": 1.12,
+      "R0_false_nondrone": 8,
+      "R1_events": "23/23",
+      "R1_false_nondrone": 0,
+      "Drone_P": 0.8557,
+      "Drone_R": 0.8291
+    },
+    "nms_iou": {
+      "tag": "V2",
+      "dets_kept": 13215,
+      "dets_in": 19567,
+      "idsw_per_1000": 1.982,
+      "R0_false_nondrone": 7,
+      "R1_events": "23/23",
+      "R1_false_nondrone": 0,
+      "Drone_P": 0.8406,
+      "Drone_R": 0.8291
     }
+  },
+  "decision": {
+    "rule": "ADR-0012 muc 4",
+    "candidates": {
+      "agnostic_nms": {
+        "guards": {
+          "drone_recall_drop_le_0.02": true,
+          "r1_event_recall_not_lower": true,
+          "r1_false_nondrone_not_higher": true,
+          "improves": true
+        },
+        "pass": true,
+        "idsw_reduction": 0.9384,
+        "r0_fa_reduction": -0.1429,
+        "dets_removed_frac": 0.3532
+      },
+      "nms_iou": {
+        "guards": {
+          "drone_recall_drop_le_0.02": true,
+          "r1_event_recall_not_lower": true,
+          "r1_false_nondrone_not_higher": true,
+          "improves": true
+        },
+        "pass": true,
+        "idsw_reduction": 0.891,
+        "r0_fa_reduction": 0.0,
+        "dets_removed_frac": 0.3246
+      }
+    },
+    "choice": "nms_iou",
+    "reason": "ca hai dat, giam ID switch chenh < 5 diem -> chon bien the bo it detection hon"
   }
 }

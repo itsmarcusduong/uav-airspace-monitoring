@@ -1,6 +1,6 @@
 # ADR-0012: Thí nghiệm W7 — hậu xử lý detection chống hộp trùng, đánh giá offline tới tracking và cảnh báo
 
-- Trạng thái: **Proposed** (Quang 16/11/2026). Chuyển **Accepted** khi An duyệt trên PR.
+- Trạng thái: **Accepted** (An 16/11/2026; review follow-up sau khi PR #102 đã merge).
   - Biến thể V1, V2 **chỉ được chạy sau khi ADR này Accepted**. Script `scripts/experiments/w7_postproc.py` tự kiểm trạng thái này và từ chối chạy nếu chưa Accepted.
   - V0 (cổng tái tạo) đã chạy trước khi viết luật, vì V0 không đổi gì.
 - Liên quan:
@@ -52,3 +52,16 @@
 ## Hệ quả
 - Không đổi weights, tracker hay luật cảnh báo. Chỉ có thể đổi bước hậu xử lý detection.
 - Huấn luyện lại với hard negative (ADR-0011 mục 3–4) và việc xử lý ảnh âm tính lỗi nhãn trong train **không** làm ở W7 (xem ADR-0013).
+
+## Kết quả (17/11/2026, #97) — luật trên giữ nguyên
+- Chạy sau khi ADR Accepted (PR #105). Chi tiết: `docs/w7/postproc_results.md`, `results/W07/postproc/postproc_summary.json`.
+- ID switch / 1000 frame GT: V0 18,183 → V1 1,120 (−93,8%), V2 1,982 (−89,1%).
+  - Recall Drone mức ảnh không đổi (0,8291).
+  - R1 vẫn 23/23 sự kiện và 0 cảnh báo sai.
+  - Cảnh báo sai R0 trên video không Drone: V1 8, V2 7, V0 7.
+- Cả hai đạt; chênh mức giảm ID switch 4,7 điểm < 5 → **chọn V2 (NMS cùng lớp IoU 0,5)**, biến thể bỏ ít detection hơn.
+- Mục 5 áp dụng cho W8: đo lại trên Kaggle với `iou=0.5` trong detector.
+- Thăm dò (không đổi quyết định):
+  - track recall giảm ở 4 video, mạnh nhất V_HELICOPTER_012 −0,19, và tăng ở 1 video;
+  - detection video có hộp trùng cùng lớp nhiều gấp ~20 lần dự đoán ảnh val trên cùng frame (11,7% so với 0,6%);
+  - xem `results/W07/postproc/exploratory.json`.
