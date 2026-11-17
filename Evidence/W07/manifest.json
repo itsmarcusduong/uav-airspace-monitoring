@@ -1,12 +1,12 @@
 {
   "week": "W07",
   "milestone": "Tuan7",
-  "repo_commit": "3d65ef3b9b4b9f6ec6cd233be311b3f4b30a0a8b",
-  "generated_at": "2026-11-16T18:24:57+00:00",
+  "repo_commit": "dcd05550d94d7b9afc78b9ab678ede44d8563779",
+  "generated_at": "2026-11-17T15:38:36+00:00",
   "files": [
     {
       "path": "README.md",
-      "sha256": "69ee48974219fe215a038a8520f0ab7588b17a5c1c9c06232ea9dd3f51ecc386",
+      "sha256": "5cc9733602ca4c7a3a6df03139d7343c582471f9b5de6528b35d6d1d52332fd0",
       "bytes": 2051
     },
     {
@@ -36,19 +36,19 @@
     },
     {
       "path": "test-results.json",
-      "sha256": "d9e19e236946e6f799d05d498c5f9fb32a82a93b204a895df6c2801955723c16",
-      "bytes": 15923
+      "sha256": "7a5c441e80b7a731114b25dacc661560d73424cd1f34e16634201e14d9aa7e5f",
+      "bytes": 15924
     },
     {
       "path": "test-results.xml",
-      "sha256": "9a53d8d860671d717e94fa2567d0b699f1156630b7d7188c770e1aa9725f5ae7",
-      "bytes": 8520
+      "sha256": "d6a363c799388f4512fed07a8070df5c9352a974854d8abf0886de00bb58a498",
+      "bytes": 8522
     }
   ],
   "sources": [
     {
       "path": "data/manifests/license_matrix.csv",
-      "sha256": "4d57ff108c4dd7d8dcd799077af2601291b02ba1d0c493135664176687f9a9a5"
+      "sha256": "8dac62f92c64f31de00920d0c2eff5c08e772ee3c3909f3c51d151692f938993"
     },
     {
       "path": "docs/decisions/ADR-0012-w7-postprocessing-experiments.md",
@@ -56,7 +56,7 @@
     },
     {
       "path": "docs/decisions/ADR-0013-public-negative-sources.md",
-      "sha256": "03fcdc86977ffbcb99d70faffb894600c5cab0d0b285e05af2d35f0363b5387f"
+      "sha256": "15ec12228b49fa36c4d28291e72bb64d419bf4144bfda0d73c86f01ef6c725e7"
     },
     {
       "path": "results/W07/confusion_analysis.json",

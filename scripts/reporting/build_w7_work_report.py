@@ -111,7 +111,9 @@ PRS = [(102, "Quang", "tracker offline, cổng tái tạo run 14, ADR-0012 (#97)
        (106, "An", "tạm loại FBD-SV-2024 chờ rà license (#99)", ["f88a5467ac3cf21b809d90743f1efa9efa630b78"], "23bdd412da689cac3dcbe9929f36bcdcbc62e0ac"),
        (107, "An", "Chương III bản 1, mục 3.3–3.4 (#100)", ["912bd179d7a862cfeeb726b479ee210daec5fba1"], "a61fd776e1081f4cfd38477111afcce44b9e96be"),
        (108, "An", "phân tích nhầm lẫn trên val (#98)", ["2563b8f768b85b2dd5e2446682aeccfefd9437fb", "cfda7e920ef2531f12433a537adf44bac48ed49a"], "65ecfe7a46938fed87e49ecae76d26878dea60a3"),
-       (109, "Quang", "thí nghiệm V0/V1/V2, chọn V2 (#97)", ["50188121fcdaaa3eb35f9ff95211f80586efb4e0"], "7060d67c4322dcd1c99bc401b832410b3e29dfec")]
+       (109, "Quang", "thí nghiệm V0/V1/V2, chọn V2 (#97)", ["50188121fcdaaa3eb35f9ff95211f80586efb4e0"], "7060d67c4322dcd1c99bc401b832410b3e29dfec"),
+       (110, "Quang", "mục 3.1, v0.7, Evidence/W07, báo cáo W7 (#101)", ["3d65ef3b9b4b9f6ec6cd233be311b3f4b30a0a8b", "7261320978771d6362b1f5a50947b098feef0be8"], "b101359c3a7526410cee1fdd1060de8fb728f614"),
+       (111, "An", "duyệt ADR-0013 → Accepted (#99)", ["1f00f7559d3088534b8d9dcadea3ca8fa0cfdf89"], "4c5ef23d06757ca96681693a0a0d5c979f3bc0b5")]
 
 para("BÁO CÁO CÔNG VIỆC TUẦN 7 — NHÓM E1", True, 13, WD_ALIGN_PARAGRAPH.CENTER)
 para("Đề tài: Nghiên cứu và phát triển hệ thống phát hiện, phân loại và theo dõi UAV trong vùng trời sân bay dựa trên học sâu", False, 9.5, WD_ALIGN_PARAGRAPH.CENTER, True)
@@ -138,13 +140,13 @@ for num, who, desc, commits, merge in PRS:
             plain(p, ", ", 8)
     plain(p, "; merge ", 8); add_link(p, merge[:7], f"{REPO}/commit/{merge}", 8)
 p = row("Review chéo")
-plain(p, "Quang approve #105–#108 của An sau khi chạy lại script và test (góp ý ghi trong từng review). An duyệt nội dung #102 qua #105 (ADR-0012) và #103 qua #106 (FBD-SV), nhưng chưa có review GitHub trên #102, #103, #104, #109; ADR-0013 chờ An duyệt.", 8)
+plain(p, "Quang approve #105–#108, #111 của An sau khi chạy lại script và test (góp ý ghi trong từng review). An review hậu kiểm (Comment, 17/11) #102, #103, #104, #109, #110: đồng ý, không yêu cầu sửa; xác nhận Q1–Q3 mục 1.2 khớp Thuyết minh 6.2. #102, #103 merge trước review. PR #112 (cập nhật hồ sơ sau phản hồi này, đóng #99) chờ An review.", 8)
 p = row("Commit cuối tuần")
 plain(p, "W7 không bắt buộc tag (Đề cương mục 10: W4, W8, W11, W14). Commit nội dung cuối trước báo cáo: ", 8)
 add_link(p, "7060d67", f"{REPO}/commit/7060d67c4322dcd1c99bc401b832410b3e29dfec", 8)
 plain(p, " (merge #109); commit cuối tuần = merge PR báo cáo, ghi ở ", 8); add_link(p, "issue #101", f"{REPO}/issues/101", 8)
 p = row("check_structure.py --weeks 7")
-plain(p, f"{GS_SUM} (WARN: {', '.join(GS_WARN)} chưa có review GitHub của An). File: docs/status/W07_github_structure.md", 8)
+plain(p, f"{GS_SUM}" + (f" (WARN: {', '.join(GS_WARN)})" if GS_WARN else "") + ". File: docs/status/W07_github_structure.md", 8)
 widths(t, [3.4, 14.0])
 d.add_paragraph().paragraph_format.space_after = Pt(0)
 
@@ -152,7 +154,7 @@ para("2. Phân chia công việc", True)
 table(["Issue", "Nội dung", "Phụ trách", "Review", "Trạng thái"],
       [["#97 W7-01", "Tracker offline, cổng tái tạo; thí nghiệm hậu xử lý V0/V1/V2 theo ADR-0012", "Quang", "An", "Xong (PR #102, #109)"],
        ["#98 W7-02", "Duyệt ADR-0012 trước khi chạy V1/V2; phân tích nhầm lẫn, hard negative trên val", "An", "Quang", "Đóng (PR #105, #108)"],
-       ["#99 W7-03", "Nguồn video công khai có giấy phép thay video tự quay (ADR-0013)", "Quang", "An", "Chờ An duyệt ADR-0013 (PR #103, #104, #106)"],
+       ["#99 W7-03", "Nguồn video công khai có giấy phép thay video tự quay (ADR-0013)", "Quang", "An", "Đóng; ADR-0013 Accepted (PR #103, #104, #106, #111)"],
        ["#100 W7-04", "Chương III bản 1: mục 3.3–3.4", "An", "Quang", "Đóng (PR #107), đã vào v0.7"],
        ["#101 W7-05", "Mục 3.1, báo cáo W7, v0.7, Evidence/W07", "Quang", "An", "Bản nộp"]],
       [1.7, 8.0, 1.8, 1.3, 4.6], size=8)
@@ -192,6 +194,6 @@ para("7. Vấn đề và rủi ro (trung thực)", True)
 for t_ in ["Không thực hiện được lịch quay video âm tính (không chắc quy định quay gần sân bay); tuần 7 trễ hạn và không có tập âm tính ngoài. Cảnh báo sai/giờ vẫn chỉ đo trên 3,7 phút; thu video công khai ở W8, đo ở W9.",
            "Kết quả V2 là offline (NMS 0,5 áp sau NMS 0,7 của detection đã lưu). ADR-0012 mục 5 yêu cầu đo lại trên video thật ở W8; nếu ngược chiều thì giữ V0. Track recall giảm ở 4 video (mạnh nhất V_HELICOPTER_012).",
            "Không biến thể NMS nào giảm cảnh báo sai R0: hộp Drone trên máy bay là nhầm lớp, không phải hộp trùng. 63/74 dự đoán Drone không khớp nhãn là lỗi định vị trên drone nhỏ.",
-           "Quy trình: PR #102, #103 merge trước review (An duyệt hậu kiểm qua #105, #106); #104, #109 chờ An review; ADR-0013 chờ An duyệt. v0.6 ghi ba câu hỏi nghiên cứu khác Thuyết minh 6.2, v0.7 đã sửa. Mọi số đo trên val; test khóa tới W10."]:
+           "Quy trình: PR #102, #103 merge trước review (An duyệt hậu kiểm qua #105, #106 và review GitHub ngày 17/11). FBD-SV-2024: thông tin giấy phép mâu thuẫn (trang để trống, metadata ghi CC BY 4.0, mô tả giới hạn phi thương mại), không có email tác giả công khai, nên vẫn loại. v0.6 ghi ba câu hỏi nghiên cứu khác Thuyết minh 6.2, v0.7 đã sửa (An xác nhận). Mọi số đo trên val; test khóa tới W10."]:
     d.add_paragraph(t_, style="List Bullet")
 a.out.parent.mkdir(parents=True, exist_ok=True); d.save(a.out); print("saved", a.out)
