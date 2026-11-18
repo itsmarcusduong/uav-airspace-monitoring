@@ -1,7 +1,7 @@
 {
   "week": "W07",
   "generated_by": "scripts/reporting/build_evidence.py",
-  "repo_commit": "3d65ef3b9b4b9f6ec6cd233be311b3f4b30a0a8b",
+  "repo_commit": "dcd05550d94d7b9afc78b9ab678ede44d8563779",
   "summary": {
     "total": 88,
     "passed": 88,
@@ -89,7 +89,7 @@
     {
       "check": "pytest::tests.test_alert::test_r1_track_appears_inside_roi",
       "status": "PASS",
-      "detail": "0.001s",
+      "detail": "0.000s",
       "source": "tests/"
     },
     {
@@ -143,7 +143,7 @@
     {
       "check": "pytest::tests.test_alert::test_evaluate_end_to_end",
       "status": "PASS",
-      "detail": "0.020s",
+      "detail": "0.021s",
       "source": "tests/"
     },
     {
@@ -155,19 +155,19 @@
     {
       "check": "pytest::tests.test_alert::test_evaluate_rejects_non_val_split_even_if_flag_says_not_test",
       "status": "PASS",
-      "detail": "0.002s",
+      "detail": "0.003s",
       "source": "tests/"
     },
     {
       "check": "pytest::tests.test_alert::test_decide_rules",
       "status": "PASS",
-      "detail": "0.000s",
+      "detail": "0.001s",
       "source": "tests/"
     },
     {
       "check": "pytest::tests.test_alert::test_alert_demo_job",
       "status": "PASS",
-      "detail": "0.540s",
+      "detail": "0.763s",
       "source": "tests/"
     },
     {
@@ -191,7 +191,7 @@
     {
       "check": "pytest::tests.test_dataset_coverage::test_val_negative_frames_causes",
       "status": "PASS",
-      "detail": "0.001s",
+      "detail": "0.004s",
       "source": "tests/"
     },
     {
@@ -215,7 +215,7 @@
     {
       "check": "pytest::tests.test_github_structure::test_evidence_manifest_must_cover_files",
       "status": "PASS",
-      "detail": "0.002s",
+      "detail": "0.004s",
       "source": "tests/"
     },
     {
@@ -227,7 +227,7 @@
     {
       "check": "pytest::tests.test_github_structure::test_api_via_gh_cli_pages_with_page_param",
       "status": "PASS",
-      "detail": "0.000s",
+      "detail": "0.001s",
       "source": "tests/"
     },
     {
@@ -347,7 +347,7 @@
     {
       "check": "pytest::tests.test_label_utils::test_comparison_health_detects_nan_and_noise",
       "status": "PASS",
-      "detail": "0.001s",
+      "detail": "0.002s",
       "source": "tests/"
     },
     {
@@ -359,13 +359,13 @@
     {
       "check": "pytest::tests.test_negframes_export::test_export_end_to_end",
       "status": "PASS",
-      "detail": "0.015s",
+      "detail": "0.030s",
       "source": "tests/"
     },
     {
       "check": "pytest::tests.test_negframes_export::test_export_rejects_nonempty_label",
       "status": "PASS",
-      "detail": "0.006s",
+      "detail": "0.008s",
       "source": "tests/"
     },
     {
@@ -383,13 +383,13 @@
     {
       "check": "pytest::tests.test_offset_methods::test_offset_check_end_to_end[1-offset1]",
       "status": "PASS",
-      "detail": "0.010s",
+      "detail": "0.008s",
       "source": "tests/"
     },
     {
       "check": "pytest::tests.test_offset_methods::test_offset_check_end_to_end[0-offset0]",
       "status": "PASS",
-      "detail": "0.009s",
+      "detail": "0.007s",
       "source": "tests/"
     },
     {
@@ -401,7 +401,7 @@
     {
       "check": "pytest::tests.test_offset_methods::test_score_cvat_gold_center_metric_ignores_tight_boxes",
       "status": "PASS",
-      "detail": "0.003s",
+      "detail": "0.002s",
       "source": "tests/"
     },
     {
@@ -431,19 +431,19 @@
     {
       "check": "pytest::tests.test_tracking::test_track_job_end_to_end",
       "status": "PASS",
-      "detail": "1.430s",
+      "detail": "41.114s",
       "source": "tests/"
     },
     {
       "check": "pytest::tests.test_tracking::test_track_job_rejects_wrong_weights",
       "status": "PASS",
-      "detail": "0.019s",
+      "detail": "0.020s",
       "source": "tests/"
     },
     {
       "check": "pytest::tests.test_tracking::test_track_comparison_tie_rule",
       "status": "PASS",
-      "detail": "0.001s",
+      "detail": "0.002s",
       "source": "tests/"
     },
     {
@@ -467,13 +467,13 @@
     {
       "check": "pytest::tests.test_tracking::test_track_job_w6_dumps",
       "status": "PASS",
-      "detail": "0.029s",
+      "detail": "0.034s",
       "source": "tests/"
     },
     {
       "check": "pytest::tests.test_tracking::test_track_job_refuses_to_overwrite_evidence",
       "status": "PASS",
-      "detail": "0.005s",
+      "detail": "0.008s",
       "source": "tests/"
     },
     {
@@ -497,7 +497,7 @@
     {
       "check": "pytest::tests.test_w7_confusion_analysis::test_fp_iou_boundaries[0.5-other_high_overlap_unmatched]",
       "status": "PASS",
-      "detail": "0.001s",
+      "detail": "0.000s",
       "source": "tests/"
     },
     {
@@ -515,13 +515,13 @@
     {
       "check": "pytest::tests.test_w7_postproc::test_offline_tracker_keeps_one_id_for_moving_box",
       "status": "PASS",
-      "detail": "0.056s",
+      "detail": "0.130s",
       "source": "tests/"
     },
     {
       "check": "pytest::tests.test_w7_postproc::test_decide_rule_adr0012",
       "status": "PASS",
-      "detail": "0.001s",
+      "detail": "0.003s",
       "source": "tests/"
     },
     {
@@ -533,7 +533,7 @@
     {
       "check": "pytest::tests.test_w7_postproc::test_explore_sign_counts_and_drop_top",
       "status": "PASS",
-      "detail": "0.001s",
+      "detail": "0.002s",
       "source": "tests/"
     }
   ]
