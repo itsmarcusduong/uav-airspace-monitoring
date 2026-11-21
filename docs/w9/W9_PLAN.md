@@ -42,13 +42,13 @@ Mốc tuần:
 
 **Phần cứng:** Kaggle, 1 × Tesla T4, batch 1, một luồng. Ghi `nvidia-smi`, CPU, RAM, phiên bản thư viện vào `env.json`.
 
-**Cấu hình** (mỗi cấu hình chỉ đổi một yếu tố so với C0):
+**Cấu hình** (mỗi cấu hình chỉ đổi một yếu tố so với cấu hình liền trước: C1 so với C0 đổi độ chính xác số; C2 so với C1 đổi runtime):
 
 | Mã | Runtime | Độ chính xác số | Ghi chú |
 |---|---|---|---|
 | C0 | PyTorch (Ultralytics) | fp32 | như run 17 |
 | C1 | PyTorch | fp16 (`quantize=16`) | |
-| C2 | TensorRT (engine xuất từ cùng weights, imgsz 640, batch 1) | fp16 | nếu xuất engine thất bại: ghi "không khả thi" kèm log, không thử lại bằng cấu hình khác |
+| C2 | TensorRT (engine xuất từ cùng weights, imgsz 640, batch 1) | fp16 | engine có kích thước đầu vào cố định 640×640, nên ảnh 640×512 được đệm thành hình vuông thay vì đệm theo chữ nhật như PyTorch; khác biệt này đi kèm runtime và được ghi nhận, không tách riêng. Nếu xuất engine thất bại: ghi "không khả thi" kèm log, không thử lại bằng cấu hình khác |
 | CPU | PyTorch trên CPU Kaggle | fp32 | chỉ báo cáo, không tham gia chọn |
 
 **Cách đo:**
