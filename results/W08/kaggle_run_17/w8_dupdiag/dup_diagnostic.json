@@ -1,0 +1,36 @@
+{
+  "note": "dem hop trung cung lop IoU 0,5-0,7 o conf >= 0,25, giong w7_postproc_explore.py",
+  "conditions": {
+    "frame_fp16": {
+      "boxes": 1305,
+      "dup_same_class_iou_0.5_0.7": 150,
+      "dup_rate": 0.1149,
+      "videos_with_dup": 29
+    },
+    "frame_fp32": {
+      "boxes": 1307,
+      "dup_same_class_iou_0.5_0.7": 153,
+      "dup_rate": 0.1171,
+      "videos_with_dup": 29
+    },
+    "jpg_fp16": {
+      "boxes": 1303,
+      "dup_same_class_iou_0.5_0.7": 141,
+      "dup_rate": 0.1082,
+      "videos_with_dup": 27
+    },
+    "jpg_fp32": {
+      "boxes": 1308,
+      "dup_same_class_iou_0.5_0.7": 146,
+      "dup_rate": 0.1116,
+      "videos_with_dup": 28
+    }
+  },
+  "mean_abs_pixel_diff_jpg_vs_frame": 0.4807,
+  "max_mean_abs_pixel_diff": 0.9447,
+  "repro_frame_fp32_vs_run14": {
+    "matched": 1959,
+    "boxes": 1959,
+    "rate": 1.0
+  }
+}
