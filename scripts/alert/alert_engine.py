@@ -149,22 +149,34 @@ class _Track:
     prewarned: bool = False
 
 
-def r1_alerts(tracks: list[dict], n_frames: int, fps: float, poly, width, height, cfg: dict) -> tuple[list[dict], list[dict]]:
-    """Tra ve (canh bao, canh bao som). Xu ly nhan qua (causal) theo frame."""
-    by_f: dict[int, list[dict]] = {}
-    for t in tracks:
-        by_f.setdefault(int(t["frame"]), []).append(t)
-    K, N = cfg["confirm_k"], cfg["confirm_n"]
-    dwell, timeout = frames(cfg["dwell_s"], fps), frames(cfg["end_timeout_s"], fps)
-    relink, gap = frames(cfg["relink_s"], fps), frames(cfg["merge_gap_s"], fps)
-    horizon, window = frames(cfg["predict_horizon_s"], fps), int(cfg["predict_window"])
-    mode = cfg.get("point", "center")
-    st: dict[int, _Track] = {}
-    alerts: list[dict] = []                  # {start, end, tracks:set, last_box, last_in, kind}
-    prewarn: list[dict] = []
-    owner: dict[int, dict] = {}              # track -> canh bao dang mo/da mo
-    for f in range(n_frames):
-        for r in by_f.get(f, []):
+class R1Engine:
+    """Luat R1 chay truc tuyen tung frame (W9, e1pipe). r1_alerts() la vong lap cua chinh lop nay nen hai cach cho cung
+    ket qua. step(f, rows) xu ly frame f (moi frame phai duoc goi theo thu tu, ke ca frame khong co track) va tra ve
+    cac chuyen trang thai {"event": idx, "transition": open|reopen|close}. close() chot moi canh bao dang mo.
+    finalized(f): chi so cac canh bao da dong va khong the mo lai duoc nua (an toan de ghi vao kho bat bien)."""
+
+    def __init__(self, fps: float, poly, width, height, cfg: dict):
+        self.cfg, self.poly, self.width, self.height = cfg, poly, width, height
+        self.K, self.N = cfg["confirm_k"], cfg["confirm_n"]
+        self.dwell, self.timeout = frames(cfg["dwell_s"], fps), frames(cfg["end_timeout_s"], fps)
+        self.relink, self.gap = frames(cfg["relink_s"], fps), frames(cfg["merge_gap_s"], fps)
+        self.horizon, self.window = frames(cfg["predict_horizon_s"], fps), int(cfg["predict_window"])
+        self.mode = cfg.get("point", "center")
+        self.st: dict[int, _Track] = {}
+        self.alerts: list[dict] = []
+        self.prewarn: list[dict] = []
+        self.owner: dict[int, dict] = {}
+        self.last_f = -1
+
+    def step(self, f: int, rows: list[dict]) -> list[dict]:
+        if f != self.last_f + 1:
+            raise ValueError(f"frame phai lien tiep: {self.last_f} -> {f}")
+        self.last_f = f
+        cfg, poly, width, height = self.cfg, self.poly, self.width, self.height
+        st, alerts, owner = self.st, self.alerts, self.owner
+        K, N, dwell, relink, gap = self.K, self.N, self.dwell, self.relink, self.gap
+        trans: list[dict] = []
+        for r in rows:
             tid = int(r["id"]); s = st.setdefault(tid, _Track(tid))
             b = _box(r); cls = int(r["cls"]); s.votes[cls] += 1
             ev = cls == cfg["drone_class"] and float(r["conf"]) >= cfg["conf_min"]
@@ -174,7 +186,7 @@ def r1_alerts(tracks: list[dict], n_frames: int, fps: float, poly, width, height
                 s.evidence.popleft()
             if len(s.evidence) >= K:
                 s.confirmed = True
-            inside = box_in_roi(b, poly, width, height, mode)
+            inside = box_in_roi(b, poly, width, height, self.mode)
             if not inside:
                 s.seen_outside = True
             if ev and inside:
@@ -186,7 +198,7 @@ def r1_alerts(tracks: list[dict], n_frames: int, fps: float, poly, width, height
             s.last_box, s.last_frame = b, f
             cx, cy = b[0] + b[2] / 2, b[1] + b[3] / 2
             s.centers.append((f, cx, cy))
-            while len(s.centers) > window:
+            while len(s.centers) > self.window:
                 s.centers.popleft()
             drone_votes = s.votes[cfg["drone_class"]]
             drone_major = drone_votes > max(
@@ -198,9 +210,9 @@ def r1_alerts(tracks: list[dict], n_frames: int, fps: float, poly, width, height
                 (f0, x0, y0), (f1, x1, y1) = s.centers[0], s.centers[-1]
                 if f1 > f0:
                     vx, vy = (x1 - x0) / (f1 - f0), (y1 - y0) / (f1 - f0)
-                    if point_in_polygon((cx + vx * horizon) / width, (cy + vy * horizon) / height, poly):
+                    if point_in_polygon((cx + vx * self.horizon) / width, (cy + vy * self.horizon) / height, poly):
                         s.prewarned = True
-                        prewarn.append({"track": tid, "frame": f})
+                        self.prewarn.append({"track": tid, "frame": f})
             # mo canh bao hoac gan vao canh bao da co
             if tid in owner:
                 a = owner[tid]
@@ -218,24 +230,53 @@ def r1_alerts(tracks: list[dict], n_frames: int, fps: float, poly, width, height
                         if a["end"] is not None and f - a["end"] - 1 <= gap and set(a["tracks"]) & {tid}:
                             link = a; break
                 if link is not None:
+                    if link["end"] is not None:
+                        trans.append({"event": link["idx"], "transition": "reopen"})
                     link["tracks"].add(tid); link["end"] = None; link["last_in"] = f; link["last_box"] = b
                     owner[tid] = link
                 else:
-                    a = {"rule": "R1", "start": f, "end": None, "tracks": {tid}, "last_in": f, "last_box": b,
+                    a = {"rule": "R1", "idx": len(alerts), "start": f, "end": None, "tracks": {tid}, "last_in": f, "last_box": b,
                          "kind": "vao_vung" if s.seen_outside else "xuat_hien_trong_vung"}
                     alerts.append(a); owner[tid] = a
+                    trans.append({"event": a["idx"], "transition": "open"})
         # dong canh bao het bang chung trong ROI qua timeout
         for a in alerts:
-            if a["end"] is None and f - a["last_in"] > timeout:
+            if a["end"] is None and f - a["last_in"] > self.timeout:
                 a["end"] = a["last_in"]
+                trans.append({"event": a["idx"], "transition": "close"})
                 for t in list(a["tracks"]):
                     if owner.get(t) is a:
                         del owner[t]
-    for a in alerts:
-        if a["end"] is None:
-            a["end"] = a["last_in"]
-    out = [{"rule": "R1", "start": a["start"], "end": a["end"], "tracks": sorted(a["tracks"]), "kind": a["kind"]} for a in alerts]
-    return out, prewarn
+        return trans
+
+    def finalized(self, f: int) -> list[int]:
+        """Canh bao da dong va qua cua so mo lai (max(relink, gap) + 1 frame): khong con thay doi."""
+        lim = max(self.relink, self.gap) + 1
+        return [a["idx"] for a in self.alerts if a["end"] is not None and f - a["end"] > lim]
+
+    def close(self) -> list[dict]:
+        trans = []
+        for a in self.alerts:
+            if a["end"] is None:
+                a["end"] = a["last_in"]
+                trans.append({"event": a["idx"], "transition": "close"})
+        return trans
+
+    def event(self, idx: int) -> dict:
+        a = self.alerts[idx]
+        return {"rule": "R1", "start": a["start"], "end": a["end"], "tracks": sorted(a["tracks"]), "kind": a["kind"]}
+
+
+def r1_alerts(tracks: list[dict], n_frames: int, fps: float, poly, width, height, cfg: dict) -> tuple[list[dict], list[dict]]:
+    """Tra ve (canh bao, canh bao som). Xu ly nhan qua (causal) theo frame, bang R1Engine."""
+    by_f: dict[int, list[dict]] = {}
+    for t in tracks:
+        by_f.setdefault(int(t["frame"]), []).append(t)
+    eng = R1Engine(fps, poly, width, height, cfg)
+    for f in range(n_frames):
+        eng.step(f, by_f.get(f, []))
+    eng.close()
+    return [eng.event(i) for i in range(len(eng.alerts))], eng.prewarn
 
 
 # ----------------------------------------------------------------------------- danh gia su kien

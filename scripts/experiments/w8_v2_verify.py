@@ -66,7 +66,7 @@ def evaluate_run(ev: Path, nms_expected: float, rois, acfg, ignore: set[str]) ->
     gt_img = w7.image_gt(meta, ev)
     _, _, summ, _, _ = ea.evaluate(vids, rois, acfg, points=("center",))
     track = {"all": tm.summarize(per), **{c: tm.summarize([r for r in per if r["class_name"] == c]) for c in w7.CLASSES}}
-    return {"evidence": ev.relative_to(ROOT).as_posix(), "nms_iou": inp["detector"]["nms_iou"],
+    return {"evidence": ev.relative_to(ROOT).as_posix() if ev.is_relative_to(ROOT) else ev.as_posix(), "nms_iou": inp["detector"]["nms_iou"],
             "detections": sum(len(v["dets"]) for v in vids), "tracking": track, "per_video": per,
             "alerts": {k: v for k, v in summ.items() if k.startswith("center_hex|center|")},
             "image_level": w7.det_metrics(gt_img, preds, 0.25, ignore), "median_fps": median_fps(ev)}
