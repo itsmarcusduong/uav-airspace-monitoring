@@ -104,3 +104,14 @@ def test_main_end_to_end_with_fake_model(tmp_path, monkeypatch):
     assert c["jpg_fp32"]["dup_same_class_iou_0.5_0.7"] == 0 and c["frame_fp32"]["dup_same_class_iou_0.5_0.7"] == 3
     assert res["repro_frame_fp32_vs_run14"] == {"matched": 2, "boxes": 6, "rate": 0.3333}
     assert (tmp_path / "out/w8_dupdiag_evidence.zip").is_file()
+
+
+def test_run17_notebook_uses_real_dataset_card_keys():
+    """Loi run 17 (21/11): notebook doc khoa 'content_fingerprint' khong ton tai. Kiem moi khoa card[...] trong notebook
+    co that trong dataset_card.json cua e1-yolo-v1 (ban luu o run 13)."""
+    import re
+    card = ROOT / "results/W05/kaggle_run_13/train_yolo11n_640_s20261030/dataset_card.json"
+    nb = json.loads((ROOT / "scripts/kaggle/notebooks/w8_run17_v2_verify.ipynb").read_text(encoding="utf-8"))
+    src = "\n".join(c["source"] if isinstance(c["source"], str) else "".join(c["source"]) for c in nb["cells"])
+    keys = set(re.findall(r'card\["([^"]+)"\]', src))
+    assert keys and keys <= set(json.loads(card.read_text(encoding="utf-8")))
