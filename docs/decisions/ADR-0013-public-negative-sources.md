@@ -1,6 +1,7 @@
 # ADR-0013: Thay video tự quay bằng nguồn video công khai có giấy phép; dời tập âm tính sang W8–W9
 
 - Trạng thái: **Accepted** (An 17/11/2026).
+- Sửa đổi đề xuất: ADR-0014 (Proposed 17/11/2026) đưa FBD-SV-2024 trở lại `neg_eval`, chỉ để đánh giá. Khi ADR-0014 chưa Accepted, giữ nguyên quyết định loại dưới đây.
 - Thay thế ADR-0011 mục 2 (nguồn của `e1-neg-v1`) và mục 8 (lịch quay). Các mục khác của ADR-0011 giữ nguyên: luật kích hoạt (mục 3), luật chọn (mục 4), OOD (mục 5), license (mục 6), báo cáo theo nguồn (mục 7).
 - Liên quan: #99 W7-03, ADR-0011, `docs/w7/data_expansion_proposal.md`, `data/manifests/license_matrix.csv`.
 
