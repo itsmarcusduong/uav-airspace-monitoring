@@ -1,0 +1,806 @@
+{
+  "split": "val",
+  "crf": 23,
+  "videos": 38,
+  "mismatch": [],
+  "files": [
+    {
+      "video_id": "V_AIRPLANE_005",
+      "src_sha256": "806fb14b22381f43a465a240770166ec4dab36d6acc865d8de64cd74c08581ac",
+      "sha256": "32dd4d6efdd7ecf275f8af4fa222f4ee51b9539fd777e3080d3ad72c0e2e6cde",
+      "bytes": 119188,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 328
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 328
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_AIRPLANE_007",
+      "src_sha256": "1eeb5cc4d5511e1e79ecfc8f2b582a69753f63654494cc79f1dec432232cee7a",
+      "sha256": "25f1f82962f83b2678c2b124948210ab28fcd7e9a7bb2170e639e2b5ded0dbe3",
+      "bytes": 79468,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 300
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 300
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_AIRPLANE_009",
+      "src_sha256": "f766df6522c1b3af93eda345bb68906e321dd526e491842f917155276613491b",
+      "sha256": "a1be042240463c63341b3d9dc9af4358637abdffc19ff8871bd7eab53ee32aff",
+      "bytes": 69809,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 325
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 325
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_AIRPLANE_027",
+      "src_sha256": "c221ab67540d1e4d8695d412390e5786c30684eb47f6589855d85b0e8a3b7043",
+      "sha256": "afafd8cff847df5aee5bac7ca43b803af43f7a2686b49d976ee30e2cdcd7dc66",
+      "bytes": 156068,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 321
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 321
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_AIRPLANE_030",
+      "src_sha256": "72c968ed14bcb49208b28e0d423825dcfbfcf33a5ec31d80059839758ed81759",
+      "sha256": "eb5a59ab2bfe31da27b0c4b2012d2c901ad667c86e88c6b04eb83b12913918ad",
+      "bytes": 112362,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 320
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 320
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_AIRPLANE_037",
+      "src_sha256": "da17efed7153d388dc807274704b857838c6f10eff8941c6f9f0da27496f787b",
+      "sha256": "3024b8c10d443c57ce3a09c3b1de8a4316e639aca909acca4b6c6fc2faca074a",
+      "bytes": 188691,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 312
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 312
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_AIRPLANE_047",
+      "src_sha256": "1f53634e0a46c647bd42f346015a657c4da774819cdf43cd84d3d928e3467435",
+      "sha256": "8e6762f4f5e404e35bc55532f05c0ac81f4067327eaeaac25749cc16655f1bc7",
+      "bytes": 328739,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 328
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 328
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_AIRPLANE_048",
+      "src_sha256": "c2f542ec9080401ec7b23d5631b4f8e8fa2f21bf8ab59ef5ebccf460745942ed",
+      "sha256": "fc3ba665ba4c7b14cbc31a966231a3a909462f3be7e2f409c688ca33247e12b6",
+      "bytes": 441885,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 303
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 303
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_AIRPLANE_052",
+      "src_sha256": "8ea36a9a854f136c5e9fe07e2d1c9e65490d5b039dd8fa66483444607d2f9b9c",
+      "sha256": "9e5deceb86f4f214bcba694ba62e96a0c0568bfd40519452caaa3bacbbcfb4b3",
+      "bytes": 110660,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 314
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 314
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_BIRD_025",
+      "src_sha256": "a91ae13080298be51e76931d53d7d7dab723a08d9f13297f9cdd7b2141da7e98",
+      "sha256": "1ddff7d1783ae6581a28d97bd4a98d3d9d7a9f32b3ab3d880c2a487270298e93",
+      "bytes": 320118,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 319
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 319
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_BIRD_037",
+      "src_sha256": "8ac04b4e42bde4b2b8ac12fa8abd190e88720a02ac4738eee47a37a38605c483",
+      "sha256": "a50c025b744527b63ffabc3fe97bff5aff98c1ccddc5a0b5f197231172b6b6af",
+      "bytes": 135869,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 326
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 326
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_BIRD_041",
+      "src_sha256": "9331c32679a4c6e9c5dbbad0a44afbc88763ab3e58692a5a895f3058b569eda0",
+      "sha256": "022073b76a0c68b1d772429ebb086ccf929bf1ebfd9798b2e2c5f4e72335885d",
+      "bytes": 122511,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 305
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 305
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_DRONE_004",
+      "src_sha256": "30d5ffe6ff11621cc18f3d95aaf9464d12e6013cd6069054ec0f68c7f96880f3",
+      "sha256": "fb7ee89c9e14dc2c8a590ce3850a8f281e8018ad236e524b8079c14aa9e0a369",
+      "bytes": 70471,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 303
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 303
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_DRONE_010",
+      "src_sha256": "4a857dfe16e123fc8375b8e730ad0c7f398f5defc14d50e41ade819dde92355e",
+      "sha256": "6ddf816c6b26dfb7e7132061d0828d0e0a1692e9e81abf256cd90b09172d8499",
+      "bytes": 79893,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 301
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 301
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_DRONE_011",
+      "src_sha256": "5e558503f301acff7c557b84a86ca2591d0e5690cd312fa694d1304287f583ac",
+      "sha256": "ec621af47abd5181d39fd34d51af50119e5ad0c81b2e49342b02c4c0f4940a12",
+      "bytes": 82057,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 302
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 302
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_DRONE_018",
+      "src_sha256": "4837846a2fcd2dee1d528749337bd94d804135964c6305a9fbbc2597f8792766",
+      "sha256": "f9e99bce92b5450c2857c53aa4fa2d4c757b996a14a4346d7df381dc35ade773",
+      "bytes": 66468,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 302
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 302
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_DRONE_023",
+      "src_sha256": "5750b18edd6c4ad622baf8ff4215cfd6fbf422d212ee688aa55c055ffada94ed",
+      "sha256": "bb1e255543fda7d8fe0da9178d42e3febc90d32c5a155d049736eb991f5fc695",
+      "bytes": 81075,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 301
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 301
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_DRONE_025",
+      "src_sha256": "ca4b8485ece6cfe45e11242f0d72548747e23206edbc88949c02d1385ae9944d",
+      "sha256": "59969c75b891faf88f36402f1168e271f77fb1f6dbcf2d1cf39116b1e4b73b2d",
+      "bytes": 80714,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 305
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 305
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_DRONE_029",
+      "src_sha256": "2b0d01cd88bce7be66014ce7bf7641ec63d20348e9ce5035c34f88a65cabe9a5",
+      "sha256": "3f315cba13b85f3f5f59c6bb34bb26255224331441d17c6270f4576dd1d57021",
+      "bytes": 95800,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 301
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 301
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_DRONE_032",
+      "src_sha256": "934a8723663b2d3ea5505f4ca6639dc3829a4f8554cb0b695f0491aa12e71834",
+      "sha256": "71f3703d9effc9f67736fe0a78333d80b44391235381fb05917a0f722a461962",
+      "bytes": 99715,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 314
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 314
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_DRONE_044",
+      "src_sha256": "d4b54f9f0e48ec5b185ddc93454dcd5575035415010e6e6f1ada2c17feb0115d",
+      "sha256": "36e96f43ee04ab86a4f3fe908f080df42ef77b1679dfd712391d56dcf338b16a",
+      "bytes": 75285,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 312
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 312
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_DRONE_049",
+      "src_sha256": "4fbae7bc202cdba7250fd19ee88384d807b8ab32a7070c794a7ee864023ac440",
+      "sha256": "55ef5970f9924838cf8dfa5f6249abe582c6cf9a522a35aeb58aad2fe3433cfa",
+      "bytes": 168223,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 307
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 307
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_DRONE_060",
+      "src_sha256": "3c4a22a69c58e448ba8b85374ad62bc2acc6b7e7242c3527d26b8ee00c47fb7c",
+      "sha256": "b86e0a99dd2cb5b4d2e01524202acc24f6d303731260cd9edbe1188fa4a2b185",
+      "bytes": 163464,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 308
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 308
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_DRONE_077",
+      "src_sha256": "bf82aae04811454ac7419be14edc0ee28049a198e1e0cfe8ed712fff3c4f69b9",
+      "sha256": "9f89cdcb0f06612dc16d624df3ead480ce28649f103cbe5a369a56b93e23952d",
+      "bytes": 164019,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 316
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 316
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_DRONE_078",
+      "src_sha256": "91caf84e62e5729b1a03e3dcbd3121b38d712735ecbe3fce9735391854ee2598",
+      "sha256": "27ad180bdb17690876a2e762b51868804b63f824d87f6c06923726f8e3732e20",
+      "bytes": 167588,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 300
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 300
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_DRONE_080",
+      "src_sha256": "13b81b3a6debe057d084b1f859e5f2fc59705c4efdaab1a543cf955df0ce5af8",
+      "sha256": "610780690186f01b291f1121f1f2b370b94f6649b2ddb30c6828ff3eaa1e6202",
+      "bytes": 169894,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 300
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 300
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_DRONE_088",
+      "src_sha256": "0470e31db0a06788f5c1f5992435adac66d890193766668865094095963791ac",
+      "sha256": "2822ba21dd5a9b511108706e79c268740d988c06c5be2501501dc3619619869b",
+      "bytes": 158241,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 316
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 316
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_DRONE_095",
+      "src_sha256": "6685a4a73d5dd71088aa6aa68b480a864d66c2d9e1a504925c7d7346e45da741",
+      "sha256": "04f98356461e092831157c0428c6d1e759f781625ef8978e21758d6477d9c05c",
+      "bytes": 159848,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 312
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 312
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_DRONE_096",
+      "src_sha256": "b1a750f0852f7c64f6a86adcd5eb4f7d6cf46a71ee88367e8cc195f75d1ce9b2",
+      "sha256": "95e979c7101b97534c72ced0de9cb2f027a5bd416f116d109e229b662655312b",
+      "bytes": 195704,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 325
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 325
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_HELICOPTER_005",
+      "src_sha256": "c343272a479e48720ec41c795ee2103c389ac744713b81407a4c5e7175bda0d1",
+      "sha256": "d1b9bb6d15b6c1fd207867e1f5b88395b662ea6c9a57e5b431d889c39ceefa9c",
+      "bytes": 94589,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 311
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 311
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_HELICOPTER_010",
+      "src_sha256": "0cccf0670a67068de94689df46d2c865af67f65a4f508e8dd89852345bc2a6ec",
+      "sha256": "bd11e731ba8d5d68548901de62374b6173b0b2c3b210c6ad69c82f0426e722b7",
+      "bytes": 237448,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 303
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 303
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_HELICOPTER_011",
+      "src_sha256": "3475e7cc97cd3c6ea45e8b637d922ef8a53a5ff3978c74ac9631f6bf3f3e307a",
+      "sha256": "938420e3301be6f2554353ce58c813ae1d094884a998aada1dc36808c2097977",
+      "bytes": 119034,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 309
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 309
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_HELICOPTER_012",
+      "src_sha256": "80dac9af571926d4a38b65049d1d24adf4fb621adb87c8f639b6993964a20181",
+      "sha256": "60cf421d1566a204c82ab2f37e175fc1d561a2be8c5c8c4cb33598ddb6469342",
+      "bytes": 114980,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 314
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 314
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_HELICOPTER_031",
+      "src_sha256": "865a51e6fb15d62b001e4eb1d698c8e1de6a0affe5b37eecb0506ac1dad32e3a",
+      "sha256": "f68d8de56600dcdadd9b48c36ef87d5526bdabe4290f0dd4bed658d3d35ceef9",
+      "bytes": 410285,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 304
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 304
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_HELICOPTER_039",
+      "src_sha256": "8802cad818a1d26ea979fdad4ae5f7379268e9ba2b67dec0746aca8a0080a298",
+      "sha256": "145caed6d0a76e0709cbd98b3c3fd96f8ee8aed3706d62212cae015f31e16d9f",
+      "bytes": 405988,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 308
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 308
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_HELICOPTER_041",
+      "src_sha256": "cd844d76c3eb0be7562b894544a62a6ddb2d3c2d5565f492e05a3988c170837b",
+      "sha256": "717a2cc9843b10bc2688f2104c1b20130a4853cfef1729a1c8633df26c86955d",
+      "bytes": 209063,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 312
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 312
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_HELICOPTER_053",
+      "src_sha256": "cf8994d18bdab68c7a7f486b672cd56b5472b16b16376da8f8735b666a90726b",
+      "sha256": "5c0d4309db1f561fba7266d8b0b70ca2c34d73125dbf81db76b20de9d05a9909",
+      "bytes": 101262,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 322
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 322
+      },
+      "same_frames_fps_size": true
+    },
+    {
+      "video_id": "V_HELICOPTER_056",
+      "src_sha256": "d1b601261caf7586b83a211d71e076b285d0f1727455d0ba62ec2910d2502dbd",
+      "sha256": "671fdcea38a11f0e398ae7d21f18db9eef0fc21bae604eb038658caba8065c5c",
+      "bytes": 309378,
+      "src": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 312
+      },
+      "out": {
+        "codec": "h264",
+        "width": 640,
+        "height": 512,
+        "fps": 30.0,
+        "frames": 312
+      },
+      "same_frames_fps_size": true
+    }
+  ]
+}

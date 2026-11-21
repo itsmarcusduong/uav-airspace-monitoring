@@ -1,0 +1,27 @@
+{
+  "inputs": {
+    "status": "OK",
+    "videos": 38,
+    "images": 1202,
+    "weights_sha256": "a3de1e0195e4380aac497612296ed57f67e41ceb5ae3314e82a5ad66b125ef8a",
+    "conf": 0.1,
+    "nms_iou": 0.7,
+    "imgsz": 640,
+    "commit": "42fd7319bfa64c3aa87d7cc9a2e6c6b766931136"
+  },
+  "env": {
+    "status": "OK",
+    "ultralytics": "8.4.183",
+    "torch": "2.11.0+cu130",
+    "cuda": true,
+    "gpu": "Tesla T4"
+  },
+  "predict": {
+    "status": "OK",
+    "images": 1202,
+    "seconds": 296.2
+  },
+  "summary": {
+    "status": "OK"
+  }
+}

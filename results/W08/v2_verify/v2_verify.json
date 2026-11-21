@@ -1,0 +1,506 @@
+{
+  "plan": "docs/w8/W8_PLAN.md",
+  "runs": {
+    "run14": {
+      "evidence": "results/W06/kaggle_run_14/w6_run14",
+      "nms_iou": 0.7,
+      "detections": 19567,
+      "tracking": {
+        "all": {
+          "videos": 38,
+          "gt_frames": 11604,
+          "matched_frames": 9776,
+          "track_recall_pooled": 0.8425,
+          "id_switches": 209,
+          "idsw_per_1000_gt_frames": 18.011,
+          "fragments": 295,
+          "videos_single_id": 12,
+          "videos_no_match": 1,
+          "median_dominant_id_coverage": 0.7534,
+          "median_track_recall": 0.9654,
+          "median_class_consistency": 1.0,
+          "false_tracks": 19
+        },
+        "Airplane": {
+          "videos": 9,
+          "gt_frames": 2851,
+          "matched_frames": 2264,
+          "track_recall_pooled": 0.7941,
+          "id_switches": 50,
+          "idsw_per_1000_gt_frames": 17.538,
+          "fragments": 52,
+          "videos_single_id": 0,
+          "videos_no_match": 0,
+          "median_dominant_id_coverage": 0.48,
+          "median_track_recall": 0.8369,
+          "median_class_consistency": 0.99,
+          "false_tracks": 5
+        },
+        "Bird": {
+          "videos": 3,
+          "gt_frames": 750,
+          "matched_frames": 590,
+          "track_recall_pooled": 0.7867,
+          "id_switches": 2,
+          "idsw_per_1000_gt_frames": 2.667,
+          "fragments": 6,
+          "videos_single_id": 2,
+          "videos_no_match": 0,
+          "median_dominant_id_coverage": 0.978,
+          "median_track_recall": 0.9811,
+          "median_class_consistency": 0.9357,
+          "false_tracks": 2
+        },
+        "Drone": {
+          "videos": 17,
+          "gt_frames": 5208,
+          "matched_frames": 4564,
+          "track_recall_pooled": 0.8763,
+          "id_switches": 125,
+          "idsw_per_1000_gt_frames": 24.002,
+          "fragments": 200,
+          "videos_single_id": 7,
+          "videos_no_match": 0,
+          "median_dominant_id_coverage": 0.8317,
+          "median_track_recall": 0.9211,
+          "median_class_consistency": 1.0,
+          "false_tracks": 12
+        },
+        "Helicopter": {
+          "videos": 9,
+          "gt_frames": 2795,
+          "matched_frames": 2358,
+          "track_recall_pooled": 0.8436,
+          "id_switches": 32,
+          "idsw_per_1000_gt_frames": 11.449,
+          "fragments": 37,
+          "videos_single_id": 3,
+          "videos_no_match": 1,
+          "median_dominant_id_coverage": 0.9286,
+          "median_track_recall": 0.9968,
+          "median_class_consistency": 1.0,
+          "false_tracks": 0
+        }
+      },
+      "alerts": {
+        "center_hex|center|R0": {
+          "roi": "center_hex",
+          "point": "center",
+          "rule": "R0",
+          "events": 23,
+          "detected": 23,
+          "alerts": 31,
+          "matched_alerts": 23,
+          "matched_1to1": 23,
+          "false_alerts": 8,
+          "false_alerts_nondrone": 7,
+          "duplicates": 0,
+          "hours_nondrone": 0.0611,
+          "hours_all": 0.1095,
+          "videos_with_false_alert": 6,
+          "event_recall": 1.0,
+          "event_precision": 0.7419,
+          "event_precision_1to1": 0.7419,
+          "false_alerts_drone_videos": 1,
+          "false_alerts_per_hour_nondrone_upper95": 215.3,
+          "false_alerts_per_hour_nondrone": 114.61,
+          "latency_median_s": -0.033
+        },
+        "center_hex|center|R1": {
+          "roi": "center_hex",
+          "point": "center",
+          "rule": "R1",
+          "events": 23,
+          "detected": 23,
+          "alerts": 25,
+          "matched_alerts": 25,
+          "matched_1to1": 23,
+          "false_alerts": 0,
+          "false_alerts_nondrone": 0,
+          "duplicates": 2,
+          "hours_nondrone": 0.0611,
+          "hours_all": 0.1095,
+          "videos_with_false_alert": 0,
+          "event_recall": 1.0,
+          "event_precision": 1.0,
+          "event_precision_1to1": 0.92,
+          "false_alerts_drone_videos": 0,
+          "false_alerts_per_hour_nondrone_upper95": 49.1,
+          "false_alerts_per_hour_nondrone": 0.0,
+          "latency_median_s": 0.233
+        }
+      },
+      "image_level": {
+        "conf": 0.25,
+        "images": 1162,
+        "ignored_images": 40,
+        "per_class": {
+          "Airplane": {
+            "gt": 289,
+            "tp": 203,
+            "fp": 90,
+            "P": 0.6928,
+            "R": 0.7024,
+            "F1": 0.6976
+          },
+          "Bird": {
+            "gt": 73,
+            "tp": 52,
+            "fp": 38,
+            "P": 0.5778,
+            "R": 0.7123,
+            "F1": 0.638
+          },
+          "Drone": {
+            "gt": 515,
+            "tp": 449,
+            "fp": 128,
+            "P": 0.7782,
+            "R": 0.8718,
+            "F1": 0.8223
+          },
+          "Helicopter": {
+            "gt": 285,
+            "tp": 241,
+            "fp": 45,
+            "P": 0.8427,
+            "R": 0.8456,
+            "F1": 0.8441
+          }
+        },
+        "confusion": {
+          "Airplane->Airplane": 202,
+          "Airplane->Bird": 2,
+          "Airplane->Drone": 3,
+          "Airplane->Helicopter": 10,
+          "Airplane->bo_sot": 72,
+          "Bird->Airplane": 1,
+          "Bird->Bird": 52,
+          "Bird->bo_sot": 20,
+          "Drone->Drone": 449,
+          "Drone->bo_sot": 66,
+          "Helicopter->Drone": 3,
+          "Helicopter->Helicopter": 241,
+          "Helicopter->bo_sot": 41,
+          "nen->Airplane": 90,
+          "nen->Bird": 36,
+          "nen->Drone": 122,
+          "nen->Helicopter": 35
+        }
+      },
+      "median_fps": 88.0
+    },
+    "run17": {
+      "evidence": "results/W08/kaggle_run_17/w8_run17",
+      "nms_iou": 0.5,
+      "detections": 13902,
+      "tracking": {
+        "all": {
+          "videos": 38,
+          "gt_frames": 11604,
+          "matched_frames": 9723,
+          "track_recall_pooled": 0.8379,
+          "id_switches": 23,
+          "idsw_per_1000_gt_frames": 1.982,
+          "fragments": 321,
+          "videos_single_id": 25,
+          "videos_no_match": 1,
+          "median_dominant_id_coverage": 0.8691,
+          "median_track_recall": 0.9654,
+          "median_class_consistency": 1.0,
+          "false_tracks": 5
+        },
+        "Airplane": {
+          "videos": 9,
+          "gt_frames": 2851,
+          "matched_frames": 2317,
+          "track_recall_pooled": 0.8127,
+          "id_switches": 13,
+          "idsw_per_1000_gt_frames": 4.56,
+          "fragments": 57,
+          "videos_single_id": 2,
+          "videos_no_match": 0,
+          "median_dominant_id_coverage": 0.5256,
+          "median_track_recall": 0.9844,
+          "median_class_consistency": 0.99,
+          "false_tracks": 4
+        },
+        "Bird": {
+          "videos": 3,
+          "gt_frames": 750,
+          "matched_frames": 590,
+          "track_recall_pooled": 0.7867,
+          "id_switches": 2,
+          "idsw_per_1000_gt_frames": 2.667,
+          "fragments": 6,
+          "videos_single_id": 2,
+          "videos_no_match": 0,
+          "median_dominant_id_coverage": 0.978,
+          "median_track_recall": 0.9811,
+          "median_class_consistency": 0.9357,
+          "false_tracks": 1
+        },
+        "Drone": {
+          "videos": 17,
+          "gt_frames": 5208,
+          "matched_frames": 4521,
+          "track_recall_pooled": 0.8681,
+          "id_switches": 3,
+          "idsw_per_1000_gt_frames": 0.576,
+          "fragments": 226,
+          "videos_single_id": 15,
+          "videos_no_match": 0,
+          "median_dominant_id_coverage": 0.9033,
+          "median_track_recall": 0.9033,
+          "median_class_consistency": 1.0,
+          "false_tracks": 0
+        },
+        "Helicopter": {
+          "videos": 9,
+          "gt_frames": 2795,
+          "matched_frames": 2295,
+          "track_recall_pooled": 0.8211,
+          "id_switches": 5,
+          "idsw_per_1000_gt_frames": 1.789,
+          "fragments": 32,
+          "videos_single_id": 6,
+          "videos_no_match": 1,
+          "median_dominant_id_coverage": 0.9676,
+          "median_track_recall": 0.9934,
+          "median_class_consistency": 1.0,
+          "false_tracks": 0
+        }
+      },
+      "alerts": {
+        "center_hex|center|R0": {
+          "roi": "center_hex",
+          "point": "center",
+          "rule": "R0",
+          "events": 23,
+          "detected": 23,
+          "alerts": 31,
+          "matched_alerts": 23,
+          "matched_1to1": 23,
+          "false_alerts": 8,
+          "false_alerts_nondrone": 7,
+          "duplicates": 0,
+          "hours_nondrone": 0.0611,
+          "hours_all": 0.1095,
+          "videos_with_false_alert": 6,
+          "event_recall": 1.0,
+          "event_precision": 0.7419,
+          "event_precision_1to1": 0.7419,
+          "false_alerts_drone_videos": 1,
+          "false_alerts_per_hour_nondrone_upper95": 215.3,
+          "false_alerts_per_hour_nondrone": 114.61,
+          "latency_median_s": -0.033
+        },
+        "center_hex|center|R1": {
+          "roi": "center_hex",
+          "point": "center",
+          "rule": "R1",
+          "events": 23,
+          "detected": 23,
+          "alerts": 25,
+          "matched_alerts": 25,
+          "matched_1to1": 23,
+          "false_alerts": 0,
+          "false_alerts_nondrone": 0,
+          "duplicates": 2,
+          "hours_nondrone": 0.0611,
+          "hours_all": 0.1095,
+          "videos_with_false_alert": 0,
+          "event_recall": 1.0,
+          "event_precision": 1.0,
+          "event_precision_1to1": 0.92,
+          "false_alerts_drone_videos": 0,
+          "false_alerts_per_hour_nondrone_upper95": 49.1,
+          "false_alerts_per_hour_nondrone": 0.0,
+          "latency_median_s": 0.233
+        }
+      },
+      "image_level": {
+        "conf": 0.25,
+        "images": 1162,
+        "ignored_images": 40,
+        "per_class": {
+          "Airplane": {
+            "gt": 289,
+            "tp": 203,
+            "fp": 41,
+            "P": 0.832,
+            "R": 0.7024,
+            "F1": 0.7617
+          },
+          "Bird": {
+            "gt": 73,
+            "tp": 52,
+            "fp": 33,
+            "P": 0.6118,
+            "R": 0.7123,
+            "F1": 0.6582
+          },
+          "Drone": {
+            "gt": 515,
+            "tp": 449,
+            "fp": 52,
+            "P": 0.8962,
+            "R": 0.8718,
+            "F1": 0.8839
+          },
+          "Helicopter": {
+            "gt": 285,
+            "tp": 232,
+            "fp": 34,
+            "P": 0.8722,
+            "R": 0.814,
+            "F1": 0.8421
+          }
+        },
+        "confusion": {
+          "Airplane->Airplane": 202,
+          "Airplane->Bird": 2,
+          "Airplane->Drone": 3,
+          "Airplane->Helicopter": 10,
+          "Airplane->bo_sot": 72,
+          "Bird->Airplane": 1,
+          "Bird->Bird": 52,
+          "Bird->bo_sot": 20,
+          "Drone->Drone": 449,
+          "Drone->bo_sot": 66,
+          "Helicopter->Drone": 3,
+          "Helicopter->Helicopter": 232,
+          "Helicopter->bo_sot": 50,
+          "nen->Airplane": 41,
+          "nen->Bird": 31,
+          "nen->Drone": 46,
+          "nen->Helicopter": 24
+        }
+      },
+      "median_fps": 84.91
+    }
+  },
+  "rule_b": {
+    "rule": "W8_PLAN.md muc B",
+    "conditions": {
+      "1_drone_image_recall_drop_le_0.02": {
+        "run14": 0.8718,
+        "run17": 0.8718,
+        "pass": true
+      },
+      "2_r1_event_recall_not_lower": {
+        "run14": "23/23",
+        "run17": "23/23",
+        "pass": true
+      },
+      "3_r1_false_nondrone_not_higher": {
+        "run14": 0,
+        "run17": 0,
+        "pass": true
+      },
+      "4_idsw_reduction_ge_20pct": {
+        "run14": 18.011,
+        "run17": 1.982,
+        "reduction": 0.89,
+        "pass": true
+      },
+      "5_pooled_track_recall_drop_le_0.02": {
+        "run14": 0.8425,
+        "run17": 0.8379,
+        "pass": true
+      }
+    },
+    "apply_v2": true,
+    "decision": "ap dung V2 (NMS cung lop 0,5 trong detector) cho pipeline W8",
+    "reported_not_conditions": {
+      "fragments": {
+        "run14": 295,
+        "run17": 321
+      },
+      "median_fps": {
+        "run14": 88.0,
+        "run17": 84.91
+      },
+      "idsw_vs_v2_offline": {
+        "offline": 1.982,
+        "run17": 1.982,
+        "diff": 0.0
+      },
+      "r0_false_nondrone": {
+        "run14": 7,
+        "run17": 7
+      },
+      "track_recall_per_video_largest_drops": [
+        [
+          "V_HELICOPTER_012",
+          -0.1943
+        ],
+        [
+          "V_DRONE_025",
+          -0.0922
+        ],
+        [
+          "V_DRONE_023",
+          -0.0367
+        ],
+        [
+          "V_AIRPLANE_009",
+          -0.0246
+        ],
+        [
+          "V_DRONE_010",
+          -0.0067
+        ]
+      ],
+      "videos_track_recall_lower": 7,
+      "videos_track_recall_higher": 1
+    }
+  },
+  "rule_c": {
+    "rule": "W8_PLAN.md muc C",
+    "dup_rate": {
+      "frame_fp16": 0.1149,
+      "frame_fp32": 0.1171,
+      "jpg_fp16": 0.1082,
+      "jpg_fp32": 0.1116
+    },
+    "gate_0": {
+      "repro_match_ge_0.99": true,
+      "frame_fp32_within_11.7_pm_1": true
+    },
+    "gate_pass": true,
+    "c1_input_is_factor": false,
+    "c1_diff_pp": -0.55,
+    "c2_precision_is_factor": false,
+    "c2_diff_pp": -0.22,
+    "c3_all_ge_8pct": true,
+    "interpretation": "muc hop trung cao ton tai qua ca bien the dau vao va do chinh xac (moc model.val 0,6%); khac biet duong model.val va model.predict la diem khac biet co lien quan, khong ket luan la nguyen nhan duy nhat. Tu W9 so do muc anh de chon/bao cao tinh tu dau ra predict."
+  },
+  "checks": {
+    "consistency_with_kaggle_summary": {
+      "run17_idsw_kaggle_vs_offline_eval": [
+        1.982,
+        1.982
+      ],
+      "run17_track_recall_kaggle_vs_offline_eval": [
+        0.8379,
+        0.8379
+      ]
+    },
+    "fp16_effective": {
+      "images": 1202,
+      "images_with_different_dets_fp32_vs_fp16": {
+        "jpg": 1162,
+        "frame": 1155
+      }
+    },
+    "run17_vs_offline_v2_on_run14": {
+      "frames": 11388,
+      "frames_identical": 10616,
+      "dets_run17": 13902,
+      "dets_offline_v2": 13215,
+      "run17_dets_matched_in_offline": 13130,
+      "match_rate": 0.9445
+    }
+  }
+}

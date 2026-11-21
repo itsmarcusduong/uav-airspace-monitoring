@@ -65,3 +65,11 @@
   - track recall giảm ở 4 video, mạnh nhất V_HELICOPTER_012 −0,19, và tăng ở 1 video;
   - detection video có hộp trùng cùng lớp nhiều gấp ~20 lần dự đoán ảnh val trên cùng frame (11,7% so với 0,6%);
   - xem `results/W07/postproc/exploratory.json`.
+
+## Xác nhận trên video thật (mục 5; 21/11/2026, #115)
+- Kaggle run 17 chạy NMS cùng lớp IoU 0,5 trong detector. Kết quả cùng chiều với số offline:
+  - ID switch / 1000 frame GT 18,011 → 1,982;
+  - R1 vẫn 23/23 sự kiện, 0 cảnh báo sai;
+  - recall Drone mức ảnh không đổi.
+- Đạt cả 5 điều kiện của luật `docs/w8/W8_PLAN.md` mục B, nên **V2 được áp dụng** trong pipeline W8.
+- Chi tiết: `docs/w8/v2_verify_results.md`, `results/W08/v2_verify/v2_verify.json`.
