@@ -53,7 +53,8 @@ Mốc từ W7: D video = 11,7%, D của `model.val` = 0,6%.
    - Không đạt thì không diễn giải.
 1. |D(`jpg_fp32`) − D(`frame_fp32`)| ≥ 3 điểm % → **đầu vào** (JPG nén lại so với frame giải mã) là một yếu tố.
 2. |D(`frame_fp16`) − D(`frame_fp32`)| ≥ 3 điểm % → **độ chính xác số** là một yếu tố.
-3. Cả bốn điều kiện đều ≥ 8% → nguyên nhân nằm ở **chế độ `model.val`** (khác `model.predict`), không phải đầu vào hay fp16.
+3. Cả bốn điều kiện đều ≥ 8% → mức hộp trùng cao còn tồn tại qua các biến thể đầu vào và độ chính xác, trong khi mốc `model.val` là 0,6%; ghi nhận khác biệt giữa đường `model.val` và `model.predict` là điểm khác biệt có liên quan, **không kết luận đó là nguyên nhân duy nhất**.
+   - Vẫn báo chênh lệch ở điều kiện 1–2 nếu có; kết quả không loại trừ ảnh hưởng đồng thời của đầu vào hoặc fp16.
    - Hệ quả: từ W9, số đo mức ảnh dùng để chọn hay báo cáo phải tính từ đầu ra `predict`, tức cùng đường với hệ thống.
 4. Trường hợp khác: ghi là "chưa xác định", không suy diễn thêm.
 
