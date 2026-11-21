@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>E1 UAV Replay</title>
+<style>
+  :root { --bg:#f6f6f3; --panel:#ffffff; --ink:#1f1f1e; --muted:#6b6a64; --line:#e4e3dd; --drone:#d93b2b; --other:#2a78d6; --ok:#2e7d32; --warn:#b26a00; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:14px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background:var(--bg); color:var(--ink); }
+  header { display:flex; flex-wrap:wrap; gap:12px; align-items:center; padding:12px 16px; background:var(--panel); border-bottom:1px solid var(--line); }
+  header h1 { font-size:16px; margin:0 12px 0 0; }
+  label { color:var(--muted); font-size:12px; }
+  select, input, button { font:inherit; padding:4px 8px; border:1px solid var(--line); border-radius:6px; background:#fff; color:var(--ink); }
+  button { cursor:pointer; }
+  button.primary { background:var(--ink); color:#fff; border-color:var(--ink); }
+  main { display:grid; grid-template-columns:minmax(0,1fr) 340px; gap:16px; padding:16px; }
+  @media (max-width: 900px) { main { grid-template-columns:1fr; } }
+  .stage { position:relative; background:#111; border-radius:8px; overflow:hidden; }
+  .stage video, .stage canvas { display:block; width:100%; height:auto; }
+  .stage canvas { position:absolute; inset:0; }
+  .bar { display:flex; gap:16px; flex-wrap:wrap; align-items:center; margin-top:8px; color:var(--muted); font-size:13px; }
+  #conn { font-weight:600; }
+  #conn[data-state="playing"] { color:var(--ok); }
+  #conn[data-state="stale"], #conn[data-state="error"], #conn[data-state="closed"] { color:var(--drone); }
+  #conn[data-state="eos"] { color:var(--warn); }
+  aside { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:12px; }
+  aside h2 { font-size:14px; margin:0 0 8px; }
+  .ev { border:1px solid var(--line); border-radius:6px; padding:8px; margin-bottom:8px; }
+  .ev.active { border-color:var(--drone); box-shadow:0 0 0 1px var(--drone) inset; }
+  .ev .row { display:flex; justify-content:space-between; gap:8px; }
+  .status { font-weight:600; }
+  .status[data-status="new"] { color:var(--warn); }
+  .status[data-status="confirmed"] { color:var(--ok); }
+  .status[data-status="false_alarm"] { color:var(--muted); }
+  .ev button { margin-top:6px; margin-right:6px; }
+  .note { color:var(--muted); font-size:12px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>E1 · Giám sát UAV · phát lại</h1>
+  <span><label for="run">Run</label> <select id="run"></select></span>
+  <span><label for="source">Nguồn</label> <select id="source"></select></span>
+  <span><label for="speed">Tốc độ</label> <select id="speed"><option>1</option><option>2</option><option>4</option><option>8</option></select></span>
+  <button id="play" class="primary">Phát</button>
+  <span><label for="reviewer">Người review (cục bộ, chưa xác thực)</label> <input id="reviewer" value="" placeholder="vd. quang" size="10"></span>
+</header>
+<main>
+  <section>
+    <div class="stage" id="stage">
+      <video id="video" muted playsinline preload="auto"></video>
+      <canvas id="overlay"></canvas>
+    </div>
+    <div class="bar">
+      <span>Trạng thái: <span id="conn" data-state="idle">chưa phát</span></span>
+      <span>Thời gian nguồn: <span id="clock">0,000 s</span></span>
+      <span>Frame: <span id="frame">–</span></span>
+      <span>Track: <span id="ntracks">0</span></span>
+      <span>model_version: <code id="model">–</code></span>
+    </div>
+    <p class="note">Chế độ phát lại (ADR-0015): kết quả detector → tracker → cảnh báo R1 đã sinh trên Kaggle; trình duyệt chỉ hiển thị theo thời gian nguồn. Không phải đo thời gian thực.</p>
+  </section>
+  <aside>
+    <h2>Sự kiện cảnh báo (R1, ROI <span id="roiname">–</span>)</h2>
+    <div id="events"><p class="note">Chọn run và nguồn.</p></div>
+  </aside>
+</main>
+<script>
+"use strict";
+const $ = (id) => document.getElementById(id);
+const S = { runs: [], run: null, source: null, ws: null, lastMsg: 0, playing: false, events: [], cur: -1 };
+const CLASS_COLOR = (c) => (c === 2 ? getComputedStyle(document.documentElement).getPropertyValue("--drone") : getComputedStyle(document.documentElement).getPropertyValue("--other"));
+
+async function api(path, opts) {
+  const r = await fetch(path, opts);
+  if (!r.ok) throw new Error(`${r.status} ${await r.text()}`);
+  return r.json();
+}
+function setConn(state, text) { const e = $("conn"); e.dataset.state = state; e.textContent = text; }
+function fmtS(ms) { return (ms / 1000).toFixed(3).replace(".", ",") + " s"; }
+
+async function loadRuns() {
+  S.runs = await api("/runs");
+  $("run").innerHTML = S.runs.map((r) => `<option value="${r.run_id}">${r.run_id}</option>`).join("");
+  await selectRun();
+}
+async function selectRun() {
+  S.run = S.runs.find((r) => r.run_id === $("run").value);
+  $("model").textContent = S.run ? S.run.model_version.slice(0, 12) + "…" : "–";
+  $("roiname").textContent = S.run ? S.run.config.roi.name : "–";
+  const srcs = await api(`/sources?run_id=${encodeURIComponent(S.run.run_id)}`);
+  S.sources = srcs;
+  $("source").innerHTML = srcs.map((s) => `<option value="${s.source_id}">${s.source_id} (${s.class_name})</option>`).join("");
+  await selectSource();
+}
+async function selectSource() {
+  stop();
+  S.source = S.sources.find((s) => s.source_id === $("source").value);
+  const cv = $("overlay"); cv.width = S.source.width; cv.height = S.source.height;
+  const v = $("video");
+  if (S.source.has_media) { v.style.display = "block"; v.src = `/media/${encodeURIComponent(S.run.run_id)}/${encodeURIComponent(S.source.source_id)}`; cv.style.position = "absolute"; }
+  else { v.removeAttribute("src"); v.style.display = "none"; cv.style.position = "static"; }
+  drawFrame(null);
+  await loadEvents();
+}
+async function loadEvents() {
+  S.events = await api(`/events?run_id=${encodeURIComponent(S.run.run_id)}&source_id=${encodeURIComponent(S.source.source_id)}`);
+  renderEvents();
+}
+function renderEvents() {
+  const box = $("events");
+  if (!S.events.length) { box.innerHTML = `<p class="note" id="noevents">Không có sự kiện R1 ở nguồn này.</p>`; return; }
+  box.innerHTML = S.events.map((e) => `
+    <div class="ev${S.cur >= e.start_frame && S.cur <= e.end_frame ? " active" : ""}" data-event-id="${e.event_id}">
+      <div class="row"><b>${e.kind}</b><span class="status" data-status="${e.status}">${e.status}</span></div>
+      <div class="note">frame ${e.start_frame}–${e.end_frame} · ${fmtS(e.start_ms)}–${fmtS(e.end_ms)} · track ${e.track_ids.join(", ")} · ${e.n_reviews} review</div>
+      <button class="confirm" data-action="confirmed">Xác nhận</button><button class="false" data-action="false_alarm">Báo sai</button>
+    </div>`).join("");
+  box.querySelectorAll("button[data-action]").forEach((b) => b.addEventListener("click", review));
+}
+async function review(ev) {
+  const id = ev.target.closest(".ev").dataset.eventId;
+  const who = $("reviewer").value.trim();
+  if (!who) { alertBox("Nhập tên người review (định danh cục bộ) trước."); return; }
+  await api(`/events/${encodeURIComponent(id)}/review`, { method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ action: ev.target.dataset.action, reviewer_id: who }) });
+  await loadEvents();
+}
+function alertBox(msg) { const n = $("events"); const p = document.createElement("p"); p.className = "note"; p.id = "msg"; p.textContent = msg; n.prepend(p); }
+
+function drawFrame(fr) {
+  const cv = $("overlay"), g = cv.getContext("2d");
+  g.clearRect(0, 0, cv.width, cv.height);
+  if (!S.source.has_media) { g.fillStyle = "#1b1b1b"; g.fillRect(0, 0, cv.width, cv.height); }
+  const poly = S.run.config.roi.polygon;
+  g.lineWidth = 2; g.strokeStyle = "rgba(255,210,0,0.9)"; g.beginPath();
+  poly.forEach(([x, y], i) => (i ? g.lineTo(x * cv.width, y * cv.height) : g.moveTo(x * cv.width, y * cv.height)));
+  g.closePath(); g.stroke();
+  if (!fr) return;
+  for (const t of fr.tracks) {
+    const [x1, y1, x2, y2] = t.box; g.strokeStyle = CLASS_COLOR(t.cls); g.lineWidth = 2;
+    g.strokeRect(x1, y1, x2 - x1, y2 - y1);
+    g.fillStyle = CLASS_COLOR(t.cls); g.font = "12px system-ui";
+    g.fillText(`ID ${t.id} ${t.cls_name} ${t.conf.toFixed(2)}`, x1, Math.max(12, y1 - 3));
+  }
+  const active = S.events.some((e) => fr.frame_index >= e.start_frame && fr.frame_index <= e.end_frame);
+  if (active) { g.fillStyle = "rgba(217,59,43,0.85)"; g.fillRect(0, 0, cv.width, 22); g.fillStyle = "#fff"; g.font = "bold 13px system-ui"; g.fillText("CẢNH BÁO R1: UAV trong vùng", 8, 16); }
+}
+function onFrame(fr) {
+  S.lastMsg = performance.now(); S.cur = fr.frame_index;
+  if (S.playing && $("conn").dataset.state !== "playing") setConn("playing", "đang phát");
+  $("clock").textContent = fmtS(fr.source_time_ms); $("frame").textContent = fr.frame_index; $("ntracks").textContent = fr.tracks.length;
+  const v = $("video");
+  if (S.source.has_media && v.readyState >= 2 && Math.abs(v.currentTime - fr.source_time_ms / 1000) > 0.25) v.currentTime = fr.source_time_ms / 1000;
+  drawFrame(fr);
+  if (fr.events.length) renderEvents(); else document.querySelectorAll(".ev").forEach((n) => {
+    const e = S.events.find((x) => x.event_id === n.dataset.eventId); n.classList.toggle("active", S.cur >= e.start_frame && S.cur <= e.end_frame); });
+}
+function play() {
+  stop();
+  const sp = Number($("speed").value);
+  const u = new URL(`/ws/stream?run_id=${encodeURIComponent(S.run.run_id)}&source_id=${encodeURIComponent(S.source.source_id)}&speed=${sp}`, location.href);
+  u.protocol = u.protocol.replace("http", "ws");
+  setConn("connecting", "đang kết nối");
+  const ws = new WebSocket(u); S.ws = ws; S.playing = true; S.lastMsg = performance.now();
+  const v = $("video"); if (S.source.has_media) { v.playbackRate = sp; v.currentTime = 0; v.play().catch(() => {}); }
+  ws.onmessage = (m) => { const d = JSON.parse(m.data);
+    if (d.type === "frame") onFrame(d);
+    else if (d.type === "eos") { S.playing = false; setConn("eos", `hết video (${d.frames} frame)`); drawFrame(null); v.pause(); }
+    else if (d.type === "error") { S.playing = false; setConn("error", "lỗi: " + d.detail); } };
+  ws.onclose = () => { if (S.playing) { S.playing = false; setConn("closed", "mất kết nối"); drawFrame(null); v.pause(); } };
+}
+function stop() { if (S.ws) { S.playing = false; S.ws.close(); S.ws = null; } $("video").pause(); }
+setInterval(() => {   // khong dung frame cu de gia vo dang giam sat (Thuyet minh 9.3)
+  if (S.playing && performance.now() - S.lastMsg > 1000) { setConn("stale", "kết quả quá hạn"); drawFrame(null); }
+}, 250);
+$("run").addEventListener("change", selectRun);
+$("source").addEventListener("change", selectSource);
+$("play").addEventListener("click", play);
+loadRuns().catch((e) => setConn("error", "lỗi tải dữ liệu: " + e.message));
+</script>
+</body>
+</html>
