@@ -3,7 +3,7 @@
   "info": {
     "title": "E1 UAV airspace monitoring — replay API",
     "description": "Phat lai ket qua pipeline sinh tren Kaggle (ADR-0015). reviewer_id chua xac thuc.",
-    "version": "w8-0.1"
+    "version": "w8-0.2"
   },
   "paths": {
     "/health": {
@@ -69,6 +69,23 @@
                 "schema": {
                   "$ref": "#/components/schemas/HTTPValidationError"
                 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/config_audit": {
+      "get": {
+        "summary": "Config Audit",
+        "description": "Nhat ky thay doi cau hinh giua cac run (chi doc; ghi khi build_bundle them run co cau hinh khac).",
+        "operationId": "config_audit_config_audit_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
               }
             }
           }

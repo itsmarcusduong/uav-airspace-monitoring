@@ -1,6 +1,8 @@
 # ADR-0015: Kiến trúc đầu-cuối của MVP: pipeline lõi, kho sự kiện SQLite, API FastAPI + WebSocket, dashboard phát lại
 
-- Trạng thái: **Proposed** (Quang 17/11/2026; sửa 21/11 theo review của An trên PR #121: sự kiện bất biến, trạng thái suy ra từ review mới nhất, `reviewer_id` chưa xác thực, `config_audit` rõ phạm vi). Chuyển **Accepted** khi An duyệt trên PR. Code W8-03 chỉ merge sau khi ADR này Accepted.
+- Trạng thái: **Accepted** (An duyệt PR #121 ngày 21/11/2026).
+  - Quang đề xuất 17/11. Sửa ngày 21/11 theo review của An trên PR #121: sự kiện bất biến, trạng thái suy ra từ review mới nhất, `reviewer_id` chưa xác thực, `config_audit` rõ phạm vi.
+  - Sửa tiếp ngày 21/11 theo review của An trên PR #124: `config_audit` thêm đối tượng `detector` và hai cột run cũ/mới; bundle chứa được nhiều run; thêm `GET /config_audit` chỉ đọc. An duyệt các sửa đổi này trên PR #124.
 - Liên quan: W8-03, W8-04 (Chương IV 4.1–4.2), ADR-0009 (luật cảnh báo), ADR-0012 (hậu xử lý), Thuyết minh mục 9, 11, 13.
 
 ## Bối cảnh
@@ -35,13 +37,15 @@
      - `new` khi chưa có review;
      - ngược lại là `action` của review có `review_id` lớn nhất. Dùng `review_id` tự tăng làm thứ tự, không dùng `created_at`, vì hai review có thể trùng thời điểm.
      - API trả trạng thái này qua một view SQL `event_status`.
-   - `config_audit`: `audit_id`, `actor_id`, `changed_at`, đối tượng cấu hình (ROI, cảnh báo, tracker, weights), SHA-256 cũ và mới, lý do. **Chỉ thêm.**
+   - `config_audit`: `audit_id`, `actor_id`, `changed_at`, đối tượng cấu hình (ROI, cảnh báo, tracker, **detector**, weights), run cũ và run mới, SHA-256 cũ và mới, lý do. **Chỉ thêm.**
+     - Có thêm `detector` vì run 14 và run 17 chỉ khác nhau ở NMS IoU của detector. Thiếu đối tượng này thì lịch sử thay đổi giữa hai run sẽ trống.
      - Ở W8 cấu hình của mỗi run là cố định, ghi trong `runs`. API W8 **không có endpoint sửa cấu hình**, nên bảng này chỉ được ghi khi pipeline tạo run với cấu hình khác run trước.
+     - "Run trước" là run thêm gần nhất vào cùng kho sự kiện: `build_bundle.py --append` thêm run mới vào bundle có sẵn. Mỗi đối tượng khác nhau được ghi một dòng, bắt buộc có `--reason`.
      - Endpoint sửa cấu hình (kèm luật hiệu lực và phân quyền) để ở tuần 9 cùng mục 4.4, cần ADR riêng.
    - **Ràng buộc ở mức CSDL**, không chỉ ở code API: trigger SQLite `RAISE(ABORT)` cho mọi UPDATE/DELETE trên `events`, `event_reviews`, `config_audit`; bật `foreign_keys`. Có pytest kiểm rằng UPDATE/DELETE bị từ chối.
    - Track log và `FrameResult` lưu ở JSONL nén, không nằm trong SQLite.
 3. **API FastAPI**:
-   - REST: `GET /health`, `GET /runs`, `GET /sources?run_id=`, `GET /events?run_id=&source_id=`, `GET /events/{event_id}`, `POST /events/{event_id}/review` (chỉ INSERT), `GET /media/{run_id}/{source_id}` (chỉ nhận ID, không nhận đường dẫn hay URL);
+   - REST: `GET /health`, `GET /runs`, `GET /sources?run_id=`, `GET /events?run_id=&source_id=`, `GET /events/{event_id}`, `POST /events/{event_id}/review` (chỉ INSERT), `GET /media/{run_id}/{source_id}` (chỉ nhận ID, không nhận đường dẫn hay URL), `GET /config_audit` (chỉ đọc);
    - WebSocket `/ws/stream?run_id=&source_id=`: phát `FrameResult` theo thời gian nguồn, đúng thứ tự `frame_index`;
    - hợp đồng API công bố bằng OpenAPI do FastAPI sinh, lưu vào repo.
 4. **Dashboard** (một trang HTML/JS thuần, FastAPI phục vụ):

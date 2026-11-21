@@ -16,6 +16,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ACTIONS = ("confirmed", "false_alarm")
+AUDIT_TARGETS = ("roi", "alert", "tracker", "detector", "weights")
 SCHEMA = """
 PRAGMA foreign_keys = ON;
 CREATE TABLE IF NOT EXISTS runs (
@@ -67,7 +68,9 @@ CREATE TABLE IF NOT EXISTS config_audit (
     audit_id INTEGER PRIMARY KEY AUTOINCREMENT,
     actor_id TEXT NOT NULL,
     changed_at TEXT NOT NULL,
-    target TEXT NOT NULL,                  -- roi | alert | tracker | weights
+    target TEXT NOT NULL CHECK (target IN ('roi', 'alert', 'tracker', 'detector', 'weights')),
+    old_run_id TEXT REFERENCES runs(run_id),
+    new_run_id TEXT NOT NULL REFERENCES runs(run_id),
     old_sha256 TEXT,
     new_sha256 TEXT NOT NULL,
     reason TEXT NOT NULL
@@ -129,6 +132,29 @@ def add_review(c, event_id: str, reviewer_id: str, action: str, note: str = "") 
         cur = c.execute("INSERT INTO event_reviews (event_id, reviewer_id, action, created_at, note) VALUES (?,?,?,?,?)",
                         (event_id, reviewer_id.strip(), action, now(), note or ""))
     return int(cur.lastrowid)
+
+
+def last_run(c) -> dict | None:
+    """Run duoc them gan nhat (thu tu rowid, khong dung created_at vi co the trung)."""
+    r = rows(c, "SELECT run_id, model_version, config_json FROM runs ORDER BY rowid DESC LIMIT 1")
+    if not r:
+        return None
+    r[0]["config"] = json.loads(r[0].pop("config_json"))
+    return r[0]
+
+
+def add_config_audit(c, actor_id: str, target: str, old_run_id, new_run_id: str, old_sha, new_sha: str, reason: str) -> int:
+    if target not in AUDIT_TARGETS:
+        raise ValueError(f"target phai thuoc {AUDIT_TARGETS}")
+    if not reason or not reason.strip() or not actor_id or not actor_id.strip():
+        raise ValueError("actor_id va reason khong duoc rong")
+    cur = c.execute("INSERT INTO config_audit (actor_id, changed_at, target, old_run_id, new_run_id, old_sha256, new_sha256, reason) "
+                    "VALUES (?,?,?,?,?,?,?,?)", (actor_id.strip(), now(), target, old_run_id, new_run_id, old_sha, new_sha, reason.strip()))
+    return int(cur.lastrowid)
+
+
+def list_config_audit(c) -> list[dict]:
+    return rows(c, "SELECT * FROM config_audit ORDER BY audit_id")
 
 
 def frame_ms(frame: int, fps: float) -> int:

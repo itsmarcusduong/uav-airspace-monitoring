@@ -30,7 +30,7 @@ import e1store  # noqa: E402
 
 LOG = logging.getLogger("e1api")
 STATIC = Path(__file__).resolve().parent / "static"
-API_VERSION = "w8-0.1"
+API_VERSION = "w8-0.2"
 
 
 class ReviewIn(BaseModel):
@@ -39,8 +39,8 @@ class ReviewIn(BaseModel):
     note: str = Field(default="", max_length=500)
 
 
-def read_frames(bundle: Path, source_id: str) -> list[dict]:
-    p = bundle / "frames" / f"{source_id}.jsonl.gz"
+def read_frames(bundle: Path, run_id: str, source_id: str) -> list[dict]:
+    p = bundle / "frames" / run_id / f"{source_id}.jsonl.gz"
     with gzip.open(p, "rt", encoding="utf-8") as fh:
         out = [json.loads(line) for line in fh if line.strip()]
     for a, b in zip(out, out[1:]):
@@ -54,6 +54,8 @@ def create_app(bundle: Path) -> FastAPI:
     if not (bundle / "events.sqlite").is_file() or not (bundle / "bundle.json").is_file():
         raise FileNotFoundError(f"{bundle}: khong phai bundle (thieu events.sqlite/bundle.json)")
     manifest = json.loads((bundle / "bundle.json").read_text(encoding="utf-8"))
+    if manifest.get("format") != 2:
+        raise ValueError(f"{bundle}: bundle format {manifest.get('format')} khong ho tro; dung lai bang build_bundle.py")
     db = e1store.connect(bundle / "events.sqlite")
     app = FastAPI(title="E1 UAV airspace monitoring — replay API", version=API_VERSION,
                   description="Phat lai ket qua pipeline sinh tren Kaggle (ADR-0015). reviewer_id chua xac thuc.")
@@ -66,8 +68,8 @@ def create_app(bundle: Path) -> FastAPI:
 
     @app.get("/health")
     def health():
-        return {"status": "ok", "api_version": API_VERSION, "bundle_run": manifest["run_id"], "model_version": manifest["model_version"],
-                "sources": len(manifest["sources"]), "mode": "replay"}
+        return {"status": "ok", "api_version": API_VERSION, "mode": "replay",
+                "runs": {r: {"model_version": m["model_version"], "sources": len(m["sources"])} for r, m in manifest["runs"].items()}}
 
     @app.get("/runs")
     def runs():
@@ -78,6 +80,11 @@ def create_app(bundle: Path) -> FastAPI:
         if not any(r["run_id"] == run_id for r in e1store.list_runs(db)):
             raise HTTPException(404, f"khong co run {run_id}")
         return e1store.list_sources(db, run_id)
+
+    @app.get("/config_audit")
+    def config_audit():
+        """Nhat ky thay doi cau hinh giua cac run (chi doc; ghi khi build_bundle them run co cau hinh khac)."""
+        return e1store.list_config_audit(db)
 
     @app.get("/events")
     def events(run_id: str, source_id: str | None = None):
@@ -118,7 +125,7 @@ def create_app(bundle: Path) -> FastAPI:
         await ws.accept()
         try:
             source_or_404(run_id, source_id)
-            frames = [f for f in read_frames(bundle, source_id) if f["frame_index"] >= start_frame]
+            frames = [f for f in read_frames(bundle, run_id, source_id) if f["frame_index"] >= start_frame]
         except (HTTPException, FileNotFoundError, ValueError) as ex:
             await ws.send_json({"type": "error", "detail": getattr(ex, "detail", str(ex))}); await ws.close(); return
         t0, base = time.monotonic(), (frames[0]["source_time_ms"] if frames else 0)

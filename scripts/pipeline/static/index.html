@@ -64,6 +64,8 @@
   <aside>
     <h2>Sự kiện cảnh báo (R1, ROI <span id="roiname">–</span>)</h2>
     <div id="events"><p class="note">Chọn run và nguồn.</p></div>
+    <h2>Nhật ký cấu hình</h2>
+    <div id="audit"><p class="note">–</p></div>
   </aside>
 </main>
 <script>
@@ -78,11 +80,26 @@ async function api(path, opts) {
   return r.json();
 }
 function setConn(state, text) { const e = $("conn"); e.dataset.state = state; e.textContent = text; }
+// Moi gia tri tu API/bundle dua vao trang bang textContent/thuoc tinh, khong ghep chuoi HTML (review An, PR #124).
+function el(tag, props, ...kids) {
+  const n = document.createElement(tag);
+  for (const [k, v] of Object.entries(props || {})) {
+    if (k === "text") n.textContent = String(v);
+    else if (k === "class") n.className = v;
+    else if (k.startsWith("data-")) n.dataset[k.slice(5).replace(/-([a-z])/g, (_, c) => c.toUpperCase())] = String(v);
+    else n.setAttribute(k, String(v));
+  }
+  for (const c of kids) n.append(c);
+  return n;
+}
+function options(sel, items) { sel.replaceChildren(...items.map(([value, label]) => el("option", { value, text: label }))); }
+function note(text, id) { return el("p", id ? { class: "note", id, text } : { class: "note", text }); }
 function fmtS(ms) { return (ms / 1000).toFixed(3).replace(".", ",") + " s"; }
 
 async function loadRuns() {
   S.runs = await api("/runs");
-  $("run").innerHTML = S.runs.map((r) => `<option value="${r.run_id}">${r.run_id}</option>`).join("");
+  options($("run"), S.runs.map((r) => [r.run_id, r.run_id]));
+  if (S.runs.length) $("run").value = S.runs[S.runs.length - 1].run_id;
   await selectRun();
 }
 async function selectRun() {
@@ -91,8 +108,16 @@ async function selectRun() {
   $("roiname").textContent = S.run ? S.run.config.roi.name : "–";
   const srcs = await api(`/sources?run_id=${encodeURIComponent(S.run.run_id)}`);
   S.sources = srcs;
-  $("source").innerHTML = srcs.map((s) => `<option value="${s.source_id}">${s.source_id} (${s.class_name})</option>`).join("");
+  options($("source"), srcs.map((s) => [s.source_id, `${s.source_id} (${s.class_name})`]));
+  await loadAudit();
   await selectSource();
+}
+async function loadAudit() {
+  const rows = (await api("/config_audit")).filter((a) => a.new_run_id === S.run.run_id);
+  const box = $("audit");
+  if (!rows.length) { box.replaceChildren(note("Run này không đổi cấu hình so với run trước trong bundle.")); return; }
+  box.replaceChildren(...rows.map((a) => el("div", { class: "note audit", "data-target": a.target,
+    text: `${a.target}: ${a.old_run_id} → ${a.new_run_id} · ${a.old_sha256.slice(0, 8)}… → ${a.new_sha256.slice(0, 8)}… · ${a.reason} · ${a.actor_id}` })));
 }
 async function selectSource() {
   stop();
@@ -110,14 +135,16 @@ async function loadEvents() {
 }
 function renderEvents() {
   const box = $("events");
-  if (!S.events.length) { box.innerHTML = `<p class="note" id="noevents">Không có sự kiện R1 ở nguồn này.</p>`; return; }
-  box.innerHTML = S.events.map((e) => `
-    <div class="ev${S.cur >= e.start_frame && S.cur <= e.end_frame ? " active" : ""}" data-event-id="${e.event_id}">
-      <div class="row"><b>${e.kind}</b><span class="status" data-status="${e.status}">${e.status}</span></div>
-      <div class="note">frame ${e.start_frame}–${e.end_frame} · ${fmtS(e.start_ms)}–${fmtS(e.end_ms)} · track ${e.track_ids.join(", ")} · ${e.n_reviews} review</div>
-      <button class="confirm" data-action="confirmed">Xác nhận</button><button class="false" data-action="false_alarm">Báo sai</button>
-    </div>`).join("");
-  box.querySelectorAll("button[data-action]").forEach((b) => b.addEventListener("click", review));
+  if (!S.events.length) { box.replaceChildren(note("Không có sự kiện R1 ở nguồn này.", "noevents")); return; }
+  box.replaceChildren(...S.events.map((e) => {
+    const card = el("div", { class: "ev" + (S.cur >= e.start_frame && S.cur <= e.end_frame ? " active" : ""), "data-event-id": e.event_id },
+      el("div", { class: "row" }, el("b", { text: e.kind }), el("span", { class: "status", "data-status": e.status, text: e.status })),
+      el("div", { class: "note", text: `frame ${e.start_frame}–${e.end_frame} · ${fmtS(e.start_ms)}–${fmtS(e.end_ms)} · track ${e.track_ids.join(", ")} · ${e.n_reviews} review` }),
+      el("button", { class: "confirm", "data-action": "confirmed", text: "Xác nhận" }),
+      el("button", { class: "false", "data-action": "false_alarm", text: "Báo sai" }));
+    card.querySelectorAll("button[data-action]").forEach((b) => b.addEventListener("click", review));
+    return card;
+  }));
 }
 async function review(ev) {
   const id = ev.target.closest(".ev").dataset.eventId;
@@ -149,9 +176,12 @@ function drawFrame(fr) {
 }
 function onFrame(fr) {
   S.lastMsg = performance.now(); S.cur = fr.frame_index;
-  if (S.playing && $("conn").dataset.state !== "playing") setConn("playing", "đang phát");
-  $("clock").textContent = fmtS(fr.source_time_ms); $("frame").textContent = fr.frame_index; $("ntracks").textContent = fr.tracks.length;
   const v = $("video");
+  if (S.playing && $("conn").dataset.state !== "playing") {
+    setConn("playing", "đang phát");
+    if (S.source.has_media && v.paused) { v.currentTime = fr.source_time_ms / 1000; v.play().catch(() => {}); }   // tiep tuc sau khi qua han
+  }
+  $("clock").textContent = fmtS(fr.source_time_ms); $("frame").textContent = fr.frame_index; $("ntracks").textContent = fr.tracks.length;
   if (S.source.has_media && v.readyState >= 2 && Math.abs(v.currentTime - fr.source_time_ms / 1000) > 0.25) v.currentTime = fr.source_time_ms / 1000;
   drawFrame(fr);
   if (fr.events.length) renderEvents(); else document.querySelectorAll(".ev").forEach((n) => {
@@ -173,7 +203,10 @@ function play() {
 }
 function stop() { if (S.ws) { S.playing = false; S.ws.close(); S.ws = null; } $("video").pause(); }
 setInterval(() => {   // khong dung frame cu de gia vo dang giam sat (Thuyet minh 9.3)
-  if (S.playing && performance.now() - S.lastMsg > 1000) { setConn("stale", "kết quả quá hạn"); drawFrame(null); }
+  // Qua han: dung ca video, khong de hinh chay tiep khi FrameResult da ngung (review An, PR #124); frame moi den thi phat tiep.
+  if (S.playing && performance.now() - S.lastMsg > 1000 && $("conn").dataset.state !== "stale") {
+    setConn("stale", "kết quả quá hạn"); drawFrame(null); $("video").pause();
+  }
 }, 250);
 $("run").addEventListener("change", selectRun);
 $("source").addEventListener("change", selectSource);
