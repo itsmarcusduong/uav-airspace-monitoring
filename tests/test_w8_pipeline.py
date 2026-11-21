@@ -339,3 +339,18 @@ def test_dashboard_pauses_video_when_stream_stalls(tmp_path):
             b.close()
     finally:
         server.should_exit = True; th.join(timeout=5)
+
+
+def test_e2e_fixture_cases_pass(tmp_path, monkeypatch):
+    """Kich ban E2E cua An (#118) tren fixture tong hop: E2E-01..07, 09 chay tu dong tren dashboard that."""
+    pytest.importorskip("playwright.sync_api")
+    import shutil
+    if not shutil.which("ffmpeg"):
+        pytest.skip("can ffmpeg")
+    import e2e_fixtures as ef
+    monkeypatch.setattr(sys, "argv", ["x", "--out", str(tmp_path), "--commit", "test"])
+    assert ef.main() == 0
+    res = json.loads((tmp_path / "e2e_fixture_results.json").read_text(encoding="utf-8"))
+    assert res["summary"]["pass"] == ["E2E-01", "E2E-02", "E2E-03", "E2E-04", "E2E-05", "E2E-06", "E2E-07", "E2E-09"]
+    saved = json.loads((ROOT / "results/W08/e2e/e2e_fixture_results.json").read_text(encoding="utf-8"))
+    assert res["fixture_bundle_sha256"]["files"].keys() == saved["fixture_bundle_sha256"]["files"].keys()
