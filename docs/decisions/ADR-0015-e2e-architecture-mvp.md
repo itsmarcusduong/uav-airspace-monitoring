@@ -60,5 +60,6 @@
 
 ## Hệ quả
 - Demo W8 là đầu-cuối về **luồng dữ liệu**: video → detector → tracker → cảnh báo → lưu → API → dashboard. Bước suy luận chạy trước trên Kaggle. Báo cáo phải ghi rõ điều này, không gọi là "thời gian thực".
+- Ở W8, pipeline lõi gồm hai phần: job tracking trên Kaggle (detector + tracker, run 17) và `build_bundle.py` (cảnh báo R1 → kho sự kiện → `FrameResult`), chạy trên track log đã lưu. Gộp thành một lớp `e1pipe` chạy từng frame, có đo `stage_latency_ms`, làm ở W9 cùng benchmark.
 - FPS và độ trễ đo ở tuần 9 trên Kaggle bằng chính pipeline lõi; bảng `runs` giữ phần cứng.
 - Kiểm thử: pipeline lõi và API có pytest trên dữ liệu tổng hợp. Kịch bản kiểm thử E2E (Thuyết minh 13.3) do An viết trước khi chạy (W8-05).
