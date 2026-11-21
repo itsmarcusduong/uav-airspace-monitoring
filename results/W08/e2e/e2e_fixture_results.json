@@ -1,0 +1,180 @@
+{
+  "protocol": "docs/w8/e2e_test_cases.md (An, PR #122, #126)",
+  "commit": "122552ae8cad99c44c2fe1475a0612e31bdaa715",
+  "speed": 4,
+  "fixture_bundle_sha256": {
+    "bundle.json": "8978b9ed561db9838b2e266d99019d303c2b0a8898246868189847a2579096ee",
+    "files": {
+      "events.sqlite": "7edb25b39bd253bcc7a3e8a38ce26b7e33161ba21ee4e2660383f4700c1fb9be",
+      "frames/fixture_w8/FX01_roi_enter_exit.jsonl.gz": "8fe3f06499615c188da56b7bba9f51ab02551da62d45f8c59be256e3fe5f7d63",
+      "frames/fixture_w8/FX02_bird_in_roi.jsonl.gz": "004b801a77c6dd2c879242f0d687501fb13cfef2c39cbf05e5c7cea3034d53ec",
+      "frames/fixture_w8/FX03_airplane_in_roi.jsonl.gz": "b57283cedaec034eed737949a20dba2be358e99a4815c76186fc11f016021bed",
+      "frames/fixture_w8/FX04_tiny_drone.jsonl.gz": "5fd1b76c8c70200933f862d62999cebc608c793e8477caf0e1d304f0e60778c0",
+      "frames/fixture_w8/FX05_occlusion_gap.jsonl.gz": "01873963ae6072e6add871b34e2536f729145d602cab1fd2d0d053c243f0ef93",
+      "frames/fixture_w8/FX06_two_tracks.jsonl.gz": "be7c086daebec87ef6c911c26156a4e7f0476cabbfb454eea8c09ce856426d0b",
+      "frames/fixture_w8/FX07_roi_boundary.jsonl.gz": "636de31d409cb8b288980e9f47d133db4553d69af06aa30e2c41ff3bf99b810c",
+      "frames/fixture_w8/FX09_short_eof.jsonl.gz": "bb512af53e6ec9eba0ecd8afd7c200fbb3dff8ecde92f0bfd66586dd3cefdff1"
+    }
+  },
+  "note": "fixture tong hop: kiem hop dong du lieu, luu tru, API, hien thi; khong do do chinh xac mo hinh",
+  "results": {
+    "E2E-01": {
+      "source": "FX01_roi_enter_exit",
+      "events": [
+        [
+          23,
+          164
+        ]
+      ],
+      "frames_seen": 240,
+      "frames_total": 240,
+      "monotonic": true,
+      "mismatch": 0,
+      "pass": true
+    },
+    "E2E-02": {
+      "source": "FX02_bird_in_roi",
+      "events": 0,
+      "classes_in_jsonl": [
+        "Bird"
+      ],
+      "frames_seen": 120,
+      "frames_total": 120,
+      "monotonic": true,
+      "mismatch": 0,
+      "pass": true
+    },
+    "E2E-03": {
+      "source": "FX03_airplane_in_roi",
+      "events": 0,
+      "classes_in_jsonl": [
+        "Airplane"
+      ],
+      "frames_seen": 120,
+      "frames_total": 120,
+      "monotonic": true,
+      "mismatch": 0,
+      "pass": true
+    },
+    "E2E-04": {
+      "source": "FX04_tiny_drone",
+      "events": 0,
+      "pixels": {
+        "frame_shown": 30,
+        "box": [
+          48.2,
+          22.6,
+          54.2,
+          28.6
+        ],
+        "edge_left": [
+          217,
+          59,
+          43,
+          255
+        ],
+        "edge_right": [
+          217,
+          59,
+          43,
+          255
+        ],
+        "outside_left": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "outside_right": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "frames_seen": 90,
+      "frames_total": 90,
+      "monotonic": true,
+      "mismatch": 0,
+      "pass": true
+    },
+    "E2E-05": {
+      "source": "FX05_occlusion_gap",
+      "gap_frames_seen": 30,
+      "gap_frames_with_tracks": 0,
+      "events": [
+        [
+          8,
+          149
+        ]
+      ],
+      "frames_seen": 150,
+      "frames_total": 150,
+      "monotonic": true,
+      "mismatch": 0,
+      "pass": true
+    },
+    "E2E-06": {
+      "source": "FX06_two_tracks",
+      "events": [
+        [
+          1
+        ]
+      ],
+      "ids_stable_in_jsonl": true,
+      "frames_seen": 120,
+      "frames_total": 120,
+      "monotonic": true,
+      "mismatch": 0,
+      "pass": true
+    },
+    "E2E-07": {
+      "source": "FX07_roi_boundary",
+      "events_by_track": {
+        "1": [],
+        "2": [
+          [
+            158,
+            209
+          ]
+        ],
+        "3": [
+          [
+            308,
+            359
+          ]
+        ]
+      },
+      "frames_seen": 420,
+      "frames_total": 420,
+      "monotonic": true,
+      "mismatch": 0,
+      "pass": true
+    },
+    "E2E-09": {
+      "source": "FX09_short_eof",
+      "state_after_1_5s": "eos",
+      "video_paused": true,
+      "red_pixels_after_eos": 0,
+      "records_after_last": 0,
+      "frames_seen": 45,
+      "frames_total": 45,
+      "monotonic": true,
+      "mismatch": 0,
+      "pass": true
+    }
+  },
+  "summary": {
+    "pass": [
+      "E2E-01",
+      "E2E-02",
+      "E2E-03",
+      "E2E-04",
+      "E2E-05",
+      "E2E-06",
+      "E2E-07",
+      "E2E-09"
+    ],
+    "fail": []
+  }
+}

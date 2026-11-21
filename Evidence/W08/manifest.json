@@ -1,0 +1,132 @@
+{
+  "week": "W08",
+  "milestone": "Tuan8",
+  "repo_commit": "122552ae8cad99c44c2fe1475a0612e31bdaa715",
+  "generated_at": "2026-11-21T17:16:25+00:00",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "7ae5c112dae4d9a75c6977bd85de8a84c3cfb22771c4b972d9d5be6be7c14ff9",
+      "bytes": 2510
+    },
+    {
+      "path": "figures/fig_w8_arch.png",
+      "sha256": "2656ba84d21ecc172402fb3c906ce8c0328a6946eeb13bc057b399b054d5df39",
+      "bytes": 186208
+    },
+    {
+      "path": "figures/fig_w8_dup.png",
+      "sha256": "42615ea1e7c38d80f2ca33b41dfb7ecfd4313ba6bb09965b8d7637ee3159fe2a",
+      "bytes": 56285
+    },
+    {
+      "path": "figures/fig_w8_erd.png",
+      "sha256": "06de213b44086e9f9fa77fc87b39cf5ad088df1706640745146eb0f553546501",
+      "bytes": 277309
+    },
+    {
+      "path": "figures/fig_w8_v2_verify.png",
+      "sha256": "0ec129711e958048e78531be46ebfdc867c175b3c094fac22359966728952f05",
+      "bytes": 85061
+    },
+    {
+      "path": "metrics.csv",
+      "sha256": "3e2801f60f5ca4254f4424d8bab32f2efb5e160111cc9e5f163293aaf47a526e",
+      "bytes": 4509
+    },
+    {
+      "path": "test-results.json",
+      "sha256": "12ca32a52557fbccdcc565e0af4be302394a4942bcc6bcc87e26adaac6f394f0",
+      "bytes": 21068
+    },
+    {
+      "path": "test-results.xml",
+      "sha256": "20b2b6b83a4eae2efef7560ad163b26cbf97a708a1352e1d33ac3d9bdc1f3285",
+      "bytes": 10803
+    }
+  ],
+  "sources": [
+    {
+      "path": "docs/decisions/ADR-0014-fbd-sv-evaluation-only.md",
+      "sha256": "2706c4f41c948e8e7438cc49abfe54803dae7393ab6758827c969a182d7c6c32"
+    },
+    {
+      "path": "docs/decisions/ADR-0015-e2e-architecture-mvp.md",
+      "sha256": "dfaf0fd19140d0688318b59ff016ae9e4a6f4db127255be81f7a6221ccc73b1f"
+    },
+    {
+      "path": "docs/w8/openapi_w8.json",
+      "sha256": "ab19c4240bd99ff20991e9b024a32375072f30c732a1241c0f72d4ddc42fbb64"
+    },
+    {
+      "path": "results/W08/e2e/e2e_fixture_results.json",
+      "sha256": "0264494dfb1c4607a8e75dd8d4ce95dd660cda4f8fbdfb82baf12e353fc73688"
+    },
+    {
+      "path": "results/W08/e2e/e2e_manual_An.csv",
+      "sha256": "835bf8834566050848ca9627c8a28addda8049f164049e6e7273de8e4da059e9"
+    },
+    {
+      "path": "results/W08/fig_w8_arch.png",
+      "sha256": "2656ba84d21ecc172402fb3c906ce8c0328a6946eeb13bc057b399b054d5df39"
+    },
+    {
+      "path": "results/W08/fig_w8_dup.png",
+      "sha256": "42615ea1e7c38d80f2ca33b41dfb7ecfd4313ba6bb09965b8d7637ee3159fe2a"
+    },
+    {
+      "path": "results/W08/fig_w8_erd.png",
+      "sha256": "06de213b44086e9f9fa77fc87b39cf5ad088df1706640745146eb0f553546501"
+    },
+    {
+      "path": "results/W08/fig_w8_v2_verify.png",
+      "sha256": "0ec129711e958048e78531be46ebfdc867c175b3c094fac22359966728952f05"
+    },
+    {
+      "path": "results/W08/kaggle_run_17/media_manifest.json",
+      "sha256": "6e557544920f55e31b4bf4e4447c22ddef529d738a1e1594db2a6855af4ce7a9"
+    },
+    {
+      "path": "results/W08/kaggle_run_17/w8_dupdiag/dup_diagnostic.json",
+      "sha256": "c31ced5fbec23044334547c5337d4d34bcd024eb9c376459c60d0b8d211dd1ee"
+    },
+    {
+      "path": "results/W08/kaggle_run_17/w8_run17/inputs.json",
+      "sha256": "9f8531ff56287aa4b6ee55ec90e141c0940e32eedf4f02ec935dbf4f39f901fd"
+    },
+    {
+      "path": "results/W08/kaggle_run_17/w8_run17/stage_status.json",
+      "sha256": "e97242615dd6fb0ce8dea2ff711044dca26b156c0bd7fe7c0d37129e3f217e8b"
+    },
+    {
+      "path": "results/W08/v2_verify/v2_verify.json",
+      "sha256": "0a8dd7ea306db353333be8fd9ed4dfdca47ded2fc05bc58c95a98c24f80107b9"
+    }
+  ],
+  "external_artifacts": [
+    {
+      "name": "bundle w8_demo/bundle.json (run14 + run17, 38 video H.264; Drive w8, khong vao Git)",
+      "link": "",
+      "sha256": "491974f8ba43380c22e0e43f38b8b40464455751187fc9da3078b61268da1bc3",
+      "bytes": 0
+    },
+    {
+      "name": "demo/W08/V_DRONE_096_tracker_bytetrack_e1.mp4",
+      "link": "",
+      "sha256": "1c5b37ff8d67acf1d824bd26932bd482a91e1c55cce32544de10f6374003097b",
+      "bytes": 0
+    },
+    {
+      "name": "demo/W08/V_BIRD_037_tracker_bytetrack_e1.mp4",
+      "link": "",
+      "sha256": "1c85be2f4d952a4ea9adb2ca9157b316b5515d2c6b03b9589a557b221e801854",
+      "bytes": 0
+    },
+    {
+      "name": "demo/W08/V_DRONE_078_tracker_bytetrack_e1.mp4",
+      "link": "",
+      "sha256": "e000c1f90966d8c2f33b465871a570df4d328e6bd29c723cb7b046247047f725",
+      "bytes": 0
+    }
+  ]
+}
