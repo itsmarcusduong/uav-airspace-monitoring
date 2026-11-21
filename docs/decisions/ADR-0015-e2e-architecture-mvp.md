@@ -41,8 +41,8 @@
    - **Ràng buộc ở mức CSDL**, không chỉ ở code API: trigger SQLite `RAISE(ABORT)` cho mọi UPDATE/DELETE trên `events`, `event_reviews`, `config_audit`; bật `foreign_keys`. Có pytest kiểm rằng UPDATE/DELETE bị từ chối.
    - Track log và `FrameResult` lưu ở JSONL nén, không nằm trong SQLite.
 3. **API FastAPI**:
-   - REST: `GET /health`, `GET /runs`, `GET /sources`, `GET /events`, `GET /events/{id}`, `POST /events/{id}/review`, `GET /media/{source}`;
-   - WebSocket `/ws/stream?run=&source=`: phát `FrameResult` theo thời gian nguồn;
+   - REST: `GET /health`, `GET /runs`, `GET /sources?run_id=`, `GET /events?run_id=&source_id=`, `GET /events/{event_id}`, `POST /events/{event_id}/review` (chỉ INSERT), `GET /media/{run_id}/{source_id}` (chỉ nhận ID, không nhận đường dẫn hay URL);
+   - WebSocket `/ws/stream?run_id=&source_id=`: phát `FrameResult` theo thời gian nguồn, đúng thứ tự `frame_index`;
    - hợp đồng API công bố bằng OpenAPI do FastAPI sinh, lưu vào repo.
 4. **Dashboard** (một trang HTML/JS thuần, FastAPI phục vụ):
    - video kèm lớp vẽ hộp, ID, ROI và dải cảnh báo;
