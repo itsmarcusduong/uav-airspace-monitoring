@@ -1,0 +1,14 @@
+case,status,source,evidence
+E2E-01,CHUA_KIEM_DUOC,,Bundle khong co fixture tong hop roi_enter_exit
+E2E-02,PASS,run17/V_BIRD_041,Khong co event R1; phat du 305 frame toi EOS
+E2E-03,PASS,run17/V_AIRPLANE_005,Khong co event R1; phat du 328 frame toi EOS
+E2E-04,CHUA_KIEM_DUOC,,Khong co fixture hop 6x6 px
+E2E-05,PASS,run17/V_BIRD_041,Track 4 vang o frame 132 va tro lai frame 133; dashboard hien 1 roi 2 track
+E2E-06,PASS,run17/V_BIRD_041,Frame 113: hai track Bird dong thoi; dashboard hien 2 track va hai overlay
+E2E-07,CHUA_KIEM_DUOC,,Bundle khong co fixture bien polygon
+E2E-08,CHUA_KIEM_DUOC,,Replay khong co camera/live ingest
+E2E-09,PASS,run17/V_DRONE_060,Phat 308/308 frame; bao het video; dung video va xoa overlay cuoi
+E2E-10,CHUA_KIEM_DUOC,,Replay khong tao duoc tai dau vao vuot nang luc
+E2E-11,CHUA_KIEM_DUOC,,Khong co endpoint doi cau hinh giua phien
+E2E-12,CHUA_KIEM_DUOC,,W8 chua co tai khoan/phan quyen
+E2E-13,PASS,run17/V_DRONE_060,308 frame; hai event (12-186; 242-307); media SHA-256 khop; audit detector run14->run17 hien; review con sau reload

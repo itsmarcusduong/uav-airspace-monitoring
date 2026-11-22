@@ -533,6 +533,80 @@ def w07(w: Week):
         w.fig(f, cap)
 
 
+def w08(w: Week):
+    """W8: run 17 (V2 trong detector, luat W8_PLAN muc B), chan doan hop trung (muc C), pipeline phat lai (ADR-0015), kich ban E2E."""
+    import sys
+    sys.path.insert(0, str(ROOT / "scripts" / "experiments"))
+    import w8_v2_verify as vv  # noqa: E402
+    V = "results/W08/v2_verify/v2_verify.json"
+    K = "results/W08/kaggle_run_17"
+    st = rjson(f"{K}/w8_run17/stage_status.json"); sd = rjson(f"{K}/w8_dupdiag/stage_status.json")
+    w.check("run17_all_stages_ok", all(v.get("status") == "OK" for v in st.values()) and all(v.get("status") == "OK" for v in sd.values()),
+            ", ".join(st) + " | " + ", ".join(sd), f"{K}/w8_run17/stage_status.json")
+    inp = rjson(f"{K}/w8_run17/inputs.json")
+    w.check("run17_val_only_same_weights_nms05", inp["split"] == "val" and inp["test_used"] is False and inp["detector"]["nms_iou"] == 0.5
+            and inp["weights_sha256"].startswith("a3de1e01"), f"nms {inp['detector']['nms_iou']}, weights {inp['weights_sha256'][:8]}", f"{K}/w8_run17/inputs.json")
+    mm = rjson(f"{K}/media_manifest.json")
+    w.check("media_transcode_same_frames_fps_size", mm["videos"] == 38 and not mm["mismatch"], f"{mm['videos']} video, lech {len(mm['mismatch'])}", f"{K}/media_manifest.json")
+    v = rjson(V)
+    def pv(run):
+        rows = csv.DictReader((ROOT / f"results/W08/v2_verify/per_video_tracking_{run}.csv").open(encoding="utf-8"))
+        return [{"video_id": r["video_id"], "track_recall": float(r["track_recall"]) if r["track_recall"] not in ("", "None") else None} for r in rows]
+    redo_b = vv.rule_b(v["runs"]["run14"] | {"per_video": pv("run14")}, v["runs"]["run17"] | {"per_video": pv("run17")})
+    w.check("rule_b_reproduced_apply_v2", redo_b["apply_v2"] is True and v["rule_b"]["apply_v2"] is True,
+            "; ".join(f"{k}: {c['run14']} -> {c['run17']}" for k, c in v["rule_b"]["conditions"].items()), V)
+    redo_c = vv.rule_c(rjson(f"{K}/w8_dupdiag/dup_diagnostic.json"))
+    w.check("rule_c_reproduced_case3", redo_c["gate_pass"] and redo_c["c3_all_ge_8pct"] and redo_c == v["rule_c"], redo_c["interpretation"][:80], V)
+    ck = v["checks"]
+    w.check("run17_offline_eval_matches_kaggle", all(a == b for a, b in ck["consistency_with_kaggle_summary"].values()),
+            json.dumps(ck["consistency_with_kaggle_summary"]), V)
+    w.check("fp16_effective_in_diagnostic", ck["fp16_effective"]["images_with_different_dets_fp32_vs_fp16"]["jpg"] > 0,
+            json.dumps(ck["fp16_effective"]["images_with_different_dets_fp32_vs_fp16"]), V)
+    for run in ("run14", "run17"):
+        r = v["runs"][run]; t = r["tracking"]["all"]; a1 = r["alerts"]["center_hex|center|R1"]; a0 = r["alerts"]["center_hex|center|R0"]
+        for f in ("idsw_per_1000_gt_frames", "id_switches", "track_recall_pooled", "fragments", "false_tracks"):
+            w.m(f"{f}@iou0.5", t[f], "", "val/all", run, V, "scripts/experiments/w8_v2_verify.py")
+        for k in ("detected", "events", "alerts", "false_alerts_nondrone"):
+            w.m(f"alert_R1_{k}", a1[k], "", "val", run, V, "scripts/experiments/w8_v2_verify.py")
+        w.m("alert_R0_false_alerts_nondrone", a0["false_alerts_nondrone"], "", "val", run, V, "scripts/experiments/w8_v2_verify.py")
+        d = r["image_level"]["per_class"]["Drone"]
+        w.m("drone_recall@conf0.25_video_dets", d["R"], "", "val (bo 40 anh loi nhan)", run, V, "scripts/experiments/w8_v2_verify.py")
+        w.m("drone_precision@conf0.25_video_dets", d["P"], "", "val (bo 40 anh loi nhan)", run, V, "scripts/experiments/w8_v2_verify.py")
+        w.m("detections", r["detections"], "box", "val", run, V, "scripts/experiments/w8_v2_verify.py")
+        w.m("median_fps_reference", r["median_fps"], "fps", "val", run, V, "scripts/experiments/w8_v2_verify.py")
+    for k, c in v["rule_c"]["dup_rate"].items():
+        w.m(f"dup_rate_same_class_{k}", c, "", "val 1202 anh", "yolo11n s20261030", f"{K}/w8_dupdiag/dup_diagnostic.json", "scripts/kaggle/w8_dup_diagnostic.py",
+            inp.get("commit", ""))
+    w.m("run17_vs_offline_v2_match_rate", ck["run17_vs_offline_v2_on_run14"]["match_rate"], "", "val", "run17", V, "scripts/experiments/w8_v2_verify.py")
+    E = "results/W08/e2e/e2e_fixture_results.json"
+    e = rjson(E)
+    w.check("e2e_fixture_cases_all_pass", not e["summary"]["fail"] and len(e["summary"]["pass"]) == 8, ", ".join(e["summary"]["pass"]), E)
+    man = list(csv.DictReader((ROOT / "results/W08/e2e/e2e_manual_An.csv").open(encoding="utf-8")))
+    w.check("e2e_manual_no_fail", all(r["status"] in ("PASS", "CHUA_KIEM_DUOC") for r in man) and len(man) == 13,
+            f"PASS {sum(r['status'] == 'PASS' for r in man)}, chua kiem duoc {sum(r['status'] == 'CHUA_KIEM_DUOC' for r in man)}", "results/W08/e2e/e2e_manual_An.csv")
+    covered = {r["case"] for r in man if r["status"] == "PASS"} | set(e["summary"]["pass"])
+    w.m("e2e_cases_pass", len(covered), "case", "13 ca (#118)", "", "results/W08/e2e/", "scripts/pipeline/e2e_fixtures.py + An")
+    w.m("e2e_cases_not_testable_in_replay", 13 - len(covered), "case", "13 ca (#118)", "", "results/W08/e2e/", "scripts/pipeline/e2e_fixtures.py + An")
+    for adr in ("ADR-0014-fbd-sv-evaluation-only", "ADR-0015-e2e-architecture-mvp"):
+        txt = (ROOT / f"docs/decisions/{adr}.md").read_text(encoding="utf-8").split("\n## ")[0]
+        w.check(f"{adr[:8].lower()}_status_recorded", "**Accepted**" in txt or "**Proposed**" in txt,
+                "Accepted" if "**Accepted**" in txt else "Proposed", f"docs/decisions/{adr}.md")
+    w.check("openapi_contract_lists_endpoints", {"/health", "/runs", "/sources", "/events", "/events/{event_id}/review", "/media/{run_id}/{source_id}", "/config_audit"}
+            <= set(rjson("docs/w8/openapi_w8.json")["paths"]), "", "docs/w8/openapi_w8.json")
+    lm = {r["dataset_id"]: r for r in rcsv("data/manifests/license_matrix.csv")}
+    w.check("license_evidence_fbd_sv_saved", (ROOT / "data/manifests/license_evidence/fbd_sv_2024_figshare_27377595.json").is_file(),
+            next((f"{k}:{r['status']}" for k, r in lm.items() if "FBD" in k), "khong co dong FBD"), "data/manifests/license_evidence/")
+    for f, cap in (("results/W08/fig_w8_v2_verify.png", "Luật áp dụng V2: run 14 so với run 17 (val)"),
+                   ("results/W08/fig_w8_dup.png", "Tỷ lệ hộp trùng theo đầu vào và độ chính xác số"),
+                   ("results/W08/fig_w8_arch.png", "Kiến trúc tổng thể (mục 4.1, bản nháp của An)"),
+                   ("results/W08/fig_w8_erd.png", "ERD kho sự kiện (mục 4.2)")):
+        w.fig(f, cap)
+    w.external.append({"name": "bundle w8_demo/bundle.json (run14 + run17, 38 video H.264; Drive w8, khong vao Git)", "link": "",
+                       "sha256": "491974f8ba43380c22e0e43f38b8b40464455751187fc9da3078b61268da1bc3", "bytes": 0})
+    for x in rjson(f"{K}/w8_run17/demo/demo_index.json"):
+        w.external.append({"name": f"demo/W08/{x['file']}", "link": x.get("drive_link", ""), "sha256": x["sha256"], "bytes": x.get("bytes", 0)})
+
+
 def _find_count(obj, key):
     if isinstance(obj, dict):
         if key in obj and isinstance(obj[key], int):
@@ -581,6 +655,8 @@ INFO = {
             "Run 14: YOLO11n s20261030 + ByteTrack-e1 trên 38 video val, lưu detection thô, GT, ghép theo frame; mô-đun ROI/cảnh báo R0 (chỉ detector) và R1 (theo track) theo giao thức đặt trước ADR-0009; video demo cảnh báo (run 15); phân tích lỗi cảnh báo, hộp trùng, 40 ảnh val âm tính (run 16); kế hoạch dữ liệu W7–W12 (ADR-0011)."),
     "W07": ("Tuan7", "Hard negatives + confusion analysis",
             "Cổng tái tạo tracker offline trên detection của run 14; thí nghiệm hậu xử lý detection V0/V1/V2 theo luật đặt trước ADR-0012 (chọn V2, NMS cùng lớp IoU 0,5); phân tích nhầm lẫn và hard negative trên val (An, #98); nguồn video âm tính công khai có giấy phép thay video tự quay (ADR-0013, thu thập W8); Chương III bản 1."),
+    "W08": ("Tuan8", "Pipeline E2E + dashboard/log",
+            "Kaggle run 17: V2 (NMS cùng lớp IoU 0,5) trong detector, áp luật đặt trước W8_PLAN mục B → áp dụng V2; chẩn đoán hộp trùng video so với ảnh val (mục C, trường hợp 3). Pipeline phát lại: kho sự kiện SQLite chỉ thêm, API FastAPI + WebSocket, dashboard, nhật ký review và cấu hình (ADR-0015). 13 kịch bản E2E của An: 9 đạt, 0 trượt, 4 không kiểm được ở chế độ phát lại. Tập âm tính e1-neg-v1 chưa xong (chuyển W9)."),
     "W04": ("Tuan4", "Tuning + augmentation, so sánh baseline",
             "Kiểm chứng chiều lệch nhãn (run 06 và tập chuẩn CVAT, ADR-0006), train và so sánh 6 mô hình trên cùng dữ liệu (run 09), áp luật chọn đặt trước (ADR-0007)."),
 }
@@ -590,6 +666,7 @@ LINKS = {
     "W03": "Issue #10, #11, #16–#21; PR #22, #23, #25, #26, #28, #31–#35. Báo cáo: reports/w3/. ADR-0004, ADR-0005. Model card: docs/w3/model_card_baseline_A.md.",
     "W05": "Issue #57–#62; PR #63–#70. Báo cáo: reports/w5/ (báo cáo công việc, v0.5). Trạng thái: docs/status/W05_planned_done_evidence.md. Kế hoạch: docs/w5/W5_PLAN.md. ADR-0007 (cập nhật), ADR-0008. Giao thức: docs/w5/tracking_protocol_w5.md, docs/w4/training_protocol_w4.md mục 6.",
     "W06": "Issue #74–#79, #88; PR #80–#83, #86, #87, #89–#95. Báo cáo: reports/w6/ (báo cáo công việc, v0.6). Trạng thái: docs/status/W06_planned_done_evidence.md. Kế hoạch: docs/w6/W6_PLAN.md. ADR-0009, ADR-0010, ADR-0011. Phân tích: docs/w6/alert_error_review.md, docs/w6/val_negative_frames.md, docs/w7/data_expansion_proposal.md.",
+    "W08": "Issue #113, #115–#119; PR #114, #120–#127 và PR chốt tuần. Báo cáo: reports/w8/ (báo cáo công việc, v0.8). Trạng thái: docs/status/W08_planned_done_evidence.md. Kế hoạch: docs/w8/W8_PLAN.md. ADR-0014, ADR-0015. Kết quả: docs/w8/v2_verify_results.md, results/W08/e2e/README.md.",
     "W07": "Issue #97–#101; PR #102–#109 và PR chốt tuần. Báo cáo: reports/w7/ (báo cáo công việc, v0.7). Trạng thái: docs/status/W07_planned_done_evidence.md. Kế hoạch: docs/w7/W7_PLAN.md. ADR-0012, ADR-0013. Phân tích: docs/w7/postproc_results.md, docs/w7/confusion_analysis.md.",
     "W04": "Issue #24, #36–#42, #48, #49; PR #43–#47, #50–#55. Báo cáo: reports/w4/ (báo cáo công việc, v0.4). Trạng thái: docs/status/W04_planned_done_evidence.md. Kế hoạch: docs/w4/W4_PLAN.md. ADR-0006, ADR-0007. Giao thức: docs/w4/training_protocol_w4.md.",
 }
@@ -666,7 +743,7 @@ def main() -> int:
         if w.dir.exists():
             shutil.rmtree(w.dir)
         w.dir.mkdir(parents=True)
-        {"W01": w01, "W02": w02, "W03": w03, "W04": w04, "W05": w05, "W06": w06, "W07": w07}[wk](w)
+        {"W01": w01, "W02": w02, "W03": w03, "W04": w04, "W05": w05, "W06": w06, "W07": w07, "W08": w08}[wk](w)
         if a.pytest_xml and wk == a.weeks[-1]:
             shutil.copy2(a.pytest_xml, w.dir / "test-results.xml")
             junit_to_checks(w, a.pytest_xml)
