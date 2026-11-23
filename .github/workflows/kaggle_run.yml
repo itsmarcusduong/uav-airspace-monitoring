@@ -1,0 +1,51 @@
+# ADR-0016: chay job Kaggle W9 - CHI bam tay (Actions -> kaggle-run -> Run workflow). Ket qua la artifact, khong tu commit.
+# Secrets can co (Quang tu them): KAGGLE_USERNAME, KAGGLE_KEY.
+name: kaggle-run
+on:
+  workflow_dispatch:
+    inputs:
+      job:
+        description: "Job Kaggle"
+        required: true
+        type: choice
+        options: [run18_bench, run19_neg_fbdsv, run20_stability]
+      commit:
+        description: "SHA day du 40 ky tu (main da merge)"
+        required: true
+      config:
+        description: "Chi cho run20_stability: C0, C1 hoac C2"
+        required: false
+        default: ""
+permissions:
+  contents: read
+concurrency:
+  group: kaggle-${{ inputs.job }}
+  cancel-in-progress: false
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.commit }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Cai Kaggle CLI
+        run: pip install "kaggle>=1.7,<2"
+      - name: Chay job tren Kaggle
+        env:
+          KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+          KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+        run: python scripts/kaggle/actions_kaggle_run.py --job "${{ inputs.job }}" --commit "${{ inputs.commit }}" --config "${{ inputs.config }}" --out out
+      - name: Tai ket qua len lam artifact (30 ngay)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kaggle-${{ inputs.job }}-${{ github.run_id }}
+          path: |
+            out/ACTIONS_OUTPUT_MANIFEST.json
+            out/kernel_output/
+          retention-days: 30
+          if-no-files-found: warn
