@@ -1,6 +1,6 @@
 # ADR-0016: Chạy job Kaggle qua GitHub Actions (bấm tay)
 
-- Trạng thái: **Proposed** (Quang 22/11/2026). Chuyển **Accepted** khi An duyệt trên PR. Chưa Accepted thì không dùng workflow cho run có số liệu đưa vào báo cáo.
+- Trạng thái: **Accepted** (An duyệt PR #135 ngày 23/11/2026; Quang đề xuất 22/11/2026).
 - Liên quan: W9-02, W9-03, `docs/w9/W9_PLAN.md` mục E, ADR-0010 (quy trình GitHub).
 
 ## Bối cảnh

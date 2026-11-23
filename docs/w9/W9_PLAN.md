@@ -77,6 +77,7 @@ Mốc tuần:
 - Kiểm từng mp4 theo `data/manifests/fbd_sv_2024_zip_contents_sha256.csv` (483 tệp; zip MD5 khớp Figshare).
 - Chuẩn hóa theo ADR-0013 mục 2: cắt giữa tỉ lệ 5:4, resize 640×512, đưa về 30 fps (ffmpeg `fps=30`). Ghi `ffprobe` nguồn và đích cho từng clip.
 - Toàn bộ 483 clip thuộc `neg_eval` (ADR-0014). Theo readme của bộ dữ liệu, tổng khoảng 19 phút.
+- Hạn chế (An xác nhận khi duyệt, 23/11): FBD-SV quay 25 fps; đưa về 30 fps làm lặp khoảng 1/6 số frame. Luật cảnh báo tính theo frame ở 30 fps nên các khoảng thời gian vẫn đúng, nhưng tracker thấy các frame giống hệt nhau liên tiếp. Báo cáo ghi rõ hạn chế này.
 - Không đưa video, frame hay nhãn ra khỏi Kaggle. Bằng chứng chỉ gồm số đo tổng hợp và ID clip.
 
 **Đo** bằng `e1pipe` cấu hình C0. Cấu hình đo cố định ngay bây giờ, không phụ thuộc kết quả mục C.
@@ -90,7 +91,7 @@ Mốc tuần:
 - Chuẩn hóa và đo theo cùng cách với FBD-SV.
 - Nếu tổng thời lượng < 120 phút thì báo đúng thời lượng thực có.
 
-## E. Tự động hóa Kaggle bằng GitHub Actions (ADR-0016, chờ An duyệt)
+## E. Tự động hóa Kaggle bằng GitHub Actions (ADR-0016, Accepted)
 - Workflow chỉ chạy khi bấm tay (`workflow_dispatch`).
 - Các bước: tạo version mới cho dataset tools từ đúng commit → đẩy notebook (`kaggle kernels push`) → chờ chạy xong → tải đầu ra về thành artifact của Actions, kèm SHA-256.
 - Kết quả vào repo qua PR có review như cũ.
