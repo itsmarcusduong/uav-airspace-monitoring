@@ -1,3 +1,13 @@
 # Phu thuoc de chay test va tao Evidence (python -m pip install -r requirements-dev.txt)
 pytest==9.1.1
 matplotlib
+numpy
+pyyaml
+ultralytics==8.4.183          # BYTETracker cho tracker offline va e1pipe (cung ban voi Kaggle)
+lap>=0.5.12
+fastapi
+uvicorn
+httpx                         # fastapi.testclient
+python-docx                   # dung bao cao Word
+# Tuy chon: test dashboard trong Chromium headless
+# playwright && python -m playwright install chromium
