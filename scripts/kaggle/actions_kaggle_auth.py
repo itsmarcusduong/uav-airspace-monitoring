@@ -11,14 +11,38 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import sys
 from pathlib import Path
+
+
+TOKEN_RE = re.compile(r"KGAT_[A-Za-z0-9_\-]+")
+
+
+def shape(s: str) -> str:
+    """Mo ta hinh dang secret de chan doan, KHONG lo gia tri: do dai, so dong, co KGAT_/JSON/'=' hay khong."""
+    return (f"dai {len(s)}, {len(s.splitlines()) or 0} dong, KGAT_ {'co' if 'KGAT_' in s else 'khong'}, "
+            f"JSON {'co' if '{' in s else 'khong'}, dau = {'co' if '=' in s else 'khong'}, khoang trang {'co' if re.search(r'\s', s.strip()) else 'khong'}")
+
+
+def normalize_token(raw: str) -> str:
+    """Lay dung token tu chuoi da dan (vd. 'KAGGLE_API_TOKEN=KGAT_...', co ngoac kep hay xuong dong). Rong neu la JSON."""
+    s = raw.strip().strip('"\'')
+    if s.startswith("{"):
+        return s
+    m = TOKEN_RE.search(s)
+    if m:
+        return m.group(0)
+    s = s.split("=", 1)[-1].strip().strip('"\'')
+    if re.search(r"\s", s):
+        raise SystemExit(f"secret KAGGLE khong phai token hop le ({shape(raw)})")
+    return s
 
 
 def write_creds(home: Path, token: str, user: str, key: str) -> str:
     d = home / ".kaggle"
     d.mkdir(parents=True, exist_ok=True)
-    token = token.strip()
+    token = normalize_token(token) if token.strip() else ""
     if token.startswith("{"):
         try:
             j = json.loads(token)
@@ -47,6 +71,8 @@ def main() -> int:
     for v in vals:
         if v:
             print(f"::add-mask::{v}")
+    if raw:
+        print(f"secret KAGGLE: {shape(token)}")
     kind = write_creds(Path.home(), token, user, key)
     print(f"Kaggle credentials: {kind}")
     return 0

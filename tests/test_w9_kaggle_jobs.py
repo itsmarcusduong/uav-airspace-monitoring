@@ -219,3 +219,11 @@ def test_actions_auth_refuses_missing_or_bad_secret(tmp_path):
         au.write_creds(tmp_path, "", "", "")
     with pytest.raises(SystemExit, match="JSON"):
         au.write_creds(tmp_path, "{bad", "", "")
+
+
+@pytest.mark.parametrize("raw", ["KGAT_abc123", " KGAT_abc123\n", 'KAGGLE_API_TOKEN="KGAT_abc123"', "export KAGGLE_API_TOKEN=KGAT_abc123\n"])
+def test_actions_auth_extracts_token_from_pasted_forms(tmp_path, raw):
+    import actions_kaggle_auth as au
+    assert au.write_creds(tmp_path, raw, "", "") == "access_token"
+    assert (tmp_path / ".kaggle/access_token").read_text() == "KGAT_abc123"
+    assert "KGAT_abc123" not in au.shape(raw)
