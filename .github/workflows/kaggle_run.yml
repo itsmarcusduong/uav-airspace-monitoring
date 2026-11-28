@@ -14,7 +14,7 @@ on:
         description: "SHA day du 40 ky tu (main da merge)"
         required: true
       config:
-        description: "Chi cho run20_stability: C0, C1 hoac C2"
+        description: "run20_stability: C0/C1/C2 (bat buoc). run18_bench: C0/C1/C2 de chi chay mot cau hinh (run 18b), de trong = ca ke hoach"
         required: false
         default: ""
       tag:
