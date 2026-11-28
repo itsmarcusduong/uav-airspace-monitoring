@@ -7,7 +7,7 @@
 Hệ thống xử lý video theo từng frame, theo thứ tự: giải mã, phát hiện đối tượng, theo vết, phát hiện sự kiện và lưu kết quả. Các mô-đun được ghép thành pipeline `e1pipe`; cùng một luồng dữ liệu được dùng cho suy luận trên Kaggle và cho phép đo thời gian từng công đoạn. Mỗi run gắn với commit, SHA-256 của weights và cấu hình để có thể truy nguyên đầu vào.
 
 | Mô-đun | Chức năng | Đầu vào và đầu ra |
-|---|---|---|---|
+|---|---|---|
 | Giải mã và tiền xử lý | Đọc tuần tự các frame từ video, giữ thứ tự và thời gian nguồn. Bộ benchmark dùng đầu vào cố định từ manifest; phép đo tập âm tính chuẩn hóa video theo ADR-0013. | Video và metadata → frame BGR, chỉ số frame, thời gian nguồn. |
 | Phát hiện đối tượng | YOLO11n nhận diện Airplane, Bird, Drone và Helicopter. Cấu hình mốc C0 dùng PyTorch fp32, batch 1, `imgsz=640`, ngưỡng phát hiện 0,1 và NMS cùng lớp IoU 0,5. Ngưỡng 0,25 được dùng riêng cho phép đánh giá detection, không thay cho ngưỡng suy luận. | Frame → hộp giới hạn, lớp và độ tin cậy. |
 | Theo vết | BYTETracker gán và duy trì ID cho các đối tượng qua các frame, theo `configs/tracker_bytetrack_e1.yaml`. | Detection theo frame → track có ID, lớp và hộp giới hạn. |
@@ -83,7 +83,7 @@ Manifest, SHA-256 của video/weights/cấu hình và commit được dùng đ�
 ### Mô hình đe dọa
 
 | Tài sản | Đe dọa | Giảm thiểu | Rủi ro còn lại |
-|---|---|---|
+|---|---|---|---|
 | Video và nhãn FBD-SV; thông tin giấy phép | Dữ liệu bị công khai hoặc dùng ngoài phạm vi đã nêu. | ADR-0014 (đã duyệt trong #114) quy định chỉ dùng cho đánh giá, không thương mại, không phân phối lại; Quang xác nhận ngày 22/11/2026 dataset Kaggle ở chế độ Private và FBD-SV/Pixabay không có trên Drive công khai. | Trạng thái nền tảng được xác nhận ngoài repository; quyền truy cập có thể thay đổi và không được repository cưỡng chế. |
 | Bundle và video phát lại | Client cục bộ cố truy cập media tùy ý hoặc gọi API từ máy khác. | API bind `127.0.0.1`; media chỉ tra theo `run_id`/`source_id` trong bundle, không nhận path/URL tùy ý. | Không có xác thực hay phân quyền; tiến trình hoặc người dùng cùng máy vẫn có thể gọi API. |
 | Sự kiện và nhật ký review/audit | Sửa hoặc xóa lịch sử sự kiện để che dấu thao tác. | SQLite tạo trigger từ chối `UPDATE`/`DELETE` trên `events`, `event_reviews`, `config_audit`; review được ghi thêm thay vì sửa event. | Trigger không bảo vệ khỏi người có quyền ghi trực tiếp vào tệp DB hoặc thay schema/tệp. |
