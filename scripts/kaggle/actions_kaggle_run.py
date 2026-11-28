@@ -77,7 +77,7 @@ def sh(*cmd: str, check: bool = True) -> str:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--job", choices=list(JOBS), required=True)
+    ap.add_argument("--job", choices=["check", *JOBS], required=True)
     ap.add_argument("--commit", required=True)
     ap.add_argument("--config", default="", help="run20_stability: C0/C1/C2")
     ap.add_argument("--tag", default="", help="nhan run (ADR-0016 muc 2), vd. b2: tao notebook Kaggle rieng e1-w9-<job>-<tag>, khong ghi de notebook dang chay")
@@ -88,6 +88,14 @@ def main() -> int:
     head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
     if head != a.commit:
         raise SystemExit(f"checkout {head[:12]} khac --commit {a.commit[:12]}")
+    if a.job == "check":                                  # chi kiem ket noi va quyen doc cac dataset private
+        a.out.mkdir(parents=True, exist_ok=True)
+        res = {d: sh("kaggle", "datasets", "status", d, check=False).strip()[-80:]
+               for d in (TOOLS_DATASET, f"{USER}/e1-svanstrom-raw", f"{USER}/e1-fbd-sv-2024")}
+        for d, s in res.items():
+            print(f"{d}: {s}")
+        (a.out / "ACTIONS_OUTPUT_MANIFEST.json").write_text(json.dumps({"job": "check", "commit": a.commit, "datasets": res}, indent=2) + "\n")
+        return 0 if all("ready" in s.lower() for s in res.values()) else 1
     if a.job == "run20_stability" and a.config not in ("C0", "C1", "C2"):
         raise SystemExit("run20_stability can --config C0/C1/C2")
     build = a.out / "_build"
@@ -111,9 +119,9 @@ def main() -> int:
     if a.dry_run:
         print("dry-run:", build)
         return 0
-    for k in ("KAGGLE_USERNAME", "KAGGLE_KEY"):
-        if not os.environ.get(k):
-            raise SystemExit(f"thieu bien moi truong {k} (GitHub Secrets)")
+    kdir = Path.home() / ".kaggle"
+    if not (os.environ.get("KAGGLE_API_TOKEN") or (kdir / "access_token").is_file() or (kdir / "kaggle.json").is_file()):
+        raise SystemExit("chua co khoa Kaggle (buoc actions_kaggle_auth.py)")
     sh("kaggle", "datasets", "version", "-p", str(ds), "-m", f"commit {a.commit} (GitHub Actions run {os.environ.get('GITHUB_RUN_ID', '')})")
     for _ in range(60):                                   # cho dataset xu ly xong
         if "ready" in sh("kaggle", "datasets", "status", TOOLS_DATASET, check=False).lower():

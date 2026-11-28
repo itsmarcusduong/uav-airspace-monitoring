@@ -1,5 +1,6 @@
 # ADR-0016: chay job Kaggle W9 - CHI bam tay (Actions -> kaggle-run -> Run workflow). Ket qua la artifact, khong tu commit.
-# Secrets can co (Quang tu them): KAGGLE_USERNAME, KAGGLE_KEY.
+# Secret can co (Quang tu them): KAGGLE = API token moi cua Kaggle (KGAT_...) hoac noi dung kaggle.json;
+# hoac cap cu KAGGLE_USERNAME + KAGGLE_KEY. Job 'check' chi kiem ket noi (datasets status), khong chay notebook.
 name: kaggle-run
 on:
   workflow_dispatch:
@@ -8,7 +9,7 @@ on:
         description: "Job Kaggle"
         required: true
         type: choice
-        options: [run18_bench, run19_neg_fbdsv, run20_stability]
+        options: [check, run18_bench, run19_neg_fbdsv, run20_stability]
       commit:
         description: "SHA day du 40 ky tu (main da merge)"
         required: true
@@ -37,11 +38,15 @@ jobs:
         with:
           python-version: "3.11"
       - name: Cai Kaggle CLI
-        run: pip install "kaggle>=1.7,<2"
+        run: pip install "kaggle>=2.2,<3"
+      - name: Nap khoa Kaggle (khong in gia tri)
+        env:
+          K_TOKEN: ${{ secrets.KAGGLE }}
+          K_USER: ${{ secrets.KAGGLE_USERNAME }}
+          K_KEY: ${{ secrets.KAGGLE_KEY }}
+        run: python scripts/kaggle/actions_kaggle_auth.py
       - name: Chay job tren Kaggle
         env:
-          KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
-          KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
           IN_JOB: ${{ inputs.job }}
           IN_COMMIT: ${{ inputs.commit }}
           IN_CONFIG: ${{ inputs.config }}
