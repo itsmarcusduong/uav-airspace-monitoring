@@ -121,15 +121,23 @@ def main() -> int:
     clips = []
     t0 = time.time()
     LOG.info("[normalize] bat dau %d clip", len(man))
+    tsum = {"find": 0.0, "sha": 0.0, "ffmpeg": 0.0, "probe": 0.0}      # thoi gian tung buoc, de biet buoc nao cham
     for i, r in enumerate(man, 1):
+        tt = time.time()
         src = find_clip(a.fbd_root, r["path"])
-        if sha256(src) != r["sha256"]:
+        tsum["find"] += time.time() - tt; tt = time.time()
+        ok_sha = sha256(src) == r["sha256"]
+        tsum["sha"] += time.time() - tt
+        if not ok_sha:
             raise SystemExit(f"{r['path']}: SHA-256 khac manifest (ADR-0014: dung lai)")
         cid = f"{Path(r['path']).parent.name}/{Path(r['path']).stem}"
         dst = a.work / f"{Path(r['path']).parent.name}__{Path(r['path']).stem}.mp4"
         try:
+            tt = time.time()
             subprocess.run(normalize_cmd(src, dst), check=True, timeout=CMD_TIMEOUT_S)
+            tsum["ffmpeg"] += time.time() - tt; tt = time.time()
             ps, pd = probe(src), probe(dst)
+            tsum["probe"] += time.time() - tt
         except subprocess.TimeoutExpired as e:
             status["normalize"] = {"status": "FAIL", "clip": cid, "error": f"timeout {CMD_TIMEOUT_S}s: {e.cmd[0]}", "done": len(clips)}
             save_status()
@@ -139,7 +147,9 @@ def main() -> int:
         clips.append({"clip": cid, "src": ps, "out": pd, "path": dst})
         if i % PROGRESS_EVERY == 0 or i == len(man):
             progress("normalize", i, len(man), t0, sum(c["out"]["frames"] for c in clips))
+            LOG.info("[normalize] giay cong don: %s", {k: round(v, 1) for k, v in tsum.items()})
     status["normalize"] = {"status": "OK", "clips": len(clips), "seconds": round(time.time() - t0, 1),
+                           "seconds_by_step": {k: round(v, 1) for k, v in tsum.items()},
                            "source_sizes": sorted({f"{c['src']['width']}x{c['src']['height']}@{c['src']['fps']}" for c in clips})}
     save_status()
     # ------------------------------------------------------------------ e1pipe C0
@@ -162,7 +172,7 @@ def main() -> int:
     t1, nf = time.time(), 0
     LOG.info("[measure] bat dau %d clip, %d frame, thiet bi %s", len(clips), sum(c["out"]["frames"] for c in clips), env["gpu"] or a.device)
     for i, c in enumerate(clips, 1):
-        o = c["out"]
+        o = c["out"]; tc = time.time()
         s = e1pipe.run_source(e1pipe.read_frames(c["path"]), c["clip"].replace("/", "__"), "Bird", 30.0, 640, 512, o["frames"], det,
                               e1pipe.make_tracker(IterableSimpleNamespace(**cfg_tr)), sink, poly, acfg, rois["primary"], a.weights_sha)
         dets, tracks = sink.dets, sink.tracks
@@ -175,7 +185,8 @@ def main() -> int:
                      "r1_false_alerts": s["events"], "r0_false_alerts": len(r0), "frames_drone_det_conf025": drone_frames,
                      "tracks": len(cls_tracks), "tracks_majority_drone": sum(1 for v in cls_tracks.values() if max(set(v), key=v.count) == acfg["drone_class"]),
                      "tracks_majority_bird": sum(1 for v in cls_tracks.values() if max(set(v), key=v.count) == 1),
-                     "src_w": c["src"]["width"], "src_h": c["src"]["height"], "src_fps": c["src"]["fps"], "src_frames": c["src"]["frames"]})
+                     "src_w": c["src"]["width"], "src_h": c["src"]["height"], "src_fps": c["src"]["fps"], "src_frames": c["src"]["frames"],
+                     "measure_s": round(time.time() - tc, 2)})
         nf += s["frames"]
         if i % PROGRESS_EVERY == 0 or i == len(clips) or i == 1:
             progress("measure", i, len(clips), t1, nf)
@@ -183,6 +194,9 @@ def main() -> int:
     shutil.rmtree(a.work, ignore_errors=True)                 # video chuan hoa khong roi khoi phien
     shutil.rmtree(sink_dir, ignore_errors=True)
     status["measure"] = {"status": "OK", "clips": len(rows), "seconds": round(time.time() - t1, 1), "frames": nf}
+    with (ev / "per_clip.csv").open("w", newline="", encoding="utf-8") as fh:   # ghi truoc khi tong hop, de khong mat ket qua do
+        w = csv.DictWriter(fh, fieldnames=list(rows[0])); w.writeheader(); w.writerows(rows)
+    save_status()
     hours = sum(r["seconds"] for r in rows) / 3600
     k1, k0 = sum(r["r1_false_alerts"] for r in rows), sum(r["r0_false_alerts"] for r in rows)
     nfr = sum(r["frames"] for r in rows); ndf = sum(r["frames_drone_det_conf025"] for r in rows)
@@ -197,8 +211,6 @@ def main() -> int:
             "clips_with_r1_false_alert": [r["clip"] for r in rows if r["r1_false_alerts"]],
             "normalization": {"vf": VF, "source_sizes": status["normalize"]["source_sizes"]}}
     (ev / "neg_summary.json").write_text(json.dumps(summ, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    with (ev / "per_clip.csv").open("w", newline="", encoding="utf-8") as fh:
-        w = csv.DictWriter(fh, fieldnames=list(rows[0])); w.writeheader(); w.writerows(rows)
     status["summary"] = {"status": "OK", "minutes": summ["minutes"], "r1_false": k1, "r0_false": k0}
     save_status()
     z = a.out / f"{a.tag}_evidence.zip"

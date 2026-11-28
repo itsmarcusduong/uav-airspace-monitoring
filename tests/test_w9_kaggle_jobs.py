@@ -254,3 +254,16 @@ def test_actions_remote_tools_commit_reads_manifest_direct_or_in_zip(tmp_path, m
         d = Path(cmd[cmd.index("-p") + 1]); (d / "x").mkdir(); (d / "x/TOOLS_MANIFEST.json").write_text(json.dumps({"commit": "def"})); return ""
     monkeypatch.setattr(ak, "sh", fake_sh2)
     assert ak.remote_tools_commit(tmp_path / "r") == "def"
+
+
+def test_poisson_upper_no_overflow_for_large_k():
+    sys.path.insert(0, str(ROOT / "scripts/alert"))
+    import math
+    import evaluate_alerts as ea
+    assert abs(ea.poisson_upper(0) - 2.9957) < 1e-3
+    for k in (1, 5, 30):                                                    # so voi cong thuc cu (k nho van tinh duoc)
+        old = lambda mu: sum(math.exp(-mu) * mu ** i / math.factorial(i) for i in range(k + 1))  # noqa: E731
+        up = ea.poisson_upper(k)
+        assert abs(old(up) - 0.05) < 1e-6
+    u = ea.poisson_upper(1500)                                              # run 19: k0 hang tram -> truoc day OverflowError
+    assert 1500 + 1.6 * math.sqrt(1500) < u < 1500 + 1.7 * math.sqrt(1500) + 2
