@@ -77,6 +77,21 @@ def log_tail(p: Path, n: int = 80) -> str:
     return "\n".join(lines[-n:])
 
 
+def remote_tools_commit(d: Path) -> str:
+    """Tai dataset tools (vai tram KB) va doc commit trong TOOLS_MANIFEST.json (truc tiep hoac trong e1-w9-tools.zip)."""
+    import zipfile
+    shutil.rmtree(d, ignore_errors=True); d.mkdir(parents=True)
+    sh("kaggle", "datasets", "download", TOOLS_DATASET, "-p", str(d), "--unzip", "--force", check=False)
+    for m in d.rglob("TOOLS_MANIFEST.json"):
+        return json.loads(m.read_text(encoding="utf-8")).get("commit", "")
+    for z in d.rglob("*.zip"):
+        with zipfile.ZipFile(z) as zf:
+            for n in zf.namelist():
+                if n.endswith("TOOLS_MANIFEST.json"):
+                    return json.loads(zf.read(n).decode("utf-8")).get("commit", "")
+    return ""
+
+
 def sh(*cmd: str, check: bool = True) -> str:
     r = subprocess.run(cmd, capture_output=True, text=True)
     print("$", " ".join(cmd), "\n", r.stdout[-2000:], r.stderr[-2000:], flush=True)
@@ -139,12 +154,19 @@ def main() -> int:
         time.sleep(30)
     else:
         raise SystemExit("dataset tools chua san sang sau 30 phut")
-    time.sleep(60)                                        # "ready" ngay sau version co the la ban cu; doi ban moi xu ly xong
-    for _ in range(20):
-        if "ready" in sh("kaggle", "datasets", "status", TOOLS_DATASET, check=False).lower():
+    # "ready" ngay sau version la cua ban CU (run20 #5: notebook mount tools 7833289). Tai lai dataset va doi toi khi
+    # TOOLS_MANIFEST.json mang dung commit, roi moi push kernel.
+    for i in range(20):
+        got = remote_tools_commit(build / f"_remote_{i}")
+        print("tools tren Kaggle:", got[:12] or "(chua doc duoc)", flush=True)
+        if got == a.commit:
             break
         time.sleep(30)
-    sh("kaggle", "kernels", "push", "-p", str(kd))
+    else:
+        raise SystemExit("dataset tools tren Kaggle chua len ban moi sau 10 phut")
+    out_push = sh("kaggle", "kernels", "push", "-p", str(kd))
+    if "error" in out_push.lower():
+        raise SystemExit(f"kernels push loi: {out_push.strip()[-300:]}")
     t0 = time.time(); state = ""
     while time.time() - t0 < a.timeout_min * 60:
         time.sleep(60)
