@@ -236,3 +236,21 @@ def test_actions_log_tail_parses_kaggle_json_log(tmp_path):
     assert ak.log_tail(p, 2) == "b\nAssertionError: x"
     p.write_text("not json\nlast")
     assert ak.log_tail(p, 1) == "last"
+
+
+def test_actions_remote_tools_commit_reads_manifest_direct_or_in_zip(tmp_path, monkeypatch):
+    import zipfile
+    import actions_kaggle_run as ak
+
+    def fake_sh(*cmd, check=True):
+        d = Path(cmd[cmd.index("-p") + 1])
+        with zipfile.ZipFile(d / "e1-w9-tools.zip", "w") as zf:
+            zf.writestr("e1-w9-tools/TOOLS_MANIFEST.json", json.dumps({"commit": "abc"}))
+        return ""
+    monkeypatch.setattr(ak, "sh", fake_sh)
+    assert ak.remote_tools_commit(tmp_path / "r") == "abc"
+
+    def fake_sh2(*cmd, check=True):
+        d = Path(cmd[cmd.index("-p") + 1]); (d / "x").mkdir(); (d / "x/TOOLS_MANIFEST.json").write_text(json.dumps({"commit": "def"})); return ""
+    monkeypatch.setattr(ak, "sh", fake_sh2)
+    assert ak.remote_tools_commit(tmp_path / "r") == "def"
