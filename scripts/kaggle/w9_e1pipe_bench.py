@@ -74,12 +74,30 @@ def summarize_latency(rows: list[tuple], stages: tuple) -> dict:
     return out
 
 
+def export_engine(weights: Path, weights_sha: str, eng: Path) -> Path:
+    """C2: xuat TensorRT fp16 tu BAN SAO weights trong thu muc ghi duoc.
+
+    Ultralytics ghi best.onnx canh tep weights; /kaggle/input chi doc (run 18 lan dau: "Read-only file system").
+    Ban sao duoc kiem cung SHA-256 truoc khi xuat."""
+    eng.parent.mkdir(parents=True, exist_ok=True)
+    src = eng.parent / "best.pt"
+    shutil.copy2(weights, src)
+    if sha256(src) != weights_sha:
+        raise RuntimeError("ban sao weights khac SHA-256")
+    from ultralytics import YOLO
+    exported = Path(YOLO(str(src)).export(format="engine", half=True, imgsz=640, batch=1, device=0))
+    if exported.resolve() != eng.resolve():                 # Ultralytics ghi best.engine canh ban sao, tuc la dung eng
+        shutil.copy2(exported, eng)
+    return eng
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--data-root", type=Path, required=True, help="du lieu tho Svanstrom (co Data/Video_V)")
     ap.add_argument("--tools", type=Path, required=True, help="thu muc tools: scripts/, configs/, results/W08/... (dataset e1-w3-tools)")
     ap.add_argument("--weights", type=Path, required=True)
     ap.add_argument("--weights-sha", required=True)
+    ap.add_argument("--engine-cache", type=Path, default=Path("/tmp/e1_engine_cache"), help="thu muc ghi duoc cho ban sao weights va engine C2")
     ap.add_argument("--config", choices=list(CONFIGS), required=True)
     ap.add_argument("--rep", type=int, required=True)
     ap.add_argument("--max-videos", type=int, default=0)
@@ -163,14 +181,11 @@ def main() -> int:
     # ------------------------------------------------------------------ model (C2: xuat TensorRT)
     weights = str(a.weights)
     if C["engine"]:
-        eng = a.out / "_engine_cache" / "best.engine"
+        eng = a.engine_cache / "best.engine"
         t0 = time.time()
         try:
             if not eng.is_file():
-                eng.parent.mkdir(parents=True, exist_ok=True)
-                from ultralytics import YOLO
-                exported = YOLO(str(a.weights)).export(format="engine", half=True, imgsz=640, batch=1, device=0)
-                shutil.copy2(exported, eng)
+                export_engine(a.weights, a.weights_sha, eng)
             weights = str(eng)
             status["export"] = {"status": "OK", "engine_sha256": sha256(eng), "seconds": round(time.time() - t0, 1)}
         except Exception as ex:  # noqa: BLE001 - ghi lai moi loi xuat engine, theo luat: khong thu cau hinh khac

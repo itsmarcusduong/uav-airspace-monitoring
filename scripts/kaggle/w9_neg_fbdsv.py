@@ -27,6 +27,8 @@ import zipfile
 from pathlib import Path
 
 LOG = logging.getLogger("w9_neg_fbdsv")
+CMD_TIMEOUT_S = 300          # mot clip FBD-SV <= 30 MB; ffmpeg/ffprobe lau hon 5 phut la treo, dung lai va bao loi
+PROGRESS_EVERY = 25          # in tien do moi 25 clip (W9: run 19 lan dau im lang 3,3 gio, khong biet ket o dau)
 VF = "crop='min(iw,ih*5/4)':'min(ih,iw*4/5)',scale=640:512,fps=30"
 
 
@@ -40,7 +42,8 @@ def sha256(p: Path) -> str:
 
 def probe(p: Path) -> dict:
     r = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-count_frames", "-show_entries",
-                        "stream=width,height,r_frame_rate,nb_read_frames", "-of", "json", str(p)], capture_output=True, text=True, check=True)
+                        "stream=width,height,r_frame_rate,nb_read_frames", "-of", "json", str(p)], capture_output=True, text=True, check=True,
+                       timeout=CMD_TIMEOUT_S)
     s = json.loads(r.stdout)["streams"][0]
     num, den = (int(x) for x in s["r_frame_rate"].split("/"))
     return {"width": int(s["width"]), "height": int(s["height"]), "fps": round(num / den, 3), "frames": int(s["nb_read_frames"])}
@@ -49,6 +52,13 @@ def probe(p: Path) -> dict:
 def normalize_cmd(src: Path, dst: Path) -> list[str]:
     return ["ffmpeg", "-nostdin", "-loglevel", "error", "-y", "-i", str(src), "-map", "0:v:0", "-an", "-vf", VF,
             "-c:v", "libx264", "-preset", "veryfast", "-crf", "18", "-pix_fmt", "yuv420p", str(dst)]
+
+
+def progress(stage: str, i: int, n: int, t0: float, frames: int) -> None:
+    """Dong tien do: so clip, thoi gian da chay, toc do frame/s, uoc tinh thoi gian con lai."""
+    el = time.time() - t0
+    eta = el / i * (n - i) if i else 0.0
+    LOG.info("[%s] %d/%d clip | %d frame | %.0f s | %.1f frame/s | con ~%.0f s", stage, i, n, frames, el, frames / el if el else 0.0, eta)
 
 
 def find_clip(root: Path, rel: str) -> Path:
@@ -75,7 +85,7 @@ def main() -> int:
     ap.add_argument("--tag", default="w9_neg_fbdsv")
     ap.add_argument("--overwrite", action="store_true")
     a = ap.parse_args()
-    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s", datefmt="%H:%M:%S", stream=sys.stdout, force=True)
     ev = a.out / a.tag
     if ev.exists():
         if not a.overwrite:
@@ -110,17 +120,25 @@ def main() -> int:
     a.work.mkdir(parents=True)
     clips = []
     t0 = time.time()
-    for r in man:
+    LOG.info("[normalize] bat dau %d clip", len(man))
+    for i, r in enumerate(man, 1):
         src = find_clip(a.fbd_root, r["path"])
         if sha256(src) != r["sha256"]:
             raise SystemExit(f"{r['path']}: SHA-256 khac manifest (ADR-0014: dung lai)")
         cid = f"{Path(r['path']).parent.name}/{Path(r['path']).stem}"
         dst = a.work / f"{Path(r['path']).parent.name}__{Path(r['path']).stem}.mp4"
-        subprocess.run(normalize_cmd(src, dst), check=True)
-        ps, pd = probe(src), probe(dst)
+        try:
+            subprocess.run(normalize_cmd(src, dst), check=True, timeout=CMD_TIMEOUT_S)
+            ps, pd = probe(src), probe(dst)
+        except subprocess.TimeoutExpired as e:
+            status["normalize"] = {"status": "FAIL", "clip": cid, "error": f"timeout {CMD_TIMEOUT_S}s: {e.cmd[0]}", "done": len(clips)}
+            save_status()
+            raise SystemExit(f"{cid}: {e.cmd[0]} qua {CMD_TIMEOUT_S}s")
         if (pd["width"], pd["height"]) != (640, 512) or abs(pd["fps"] - 30.0) > 0.01:
             raise SystemExit(f"{cid}: chuan hoa sai {pd}")
         clips.append({"clip": cid, "src": ps, "out": pd, "path": dst})
+        if i % PROGRESS_EVERY == 0 or i == len(man):
+            progress("normalize", i, len(man), t0, sum(c["out"]["frames"] for c in clips))
     status["normalize"] = {"status": "OK", "clips": len(clips), "seconds": round(time.time() - t0, 1),
                            "source_sizes": sorted({f"{c['src']['width']}x{c['src']['height']}@{c['src']['fps']}" for c in clips})}
     save_status()
@@ -141,7 +159,9 @@ def main() -> int:
     sink = e1pipe.Sink(sink_dir, a.tag, a.commit, a.weights_sha, {"config": "C0", "source": "FBD-SV-2024"},
                        a.device, "FBD-SV-2024 neg_eval", save_csv=True)
     rows = []
-    for c in clips:
+    t1, nf = time.time(), 0
+    LOG.info("[measure] bat dau %d clip, %d frame, thiet bi %s", len(clips), sum(c["out"]["frames"] for c in clips), env["gpu"] or a.device)
+    for i, c in enumerate(clips, 1):
         o = c["out"]
         s = e1pipe.run_source(e1pipe.read_frames(c["path"]), c["clip"].replace("/", "__"), "Bird", 30.0, 640, 512, o["frames"], det,
                               e1pipe.make_tracker(IterableSimpleNamespace(**cfg_tr)), sink, poly, acfg, rois["primary"], a.weights_sha)
@@ -156,10 +176,13 @@ def main() -> int:
                      "tracks": len(cls_tracks), "tracks_majority_drone": sum(1 for v in cls_tracks.values() if max(set(v), key=v.count) == acfg["drone_class"]),
                      "tracks_majority_bird": sum(1 for v in cls_tracks.values() if max(set(v), key=v.count) == 1),
                      "src_w": c["src"]["width"], "src_h": c["src"]["height"], "src_fps": c["src"]["fps"], "src_frames": c["src"]["frames"]})
+        nf += s["frames"]
+        if i % PROGRESS_EVERY == 0 or i == len(clips) or i == 1:
+            progress("measure", i, len(clips), t1, nf)
     sink.close()
     shutil.rmtree(a.work, ignore_errors=True)                 # video chuan hoa khong roi khoi phien
     shutil.rmtree(sink_dir, ignore_errors=True)
-    status["measure"] = {"status": "OK", "clips": len(rows)}
+    status["measure"] = {"status": "OK", "clips": len(rows), "seconds": round(time.time() - t1, 1), "frames": nf}
     hours = sum(r["seconds"] for r in rows) / 3600
     k1, k0 = sum(r["r1_false_alerts"] for r in rows), sum(r["r0_false_alerts"] for r in rows)
     nfr = sum(r["frames"] for r in rows); ndf = sum(r["frames_drone_det_conf025"] for r in rows)
