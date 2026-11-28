@@ -38,7 +38,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Cai Kaggle CLI
-        run: pip install "kaggle>=2.2,<3"
+        run: pip install "kaggle>=2.2,<3" six            # kaggle 2.2.5 import six nhung khong khai bao phu thuoc (job check #1)
       - name: Nap khoa Kaggle (khong in gia tri)
         env:
           K_TOKEN: ${{ secrets.KAGGLE }}
