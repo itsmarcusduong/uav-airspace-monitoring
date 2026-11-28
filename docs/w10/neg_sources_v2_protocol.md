@@ -25,11 +25,12 @@ ADR-0018. Viết 29/11/2026, trước khi có danh sách Commons v2, trước kh
 - Trang dataset `airbirdsdata.github.io`: 118.312 ảnh 1920×1080 từ mạng camera đặt dọc đường băng một sân bay thật, chụp 9/2020–8/2021; 409.967 hộp chim có nhãn; chim trung bình nhỏ hơn 10 px.
 - Bài báo (arXiv 2304.11662): video gốc 25 fps; nhóm tác giả chọn các đoạn có chim rồi lấy 1 frame trên 5 frame liên tiếp, giữ thứ tự thời gian trong mỗi chuỗi → chuỗi tương đương **5 fps**.
 - Giấy phép theo trang dataset: chỉ dùng cho nghiên cứu và giáo dục phi thương mại, CC BY-NC-SA 4.0. Đồ án phi thương mại, không phân phối lại dữ liệu → dùng được. Đối chiếu tệp LICENSE của repo trước khi tải; nếu khác thì dừng và ghi lại.
-- Tải: điền form trên trang dataset (Quang tự điền), nhận link. Tổng khoảng 165 GB, 12 phần; images10–11 là test không có nhãn.
+- Tải: Quang điền form 29/11; form chỉ dẫn người dùng ngoài Trung Quốc tải từ Hugging Face `huggingface.co/datasets/auniquesun/AirBirds` (không cần đăng ký thêm). Dataset card ghi license `cc-by-nc-sa-4.0` và "for non-commercial research and educational use only" (truy cập 29/11/2026).
+- Tệp trên Hugging Face: `images0.zip`…`images9.zip` (11,7–21,7 GB mỗi tệp; tổng khoảng 176 GB gồm cả test), `labels0.zip`…`labels9.zip` (nhãn YOLO, một tệp mỗi ảnh, lớp 0 = chim, tệp rỗng = không có chim), hai cặp tệp test `*_test_D02_*`. Ghi commit/revision của repo Hugging Face vào manifest khi tải.
 
 **Dùng thế nào:**
 - **Chỉ `neg_eval`**, không vào `neg_train`. Lý do: ảnh có chim được gán nhãn; dùng làm ảnh nền nhãn rỗng sẽ dạy detector coi chim là nền, mâu thuẫn với lớp Bird của Svanström.
-- Phần dùng: các phần có nhãn (images0–9). Số phần tải tùy dung lượng Kaggle; chọn **theo thứ tự chỉ số tăng dần** (images0, images1, …) cho tới khi đủ thời lượng cần thiết hoặc hết dung lượng; không chọn theo nội dung.
+- Phần dùng: các phần có nhãn (images0–9), **theo thứ tự chỉ số tăng dần** (images0, images1, …) cho tới khi tổng `neg_eval` mọi nguồn đạt 120 phút hoặc hết ngân sách GPU/dung lượng; không chọn theo nội dung. Job Kaggle đọc ảnh trực tiếp trong zip (không giải nén toàn bộ), xử lý từng phần rồi xóa. Ước lượng thô: khoảng 10 nghìn ảnh mỗi phần, tức khoảng 33 phút ở 5 fps [INFERENCE: 118.312 ảnh / 12 phần].
 - Chuỗi: tách theo camera và thời gian trong tên tệp; khoảng cách giữa hai ảnh liên tiếp lớn hơn 1 giây thì bắt đầu chuỗi mới. Quy tắc đọc tên tệp được viết vào script sau khi xem **cấu trúc thư mục và tên tệp**, trước khi chạy detector.
 - Chuẩn hóa: cắt giữa 5:4, resize 640×512, **giữ 5 fps** (không nội suy frame). Thời lượng = số frame / 5.
 - Pipeline: e1pipe cấu hình đã chọn ở W9 (luật C), ROI `center_hex`, R0/R1, **không đổi tham số** (ByteTrack-e1 `track_buffer` tính theo frame nên ở 5 fps tương đương thời gian dài hơn 6 lần; ghi là giới hạn, không chỉnh).
