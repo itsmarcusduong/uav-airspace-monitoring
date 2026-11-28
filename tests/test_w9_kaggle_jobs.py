@@ -83,6 +83,27 @@ def test_bench_main_cpu_with_fake_detector(tmp_path, tools, monkeypatch):
         wb.main()
 
 
+def test_bench_c2_exports_from_writable_copy(tmp_path, monkeypatch):
+    """Run 18: Ultralytics ghi best.onnx canh weights trong /kaggle/input (chi doc) -> C2 that bai. Phai xuat tu ban sao."""
+    import ultralytics
+    import w9_e1pipe_bench as wb
+    ro = tmp_path / "ro"; ro.mkdir(); wt = ro / "best.pt"; wt.write_bytes(b"fake")
+    seen = {}
+
+    class FakeYOLO:
+        def __init__(self, path):
+            seen["src"] = Path(path)
+
+        def export(self, **kw):
+            assert seen["src"].parent != ro and kw["format"] == "engine" and kw["half"] and kw["imgsz"] == 640
+            e = seen["src"].with_suffix(".engine"); e.write_bytes(b"engine"); return str(e)
+    monkeypatch.setattr(ultralytics, "YOLO", FakeYOLO)
+    eng = wb.export_engine(wt, sha(wt), tmp_path / "cache" / "best.engine")
+    assert eng.read_bytes() == b"engine" and sha(tmp_path / "cache/best.pt") == sha(wt) and seen["src"] == tmp_path / "cache/best.pt"
+    with pytest.raises(RuntimeError, match="SHA-256"):
+        wb.export_engine(wt, "0" * 64, tmp_path / "cache2" / "best.engine")
+
+
 def test_neg_main_normalizes_and_counts(tmp_path, tools, monkeypatch):
     import w9_neg_fbdsv as wn
     fbd = tmp_path / "fbd" / "FBD-SV-2024" / "FBD-SV-2024" / "videos" / "train"
@@ -106,6 +127,44 @@ def test_neg_main_normalizes_and_counts(tmp_path, tools, monkeypatch):
     assert s["R0"]["false_alerts"] >= 1 and s["frac_frames_drone_det"] > 0.5  # detector gia luon thay Drone -> canh bao sai
     assert not (tmp_path / "work").exists()                                # video chuan hoa khong de lai
     assert not list(ev.rglob("*.mp4")) and not list(ev.rglob("*.jpg"))
+
+
+def test_neg_main_stops_on_ffmpeg_timeout_and_logs_progress(tmp_path, tools, monkeypatch, capsys):
+    """Run 19 lan dau im lang 3,3 gio: ffmpeg/ffprobe phai co timeout, stage_status ghi FAIL kem clip; job in tien do."""
+    import subprocess
+    import w9_neg_fbdsv as wn
+    fbd = tmp_path / "fbd" / "FBD-SV-2024" / "videos" / "train"
+    mkvideo(fbd / "bird_1.mp4", 1280, 720, 25, 25)
+    rows = [{"path": "FBD-SV-2024/videos/train/bird_1.mp4", "bytes": 0, "sha256": sha(fbd / "bird_1.mp4")}]
+    rows += [{"path": f"FBD-SV-2024/videos/val/zz_{i:03d}.mp4", "bytes": 0, "sha256": "0" * 64} for i in range(482)]
+    with (tools / "data/manifests/fbd_sv_2024_zip_contents_sha256.csv").open("w", newline="") as fh:
+        w = csv.DictWriter(fh, fieldnames=["path", "bytes", "sha256"]); w.writeheader(); w.writerows(rows)
+    wt = tmp_path / "best.pt"; wt.write_bytes(b"fake")
+    real = subprocess.run
+
+    def hang(cmd, *a, **k):
+        if cmd[0] == "ffmpeg":
+            assert k.get("timeout") == wn.CMD_TIMEOUT_S
+            raise subprocess.TimeoutExpired(cmd, k["timeout"])
+        return real(cmd, *a, **k)
+    monkeypatch.setattr(wn.subprocess, "run", hang)
+    out = tmp_path / "out"
+    monkeypatch.setattr(sys, "argv", ["x", "--fbd-root", str(tmp_path / "fbd"), "--tools", str(tools), "--weights", str(wt), "--weights-sha", sha(wt),
+                                      "--device", "cpu", "--max-clips", "1", "--work", str(tmp_path / "work"), "--out", str(out), "--commit", "test"])
+    with pytest.raises(SystemExit, match="ffmpeg qua"):
+        wn.main()
+    st = json.loads((out / "w9_neg_fbdsv" / "stage_status.json").read_text())
+    assert st["normalize"]["status"] == "FAIL" and st["normalize"]["clip"] == "train/bird_1"
+    assert "[normalize] bat dau 1 clip" in capsys.readouterr().out
+
+
+def test_run19_notebook_relays_log_and_smoke_runs_first():
+    nb = json.loads((ROOT / "scripts/kaggle/notebooks/w9_run19_neg_fbdsv.ipynb").read_text(encoding="utf-8"))
+    code = ["".join(c["source"]) for c in nb["cells"] if c["cell_type"] == "code"]
+    i_smoke = next(i for i, s in enumerate(code) if '"--max-clips", "10"' in s)
+    i_full = next(i for i, s in enumerate(code) if 'run_logged(BASE + ["--out", "/kaggle/working"])' in s)
+    assert i_smoke < i_full and "subprocess.Popen" in code[i_smoke] and "assert rc_smoke == 0" in code[i_smoke]
+    assert "/tmp/e1_smoke" in code[i_smoke]                                 # ket qua chay thu khong vao Output
 
 
 def test_w9_notebooks_parse_and_read_real_keys():
@@ -136,3 +195,62 @@ def test_actions_runner_fills_notebook_and_metadata(tmp_path):
         ak.fill_notebook(nb, {"KHONG_CO": "x"})
     m = ak.kernel_metadata("run19_neg_fbdsv", "minhquangdng/e1-w9-run19-neg-fbdsv")
     assert m["is_private"] and m["enable_gpu"] and "minhquangdng/e1-fbd-sv-2024" in m["dataset_sources"] and m["kernel_sources"] == ["minhquangdng/e1-w5-run13"]
+
+
+@pytest.mark.parametrize("token,user,key,kind", [
+    ("KGAT_abc123", "", "", "access_token"),
+    ('{"username": "u", "key": "k1"}', "", "", "kaggle.json"),
+    ("", "u", "k2", "kaggle.json"),
+])
+def test_actions_auth_writes_private_credentials(tmp_path, token, user, key, kind):
+    import actions_kaggle_auth as au
+    assert au.write_creds(tmp_path, token, user, key) == kind
+    p = tmp_path / ".kaggle" / kind
+    assert p.stat().st_mode & 0o777 == 0o600
+    if kind == "kaggle.json":
+        assert json.loads(p.read_text())["username"] == "u"
+    else:
+        assert p.read_text() == "KGAT_abc123"
+
+
+def test_actions_auth_refuses_missing_or_bad_secret(tmp_path):
+    import actions_kaggle_auth as au
+    with pytest.raises(SystemExit, match="khong co secret"):
+        au.write_creds(tmp_path, "", "", "")
+    with pytest.raises(SystemExit, match="JSON"):
+        au.write_creds(tmp_path, "{bad", "", "")
+
+
+@pytest.mark.parametrize("raw", ["KGAT_abc123", " KGAT_abc123\n", 'KAGGLE_API_TOKEN="KGAT_abc123"', "export KAGGLE_API_TOKEN=KGAT_abc123\n"])
+def test_actions_auth_extracts_token_from_pasted_forms(tmp_path, raw):
+    import actions_kaggle_auth as au
+    assert au.write_creds(tmp_path, raw, "", "") == "access_token"
+    assert (tmp_path / ".kaggle/access_token").read_text() == "KGAT_abc123"
+    assert "KGAT_abc123" not in au.shape(raw)
+
+
+def test_actions_log_tail_parses_kaggle_json_log(tmp_path):
+    import actions_kaggle_run as ak
+    p = tmp_path / "k.log"
+    p.write_text(json.dumps([{"stream_name": "stdout", "time": 1.0, "data": "a\nb\n"}, {"stream_name": "stderr", "time": 2.0, "data": "AssertionError: x\n"}]))
+    assert ak.log_tail(p, 2) == "b\nAssertionError: x"
+    p.write_text("not json\nlast")
+    assert ak.log_tail(p, 1) == "last"
+
+
+def test_actions_remote_tools_commit_reads_manifest_direct_or_in_zip(tmp_path, monkeypatch):
+    import zipfile
+    import actions_kaggle_run as ak
+
+    def fake_sh(*cmd, check=True):
+        d = Path(cmd[cmd.index("-p") + 1])
+        with zipfile.ZipFile(d / "e1-w9-tools.zip", "w") as zf:
+            zf.writestr("e1-w9-tools/TOOLS_MANIFEST.json", json.dumps({"commit": "abc"}))
+        return ""
+    monkeypatch.setattr(ak, "sh", fake_sh)
+    assert ak.remote_tools_commit(tmp_path / "r") == "abc"
+
+    def fake_sh2(*cmd, check=True):
+        d = Path(cmd[cmd.index("-p") + 1]); (d / "x").mkdir(); (d / "x/TOOLS_MANIFEST.json").write_text(json.dumps({"commit": "def"})); return ""
+    monkeypatch.setattr(ak, "sh", fake_sh2)
+    assert ak.remote_tools_commit(tmp_path / "r") == "def"

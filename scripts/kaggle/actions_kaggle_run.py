@@ -67,6 +67,31 @@ def kernel_metadata(job: str, slug: str) -> dict:
             "kernel_sources": KERNEL_SOURCES, "competition_sources": [], "machine_shape": "NvidiaTeslaT4" if j["gpu"] else "None"}
 
 
+def log_tail(p: Path, n: int = 80) -> str:
+    """Log Kaggle la mang JSON [{stream_name, time, data}]; tra n dong cuoi (doc tho neu khong phai JSON)."""
+    raw = p.read_text(encoding="utf-8", errors="replace")
+    try:
+        lines = "".join(e.get("data", "") for e in json.loads(raw)).splitlines()
+    except (ValueError, AttributeError, TypeError):
+        lines = raw.splitlines()
+    return "\n".join(lines[-n:])
+
+
+def remote_tools_commit(d: Path) -> str:
+    """Tai dataset tools (vai tram KB) va doc commit trong TOOLS_MANIFEST.json (truc tiep hoac trong e1-w9-tools.zip)."""
+    import zipfile
+    shutil.rmtree(d, ignore_errors=True); d.mkdir(parents=True)
+    sh("kaggle", "datasets", "download", TOOLS_DATASET, "-p", str(d), "--unzip", "--force", check=False)
+    for m in d.rglob("TOOLS_MANIFEST.json"):
+        return json.loads(m.read_text(encoding="utf-8")).get("commit", "")
+    for z in d.rglob("*.zip"):
+        with zipfile.ZipFile(z) as zf:
+            for n in zf.namelist():
+                if n.endswith("TOOLS_MANIFEST.json"):
+                    return json.loads(zf.read(n).decode("utf-8")).get("commit", "")
+    return ""
+
+
 def sh(*cmd: str, check: bool = True) -> str:
     r = subprocess.run(cmd, capture_output=True, text=True)
     print("$", " ".join(cmd), "\n", r.stdout[-2000:], r.stderr[-2000:], flush=True)
@@ -77,9 +102,10 @@ def sh(*cmd: str, check: bool = True) -> str:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--job", choices=list(JOBS), required=True)
+    ap.add_argument("--job", choices=["check", *JOBS], required=True)
     ap.add_argument("--commit", required=True)
     ap.add_argument("--config", default="", help="run20_stability: C0/C1/C2")
+    ap.add_argument("--tag", default="", help="nhan run (ADR-0016 muc 2), vd. b2: tao notebook Kaggle rieng e1-w9-<job>-<tag>, khong ghi de notebook dang chay")
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--timeout-min", type=int, default=300)
     ap.add_argument("--dry-run", action="store_true", help="chi dung thu muc, khong goi Kaggle (kiem thu)")
@@ -87,6 +113,14 @@ def main() -> int:
     head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
     if head != a.commit:
         raise SystemExit(f"checkout {head[:12]} khac --commit {a.commit[:12]}")
+    if a.job == "check":                                  # chi kiem ket noi va quyen doc cac dataset private
+        a.out.mkdir(parents=True, exist_ok=True)
+        res = {d: sh("kaggle", "datasets", "status", d, check=False).strip()[-80:]
+               for d in (TOOLS_DATASET, f"{USER}/e1-svanstrom-raw", f"{USER}/e1-fbd-sv-2024")}
+        for d, s in res.items():
+            print(f"{d}: {s}")
+        (a.out / "ACTIONS_OUTPUT_MANIFEST.json").write_text(json.dumps({"job": "check", "commit": a.commit, "datasets": res}, indent=2) + "\n")
+        return 0 if all("ready" in s.lower() for s in res.values()) else 1
     if a.job == "run20_stability" and a.config not in ("C0", "C1", "C2"):
         raise SystemExit("run20_stability can --config C0/C1/C2")
     build = a.out / "_build"
@@ -103,14 +137,16 @@ def main() -> int:
     if a.job == "run20_stability":
         vals["CONFIG"] = a.config
     (kd / JOBS[a.job]["notebook"]).write_text(json.dumps(fill_notebook(nb, vals), ensure_ascii=False, indent=1), encoding="utf-8")
-    slug = f"{USER}/e1-w9-{a.job.replace('_', '-')}"
+    if a.tag and not re.fullmatch(r"[a-z0-9]{1,12}", a.tag):
+        raise SystemExit("--tag chi gom a-z, 0-9, toi da 12 ky tu")
+    slug = f"{USER}/e1-w9-{a.job.replace('_', '-')}" + (f"-{a.tag}" if a.tag else "")
     (kd / "kernel-metadata.json").write_text(json.dumps(kernel_metadata(a.job, slug), indent=2))
     if a.dry_run:
         print("dry-run:", build)
         return 0
-    for k in ("KAGGLE_USERNAME", "KAGGLE_KEY"):
-        if not os.environ.get(k):
-            raise SystemExit(f"thieu bien moi truong {k} (GitHub Secrets)")
+    kdir = Path.home() / ".kaggle"
+    if not (os.environ.get("KAGGLE_API_TOKEN") or (kdir / "access_token").is_file() or (kdir / "kaggle.json").is_file()):
+        raise SystemExit("chua co khoa Kaggle (buoc actions_kaggle_auth.py)")
     sh("kaggle", "datasets", "version", "-p", str(ds), "-m", f"commit {a.commit} (GitHub Actions run {os.environ.get('GITHUB_RUN_ID', '')})")
     for _ in range(60):                                   # cho dataset xu ly xong
         if "ready" in sh("kaggle", "datasets", "status", TOOLS_DATASET, check=False).lower():
@@ -118,7 +154,19 @@ def main() -> int:
         time.sleep(30)
     else:
         raise SystemExit("dataset tools chua san sang sau 30 phut")
-    sh("kaggle", "kernels", "push", "-p", str(kd))
+    # "ready" ngay sau version la cua ban CU (run20 #5: notebook mount tools 7833289). Tai lai dataset va doi toi khi
+    # TOOLS_MANIFEST.json mang dung commit, roi moi push kernel.
+    for i in range(20):
+        got = remote_tools_commit(build / f"_remote_{i}")
+        print("tools tren Kaggle:", got[:12] or "(chua doc duoc)", flush=True)
+        if got == a.commit:
+            break
+        time.sleep(30)
+    else:
+        raise SystemExit("dataset tools tren Kaggle chua len ban moi sau 10 phut")
+    out_push = sh("kaggle", "kernels", "push", "-p", str(kd))
+    if "error" in out_push.lower():
+        raise SystemExit(f"kernels push loi: {out_push.strip()[-300:]}")
     t0 = time.time(); state = ""
     while time.time() - t0 < a.timeout_min * 60:
         time.sleep(60)
@@ -127,8 +175,10 @@ def main() -> int:
             break
     res = a.out / "kernel_output"; res.mkdir(parents=True, exist_ok=True)
     sh("kaggle", "kernels", "output", slug, "-p", str(res), check=False)
+    for lg in sorted(res.glob("*.log")):                   # in duoi log cua notebook de doc ngay trong Actions
+        print(f"--- {lg.name} (cuoi) ---"); print(log_tail(lg), flush=True)
     files = sorted(p for p in res.rglob("*") if p.is_file())
-    man = {"job": a.job, "commit": a.commit, "kernel": slug, "final_status": state.strip()[-200:], "actions_run_id": os.environ.get("GITHUB_RUN_ID", ""),
+    man = {"job": a.job, "commit": a.commit, "tag": a.tag, "kernel": slug, "final_status": state.strip()[-200:], "actions_run_id": os.environ.get("GITHUB_RUN_ID", ""),
            "kaggle_cli": sh("kaggle", "--version", check=False).strip(),
            "files": [{"path": p.relative_to(res).as_posix(), "bytes": p.stat().st_size, "sha256": sha256(p)} for p in files]}
     (a.out / "ACTIONS_OUTPUT_MANIFEST.json").write_text(json.dumps(man, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")

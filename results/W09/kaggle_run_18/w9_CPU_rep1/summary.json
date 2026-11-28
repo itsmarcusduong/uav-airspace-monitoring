@@ -1,0 +1,112 @@
+{
+  "tag": "w9_CPU_rep1",
+  "config": "CPU",
+  "rep": 1,
+  "frames": 1594,
+  "wall_seconds": 124.097,
+  "fps_wall": 12.845,
+  "fps_excl_warmup": 12.978,
+  "latency_ms": {
+    "frames_measured": 1564,
+    "decode": {
+      "p50": 0.724,
+      "p95": 1.252,
+      "mean": 0.857
+    },
+    "detect": {
+      "p50": 75.47,
+      "p95": 80.306,
+      "mean": 75.159
+    },
+    "track": {
+      "p50": 0.829,
+      "p95": 1.003,
+      "mean": 0.827
+    },
+    "alert": {
+      "p50": 0.05,
+      "p95": 0.07,
+      "mean": 0.051
+    },
+    "persist": {
+      "p50": 0.083,
+      "p95": 0.115,
+      "mean": 0.1
+    },
+    "total": {
+      "p50": 77.322,
+      "p95": 82.232,
+      "mean": 76.994
+    }
+  },
+  "gpu_peak_mb": 0.0,
+  "memory_samples": [
+    {
+      "minute": 0.42,
+      "rss_mb": 741.2,
+      "gpu_alloc_mb": 0.0
+    },
+    {
+      "minute": 0.81,
+      "rss_mb": 738.5,
+      "gpu_alloc_mb": 0.0
+    },
+    {
+      "minute": 1.23,
+      "rss_mb": 738.7,
+      "gpu_alloc_mb": 0.0
+    },
+    {
+      "minute": 1.65,
+      "rss_mb": 738.9,
+      "gpu_alloc_mb": 0.0
+    },
+    {
+      "minute": 2.07,
+      "rss_mb": 752.6,
+      "gpu_alloc_mb": 0.0
+    }
+  ],
+  "per_video": [
+    {
+      "video_id": "V_AIRPLANE_005",
+      "frames": 328,
+      "events": 0,
+      "seconds": 25.2096,
+      "fps": 13.01,
+      "lat_rows": 328
+    },
+    {
+      "video_id": "V_AIRPLANE_007",
+      "frames": 300,
+      "events": 0,
+      "seconds": 23.4252,
+      "fps": 12.81,
+      "lat_rows": 300
+    },
+    {
+      "video_id": "V_AIRPLANE_009",
+      "frames": 325,
+      "events": 0,
+      "seconds": 25.1664,
+      "fps": 12.91,
+      "lat_rows": 325
+    },
+    {
+      "video_id": "V_AIRPLANE_027",
+      "frames": 321,
+      "events": 0,
+      "seconds": 25.1505,
+      "fps": 12.76,
+      "lat_rows": 321
+    },
+    {
+      "video_id": "V_AIRPLANE_030",
+      "frames": 320,
+      "events": 0,
+      "seconds": 25.082,
+      "fps": 12.76,
+      "lat_rows": 320
+    }
+  ]
+}

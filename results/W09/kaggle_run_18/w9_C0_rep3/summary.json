@@ -1,0 +1,541 @@
+{
+  "tag": "w9_C0_rep3",
+  "config": "C0",
+  "rep": 3,
+  "frames": 11821,
+  "wall_seconds": 133.029,
+  "fps_wall": 88.86,
+  "fps_excl_warmup": 90.216,
+  "latency_ms": {
+    "frames_measured": 11791,
+    "decode": {
+      "p50": 0.404,
+      "p95": 0.529,
+      "mean": 0.439
+    },
+    "detect": {
+      "p50": 9.83,
+      "p95": 10.743,
+      "mean": 9.899
+    },
+    "track": {
+      "p50": 0.566,
+      "p95": 0.69,
+      "mean": 0.562
+    },
+    "alert": {
+      "p50": 0.032,
+      "p95": 0.049,
+      "mean": 0.032
+    },
+    "persist": {
+      "p50": 0.057,
+      "p95": 0.083,
+      "mean": 0.08
+    },
+    "total": {
+      "p50": 10.914,
+      "p95": 11.988,
+      "mean": 11.013
+    }
+  },
+  "gpu_peak_mb": 69.5,
+  "memory_samples": [
+    {
+      "minute": 0.09,
+      "rss_mb": 1454.4,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 0.15,
+      "rss_mb": 1455.5,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 0.21,
+      "rss_mb": 1455.9,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 0.27,
+      "rss_mb": 1456.2,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 0.33,
+      "rss_mb": 1456.3,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 0.39,
+      "rss_mb": 1456.9,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 0.45,
+      "rss_mb": 1457.5,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 0.5,
+      "rss_mb": 1457.7,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 0.56,
+      "rss_mb": 1457.8,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 0.62,
+      "rss_mb": 1458.0,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 0.68,
+      "rss_mb": 1458.1,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 0.74,
+      "rss_mb": 1458.2,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 0.8,
+      "rss_mb": 1458.2,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 0.85,
+      "rss_mb": 1458.3,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 0.91,
+      "rss_mb": 1458.4,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 0.96,
+      "rss_mb": 1458.5,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 1.02,
+      "rss_mb": 1458.6,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 1.08,
+      "rss_mb": 1458.7,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 1.13,
+      "rss_mb": 1458.8,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 1.19,
+      "rss_mb": 1458.9,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 1.25,
+      "rss_mb": 1459.0,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 1.31,
+      "rss_mb": 1459.4,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 1.36,
+      "rss_mb": 1459.5,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 1.42,
+      "rss_mb": 1460.5,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 1.48,
+      "rss_mb": 1460.6,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 1.53,
+      "rss_mb": 1460.7,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 1.59,
+      "rss_mb": 1460.9,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 1.65,
+      "rss_mb": 1461.0,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 1.71,
+      "rss_mb": 1461.1,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 1.77,
+      "rss_mb": 1461.2,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 1.82,
+      "rss_mb": 1461.3,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 1.87,
+      "rss_mb": 1461.4,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 1.93,
+      "rss_mb": 1461.5,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 1.99,
+      "rss_mb": 1461.6,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 2.04,
+      "rss_mb": 1461.6,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 2.1,
+      "rss_mb": 1461.7,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 2.16,
+      "rss_mb": 1461.8,
+      "gpu_alloc_mb": 42.0
+    },
+    {
+      "minute": 2.22,
+      "rss_mb": 1461.9,
+      "gpu_alloc_mb": 42.0
+    }
+  ],
+  "per_video": [
+    {
+      "video_id": "V_AIRPLANE_005",
+      "frames": 328,
+      "events": 0,
+      "seconds": 5.6256,
+      "fps": 58.3,
+      "lat_rows": 328
+    },
+    {
+      "video_id": "V_AIRPLANE_007",
+      "frames": 300,
+      "events": 0,
+      "seconds": 3.3488,
+      "fps": 89.58,
+      "lat_rows": 300
+    },
+    {
+      "video_id": "V_AIRPLANE_009",
+      "frames": 325,
+      "events": 0,
+      "seconds": 3.5413,
+      "fps": 91.77,
+      "lat_rows": 325
+    },
+    {
+      "video_id": "V_AIRPLANE_027",
+      "frames": 321,
+      "events": 0,
+      "seconds": 3.564,
+      "fps": 90.07,
+      "lat_rows": 321
+    },
+    {
+      "video_id": "V_AIRPLANE_030",
+      "frames": 320,
+      "events": 0,
+      "seconds": 3.5899,
+      "fps": 89.14,
+      "lat_rows": 320
+    },
+    {
+      "video_id": "V_AIRPLANE_037",
+      "frames": 312,
+      "events": 0,
+      "seconds": 3.487,
+      "fps": 89.48,
+      "lat_rows": 312
+    },
+    {
+      "video_id": "V_AIRPLANE_047",
+      "frames": 328,
+      "events": 0,
+      "seconds": 3.5057,
+      "fps": 93.56,
+      "lat_rows": 328
+    },
+    {
+      "video_id": "V_AIRPLANE_048",
+      "frames": 303,
+      "events": 0,
+      "seconds": 3.4326,
+      "fps": 88.27,
+      "lat_rows": 303
+    },
+    {
+      "video_id": "V_AIRPLANE_052",
+      "frames": 314,
+      "events": 0,
+      "seconds": 3.4469,
+      "fps": 91.1,
+      "lat_rows": 314
+    },
+    {
+      "video_id": "V_BIRD_025",
+      "frames": 319,
+      "events": 0,
+      "seconds": 3.5255,
+      "fps": 90.48,
+      "lat_rows": 319
+    },
+    {
+      "video_id": "V_BIRD_037",
+      "frames": 326,
+      "events": 0,
+      "seconds": 3.6644,
+      "fps": 88.96,
+      "lat_rows": 326
+    },
+    {
+      "video_id": "V_BIRD_041",
+      "frames": 305,
+      "events": 0,
+      "seconds": 3.4335,
+      "fps": 88.83,
+      "lat_rows": 305
+    },
+    {
+      "video_id": "V_DRONE_004",
+      "frames": 303,
+      "events": 1,
+      "seconds": 3.3708,
+      "fps": 89.89,
+      "lat_rows": 303
+    },
+    {
+      "video_id": "V_DRONE_010",
+      "frames": 301,
+      "events": 1,
+      "seconds": 3.3488,
+      "fps": 89.88,
+      "lat_rows": 301
+    },
+    {
+      "video_id": "V_DRONE_011",
+      "frames": 302,
+      "events": 1,
+      "seconds": 3.3506,
+      "fps": 90.13,
+      "lat_rows": 302
+    },
+    {
+      "video_id": "V_DRONE_018",
+      "frames": 302,
+      "events": 2,
+      "seconds": 3.3174,
+      "fps": 91.04,
+      "lat_rows": 302
+    },
+    {
+      "video_id": "V_DRONE_023",
+      "frames": 301,
+      "events": 1,
+      "seconds": 3.3557,
+      "fps": 89.7,
+      "lat_rows": 301
+    },
+    {
+      "video_id": "V_DRONE_025",
+      "frames": 305,
+      "events": 2,
+      "seconds": 3.3933,
+      "fps": 89.88,
+      "lat_rows": 305
+    },
+    {
+      "video_id": "V_DRONE_029",
+      "frames": 301,
+      "events": 1,
+      "seconds": 3.2816,
+      "fps": 91.72,
+      "lat_rows": 301
+    },
+    {
+      "video_id": "V_DRONE_032",
+      "frames": 314,
+      "events": 1,
+      "seconds": 3.5521,
+      "fps": 88.4,
+      "lat_rows": 314
+    },
+    {
+      "video_id": "V_DRONE_044",
+      "frames": 312,
+      "events": 1,
+      "seconds": 3.4919,
+      "fps": 89.35,
+      "lat_rows": 312
+    },
+    {
+      "video_id": "V_DRONE_049",
+      "frames": 307,
+      "events": 1,
+      "seconds": 3.4089,
+      "fps": 90.06,
+      "lat_rows": 307
+    },
+    {
+      "video_id": "V_DRONE_060",
+      "frames": 308,
+      "events": 2,
+      "seconds": 3.4657,
+      "fps": 88.87,
+      "lat_rows": 308
+    },
+    {
+      "video_id": "V_DRONE_077",
+      "frames": 316,
+      "events": 2,
+      "seconds": 3.5321,
+      "fps": 89.47,
+      "lat_rows": 316
+    },
+    {
+      "video_id": "V_DRONE_078",
+      "frames": 300,
+      "events": 3,
+      "seconds": 3.2952,
+      "fps": 91.04,
+      "lat_rows": 300
+    },
+    {
+      "video_id": "V_DRONE_080",
+      "frames": 300,
+      "events": 2,
+      "seconds": 3.362,
+      "fps": 89.23,
+      "lat_rows": 300
+    },
+    {
+      "video_id": "V_DRONE_088",
+      "frames": 316,
+      "events": 1,
+      "seconds": 3.4698,
+      "fps": 91.07,
+      "lat_rows": 316
+    },
+    {
+      "video_id": "V_DRONE_095",
+      "frames": 312,
+      "events": 1,
+      "seconds": 3.4888,
+      "fps": 89.43,
+      "lat_rows": 312
+    },
+    {
+      "video_id": "V_DRONE_096",
+      "frames": 325,
+      "events": 2,
+      "seconds": 3.5664,
+      "fps": 91.13,
+      "lat_rows": 325
+    },
+    {
+      "video_id": "V_HELICOPTER_005",
+      "frames": 311,
+      "events": 0,
+      "seconds": 3.4563,
+      "fps": 89.98,
+      "lat_rows": 311
+    },
+    {
+      "video_id": "V_HELICOPTER_010",
+      "frames": 303,
+      "events": 0,
+      "seconds": 2.9554,
+      "fps": 102.52,
+      "lat_rows": 303
+    },
+    {
+      "video_id": "V_HELICOPTER_011",
+      "frames": 309,
+      "events": 0,
+      "seconds": 3.3765,
+      "fps": 91.51,
+      "lat_rows": 309
+    },
+    {
+      "video_id": "V_HELICOPTER_012",
+      "frames": 314,
+      "events": 0,
+      "seconds": 3.4188,
+      "fps": 91.85,
+      "lat_rows": 314
+    },
+    {
+      "video_id": "V_HELICOPTER_031",
+      "frames": 304,
+      "events": 0,
+      "seconds": 3.4431,
+      "fps": 88.29,
+      "lat_rows": 304
+    },
+    {
+      "video_id": "V_HELICOPTER_039",
+      "frames": 308,
+      "events": 0,
+      "seconds": 3.3826,
+      "fps": 91.05,
+      "lat_rows": 308
+    },
+    {
+      "video_id": "V_HELICOPTER_041",
+      "frames": 312,
+      "events": 0,
+      "seconds": 3.3816,
+      "fps": 92.26,
+      "lat_rows": 312
+    },
+    {
+      "video_id": "V_HELICOPTER_053",
+      "frames": 322,
+      "events": 0,
+      "seconds": 3.5658,
+      "fps": 90.3,
+      "lat_rows": 322
+    },
+    {
+      "video_id": "V_HELICOPTER_056",
+      "frames": 312,
+      "events": 0,
+      "seconds": 3.3839,
+      "fps": 92.2,
+      "lat_rows": 312
+    }
+  ]
+}

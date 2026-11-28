@@ -1,0 +1,141 @@
+{
+  "plan": "docs/w9/W9_PLAN.md",
+  "gate_b": {
+    "track_rows_run17": 11474,
+    "matched": 11474,
+    "rate": 1.0,
+    "events_run17": 25,
+    "events_e1pipe": 25,
+    "events_identical": true,
+    "pass": true
+  },
+  "timing": {
+    "C0": {
+      "reps": [
+        1,
+        2,
+        3
+      ],
+      "fps_median": 89.313,
+      "fps_min": 89.036,
+      "fps_max": 90.216,
+      "p95_total_median": 12.082,
+      "p95_total_min": 11.988,
+      "p95_total_max": 12.114,
+      "p50_total_median": 11.011,
+      "stage_p50_median_ms": {
+        "decode": 0.406,
+        "detect": 9.914,
+        "track": 0.572,
+        "alert": 0.032,
+        "persist": 0.058,
+        "total": 11.011
+      },
+      "gpu_peak_mb_max": 69.5
+    },
+    "C1": {
+      "reps": [
+        1,
+        2,
+        3
+      ],
+      "fps_median": 78.514,
+      "fps_min": 77.777,
+      "fps_max": 79.42,
+      "p95_total_median": 13.779,
+      "p95_total_min": 13.542,
+      "p95_total_max": 13.86,
+      "p50_total_median": 12.558,
+      "stage_p50_median_ms": {
+        "decode": 0.41,
+        "detect": 11.437,
+        "track": 0.576,
+        "alert": 0.032,
+        "persist": 0.059,
+        "total": 12.558
+      },
+      "gpu_peak_mb_max": 50.4
+    },
+    "CPU": {
+      "reps": [
+        1
+      ],
+      "fps_median": 12.978,
+      "fps_min": 12.978,
+      "fps_max": 12.978,
+      "p95_total_median": 82.232,
+      "p95_total_min": 82.232,
+      "p95_total_max": 82.232,
+      "p50_total_median": 77.322,
+      "stage_p50_median_ms": {
+        "decode": 0.724,
+        "detect": 75.47,
+        "track": 0.829,
+        "alert": 0.05,
+        "persist": 0.083,
+        "total": 77.322
+      },
+      "gpu_peak_mb_max": 0
+    }
+  },
+  "accuracy": {
+    "C0": {
+      "drone_recall": 0.8718,
+      "drone_precision": 0.8962,
+      "r1_detected": 23,
+      "r1_events": 23,
+      "r1_false_nondrone": 0,
+      "track_recall_pooled": 0.8379,
+      "idsw_per_1000": 1.982
+    },
+    "C1": {
+      "drone_recall": 0.8699,
+      "drone_precision": 0.8942,
+      "r1_detected": 23,
+      "r1_events": 23,
+      "r1_false_nondrone": 0,
+      "track_recall_pooled": 0.8376,
+      "idsw_per_1000": 1.81
+    }
+  },
+  "rule_c": {
+    "candidates": {
+      "C0": {
+        "available": true,
+        "nfr1": true,
+        "accuracy_guard": {
+          "drone_recall_drop_le_0.01": true,
+          "r1_event_recall_not_lower": true,
+          "r1_false_nondrone_not_higher": true,
+          "track_recall_drop_le_0.01": true,
+          "idsw_increase_le_10pct": true
+        },
+        "accuracy_ok": true,
+        "fps_median": 89.313,
+        "p95_total_median": 12.082
+      },
+      "C1": {
+        "available": true,
+        "nfr1": true,
+        "accuracy_guard": {
+          "drone_recall_drop_le_0.01": true,
+          "r1_event_recall_not_lower": true,
+          "r1_false_nondrone_not_higher": true,
+          "track_recall_drop_le_0.01": true,
+          "idsw_increase_le_10pct": true
+        },
+        "accuracy_ok": true,
+        "fps_median": 78.514,
+        "p95_total_median": 13.779
+      },
+      "C2": {
+        "available": false,
+        "reason": "khong co ket qua"
+      }
+    },
+    "choice": "C0",
+    "nfr1_met": true,
+    "reason": "dat (1)+(2): ['C0', 'C1']; FPS cao nhat C0; trong 5%: ['C0'] -> chon don gian nhat C0"
+  },
+  "stability": null
+}

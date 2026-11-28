@@ -1,0 +1,8 @@
+config,rep,frames,fps_excl_warmup,p50_total_ms,p95_total_ms,gpu_peak_mb,source
+C0,1,11821,89.313,11.028,12.114,69.5,results/W09/kaggle_run_18/w9_C0_rep1
+C0,2,11821,89.036,11.011,12.082,69.5,results/W09/kaggle_run_18/w9_C0_rep2
+C0,3,11821,90.216,10.914,11.988,69.5,results/W09/kaggle_run_18/w9_C0_rep3
+C1,1,11821,78.514,12.558,13.779,50.4,results/W09/kaggle_run_18/w9_C1_rep1
+C1,2,11821,79.42,12.401,13.542,50.4,results/W09/kaggle_run_18/w9_C1_rep2
+C1,3,11821,77.777,12.681,13.86,50.4,results/W09/kaggle_run_18/w9_C1_rep3
+CPU,1,1594,12.978,77.322,82.232,0.0,results/W09/kaggle_run_18/w9_CPU_rep1
