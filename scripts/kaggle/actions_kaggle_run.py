@@ -67,6 +67,16 @@ def kernel_metadata(job: str, slug: str) -> dict:
             "kernel_sources": KERNEL_SOURCES, "competition_sources": [], "machine_shape": "NvidiaTeslaT4" if j["gpu"] else "None"}
 
 
+def log_tail(p: Path, n: int = 80) -> str:
+    """Log Kaggle la mang JSON [{stream_name, time, data}]; tra n dong cuoi (doc tho neu khong phai JSON)."""
+    raw = p.read_text(encoding="utf-8", errors="replace")
+    try:
+        lines = "".join(e.get("data", "") for e in json.loads(raw)).splitlines()
+    except (ValueError, AttributeError, TypeError):
+        lines = raw.splitlines()
+    return "\n".join(lines[-n:])
+
+
 def sh(*cmd: str, check: bool = True) -> str:
     r = subprocess.run(cmd, capture_output=True, text=True)
     print("$", " ".join(cmd), "\n", r.stdout[-2000:], r.stderr[-2000:], flush=True)
@@ -129,6 +139,11 @@ def main() -> int:
         time.sleep(30)
     else:
         raise SystemExit("dataset tools chua san sang sau 30 phut")
+    time.sleep(60)                                        # "ready" ngay sau version co the la ban cu; doi ban moi xu ly xong
+    for _ in range(20):
+        if "ready" in sh("kaggle", "datasets", "status", TOOLS_DATASET, check=False).lower():
+            break
+        time.sleep(30)
     sh("kaggle", "kernels", "push", "-p", str(kd))
     t0 = time.time(); state = ""
     while time.time() - t0 < a.timeout_min * 60:
@@ -138,6 +153,8 @@ def main() -> int:
             break
     res = a.out / "kernel_output"; res.mkdir(parents=True, exist_ok=True)
     sh("kaggle", "kernels", "output", slug, "-p", str(res), check=False)
+    for lg in sorted(res.glob("*.log")):                   # in duoi log cua notebook de doc ngay trong Actions
+        print(f"--- {lg.name} (cuoi) ---"); print(log_tail(lg), flush=True)
     files = sorted(p for p in res.rglob("*") if p.is_file())
     man = {"job": a.job, "commit": a.commit, "tag": a.tag, "kernel": slug, "final_status": state.strip()[-200:], "actions_run_id": os.environ.get("GITHUB_RUN_ID", ""),
            "kaggle_cli": sh("kaggle", "--version", check=False).strip(),
