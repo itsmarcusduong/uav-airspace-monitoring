@@ -1,6 +1,6 @@
 # ADR-0014: Đưa lại FBD-SV-2024 vào tập âm tính, chỉ để đánh giá
 
-- Trạng thái: **Proposed** (Quang 17/11/2026). Chuyển **Accepted** khi An duyệt trên PR. Chưa Accepted thì không dùng FBD-SV-2024: không đưa vào thư mục dự án, không đưa lên Kaggle, không đo.
+- Trạng thái: **Accepted** (An approve PR #114 ngày 18/11/2026; merge 21/11/2026). Quang đề xuất 17/11/2026. Dòng trạng thái này trước đây chưa được cập nhật khi merge; An phát hiện khi review #140 ngày 28/11/2026.
 - Sửa ADR-0013 ở một điểm: FBD-SV-2024 không còn bị loại mà được dùng trong `neg_eval` theo điều kiện ở mục Quyết định. Các mục khác của ADR-0013 giữ nguyên.
 - Liên quan: #113 W8-01, #99, PR #106, ADR-0011, ADR-0013, `data/manifests/license_matrix.csv`.
 
