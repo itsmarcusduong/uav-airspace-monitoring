@@ -204,6 +204,7 @@ para("6. Demo/video", True)
 para("Tuần 9 không thêm video demo mới; demo dashboard phát lại của tuần 8 vẫn dùng được. Kết quả tuần này là số đo tốc độ và cảnh báo sai, xem mục 4 và v0.9 mục 5.3.9, 5.4.8.")
 para("7. Vấn đề và rủi ro (trung thực)", True)
 risks = [f"Detector nhận gần như mọi chim nhỏ trong FBD-SV là Drone ({sum(int(r['tracks_majority_drone']) for r in PC19)}/{sum(int(r['tracks']) for r in PC19)} track, thăm dò): R1 vẫn {vn(NEG['R1']['per_hour'], 1)} cảnh báo sai/giờ. Cần dữ liệu hard negative (W10, ADR-0011).",
+         "Nhận xét W7 của thầy (hard-negative chưa xong, thiếu negative ngoài) là đúng. Không quay được video âm tính nên tập âm tính dời sang W8–W9 (ADR-0013); W8 chỉ xong giấy phép (ADR-0014). W9 đã đo FBD-SV và điều kiện chạy hard-negative của ADR-0011 đạt; huấn luyện e1-yolo-v1-hn làm ở W10. Trên val ở W7, nhầm nền→Drone là 0/74 (lỗi do hộp trùng, lệch vị trí), nên chưa có bằng chứng cần hard-negative cho tới khi có tập ngoài.",
          "Tổng âm tính mới 19 phút (mục tiêu NFR3: 2 giờ); clip FBD-SV ngắn (trung vị 2 giây) nên tần suất có thể khác video giám sát liên tục. Commons chờ An sàng lọc xong; Pixabay chưa làm.",
          "Run 19 lần đầu lỗi tràn số ở bước tổng hợp sau khoảng 4 giờ chạy, lần 2 chuẩn hóa quá chậm và bị hủy; đã sửa (#150, #151), lần 3 (19b3) chạy xong.",
          "Số đo tốc độ chỉ trên Tesla T4 và video đọc từ tệp; chưa đo trên test (W10–W11)."]
