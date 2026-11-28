@@ -195,3 +195,27 @@ def test_actions_runner_fills_notebook_and_metadata(tmp_path):
         ak.fill_notebook(nb, {"KHONG_CO": "x"})
     m = ak.kernel_metadata("run19_neg_fbdsv", "minhquangdng/e1-w9-run19-neg-fbdsv")
     assert m["is_private"] and m["enable_gpu"] and "minhquangdng/e1-fbd-sv-2024" in m["dataset_sources"] and m["kernel_sources"] == ["minhquangdng/e1-w5-run13"]
+
+
+@pytest.mark.parametrize("token,user,key,kind", [
+    ("KGAT_abc123", "", "", "access_token"),
+    ('{"username": "u", "key": "k1"}', "", "", "kaggle.json"),
+    ("", "u", "k2", "kaggle.json"),
+])
+def test_actions_auth_writes_private_credentials(tmp_path, token, user, key, kind):
+    import actions_kaggle_auth as au
+    assert au.write_creds(tmp_path, token, user, key) == kind
+    p = tmp_path / ".kaggle" / kind
+    assert p.stat().st_mode & 0o777 == 0o600
+    if kind == "kaggle.json":
+        assert json.loads(p.read_text())["username"] == "u"
+    else:
+        assert p.read_text() == "KGAT_abc123"
+
+
+def test_actions_auth_refuses_missing_or_bad_secret(tmp_path):
+    import actions_kaggle_auth as au
+    with pytest.raises(SystemExit, match="khong co secret"):
+        au.write_creds(tmp_path, "", "", "")
+    with pytest.raises(SystemExit, match="JSON"):
+        au.write_creds(tmp_path, "{bad", "", "")
