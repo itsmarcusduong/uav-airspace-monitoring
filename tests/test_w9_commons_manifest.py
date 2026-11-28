@@ -136,3 +136,10 @@ def test_finalize_refuses_incomplete_mismatched_or_one_split(tmp_path):
     _write(cand, cm.CAND_FIELDS, [_cand_row(0, "user:a0", "same"), _cand_row(1, "user:a1", "same")])  # mot nhom -> mot split
     with pytest.raises(SystemExit, match="ca hai split"):
         cm.finalize(cand, q, a, tmp_path / "v1.csv")
+
+
+def test_author_key_ignores_title_attribute_of_red_link():
+    """Commons: lien ket tai khoan chua co trang co title 'User:X (page does not exist)' -> van la MOT tai khoan."""
+    h = ('<a href="//commons.wikimedia.org/w/index.php?title=User:Meerah_Dhiman&action=edit&redlink=1" class="new" '
+         'title="User:Meerah Dhiman (page does not exist)">Meerah Dhiman</a>')
+    assert cm.author_key(h) == ("user:meerah dhiman", "ok")

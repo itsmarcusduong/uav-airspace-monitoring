@@ -1,0 +1,41 @@
+{
+  "job": "run19_neg_fbdsv",
+  "commit": "f18a4d38b9dd01aaaf8e5aa3f54612398b8c71a8",
+  "tag": "b3",
+  "kernel": "minhquangdng/e1-w9-run19-neg-fbdsv-b3",
+  "final_status": "minhquangdng/e1-w9-run19-neg-fbdsv-b3 has status \"kernelworkerstatus.complete\"",
+  "actions_run_id": "46149322093",
+  "kaggle_cli": "Kaggle CLI 2.2.5",
+  "files": [
+    {
+      "path": "e1-w9-run19-neg-fbdsv-b3.log",
+      "bytes": 17338,
+      "sha256": "f2052a240dd1d574ff00f01b6eacd671154b5d8a7ea17571e289880d7d834cd1"
+    },
+    {
+      "path": "w9_neg_fbdsv/env.json",
+      "bytes": 267,
+      "sha256": "e513fce4e1d75270156bed27c49bf17b7ea4d029e441efe17480adbabfe79a97"
+    },
+    {
+      "path": "w9_neg_fbdsv/neg_summary.json",
+      "bytes": 1510,
+      "sha256": "7e59c7a48072ba09668b274fe2f946c6b7fe2835820b734f845bfc030792298f"
+    },
+    {
+      "path": "w9_neg_fbdsv/per_clip.csv",
+      "bytes": 30766,
+      "sha256": "59a21b96a640da2498f2f566fb419fd9932acc04330c44ec9399d2d68c6b5fb0"
+    },
+    {
+      "path": "w9_neg_fbdsv/stage_status.json",
+      "bytes": 472,
+      "sha256": "9aeb53963f13f6600c4e0f00abc5edf571b7b32b4f60f6f4304da24c57351d03"
+    },
+    {
+      "path": "w9_neg_fbdsv_evidence.zip",
+      "bytes": 6262,
+      "sha256": "93fbf488719c012f18b740802092a365b3d1ccd081e9fa5150c931b25c828eb0"
+    }
+  ]
+}
