@@ -136,7 +136,8 @@ def evaluate(vids: list[dict], rois: list[dict], cfg: dict, points=("center", "b
 def poisson_upper(k: int, conf: float = 0.95) -> float:
     """Can tren mot phia cua trung binh Poisson khi quan sat k su kien (P(X <= k; mu) = 1 - conf), tim bang chia doi.
     k = 0 -> -ln(0,05) = 2,996. Gia dinh cac su kien doc lap va dong nhat, nen chi la chi bao (review #83)."""
-    cdf = lambda mu: sum(math.exp(-mu) * mu ** i / math.factorial(i) for i in range(k + 1))
+    # tinh trong log de khong tran so khi k lon (run 19: k0 hang tram -> OverflowError o mu ** i)
+    cdf = lambda mu: sum(math.exp(-mu + i * math.log(mu) - math.lgamma(i + 1)) if mu > 0 else float(i == 0) for i in range(k + 1))
     lo, hi = 0.0, 10.0 + 10 * k
     for _ in range(200):
         mid = (lo + hi) / 2
