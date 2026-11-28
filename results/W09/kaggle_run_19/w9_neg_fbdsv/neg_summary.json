@@ -1,0 +1,69 @@
+{
+  "source": "FBD-SV-2024",
+  "split": "neg_eval (ADR-0014)",
+  "config": "C0",
+  "clips": 483,
+  "frames": 34438,
+  "hours": 0.3189,
+  "minutes": 19.13,
+  "R1": {
+    "false_alerts": 44,
+    "per_hour": 137.99,
+    "per_hour_upper95": 177.42,
+    "clips_with_false_alert": 34
+  },
+  "R0": {
+    "false_alerts": 142,
+    "per_hour": 445.33,
+    "per_hour_upper95": 511.88,
+    "clips_with_false_alert": 125
+  },
+  "frames_drone_det_conf025": 9279,
+  "frac_frames_drone_det": 0.26944,
+  "adr0011_trigger": {
+    "r1_false_alert_ge1": true,
+    "drone_det_frames_ge_1pct": true
+  },
+  "clips_with_r1_false_alert": [
+    "train/bird_106",
+    "train/bird_135",
+    "train/bird_143",
+    "train/bird_172",
+    "train/bird_175",
+    "train/bird_180",
+    "train/bird_181",
+    "train/bird_182",
+    "train/bird_183",
+    "train/bird_210",
+    "train/bird_211",
+    "train/bird_219",
+    "train/bird_232",
+    "train/bird_238",
+    "train/bird_259",
+    "train/bird_266",
+    "train/bird_270",
+    "train/bird_289",
+    "train/bird_360",
+    "train/bird_371",
+    "train/bird_374",
+    "train/bird_393",
+    "train/bird_432",
+    "train/bird_439",
+    "train/bird_440",
+    "train/bird_471",
+    "train/bird_472",
+    "train/bird_473",
+    "train/bird_72",
+    "train/bird_87",
+    "train/bird_88",
+    "train/bird_89",
+    "train/bird_91",
+    "val/bird_396"
+  ],
+  "normalization": {
+    "vf": "crop='min(iw,ih*5/4)':'min(ih,iw*4/5)',scale=640:512,fps=30",
+    "source_sizes": [
+      "1280x720@25.0"
+    ]
+  }
+}
