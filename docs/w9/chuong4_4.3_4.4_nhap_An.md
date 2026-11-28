@@ -7,7 +7,7 @@
 Hệ thống xử lý video theo từng frame, theo thứ tự: giải mã, phát hiện đối tượng, theo vết, phát hiện sự kiện và lưu kết quả. Các mô-đun được ghép thành pipeline `e1pipe`; cùng một luồng dữ liệu được dùng cho suy luận trên Kaggle và cho phép đo thời gian từng công đoạn. Mỗi run gắn với commit, SHA-256 của weights và cấu hình để có thể truy nguyên đầu vào.
 
 | Mô-đun | Chức năng | Đầu vào và đầu ra |
-|---|---|---|
+|---|---|---|---|
 | Giải mã và tiền xử lý | Đọc tuần tự các frame từ video, giữ thứ tự và thời gian nguồn. Bộ benchmark dùng đầu vào cố định từ manifest; phép đo tập âm tính chuẩn hóa video theo ADR-0013. | Video và metadata → frame BGR, chỉ số frame, thời gian nguồn. |
 | Phát hiện đối tượng | YOLO11n nhận diện Airplane, Bird, Drone và Helicopter. Cấu hình mốc C0 dùng PyTorch fp32, batch 1, `imgsz=640`, ngưỡng phát hiện 0,1 và NMS cùng lớp IoU 0,5. Ngưỡng 0,25 được dùng riêng cho phép đánh giá detection, không thay cho ngưỡng suy luận. | Frame → hộp giới hạn, lớp và độ tin cậy. |
 | Theo vết | BYTETracker gán và duy trì ID cho các đối tượng qua các frame, theo `configs/tracker_bytetrack_e1.yaml`. | Detection theo frame → track có ID, lớp và hộp giới hạn. |
@@ -72,9 +72,9 @@ Video nguồn và weights được xử lý trong môi trường Kaggle theo quy
 
 API phát lại W8 chỉ bind vào `127.0.0.1`, và media được phân giải từ danh sách nguồn trong bundle thay vì nhận đường dẫn hoặc URL tùy ý từ client. Đây là giới hạn phạm vi truy cập cho bản demo cục bộ, không phải cơ chế xác thực. Hệ thống hiện chưa có tài khoản, xác thực người dùng hay phân quyền; `reviewer_id` do người dùng nhập chỉ là định danh cục bộ, không chứng minh danh tính. Vì vậy không triển khai API ra mạng dùng chung hoặc xem nhật ký review là bằng chứng kiểm toán danh tính.
 
-ADR-0014 trong repository hiện vẫn ghi trạng thái **Proposed**. Vì vậy các điều kiện bảo vệ FBD-SV nêu ở đây là ràng buộc chính sách dự kiến, không phải bằng chứng rằng trạng thái phê duyệt hoặc quyền truy cập dataset bên ngoài đã được xác minh.
+ADR-0014 đã được An duyệt trong PR #114 ngày 18/11/2026; các điều kiện sử dụng FBD-SV nêu ở đây là quyết định đã được thông qua. Bản sửa nhãn trạng thái của ADR đang được theo dõi trong PR #152.
 
-Đối với các clip công khai, hai screener cần sàng lọc độc lập và lưu kết quả vào **hai tệp riêng**, không cùng sửa một tệp. W9_PLAN hiện phân công An sàng lọc độc lập; repository không nêu người sàng lọc thứ hai và không có hai tệp kết quả để xác nhận việc này đã hoàn tất.
+Đối với các clip Wikimedia Commons, Quang và An sàng lọc độc lập trên hai tệp riêng: `data/manifests/neg_commons_screen_quang.csv` và `data/manifests/neg_commons_screen_an.csv`. Chỉ đưa hai tệp vào cùng một PR sau khi cả hai đã hoàn tất; chỉ giữ clip khi cả hai cùng đánh dấu `keep`, bất đồng thì loại.
 
 ### Tính toàn vẹn và lưu vết
 
@@ -84,23 +84,23 @@ Manifest, SHA-256 của video/weights/cấu hình và commit được dùng đ�
 
 | Tài sản | Đe dọa | Giảm thiểu | Rủi ro còn lại |
 |---|---|---|
-| Video và nhãn FBD-SV; thông tin giấy phép | Dữ liệu bị công khai hoặc dùng ngoài phạm vi đã nêu. | ADR-0014 quy định chỉ dùng cho đánh giá, không thương mại, không phân phối lại; W9_PLAN nói dữ liệu ở Kaggle Private và chỉ xuất số liệu tổng hợp. | ADR-0014 hiện còn Proposed; quyền truy cập thực tế trên Kaggle và các bản sao bên ngoài chưa được kiểm chứng từ repository. |
+| Video và nhãn FBD-SV; thông tin giấy phép | Dữ liệu bị công khai hoặc dùng ngoài phạm vi đã nêu. | ADR-0014 (đã duyệt trong #114) quy định chỉ dùng cho đánh giá, không thương mại, không phân phối lại; Quang xác nhận ngày 22/11/2026 dataset Kaggle ở chế độ Private và FBD-SV/Pixabay không có trên Drive công khai. | Trạng thái nền tảng được xác nhận ngoài repository; quyền truy cập có thể thay đổi và không được repository cưỡng chế. |
 | Bundle và video phát lại | Client cục bộ cố truy cập media tùy ý hoặc gọi API từ máy khác. | API bind `127.0.0.1`; media chỉ tra theo `run_id`/`source_id` trong bundle, không nhận path/URL tùy ý. | Không có xác thực hay phân quyền; tiến trình hoặc người dùng cùng máy vẫn có thể gọi API. |
 | Sự kiện và nhật ký review/audit | Sửa hoặc xóa lịch sử sự kiện để che dấu thao tác. | SQLite tạo trigger từ chối `UPDATE`/`DELETE` trên `events`, `event_reviews`, `config_audit`; review được ghi thêm thay vì sửa event. | Trigger không bảo vệ khỏi người có quyền ghi trực tiếp vào tệp DB hoặc thay schema/tệp. |
 | Nội dung dashboard | Dữ liệu bundle/API độc hại được diễn giải như HTML/script. | Dashboard dựng text bằng `textContent`/text node, không ghép nội dung API thành HTML tại các đường hiển thị đã kiểm tra. | Đây không phải xác nhận bảo mật toàn bộ trình duyệt hay mọi mã frontend trong tương lai. |
-| Kaggle API credentials | Token bị lộ qua log, artifact hoặc xử lý ngoài ý muốn. | Workflow chỉ đưa `K_TOKEN`, `K_USER`, `K_KEY` (tương ứng secrets `KAGGLE`, `KAGGLE_USERNAME`, `KAGGLE_KEY`) vào bước “Nạp khóa Kaggle”; `actions_kaggle_auth.py` không in giá trị và ghi credential vào tệp trong `~/.kaggle` với quyền `600`. Bước chạy Kaggle chỉ nhận tham số job/commit/config/tag, không nhận trực tiếp các secret env này. | Tệp credential vẫn tồn tại trên runner cho các bước sau sử dụng; mã workflow trên runner có thể dùng credential. Quyền truy cập GitHub/Kaggle bên ngoài repository chưa được xác minh. |
+| Kaggle API credentials | Token bị lộ qua log, artifact hoặc xử lý ngoài ý muốn. | Workflow cấp secret `KAGGLE` dưới dạng `K_TOKEN` chỉ cho bước “Nạp khóa Kaggle”; `actions_kaggle_auth.py` che giá trị khỏi log và ghi access token vào `~/.kaggle/access_token` với quyền `600`. Bước chạy Kaggle không nhận secret qua environment. | Tệp credential vẫn tồn tại trên runner cho các bước sau sử dụng; mã workflow trên runner có thể dùng credential. Quyền truy cập GitHub/Kaggle bên ngoài repository chưa được xác minh. |
 | Dataset và job Kaggle | Job chạy ngoài ý muốn hoặc đưa dữ liệu nhạy cảm qua runner ngoài Kaggle. | ADR-0016 và workflow chỉ cho phép `workflow_dispatch`; job dùng dataset Kaggle có sẵn, không chuyển video/dataset qua Actions. | Người có quyền vẫn có thể dispatch job; cấu hình quyền người dùng GitHub/Kaggle nằm ngoài repository. |
 
 ### Checklist bảo mật và quyền riêng tư
 
 | Kiểm soát | Đạt? | Bằng chứng / giới hạn xác minh |
 |---|---|---|
-| FBD-SV-2024: không đưa video/frame/nhãn vào Git hoặc artifact công khai; chỉ báo số liệu tổng hợp | No — chưa xác minh phê duyệt và thực thi | Điều kiện có trong ADR-0014 và W9_PLAN, nhưng ADR-0014 hiện là Proposed; không thể xác minh các bản sao ngoài repository. |
-| Không đặt FBD-SV hoặc dữ liệu bị giới hạn lên Drive công khai | No — trạng thái ngoài repo chưa xác minh | ADR-0014 cấm Drive công khai; không có bằng chứng về ACL/trạng thái chia sẻ Drive thực tế trong repository. |
+| Dataset Kaggle FBD-SV-2024 ở chế độ Private | Yes — xác nhận ngoài repository | Quang xác nhận ngày 22/11/2026; W9_PLAN ghi dataset Kaggle `minhquangdng/e1-fbd-sv-2024` là Private. |
+| FBD-SV-2024 và Pixabay không có trên Drive công khai | Yes — xác nhận ngoài repository | Quang xác nhận ngày 22/11/2026; ADR-0014 cũng cấm đặt video/frame/nhãn FBD-SV lên Drive công khai. |
 | API phát lại chỉ dùng loopback | Yes | `scripts/pipeline/api.py` khởi chạy Uvicorn trên `127.0.0.1`; API chưa có xác thực. |
 | Trigger bảo vệ bảng sự kiện/audit khỏi UPDATE/DELETE | Yes | `scripts/pipeline/e1store.py` tạo trigger SQLite cho `events`, `event_reviews`, `config_audit`; test `tests/test_w8_pipeline.py` thử các thao tác bị chặn. |
 | Dashboard hiển thị text không diễn giải nội dung dữ liệu thành HTML | Yes | `scripts/pipeline/static/index.html` dùng `textContent` trong helper `el` và khi cập nhật giao diện; phạm vi xác minh là các vị trí đã kiểm tra. |
-| Kaggle secrets chỉ cấp trực tiếp cho bước nạp credential | Yes, theo cấu hình | `.github/workflows/kaggle_run.yml` truyền `K_TOKEN`/`K_USER`/`K_KEY` vào bước “Nạp khóa Kaggle”; `actions_kaggle_auth.py` mask giá trị và ghi file credential mode 600. Bước job kế tiếp không nhận các biến secret, nhưng sử dụng file credential trên runner. |
+| Kaggle `KAGGLE` API-token secret chỉ cấp trực tiếp cho bước nạp credential | Yes, theo cấu hình | `.github/workflows/kaggle_run.yml` truyền secret `KAGGLE` dưới tên env `K_TOKEN` vào bước “Nạp khóa Kaggle”; `actions_kaggle_auth.py` dùng `::add-mask::` và ghi `~/.kaggle/access_token` mode 600. Bước job kế tiếp không nhận secret env, nhưng dùng file credential trên runner. |
 | Workflow Kaggle chỉ chạy thủ công | Yes | `.github/workflows/kaggle_run.yml` chỉ khai báo `workflow_dispatch`; ADR-0016 cũng cấm lịch/push trigger. |
 
 Các biện pháp trên giảm rủi ro cho quy trình thí nghiệm và demo cục bộ, nhưng không biến hệ thống thành dịch vụ an ninh vận hành. Kết quả cảnh báo cần có người xem xét; các ngưỡng, dữ liệu và cấu hình được đánh giá trong W9 chưa chứng minh độ an toàn cho quyết định tự động hoặc môi trường thực tế. Rủi ro đo lường/hiệu năng được trình bày ở mục 4.3 và W9_PLAN, không xếp vào mô hình đe dọa.
