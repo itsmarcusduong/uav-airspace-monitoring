@@ -136,6 +136,10 @@ def main() -> int:
     vals = {"COMMIT": a.commit, "RUNNER": "github-actions"}
     if a.job == "run20_stability":
         vals["CONFIG"] = a.config
+    if a.job == "run18_bench" and a.config:                 # run 18b: chi chay mot cau hinh (vd. C2), khong CPU
+        if a.config not in ("C0", "C1", "C2"):
+            raise SystemExit("run18_bench --config chi nhan C0/C1/C2 (de trong = ca ke hoach)")
+        vals["ONLY"] = a.config
     (kd / JOBS[a.job]["notebook"]).write_text(json.dumps(fill_notebook(nb, vals), ensure_ascii=False, indent=1), encoding="utf-8")
     if a.tag and not re.fullmatch(r"[a-z0-9]{1,12}", a.tag):
         raise SystemExit("--tag chi gom a-z, 0-9, toi da 12 ky tu")

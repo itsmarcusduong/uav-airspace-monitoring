@@ -267,3 +267,19 @@ def test_poisson_upper_no_overflow_for_large_k():
         assert abs(old(up) - 0.05) < 1e-6
     u = ea.poisson_upper(1500)                                              # run 19: k0 hang tram -> truoc day OverflowError
     assert 1500 + 1.6 * math.sqrt(1500) < u < 1500 + 1.7 * math.sqrt(1500) + 2
+
+
+def test_run18_notebook_only_config_for_rerun_c2():
+    import ast
+    import actions_kaggle_run as ak
+    nb = json.loads((ROOT / "scripts/kaggle/notebooks/w9_run18_bench.ipynb").read_text(encoding="utf-8"))
+    out = ak.fill_notebook(nb, {"COMMIT": "a" * 40, "RUNNER": "github-actions", "ONLY": "C2"})
+    code = ["".join(c["source"]) for c in out["cells"] if c["cell_type"] == "code"]
+    ns = {}
+    exec(code[0], ns)                                                       # o tham so
+    assert ns["ONLY"] == "C2"
+    plan = [p for p in ns["PLAN"] if not ns["ONLY"] or p[0] == ns["ONLY"]]
+    assert plan == [("C2", 1), ("C2", 2), ("C2", 3)]
+    assert any(s.startswith("if not ONLY:") and 'RC[("CPU", 1)]' in s for s in code)
+    for s in code:
+        ast.parse("\n".join(l for l in s.splitlines() if not l.lstrip().startswith("!")))
