@@ -1,0 +1,37 @@
+{
+  "split": "val",
+  "test_used": false,
+  "videos": 38,
+  "frames_expected": 11821,
+  "weights_sha256": "a3de1e0195e4380aac497612296ed57f67e41ceb5ae3314e82a5ad66b125ef8a",
+  "detector": {
+    "conf": 0.1,
+    "nms_iou": 0.5,
+    "imgsz": 640,
+    "batch": 1,
+    "device": "0",
+    "quantize": null,
+    "runtime": "pytorch"
+  },
+  "config": "C0",
+  "rep": 3,
+  "trackers": {
+    "tracker_bytetrack_e1": {
+      "cfg": {
+        "tracker_type": "bytetrack",
+        "track_high_thresh": 0.25,
+        "track_low_thresh": 0.1,
+        "new_track_thresh": 0.25,
+        "track_buffer": 45,
+        "match_thresh": 0.8,
+        "fuse_score": true
+      }
+    }
+  },
+  "roi": "center_hex",
+  "alert": "alert_e1_v1",
+  "duration_min": 0.0,
+  "commit": "7833289a92cf97077179ce62a60f7e51d52eaa6d",
+  "runner": "manual",
+  "actions_run_id": ""
+}

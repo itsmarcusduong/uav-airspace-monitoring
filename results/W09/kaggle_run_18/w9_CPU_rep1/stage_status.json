@@ -1,0 +1,22 @@
+{
+  "inputs": {
+    "status": "OK",
+    "videos": 5,
+    "video_sha256_checked": 5
+  },
+  "env": {
+    "status": "OK",
+    "gpu": "Tesla T4",
+    "ultralytics": "8.4.183"
+  },
+  "run": {
+    "status": "OK",
+    "videos": 5,
+    "frames": 1594
+  },
+  "summary": {
+    "status": "OK",
+    "fps_excl_warmup": 12.978,
+    "p95_total_ms": 82.232
+  }
+}
