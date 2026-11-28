@@ -21,8 +21,10 @@ TOKEN_RE = re.compile(r"KGAT_[A-Za-z0-9_\-]+")
 
 def shape(s: str) -> str:
     """Mo ta hinh dang secret de chan doan, KHONG lo gia tri: do dai, so dong, co KGAT_/JSON/'=' hay khong."""
-    return (f"dai {len(s)}, {len(s.splitlines()) or 0} dong, KGAT_ {'co' if 'KGAT_' in s else 'khong'}, "
-            f"JSON {'co' if '{' in s else 'khong'}, dau = {'co' if '=' in s else 'khong'}, khoang trang {'co' if re.search(r'\s', s.strip()) else 'khong'}")
+    yn = {True: "co", False: "khong"}
+    ws = bool(re.search(r"\s", s.strip()))
+    return (f"dai {len(s)}, {len(s.splitlines())} dong, KGAT_ {yn['KGAT_' in s]}, JSON {yn['{' in s]}, "
+            f"dau = {yn['=' in s]}, khoang trang {yn[ws]}")
 
 
 def normalize_token(raw: str) -> str:
