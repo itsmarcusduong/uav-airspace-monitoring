@@ -5,4 +5,7 @@ C0,3,11821,90.216,10.914,11.988,69.5,results/W09/kaggle_run_18/w9_C0_rep3
 C1,1,11821,78.514,12.558,13.779,50.4,results/W09/kaggle_run_18/w9_C1_rep1
 C1,2,11821,79.42,12.401,13.542,50.4,results/W09/kaggle_run_18/w9_C1_rep2
 C1,3,11821,77.777,12.681,13.86,50.4,results/W09/kaggle_run_18/w9_C1_rep3
+C2,1,11821,199.144,4.918,5.44,72.5,results/W09/kaggle_run_18b/w9_C2_rep1
+C2,2,11821,198.814,4.913,5.408,15.5,results/W09/kaggle_run_18b/w9_C2_rep2
+C2,3,11821,198.589,4.917,5.444,15.5,results/W09/kaggle_run_18b/w9_C2_rep3
 CPU,1,1594,12.978,77.322,82.232,0.0,results/W09/kaggle_run_18/w9_CPU_rep1

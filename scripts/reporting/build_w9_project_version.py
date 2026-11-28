@@ -196,7 +196,13 @@ C2R = BS["rule_c"]["candidates"].get("C2", {})
 if not C2OK and C2R.get("reason") == "khong co ket qua" and not a.draft:
     raise SystemExit("chua co ket qua run 18b (C2); dung --draft de dung ban nhap")
 TM = BS["timing"]
-if C2OK:
+ACC = BS["accuracy"]
+if C2OK and not C2R["accuracy_ok"]:
+    C2_TXT = (f"C2 (TensorRT fp16, run 18b sau khi sửa bộ đo ở PR #141) nhanh nhất, {vn(TM['C2']['fps_median'], 1)} FPS, p95 total "
+              f"{vn(TM['C2']['p95_total_median'], 1)} ms, nhưng không đạt giới hạn độ chính xác: recall Drone {vn(ACC['C2']['drone_recall'], 4)} so với "
+              f"{vn(ACC['C0']['drone_recall'], 4)} của C0 (giảm {vn(ACC['C0']['drone_recall'] - ACC['C2']['drone_recall'], 3)} > 0,01) và thêm "
+              f"{ACC['C2']['r1_false_nondrone'] - ACC['C0']['r1_false_nondrone']} cảnh báo sai R1 trên video không Drone")
+elif C2OK:
     C2_TXT = (f"C2 (TensorRT fp16, run 18b sau khi sửa bộ đo ở PR #141) đạt {vn(TM['C2']['fps_median'], 1)} FPS, "
               f"p95 total {vn(TM['C2']['p95_total_median'], 1)} ms")
 elif C2R.get("reason") == "khong co ket qua":
@@ -213,7 +219,7 @@ FIX9 = [
      f"Theo luật C, cấu hình vận hành là {CHOICE}. Chạy liên tục 60 phút với C0 không lỗi, RSS phút 60 / phút 10 = {vn(BS['stability']['rss_ratio'], 3)} (ngưỡng 1,10). "
      "Số đo trên tập âm tính FBD-SV-2024 ở mục 5.4.8. Mọi kết quả được báo theo tập dữ liệu và cấu hình; tập val dùng để đánh giá không đồng nghĩa với dữ liệu triển khai thực tế."),
     ("theo cập nhật được báo cùng PR #141, đường dẫn xuất đã được sửa, nhưng chưa có số đo C2 sau sửa.",
-     "PR #141 sửa bộ đo để sao chép weights sang thư mục ghi được trước khi xuất; kết quả chạy lại (run 18b) ở mục 5.3.9."),
+     "PR #141 sửa bộ đo để sao chép weights sang thư mục ghi được trước khi xuất; chạy lại cùng cấu hình (run 18b) thì xuất engine thành công, kết quả ở mục 5.3.9."),
     ("Bảng trên giữ nguyên các hàng và giá trị của bảng `t_alert_rules` trong bản v0.8.", "Bảng trên giữ nguyên các hàng và giá trị của bảng luật cảnh báo trong bản v0.8."),
     ("Bản sửa nhãn trạng thái của ADR đang được theo dõi trong PR #152.", "Dòng trạng thái trong tệp ADR được sửa thành Accepted ở PR #152."),
 ]
@@ -351,7 +357,8 @@ def build(refs: dict):
                 sh = OxmlElement("w:shd"); sh.set(qn("w:val"), "clear"); sh.set(qn("w:fill"), "D9E2F3"); c._tc.get_or_add_tcPr().append(sh)
             trp = t.rows[0]._tr.get_or_add_trPr(); trp.append(OxmlElement("w:tblHeader"))
             for row in rows:
-                cells = t.add_row().cells
+                nr = t.add_row(); nr._tr.get_or_add_trPr().append(OxmlElement("w:cantSplit"))     # khong tach mot dong qua hai trang
+                cells = nr.cells
                 for i, v in enumerate(row):
                     cells[i].text = ""; rr = cells[i].paragraphs[0].add_run(str(v)); rr.font.size = Pt(size)
             if widths:
@@ -707,7 +714,7 @@ def build(refs: dict):
                 ["Cấu hình", "Recall Drone", "Precision Drone", "Sự kiện R1 phát hiện", "Cảnh báo sai R1 (video không Drone)", "Track recall gộp", "ID switch / 1000 frame"],
                 arows, [3.4, 1.9, 2.1, 2.1, 2.6, 2.0, 2.3], size=8, key="t_bench_acc")
         st = BS["stability"]
-        c.para(f"Kết quả: mọi cấu hình GPU đều vượt xa NFR1; khoảng 90% thời gian mỗi frame nằm ở detector, các bước tracker, cảnh báo và ghi kết quả cộng lại dưới 1 ms. C1 (fp16) chậm hơn C0 khoảng {vn(100 * (1 - TM['C1']['fps_median'] / TM['C0']['fps_median']), 0)}% dù dùng nửa độ chính xác số; với YOLO11n ở batch 1, chi phí chuyển đổi kiểu dữ liệu có thể lớn hơn phần tiết kiệm tính toán, nhưng phép đo này không tách được nguyên nhân. {C2_TXT}. Theo luật C, cấu hình vận hành là {CHOICE}. CPU chỉ đạt {vn(TM['CPU']['fps_median'], 1)} FPS: hệ thống cần GPU để đạt NFR1.")
+        c.para(f"Kết quả: mọi cấu hình GPU đều vượt xa NFR1; với PyTorch, khoảng 90% thời gian mỗi frame nằm ở detector, các bước tracker, cảnh báo và ghi kết quả cộng lại dưới 1 ms. C1 (fp16) chậm hơn C0 khoảng {vn(100 * (1 - TM['C1']['fps_median'] / TM['C0']['fps_median']), 0)}% dù dùng nửa độ chính xác số; với YOLO11n ở batch 1, chi phí chuyển đổi kiểu dữ liệu có thể lớn hơn phần tiết kiệm tính toán, nhưng phép đo này không tách được nguyên nhân. {C2_TXT}. Theo luật C, cấu hình vận hành là {CHOICE}." + (f" Phân tích thăm dò: C1 (PyTorch fp16) giữ recall Drone {vn(ACC['C1']['drone_recall'], 4)}, gần như bằng C0, nên fp16 riêng nó không giải thích được mức giảm của C2. Mức giảm gắn với runtime TensorRT cùng cách đệm ảnh thành 640×640; W9_PLAN gộp hai yếu tố này nên phép đo không tách được nguyên nhân. Thí nghiệm tách (engine kích thước 640×512 hoặc engine fp32) để ở mục ablation W12, với luật đặt trước." if C2OK and not C2R['accuracy_ok'] else "") + f" CPU chỉ đạt {vn(TM['CPU']['fps_median'], 1)} FPS: hệ thống cần GPU để đạt NFR1.")
         c.para(f"Chạy ổn định (luật đặt trước: RSS phút 60 ≤ 1,10 × RSS phút 10, không lỗi): Kaggle run 20 phát lặp 38 video val trong 60 phút với C0, xử lý {th(ST20['frames'])} frame, {vn(ST20['fps_excl_warmup'], 1)} FPS, p95 total {vn(ST20['latency_ms']['total']['p95'], 1)} ms. RSS tăng từ {vn(st['rss_min10'], 1)} MB lên {vn(st['rss_last'], 1)} MB, tỷ lệ {vn(st['rss_ratio'], 3)}, đạt; bộ nhớ GPU cấp phát giữ nguyên trong suốt lần chạy.")
         c.para(f"RSS tăng gần tuyến tính, khoảng {vn(RGC['rss_slope_mb_per_min'], 2)} MB mỗi phút, nên cần tìm cơ chế dù luật đã đạt. Phân tích thăm dò sau khi xem kết quả (scripts/experiments/w9_rss_growth_check.py): bộ đo giữ toàn bộ {th(RGC['frames'])} dòng độ trễ trong RAM tới cuối lần chạy rồi mới ghi latency.csv.gz. Dựng lại đúng danh sách đó ngoài Kaggle tốn khoảng {vn(RGC['latency_list_mb_estimate'], 0)} MB, tức khoảng {vn(100 * RGC['share_explained'], 0)}% mức tăng RSS {vn(RGC['rss_growth_mb'], 0)} MB. Phần lớn mức tăng vì vậy đến từ bộ đo chứ không từ pipeline; phần còn lại chưa được giải thích. Ở các lần đo sau, bộ đo sẽ ghi độ trễ xuống đĩa theo từng video để phép đo ổn định không bị chính nó làm nhiễu.")
         c.image(a.fig_w9 / "fig_w9_stability.png", 15.5, "RSS và bộ nhớ GPU cấp phát mỗi phút khi chạy liên tục 60 phút với C0 (Kaggle run 20).", "f_stability")

@@ -53,9 +53,15 @@ def bench_figure(out: Path, plt) -> None:
         err = [[tm[c][key] - tm[c][lo] for c in cfgs], [tm[c][hi] - tm[c][key] for c in cfgs]]
         bars = ax.bar([NAME[c] for c in cfgs], vals, yerr=err, capsize=3, color=[COL[c] for c in cfgs], width=0.55, ecolor=INK)
         top = max(tm[c][hi] for c in cfgs)
+        cand = s["rule_c"]["candidates"]
+        for r, c in zip(bars, cfgs):                     # cau hinh khong dat gioi han do chinh xac cua luat C: gach cheo
+            if c in cand and cand[c].get("available") and not cand[c].get("accuracy_ok"):
+                r.set_hatch("///"); r.set_edgecolor("white")
         for r, c in zip(bars, cfgs):
-            ax.text(r.get_x() + r.get_width() / 2, tm[c][hi] + top * 0.02, vn(tm[c][key], 1), ha="center", va="bottom", fontsize=8, color=INK)
-        ax.set_ylim(0, top * 1.15)
+            bad = c in s["rule_c"]["candidates"] and s["rule_c"]["candidates"][c].get("available") and not s["rule_c"]["candidates"][c].get("accuracy_ok")
+            ax.text(r.get_x() + r.get_width() / 2, tm[c][hi] + top * 0.02, vn(tm[c][key], 1) + ("\nkhông đạt độ chính xác" if bad else ""),
+                    ha="center", va="bottom", fontsize=8 if not bad else 7, color=INK if not bad else "#b3261e")
+        ax.set_ylim(0, top * 1.25)
         if thr:
             ax.axhline(thr, color="#b3261e", lw=1.0, ls="--"); ax.text(0.30, thr + top * 0.01, thr_lbl, fontsize=7, color="#b3261e", ha="left", va="bottom")
         ax.set_title(title, fontsize=9, color=INK, loc="left"); style(ax)

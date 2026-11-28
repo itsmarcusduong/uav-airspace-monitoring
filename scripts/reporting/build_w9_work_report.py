@@ -103,7 +103,8 @@ def table(header, rows, ws, size=8.5):
     for i, h in enumerate(header):
         c = t.rows[0].cells[i]; c.text = ""; r = c.paragraphs[0].add_run(h); r.bold = True; r.font.size = Pt(size); shade(c)
     for row in rows:
-        cells = t.add_row().cells
+        nr = t.add_row(); nr._tr.get_or_add_trPr().append(OxmlElement("w:cantSplit"))
+        cells = nr.cells
         for i, v in enumerate(row):
             cells[i].text = ""; r = cells[i].paragraphs[0].add_run(str(v)); r.font.size = Pt(size)
     widths(t, ws)
@@ -188,11 +189,12 @@ table(["Planned", "Done", "Evidence", "Problems", "Next week"],
 para("4. Kết quả đo (val 38 video và FBD-SV-2024; nguồn: CSV/JSON + script)", True)
 n_pass = sum(c["status"] == "PASS" for c in EV["checks"])
 g = BS["gate_b"]; st_ = BS["stability"]
-c2 = f"C2 {vn(TM['C2']['fps_median'], 1)} FPS, p95 {vn(TM['C2']['p95_total_median'], 1)} ms" if C2OK else ("C2: chưa có kết quả (run 18b)" if C2R.get("reason") == "khong co ket qua" else f"C2 không khả thi ({C2R.get('reason')})")
+ACC = BS["accuracy"]
+c2 = (f"C2 {vn(TM['C2']['fps_median'], 1)} FPS, p95 {vn(TM['C2']['p95_total_median'], 1)} ms" + ("" if C2R["accuracy_ok"] else f" nhưng recall Drone {vn(ACC['C2']['drone_recall'], 4)} (C0 {vn(ACC['C0']['drone_recall'], 4)}), thêm {ACC['C2']['r1_false_nondrone']} cảnh báo sai R1 → không đạt giới hạn độ chính xác")) if C2OK else ("C2: chưa có kết quả (run 18b)" if C2R.get("reason") == "khong co ket qua" else f"C2 không khả thi ({C2R.get('reason')})")
 table(["Chỉ số", "Giá trị", "Nguồn"],
       [["Cổng tái tạo e1pipe (luật B)", f"{g['matched']}/{g['track_rows_run17']} dòng track, sự kiện R1 {g['events_e1pipe']}/{g['events_run17']} khớp run 17 → đạt", "results/W09/benchmark/benchmark_summary.json"],
        ["FPS / p95 total (trung vị 3 lần, T4)", f"C0 {vn(TM['C0']['fps_median'], 1)} FPS, {vn(TM['C0']['p95_total_median'], 1)} ms; C1 {vn(TM['C1']['fps_median'], 1)} FPS, {vn(TM['C1']['p95_total_median'], 1)} ms; {c2}; CPU {vn(TM['CPU']['fps_median'], 1)} FPS (5 video)", "results/W09/benchmark/benchmark.csv"],
-       ["Luật C (viết trước)", f"chọn {CHOICE}; NFR1 đạt trên GPU, không đạt trên CPU", "results/W09/benchmark/benchmark_summary.json"],
+       ["Luật C (viết trước)", f"chọn {CHOICE} (FPS cao nhất trong các cấu hình giữ được độ chính xác); NFR1 đạt trên GPU, không đạt trên CPU", "results/W09/benchmark/benchmark_summary.json"],
        ["Chạy 60 phút, C0 (run 20)", f"{th(ST20['frames'])} frame, {vn(ST20['fps_excl_warmup'], 1)} FPS; RSS phút 60/phút 10 = {vn(st_['rss_ratio'], 3)} ≤ 1,10 → đạt; khoảng {vn(100 * RGC['share_explained'], 0)}% mức tăng RSS do bộ đo giữ latency trong RAM (thăm dò)", "results/W09/kaggle_run_20/, benchmark/rss_growth_check.json"],
        ["FBD-SV-2024 (run 19b3)", f"{NEG['clips']} clip, {vn(NEG['minutes'], 2)} phút: R0 {NEG['R0']['false_alerts']} ({vn(NEG['R0']['per_hour'], 1)}/giờ), R1 {NEG['R1']['false_alerts']} ({vn(NEG['R1']['per_hour'], 1)}/giờ, cận trên {vn(NEG['R1']['per_hour_upper95'], 1)}); {vn(100 * NEG['frac_frames_drone_det'], 1)}% frame có detection Drone → ADR-0011 kích hoạt", "results/W09/kaggle_run_19/w9_neg_fbdsv/"],
        ["Kiểm tra Evidence/W09", f"{n_pass}/{len(EV['checks'])} PASS; pytest {N_PYTEST} test", "Evidence/W09/test-results.json"]],
@@ -205,9 +207,10 @@ para("Tuần 9 không thêm video demo mới; demo dashboard phát lại của t
 para("7. Vấn đề và rủi ro (trung thực)", True)
 risks = [f"Detector nhận gần như mọi chim nhỏ trong FBD-SV là Drone ({sum(int(r['tracks_majority_drone']) for r in PC19)}/{sum(int(r['tracks']) for r in PC19)} track, thăm dò): R1 vẫn {vn(NEG['R1']['per_hour'], 1)} cảnh báo sai/giờ. Cần dữ liệu hard negative (W10, ADR-0011).",
          "Nhận xét W7 của thầy (hard-negative chưa xong, thiếu negative ngoài) là đúng. Không quay được video âm tính nên tập âm tính dời sang W8–W9 (ADR-0013); W8 chỉ xong giấy phép (ADR-0014). W9 đã đo FBD-SV và điều kiện chạy hard-negative của ADR-0011 đạt; huấn luyện e1-yolo-v1-hn làm ở W10. Trên val ở W7, cả 74 lỗi nền→Drone đều do hộp trùng hoặc lệch vị trí, 0 lỗi do nền thật (#98), nên chưa có bằng chứng cần hard-negative cho tới khi có tập ngoài.",
-         "Tổng âm tính mới 19 phút (mục tiêu NFR3: 2 giờ); clip FBD-SV ngắn (trung vị 2 giây) nên tần suất có thể khác video giám sát liên tục. Commons chờ An sàng lọc xong; Pixabay chưa làm.",
+         "Tổng âm tính mới 19 phút (mục tiêu NFR3: 2 giờ); clip FBD-SV ngắn (trung vị 2 giây) nên tần suất có thể khác video giám sát liên tục. Commons chờ An sàng lọc xong; Pixabay chờ cho phép (mục cuối).",
          "Run 19 lần đầu lỗi tràn số ở bước tổng hợp sau khoảng 4 giờ chạy, lần 2 chuẩn hóa quá chậm và bị hủy; đã sửa (#150, #151), lần 3 (19b3) chạy xong.",
-         "Số đo tốc độ chỉ trên Tesla T4 và video đọc từ tệp; chưa đo trên test (W10–W11)."]
+         "Số đo tốc độ chỉ trên Tesla T4 và video đọc từ tệp; chưa đo trên test (W10–W11). C2 (TensorRT) nhanh gấp khoảng 2,2 lần nhưng mất 0,043 recall Drone; C1 (fp16) không mất, nên nguyên nhân gắn với TensorRT và cách đệm 640×640 (thăm dò). Đề xuất ablation W12 với luật đặt trước.",
+         "Hạn hoàn thiện dời lên trước 10/12/2026: W10–W14 rút vào 30/11–09/12, không cắt nội dung (ADR-0017, Proposed). Pixabay vướng Terms of Service về thu thập tự động cho học máy, đã email xin phép; nguồn bù là AirBirds (camera sân bay) và Commons v2 (ADR-0018, Proposed)."]
 if not C2OK:
     risks.insert(0, "C2 (TensorRT): lần chạy đầu lỗi do bộ đo ghi vào thư mục chỉ đọc; run 18b chạy lại ×3 " + ("đang chờ kết quả." if C2R.get("reason") == "khong co ket qua" else "vẫn không có kết quả hợp lệ."))
 if GS_WARN:

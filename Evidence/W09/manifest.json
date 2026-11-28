@@ -1,18 +1,18 @@
 {
   "week": "W09",
   "milestone": "Tuan9",
-  "repo_commit": "7c95a139a0d2e4cd26782ecfbfe4583b47590d5b",
-  "generated_at": "2026-11-28T19:18:07+00:00",
+  "repo_commit": "d2e0f8e69cd3f218e4e1e457ed14a258a42d30ee",
+  "generated_at": "2026-11-28T20:58:38+00:00",
   "files": [
     {
       "path": "README.md",
-      "sha256": "9b458f2fb725bc1ab4473337b68072277632b86315cf394391a5618b64d3dff0",
+      "sha256": "7cb7bfff4b9d04383382b22607b97e33f9dd113c89d5fb0836e869b96e6b1941",
       "bytes": 2254
     },
     {
       "path": "figures/fig_w9_bench.png",
-      "sha256": "597ee718cf3a2c7f55bada3bb0b4ec915c5fdda22281543be1b976d3b27bce83",
-      "bytes": 57516
+      "sha256": "9e03704df2142149d025c645d8f10503f64eecad05808e0cf035d171d9c976c9",
+      "bytes": 78841
     },
     {
       "path": "figures/fig_w9_neg.png",
@@ -26,22 +26,22 @@
     },
     {
       "path": "figures/fig_w9_stage.png",
-      "sha256": "0cd26e255160929991dfc1bc30952f5aa2ccbd4257e3c3212ecc650514d73acf",
-      "bytes": 37251
+      "sha256": "8d562d1a1e3e142d3130fa85695a76686cce2699bcc145bfb9f3c6c953d88974",
+      "bytes": 41227
     },
     {
       "path": "metrics.csv",
-      "sha256": "d6b7afaf9de5ba30f2a9e510f985413fc9671b5da390f139eecd342cbd453ab6",
-      "bytes": 9707
+      "sha256": "db2918cc731db7d58ff8ee9b377db3d93ed4e484dd49b9faff0253e173478511",
+      "bytes": 12071
     },
     {
       "path": "test-results.json",
-      "sha256": "6425b07c9c157d5be32506d226c2fccdd1080d7e88605391a0923d06bf821245",
-      "bytes": 30170
+      "sha256": "5faba7367670e394b5adfaf0b13fec7d47145cbac59273f91a3d2949eb5fe79c",
+      "bytes": 30392
     },
     {
       "path": "test-results.xml",
-      "sha256": "d0583fd7351035e5ee3222e709ba38b42645dce9e09076844f4d81c34b70468e",
+      "sha256": "bdafa8f8c2f172706592d799e3582235eccbd07c32165596961998087b4123ea",
       "bytes": 16451
     }
   ],
@@ -60,7 +60,7 @@
     },
     {
       "path": "results/W09/benchmark/benchmark_summary.json",
-      "sha256": "e9dac8622f66f55a8d121ab855734897065904d4b01d74b0aac0c39a5fc7eebb"
+      "sha256": "5e607939ed5b291f5a6dfeab7ef85ccf8501f860a48a886787549c0b56900810"
     },
     {
       "path": "results/W09/benchmark/rss_growth_check.json",
@@ -68,7 +68,7 @@
     },
     {
       "path": "results/W09/fig_w9_bench.png",
-      "sha256": "597ee718cf3a2c7f55bada3bb0b4ec915c5fdda22281543be1b976d3b27bce83"
+      "sha256": "9e03704df2142149d025c645d8f10503f64eecad05808e0cf035d171d9c976c9"
     },
     {
       "path": "results/W09/fig_w9_neg.png",
@@ -80,7 +80,7 @@
     },
     {
       "path": "results/W09/fig_w9_stage.png",
-      "sha256": "0cd26e255160929991dfc1bc30952f5aa2ccbd4257e3c3212ecc650514d73acf"
+      "sha256": "8d562d1a1e3e142d3130fa85695a76686cce2699bcc145bfb9f3c6c953d88974"
     },
     {
       "path": "results/W09/kaggle_run_19/w9_neg_fbdsv/neg_summary.json",

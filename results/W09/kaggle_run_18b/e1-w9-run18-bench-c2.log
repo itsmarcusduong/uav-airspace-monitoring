@@ -1,0 +1,346 @@
+[{"stream_name":"stderr","time":6.294499819,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":6.294546832,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":6.2945573249999995,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":6.29456075,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":6.852544797,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":6.852604583,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":6.852611119,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":6.852614888,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":12.280973948,"data":"TOOLS /kaggle/input/datasets/minhquangdng/e1-w9-tools | commit 834dc3feda6f | 33 tep | WEIGHTS /kaggle/input/notebooks/minhquangdng/e1-w5-run13/runs/yolo11n_640_s20261030/weights/best.pt\n"}
+,{"stream_name":"stdout","time":21.975551015,"data":"Creating new Ultralytics Settings v0.0.8 file ✅ \n"}
+,{"stream_name":"stdout","time":21.975584422,"data":"View Ultralytics Settings with 'yolo settings' or at '/root/.config/Ultralytics/settings.json'\n"}
+,{"stream_name":"stdout","time":21.975590126,"data":"Update Settings with 'yolo settings key=value', i.e. 'yolo settings runs_dir=path/to/dir'. For help see https://docs.ultralytics.com/usage/settings.\n"}
+,{"stream_name":"stdout","time":22.221426333,"data":"ultralytics 8.4.183 | lap 0.5.14 | cuda True\n"}
+,{"stream_name":"stdout","time":23.032559251,"data":"DATA_ROOT = /kaggle/input\n"}
+,{"stream_name":"stdout","time":23.0482314,"data":"PLAN [('C2', 1), ('C2', 2), ('C2', 3)]\n"}
+,{"stream_name":"stdout","time":23.048254317,"data":"\u003e\u003e\u003e C2 1\n"}
+,{"stream_name":"stdout","time":29.122380918,"data":"WARNING ⚠️ 'half' is deprecated and will be removed in the future. Use 'quantize' instead.\n"}
+,{"stream_name":"stdout","time":29.322576085,"data":"Ultralytics 8.4.183 🚀 Python-3.13.16 torch-2.11.0+cu130 CUDA:0 (Tesla T4, 14912MiB)\n"}
+,{"stream_name":"stdout","time":29.324399894,"data":"WARNING ⚠️ 'half' is deprecated and will be removed in the future. Use 'quantize' instead.\n"}
+,{"stream_name":"stdout","time":29.324432617,"data":"Ultralytics 8.4.183 🚀 Python-3.13.16 torch-2.11.0+cu130 CUDA:0 (Tesla T4, 14912MiB)\n"}
+,{"stream_name":"stdout","time":29.409408088,"data":"💡 ProTip: Export to OpenVINO format for best performance on Intel hardware. Learn more at https://docs.ultralytics.com/integrations/openvino\n"}
+,{"stream_name":"stdout","time":29.611655267,"data":"💡 ProTip: Export to OpenVINO format for best performance on Intel hardware. Learn more at https://docs.ultralytics.com/integrations/openvino\n"}
+,{"stream_name":"stdout","time":32.706762572,"data":"YOLO11n summary (fused): 101 layers, 2,597,780 parameters, 0 gradients, 6.4 GFLOPs\n"}
+,{"stream_name":"stdout","time":32.800927374,"data":"\n"}
+,{"stream_name":"stdout","time":32.800992167,"data":"\u001b[34m\u001b[1mPyTorch:\u001b[0m starting from '/tmp/e1_engine_cache/best.pt' with input shape (1, 3, 640, 640) BCHW and output shape(s) (1, 8, 8400) (5.2 MB)\n"}
+,{"stream_name":"stdout","time":32.811286377,"data":"\u001b[31m\u001b[1mrequirements:\u001b[0m Ultralytics requirements ['onnxruntime-gpu', 'onnxslim\u003e=0.1.82'] not found, attempting AutoUpdate...\n"}
+,{"stream_name":"stdout","time":32.908890081,"data":"YOLO11n summary (fused): 101 layers, 2,597,780 parameters, 0 gradients, 6.4 GFLOPs\n"}
+,{"stream_name":"stdout","time":32.90891918,"data":"\n"}
+,{"stream_name":"stdout","time":32.908923445,"data":"\u001b[34m\u001b[1mPyTorch:\u001b[0m starting from '/tmp/e1_engine_cache/best.pt' with input shape (1, 3, 640, 640) BCHW and output shape(s) (1, 8, 8400) (5.2 MB)\n"}
+,{"stream_name":"stdout","time":32.908927558,"data":"\u001b[31m\u001b[1mrequirements:\u001b[0m Ultralytics requirements ['onnxruntime-gpu', 'onnxslim\u003e=0.1.82'] not found, attempting AutoUpdate...\n"}
+,{"stream_name":"stdout","time":40.090014396,"data":"Using Python 3.13.16 environment at: /usr\n"}
+,{"stream_name":"stdout","time":40.090057041,"data":"Resolved 12 packages in 658ms\n"}
+,{"stream_name":"stdout","time":40.090063289,"data":"Downloading onnxruntime-gpu (239.7MiB)\n"}
+,{"stream_name":"stdout","time":40.090068329,"data":" Downloaded onnxruntime-gpu\n"}
+,{"stream_name":"stdout","time":40.090072216,"data":"Prepared 2 packages in 6.29s\n"}
+,{"stream_name":"stdout","time":40.090076243,"data":"Installed 2 packages in 10ms\n"}
+,{"stream_name":"stdout","time":40.090080095,"data":" + onnxruntime-gpu==1.32.0\n"}
+,{"stream_name":"stdout","time":40.090084064,"data":" + onnxslim==0.1.99\n"}
+,{"stream_name":"stdout","time":40.090087873,"data":"\n"}
+,{"stream_name":"stdout","time":40.090091754,"data":"\u001b[31m\u001b[1mrequirements:\u001b[0m AutoUpdate success ✅ 7.3s\n"}
+,{"stream_name":"stdout","time":40.090097391,"data":"WARNING ⚠️ \u001b[31m\u001b[1mrequirements:\u001b[0m \u001b[1mRestart runtime or rerun command for updates to take effect\u001b[0m\n"}
+,{"stream_name":"stdout","time":40.090102659,"data":"\n"}
+,{"stream_name":"stdout","time":40.292261179,"data":"Using Python 3.13.16 environment at: /usr\n"}
+,{"stream_name":"stdout","time":40.292297339,"data":"Resolved 12 packages in 658ms\n"}
+,{"stream_name":"stdout","time":40.292303096,"data":"Downloading onnxruntime-gpu (239.7MiB)\n"}
+,{"stream_name":"stdout","time":40.29230768,"data":" Downloaded onnxruntime-gpu\n"}
+,{"stream_name":"stdout","time":40.292312349,"data":"Prepared 2 packages in 6.29s\n"}
+,{"stream_name":"stdout","time":40.292316745,"data":"Installed 2 packages in 10ms\n"}
+,{"stream_name":"stdout","time":40.292321242,"data":" + onnxruntime-gpu==1.32.0\n"}
+,{"stream_name":"stdout","time":40.292325471,"data":" + onnxslim==0.1.99\n"}
+,{"stream_name":"stdout","time":40.292329594,"data":"\n"}
+,{"stream_name":"stdout","time":40.292333952,"data":"\u001b[31m\u001b[1mrequirements:\u001b[0m AutoUpdate success ✅ 7.3s\n"}
+,{"stream_name":"stdout","time":40.292339618,"data":"WARNING ⚠️ \u001b[31m\u001b[1mrequirements:\u001b[0m \u001b[1mRestart runtime or rerun command for updates to take effect\u001b[0m\n"}
+,{"stream_name":"stdout","time":40.292345303,"data":"\n"}
+,{"stream_name":"stdout","time":40.321376728,"data":"\n"}
+,{"stream_name":"stdout","time":40.32140342,"data":"\u001b[34m\u001b[1mONNX:\u001b[0m starting export with onnx 1.23.2 opset 18...\n"}
+,{"stream_name":"stdout","time":40.523538152,"data":"\n"}
+,{"stream_name":"stdout","time":40.523575161,"data":"\u001b[34m\u001b[1mONNX:\u001b[0m starting export with onnx 1.23.2 opset 18...\n"}
+,{"stream_name":"stdout","time":43.681732039,"data":"\u001b[34m\u001b[1mONNX:\u001b[0m slimming with onnxslim 0.1.99...\n"}
+,{"stream_name":"stdout","time":43.884416483,"data":"\u001b[34m\u001b[1mONNX:\u001b[0m slimming with onnxslim 0.1.99...\n"}
+,{"stream_name":"stdout","time":44.461081693,"data":"\u001b[34m\u001b[1mONNX:\u001b[0m export success ✅ 11.7s, saved as '/tmp/e1_engine_cache/best.onnx' (10.2 MB)\n"}
+,{"stream_name":"stdout","time":44.464834006,"data":"\u001b[31m\u001b[1mrequirements:\u001b[0m Ultralytics requirement ['tensorrt-cu13\u003e=7.0.0,!=10.2.0'] not found, attempting AutoUpdate...\n"}
+,{"stream_name":"stdout","time":44.663442643,"data":"\u001b[34m\u001b[1mONNX:\u001b[0m export success ✅ 11.7s, saved as '/tmp/e1_engine_cache/best.onnx' (10.2 MB)\n"}
+,{"stream_name":"stdout","time":44.663476679,"data":"\u001b[31m\u001b[1mrequirements:\u001b[0m Ultralytics requirement ['tensorrt-cu13\u003e=7.0.0,!=10.2.0'] not found, attempting AutoUpdate...\n"}
+,{"stream_name":"stdout","time":92.341250317,"data":"Using Python 3.13.16 environment at: /usr\n"}
+,{"stream_name":"stdout","time":92.341284832,"data":"Resolved 3 packages in 639ms\n"}
+,{"stream_name":"stdout","time":92.341290362,"data":"   Building tensorrt-cu13==11.5.0.63\n"}
+,{"stream_name":"stdout","time":92.341294653,"data":"   Building tensorrt-cu13-libs==11.5.0.63\n"}
+,{"stream_name":"stdout","time":92.341298612,"data":"Downloading tensorrt-cu13-bindings (1.2MiB)\n"}
+,{"stream_name":"stdout","time":92.341302884,"data":" Downloaded tensorrt-cu13-bindings\n"}
+,{"stream_name":"stdout","time":92.341307012,"data":"      Built tensorrt-cu13==11.5.0.63\n"}
+,{"stream_name":"stdout","time":92.34131131,"data":"      Built tensorrt-cu13-libs==11.5.0.63\n"}
+,{"stream_name":"stdout","time":92.341316055,"data":"Prepared 3 packages in 41.46s\n"}
+,{"stream_name":"stdout","time":92.341320198,"data":"Installed 3 packages in 4.99s\n"}
+,{"stream_name":"stdout","time":92.341324421,"data":" + tensorrt-cu13==11.5.0.63\n"}
+,{"stream_name":"stdout","time":92.341329023,"data":" + tensorrt-cu13-bindings==11.5.0.63\n"}
+,{"stream_name":"stdout","time":92.341333205,"data":" + tensorrt-cu13-libs==11.5.0.63\n"}
+,{"stream_name":"stdout","time":92.341337368,"data":"\n"}
+,{"stream_name":"stdout","time":92.341341925,"data":"\u001b[31m\u001b[1mrequirements:\u001b[0m AutoUpdate success ✅ 47.9s\n"}
+,{"stream_name":"stdout","time":92.341348174,"data":"WARNING ⚠️ \u001b[31m\u001b[1mrequirements:\u001b[0m \u001b[1mRestart runtime or rerun command for updates to take effect\u001b[0m\n"}
+,{"stream_name":"stdout","time":92.341353398,"data":"\n"}
+,{"stream_name":"stdout","time":92.434805901,"data":"\n"}
+,{"stream_name":"stdout","time":92.434835861,"data":"\u001b[34m\u001b[1mTensorRT:\u001b[0m starting export with TensorRT 11.5.0.63...\n"}
+,{"stream_name":"stdout","time":92.435751015,"data":"[11/28/2026-20:45:17] [TRT] [I] [MemUsageChange] Init CUDA: CPU +0, GPU +0, now: CPU 674, GPU 252 (MiB)\n"}
+,{"stream_name":"stdout","time":92.451463595,"data":"\u001b[31m\u001b[1mrequirements:\u001b[0m Ultralytics requirement ['nvidia-modelopt[onnx]\u003e=0.44'] not found, attempting AutoUpdate...\n"}
+,{"stream_name":"stdout","time":92.549121892,"data":"Using Python 3.13.16 environment at: /usr\n"}
+,{"stream_name":"stdout","time":92.549149063,"data":"Resolved 3 packages in 639ms\n"}
+,{"stream_name":"stdout","time":92.549154868,"data":"   Building tensorrt-cu13==11.5.0.63\n"}
+,{"stream_name":"stdout","time":92.549186283,"data":"   Building tensorrt-cu13-libs==11.5.0.63\n"}
+,{"stream_name":"stdout","time":92.54919085,"data":"Downloading tensorrt-cu13-bindings (1.2MiB)\n"}
+,{"stream_name":"stdout","time":92.54919595,"data":" Downloaded tensorrt-cu13-bindings\n"}
+,{"stream_name":"stdout","time":92.54920016,"data":"      Built tensorrt-cu13==11.5.0.63\n"}
+,{"stream_name":"stdout","time":92.549204752,"data":"      Built tensorrt-cu13-libs==11.5.0.63\n"}
+,{"stream_name":"stdout","time":92.549209143,"data":"Prepared 3 packages in 41.46s\n"}
+,{"stream_name":"stdout","time":92.549213352,"data":"Installed 3 packages in 4.99s\n"}
+,{"stream_name":"stdout","time":92.549553123,"data":" + tensorrt-cu13==11.5.0.63\n"}
+,{"stream_name":"stdout","time":92.549561551,"data":" + tensorrt-cu13-bindings==11.5.0.63\n"}
+,{"stream_name":"stdout","time":92.549565481,"data":" + tensorrt-cu13-libs==11.5.0.63\n"}
+,{"stream_name":"stdout","time":92.549569119,"data":"\n"}
+,{"stream_name":"stdout","time":92.549572574,"data":"\u001b[31m\u001b[1mrequirements:\u001b[0m AutoUpdate success ✅ 47.9s\n"}
+,{"stream_name":"stdout","time":92.549577185,"data":"WARNING ⚠️ \u001b[31m\u001b[1mrequirements:\u001b[0m \u001b[1mRestart runtime or rerun command for updates to take effect\u001b[0m\n"}
+,{"stream_name":"stdout","time":92.54958135,"data":"\n"}
+,{"stream_name":"stdout","time":92.549584493,"data":"\n"}
+,{"stream_name":"stdout","time":92.549587767,"data":"\u001b[34m\u001b[1mTensorRT:\u001b[0m starting export with TensorRT 11.5.0.63...\n"}
+,{"stream_name":"stdout","time":92.549591638,"data":"[11/28/2026-20:45:17] [TRT] [I] [MemUsageChange] Init CUDA: CPU +0, GPU +0, now: CPU 674, GPU 252 (MiB)\n"}
+,{"stream_name":"stdout","time":92.54959553,"data":"\u001b[31m\u001b[1mrequirements:\u001b[0m Ultralytics requirement ['nvidia-modelopt[onnx]\u003e=0.44'] not found, attempting AutoUpdate...\n"}
+,{"stream_name":"stdout","time":102.279478248,"data":"Using Python 3.13.16 environment at: /usr\n"}
+,{"stream_name":"stdout","time":102.279514063,"data":"Resolved 66 packages in 1.99s\n"}
+,{"stream_name":"stdout","time":102.279519332,"data":"   Building cppimport==26.4.17\n"}
+,{"stream_name":"stdout","time":102.279523061,"data":"Downloading onnx (16.8MiB)\n"}
+,{"stream_name":"stdout","time":102.279526605,"data":"Downloading lief (3.5MiB)\n"}
+,{"stream_name":"stdout","time":102.27953028,"data":"Downloading nvidia-modelopt (2.5MiB)\n"}
+,{"stream_name":"stdout","time":102.27953419400001,"data":"Downloading pulp (15.6MiB)\n"}
+,{"stream_name":"stdout","time":102.279538033,"data":"Downloading onnxruntime-gpu (235.3MiB)\n"}
+,{"stream_name":"stdout","time":102.279541908,"data":" Downloaded nvidia-modelopt\n"}
+,{"stream_name":"stdout","time":102.27954574,"data":" Downloaded lief\n"}
+,{"stream_name":"stdout","time":102.27954937,"data":"      Built cppimport==26.4.17\n"}
+,{"stream_name":"stdout","time":102.279552922,"data":" Downloaded pulp\n"}
+,{"stream_name":"stdout","time":102.279556383,"data":" Downloaded onnx\n"}
+,{"stream_name":"stdout","time":102.279559723,"data":" Downloaded onnxruntime-gpu\n"}
+,{"stream_name":"stdout","time":102.279563095,"data":"Prepared 11 packages in 6.79s\n"}
+,{"stream_name":"stdout","time":102.279566742,"data":"Uninstalled 3 packages in 274ms\n"}
+,{"stream_name":"stdout","time":102.279570367,"data":"Installed 11 packages in 299ms\n"}
+,{"stream_name":"stdout","time":102.2795742,"data":" + cppimport==26.4.17\n"}
+,{"stream_name":"stdout","time":102.279578208,"data":" + lief==1.0.0\n"}
+,{"stream_name":"stdout","time":102.279582377,"data":" + nvidia-modelopt==0.48.0\n"}
+,{"stream_name":"stdout","time":102.279586427,"data":" - onnx==1.23.2\n"}
+,{"stream_name":"stdout","time":102.279590111,"data":" + onnx==1.21.0\n"}
+,{"stream_name":"stdout","time":102.279593598,"data":" + onnx-graphsurgeon==0.6.1\n"}
+,{"stream_name":"stdout","time":102.279597365,"data":" + onnx-ir==1.1.0\n"}
+,{"stream_name":"stdout","time":102.279600925,"data":" + onnxconverter-common==1.16.0\n"}
+,{"stream_name":"stdout","time":102.279604534,"data":" - onnxruntime-gpu==1.32.0\n"}
+,{"stream_name":"stdout","time":102.279608172,"data":" + onnxruntime-gpu==1.30.0\n"}
+,{"stream_name":"stdout","time":102.27962219,"data":" + onnxscript==0.7.2\n"}
+,{"stream_name":"stdout","time":102.279626131,"data":" + polygraphy==0.53.6\n"}
+,{"stream_name":"stdout","time":102.279629349,"data":" - pulp==4.2.0\n"}
+,{"stream_name":"stdout","time":102.279632959,"data":" + pulp==3.3.2\n"}
+,{"stream_name":"stdout","time":102.279636103,"data":"\n"}
+,{"stream_name":"stdout","time":102.279641617,"data":"\u001b[31m\u001b[1mrequirements:\u001b[0m AutoUpdate success ✅ 9.8s\n"}
+,{"stream_name":"stdout","time":102.27964656,"data":"WARNING ⚠️ \u001b[31m\u001b[1mrequirements:\u001b[0m \u001b[1mRestart runtime or rerun command for updates to take effect\u001b[0m\n"}
+,{"stream_name":"stdout","time":102.279650978,"data":"\n"}
+,{"stream_name":"stdout","time":102.482130302,"data":"Using Python 3.13.16 environment at: /usr\n"}
+,{"stream_name":"stdout","time":102.482156189,"data":"Resolved 66 packages in 1.99s\n"}
+,{"stream_name":"stdout","time":102.482160965,"data":"   Building cppimport==26.4.17\n"}
+,{"stream_name":"stdout","time":102.482163955,"data":"Downloading onnx (16.8MiB)\n"}
+,{"stream_name":"stdout","time":102.482167319,"data":"Downloading lief (3.5MiB)\n"}
+,{"stream_name":"stdout","time":102.482170708,"data":"Downloading nvidia-modelopt (2.5MiB)\n"}
+,{"stream_name":"stdout","time":102.482174422,"data":"Downloading pulp (15.6MiB)\n"}
+,{"stream_name":"stdout","time":102.4821784,"data":"Downloading onnxruntime-gpu (235.3MiB)\n"}
+,{"stream_name":"stdout","time":102.482181588,"data":" Downloaded nvidia-modelopt\n"}
+,{"stream_name":"stdout","time":102.482185056,"data":" Downloaded lief\n"}
+,{"stream_name":"stdout","time":102.482188243,"data":"      Built cppimport==26.4.17\n"}
+,{"stream_name":"stdout","time":102.48219551,"data":" Downloaded pulp\n"}
+,{"stream_name":"stdout","time":102.48219877,"data":" Downloaded onnx\n"}
+,{"stream_name":"stdout","time":102.482201959,"data":" Downloaded onnxruntime-gpu\n"}
+,{"stream_name":"stdout","time":102.482205701,"data":"Prepared 11 packages in 6.79s\n"}
+,{"stream_name":"stdout","time":102.4822095,"data":"Uninstalled 3 packages in 274ms\n"}
+,{"stream_name":"stdout","time":102.482213162,"data":"Installed 11 packages in 299ms\n"}
+,{"stream_name":"stdout","time":102.482216977,"data":" + cppimport==26.4.17\n"}
+,{"stream_name":"stdout","time":102.482220767,"data":" + lief==1.0.0\n"}
+,{"stream_name":"stdout","time":102.482224493,"data":" + nvidia-modelopt==0.48.0\n"}
+,{"stream_name":"stdout","time":102.482228347,"data":" - onnx==1.23.2\n"}
+,{"stream_name":"stdout","time":102.482232132,"data":" + onnx==1.21.0\n"}
+,{"stream_name":"stdout","time":102.48223581,"data":" + onnx-graphsurgeon==0.6.1\n"}
+,{"stream_name":"stdout","time":102.482239579,"data":" + onnx-ir==1.1.0\n"}
+,{"stream_name":"stdout","time":102.482242655,"data":" + onnxconverter-common==1.16.0\n"}
+,{"stream_name":"stdout","time":102.482246506,"data":" - onnxruntime-gpu==1.32.0\n"}
+,{"stream_name":"stdout","time":102.482250544,"data":" + onnxruntime-gpu==1.30.0\n"}
+,{"stream_name":"stdout","time":102.482254247,"data":" + onnxscript==0.7.2\n"}
+,{"stream_name":"stdout","time":102.482258393,"data":" + polygraphy==0.53.6\n"}
+,{"stream_name":"stdout","time":102.482262232,"data":" - pulp==4.2.0\n"}
+,{"stream_name":"stdout","time":102.482266126,"data":" + pulp==3.3.2\n"}
+,{"stream_name":"stdout","time":102.482269814,"data":"\n"}
+,{"stream_name":"stdout","time":102.482273409,"data":"\u001b[31m\u001b[1mrequirements:\u001b[0m AutoUpdate success ✅ 9.8s\n"}
+,{"stream_name":"stdout","time":102.48227867,"data":"WARNING ⚠️ \u001b[31m\u001b[1mrequirements:\u001b[0m \u001b[1mRestart runtime or rerun command for updates to take effect\u001b[0m\n"}
+,{"stream_name":"stdout","time":102.482293743,"data":"\n"}
+,{"stream_name":"stdout","time":103.924913933,"data":"\u001b[34m\u001b[1mTensorRT:\u001b[0m converting ONNX to FP16 mixed precision with ModelOpt AutoCast...\n"}
+,{"stream_name":"stderr","time":103.980205418,"data":"WARNING Shared constants were detected and duplicated accordingly.\n"}
+,{"stream_name":"stdout","time":103.980487193,"data":"2026-11-28 20:45:29,038 - [modelopt][onnx] - WARNING - Shared constants were detected and duplicated accordingly.\n"}
+,{"stream_name":"stderr","time":104.116610979,"data":"INFO Successfully enabled 1 EPs for ORT: ['CPUExecutionProvider']\n"}
+,{"stream_name":"stdout","time":104.116715827,"data":"2026-11-28 20:45:29,175 - [modelopt][onnx] - INFO - Successfully enabled 1 EPs for ORT: ['CPUExecutionProvider']\n"}
+,{"stream_name":"stdout","time":104.127523173,"data":"\u001b[34m\u001b[1mTensorRT:\u001b[0m converting ONNX to FP16 mixed precision with ModelOpt AutoCast...\n"}
+,{"stream_name":"stdout","time":104.127554034,"data":"2026-11-28 20:45:29,038 - [modelopt][onnx] - WARNING - Shared constants were detected and duplicated accordingly.\n"}
+,{"stream_name":"stdout","time":104.127559269,"data":"2026-11-28 20:45:29,175 - [modelopt][onnx] - INFO - Successfully enabled 1 EPs for ORT: ['CPUExecutionProvider']\n"}
+,{"stream_name":"stderr","time":104.183568783,"data":"WARNING Shared constants were detected and duplicated accordingly.\n"}
+,{"stream_name":"stderr","time":104.183606461,"data":"INFO Successfully enabled 1 EPs for ORT: ['CPUExecutionProvider']\n"}
+,{"stream_name":"stderr","time":104.183611234,"data":"\n"}
+,{"stream_name":"stderr","time":104.183615149,"data":"WARNING Shared constants were detected and duplicated accordingly.\n"}
+,{"stream_name":"stderr","time":104.183618855,"data":"INFO Successfully enabled 1 EPs for ORT: ['CPUExecutionProvider']\n"}
+,{"stream_name":"stdout","time":104.862107578,"data":"2026-11-28 20:45:29,920 - [modelopt][onnx] - INFO - Running ONNX Runtime to obtain reference outputs (this may take a while)...\n"}
+,{"stream_name":"stderr","time":104.862107576,"data":"INFO Running ONNX Runtime to obtain reference outputs (this may take a while)...\n"}
+,{"stream_name":"stdout","time":105.06892869,"data":"2026-11-28 20:45:29,920 - [modelopt][onnx] - INFO - Running ONNX Runtime to obtain reference outputs (this may take a while)...\n"}
+,{"stream_name":"stderr","time":105.071793686,"data":"INFO Running ONNX Runtime to obtain reference outputs (this may take a while)...\n"}
+,{"stream_name":"stderr","time":105.071822779,"data":"\n"}
+,{"stream_name":"stderr","time":105.071987524,"data":"INFO Running ONNX Runtime to obtain reference outputs (this may take a while)...\n"}
+,{"stream_name":"stdout","time":105.451804532,"data":"2026-11-28 20:45:30,510 - [modelopt][onnx] - INFO - Skipping node /model.23/Mul_2: reference IO out of range: min=4.782723426818848, max=636.4580078125, absmax=636.4580078125, range=[-512, 512]\n"}
+,{"stream_name":"stdout","time":105.451901,"data":"2026-11-28 20:45:30,510 - [modelopt][onnx] - INFO - Skipping node /model.23/Concat_3: reference IO out of range: min=4.782723426818848, max=636.4580078125, absmax=636.4580078125, range=[-512, 512]\n"}
+,{"stream_name":"stderr","time":105.451868018,"data":"INFO Skipping node /model.23/Mul_2: reference IO out of range: min=4.782723426818848, max=636.4580078125, absmax=636.4580078125, range=[-512, 512]\n"}
+,{"stream_name":"stderr","time":105.451924273,"data":"INFO Skipping node /model.23/Concat_3: reference IO out of range: min=4.782723426818848, max=636.4580078125, absmax=636.4580078125, range=[-512, 512]\n"}
+,{"stream_name":"stderr","time":105.48321507,"data":"WARNING Did not find  in value info map! Assuming not castable\n"}
+,{"stream_name":"stdout","time":105.483275572,"data":"2026-11-28 20:45:30,542 - [modelopt][onnx] - WARNING - Did not find  in value info map! Assuming not castable\n"}
+,{"stream_name":"stdout","time":105.58318829,"data":"2026-11-28 20:45:30,641 - [modelopt][onnx] - WARNING - Some initializers contain values smaller than smallest fp16 value, values will be replaced with 6.0e-08.\n"}
+,{"stream_name":"stderr","time":105.583260046,"data":"WARNING Some initializers contain values smaller than smallest fp16 value, values will be replaced with 6.0e-08.\n"}
+,{"stream_name":"stdout","time":105.654534786,"data":"2026-11-28 20:45:30,510 - [modelopt][onnx] - INFO - Skipping node /model.23/Mul_2: reference IO out of range: min=4.782723426818848, max=636.4580078125, absmax=636.4580078125, range=[-512, 512]\n"}
+,{"stream_name":"stdout","time":105.654585638,"data":"2026-11-28 20:45:30,510 - [modelopt][onnx] - INFO - Skipping node /model.23/Concat_3: reference IO out of range: min=4.782723426818848, max=636.4580078125, absmax=636.4580078125, range=[-512, 512]\n"}
+,{"stream_name":"stdout","time":105.654592811,"data":"2026-11-28 20:45:30,542 - [modelopt][onnx] - WARNING - Did not find  in value info map! Assuming not castable\n"}
+,{"stream_name":"stdout","time":105.654597372,"data":"2026-11-28 20:45:30,641 - [modelopt][onnx] - WARNING - Some initializers contain values smaller than smallest fp16 value, values will be replaced with 6.0e-08.\n"}
+,{"stream_name":"stderr","time":105.655737599,"data":"INFO Skipping node /model.23/Mul_2: reference IO out of range: min=4.782723426818848, max=636.4580078125, absmax=636.4580078125, range=[-512, 512]\n"}
+,{"stream_name":"stderr","time":105.655771653,"data":"INFO Skipping node /model.23/Concat_3: reference IO out of range: min=4.782723426818848, max=636.4580078125, absmax=636.4580078125, range=[-512, 512]\n"}
+,{"stream_name":"stderr","time":105.655778777,"data":"WARNING Did not find  in value info map! Assuming not castable\n"}
+,{"stream_name":"stderr","time":105.655783802,"data":"WARNING Some initializers contain values smaller than smallest fp16 value, values will be replaced with 6.0e-08.\n"}
+,{"stream_name":"stderr","time":105.655788195,"data":"\n"}
+,{"stream_name":"stderr","time":105.655792812,"data":"INFO Skipping node /model.23/Mul_2: reference IO out of range: min=4.782723426818848, max=636.4580078125, absmax=636.4580078125, range=[-512, 512]\n"}
+,{"stream_name":"stderr","time":105.655798448,"data":"INFO Skipping node /model.23/Concat_3: reference IO out of range: min=4.782723426818848, max=636.4580078125, absmax=636.4580078125, range=[-512, 512]\n"}
+,{"stream_name":"stderr","time":105.655803106,"data":"WARNING Did not find  in value info map! Assuming not castable\n"}
+,{"stream_name":"stderr","time":105.655807109,"data":"WARNING Some initializers contain values smaller than smallest fp16 value, values will be replaced with 6.0e-08.\n"}
+,{"stream_name":"stdout","time":106.951540803,"data":"2026-11-28 20:45:32,010 - [modelopt][onnx] - INFO - Converted 318/320 nodes (99.38%) to fp16\n"}
+,{"stream_name":"stderr","time":106.951751285,"data":"INFO Converted 318/320 nodes (99.38%) to fp16\n"}
+,{"stream_name":"stdout","time":106.962874196,"data":"[11/28/2026-20:45:32] [TRT] [I] ----------------------------------------------------------------\n"}
+,{"stream_name":"stdout","time":106.962913693,"data":"[11/28/2026-20:45:32] [TRT] [I] Input filename:   /tmp/e1_engine_cache/best.fp16.onnx\n"}
+,{"stream_name":"stdout","time":106.962919827,"data":"[11/28/2026-20:45:32] [TRT] [I] ONNX IR version:  0.0.8\n"}
+,{"stream_name":"stdout","time":106.962923678,"data":"[11/28/2026-20:45:32] [TRT] [I] Opset version:    18\n"}
+,{"stream_name":"stdout","time":106.962927464,"data":"[11/28/2026-20:45:32] [TRT] [I] Producer name:    pytorch\n"}
+,{"stream_name":"stdout","time":106.962946049,"data":"[11/28/2026-20:45:32] [TRT] [I] Producer version: 2.11.0\n"}
+,{"stream_name":"stdout","time":106.962949616,"data":"[11/28/2026-20:45:32] [TRT] [I] Domain:           \n"}
+,{"stream_name":"stdout","time":106.962952787,"data":"[11/28/2026-20:45:32] [TRT] [I] Model version:    0\n"}
+,{"stream_name":"stdout","time":106.962956033,"data":"[11/28/2026-20:45:32] [TRT] [I] Doc string:       \n"}
+,{"stream_name":"stdout","time":106.962959907,"data":"[11/28/2026-20:45:32] [TRT] [I] ----------------------------------------------------------------\n"}
+,{"stream_name":"stdout","time":106.971850963,"data":"\u001b[34m\u001b[1mTensorRT:\u001b[0m input \"images\" with shape(1, 3, 640, 640) DataType.FLOAT\n"}
+,{"stream_name":"stdout","time":106.971887008,"data":"\u001b[34m\u001b[1mTensorRT:\u001b[0m output \"output0\" with shape(1, 8, 8400) DataType.FLOAT\n"}
+,{"stream_name":"stdout","time":106.97189289,"data":"\u001b[34m\u001b[1mTensorRT:\u001b[0m building FP16 engine as /tmp/e1_engine_cache/best.engine\n"}
+,{"stream_name":"stdout","time":107.154431032,"data":"2026-11-28 20:45:32,010 - [modelopt][onnx] - INFO - Converted 318/320 nodes (99.38%) to fp16\n"}
+,{"stream_name":"stdout","time":107.154476006,"data":"[11/28/2026-20:45:32] [TRT] [I] ----------------------------------------------------------------\n"}
+,{"stream_name":"stdout","time":107.154481455,"data":"[11/28/2026-20:45:32] [TRT] [I] Input filename:   /tmp/e1_engine_cache/best.fp16.onnx\n"}
+,{"stream_name":"stdout","time":107.154485133,"data":"[11/28/2026-20:45:32] [TRT] [I] ONNX IR version:  0.0.8\n"}
+,{"stream_name":"stdout","time":107.154489239,"data":"[11/28/2026-20:45:32] [TRT] [I] Opset version:    18\n"}
+,{"stream_name":"stdout","time":107.154492987,"data":"[11/28/2026-20:45:32] [TRT] [I] Producer name:    pytorch\n"}
+,{"stream_name":"stdout","time":107.154496603,"data":"[11/28/2026-20:45:32] [TRT] [I] Producer version: 2.11.0\n"}
+,{"stream_name":"stdout","time":107.154500243,"data":"[11/28/2026-20:45:32] [TRT] [I] Domain:           \n"}
+,{"stream_name":"stdout","time":107.154503671,"data":"[11/28/2026-20:45:32] [TRT] [I] Model version:    0\n"}
+,{"stream_name":"stdout","time":107.154507973,"data":"[11/28/2026-20:45:32] [TRT] [I] Doc string:       \n"}
+,{"stream_name":"stdout","time":107.154511674,"data":"[11/28/2026-20:45:32] [TRT] [I] ----------------------------------------------------------------\n"}
+,{"stream_name":"stdout","time":107.154515267,"data":"\u001b[34m\u001b[1mTensorRT:\u001b[0m input \"images\" with shape(1, 3, 640, 640) DataType.FLOAT\n"}
+,{"stream_name":"stdout","time":107.154520177,"data":"\u001b[34m\u001b[1mTensorRT:\u001b[0m output \"output0\" with shape(1, 8, 8400) DataType.FLOAT\n"}
+,{"stream_name":"stdout","time":107.154524034,"data":"\u001b[34m\u001b[1mTensorRT:\u001b[0m building FP16 engine as /tmp/e1_engine_cache/best.engine\n"}
+,{"stream_name":"stderr","time":107.155623646,"data":"INFO Converted 318/320 nodes (99.38%) to fp16\n"}
+,{"stream_name":"stderr","time":107.155643541,"data":"\n"}
+,{"stream_name":"stderr","time":107.155647764,"data":"INFO Converted 318/320 nodes (99.38%) to fp16\n"}
+,{"stream_name":"stdout","time":107.291109392,"data":"[11/28/2026-20:45:32] [TRT] [I] BuilderFlag::kTF32 is set but hardware does not support TF32. Disabling TF32.\n"}
+,{"stream_name":"stdout","time":107.493743576,"data":"[11/28/2026-20:45:32] [TRT] [I] BuilderFlag::kTF32 is set but hardware does not support TF32. Disabling TF32.\n"}
+,{"stream_name":"stdout","time":107.571036376,"data":"[11/28/2026-20:45:32] [TRT] [I] [MemUsageChange] Init builder kernel library: CPU +92, GPU +2, now: CPU 1551, GPU 254 (MiB)\n"}
+,{"stream_name":"stdout","time":107.6199165,"data":"[11/28/2026-20:45:32] [TRT] [I] BuilderFlag::kTF32 is set but hardware does not support TF32. Disabling TF32.\n"}
+,{"stream_name":"stdout","time":107.619954713,"data":"[11/28/2026-20:45:32] [TRT] [I] Local timing cache in use. Profiling results in this builder pass will not be stored.\n"}
+,{"stream_name":"stdout","time":107.773385309,"data":"[11/28/2026-20:45:32] [TRT] [I] [MemUsageChange] Init builder kernel library: CPU +92, GPU +2, now: CPU 1551, GPU 254 (MiB)\n"}
+,{"stream_name":"stdout","time":107.773427178,"data":"[11/28/2026-20:45:32] [TRT] [I] BuilderFlag::kTF32 is set but hardware does not support TF32. Disabling TF32.\n"}
+,{"stream_name":"stdout","time":107.773432901,"data":"[11/28/2026-20:45:32] [TRT] [I] Local timing cache in use. Profiling results in this builder pass will not be stored.\n"}
+,{"stream_name":"stdout","time":108.509535234,"data":"[11/28/2026-20:45:33] [TRT] [I] Compiler backend is used during engine build.\n"}
+,{"stream_name":"stdout","time":108.711833333,"data":"[11/28/2026-20:45:33] [TRT] [I] Compiler backend is used during engine build.\n"}
+,{"stream_name":"stdout","time":249.648062997,"data":"[11/28/2026-20:47:54] [TRT] [I] Detected 1 inputs and 3 output network tensors.\n"}
+,{"stream_name":"stdout","time":249.853341834,"data":"[11/28/2026-20:47:54] [TRT] [I] Detected 1 inputs and 3 output network tensors.\n"}
+,{"stream_name":"stdout","time":252.791614679,"data":"[11/28/2026-20:47:57] [TRT] [I] Total Host Persistent Memory: 524352 bytes\n"}
+,{"stream_name":"stdout","time":252.791652597,"data":"[11/28/2026-20:47:57] [TRT] [I] Total Device Persistent Memory: 536064 bytes\n"}
+,{"stream_name":"stdout","time":252.791658376,"data":"[11/28/2026-20:47:57] [TRT] [I] Max Scratch Memory: 1382400 bytes\n"}
+,{"stream_name":"stdout","time":252.791824518,"data":"[11/28/2026-20:47:57] [TRT] [I] [BlockAssignment] Started assigning block shifts. This will take 206 steps to complete.\n"}
+,{"stream_name":"stdout","time":252.811166877,"data":"[11/28/2026-20:47:57] [TRT] [I] [BlockAssignment] Algorithm ShiftNTopDown took 19.503ms to assign 11 blocks to 206 nodes requiring 9524224 bytes.\n"}
+,{"stream_name":"stdout","time":252.811198237,"data":"[11/28/2026-20:47:57] [TRT] [I] Total Activation Memory: 9523200 bytes\n"}
+,{"stream_name":"stdout","time":252.844333529,"data":"[11/28/2026-20:47:57] [TRT] [I] Total Weights Memory: 59047808 bytes\n"}
+,{"stream_name":"stdout","time":252.855857094,"data":"[11/28/2026-20:47:57] [TRT] [I] Compiler backend is used during engine execution.\n"}
+,{"stream_name":"stdout","time":252.857967265,"data":"[11/28/2026-20:47:57] [TRT] [I] Engine generation completed in 145.277 seconds.\n"}
+,{"stream_name":"stdout","time":252.860314937,"data":"[11/28/2026-20:47:57] [TRT] [I] [MemUsageStats] Peak memory usage of TRT CPU/GPU memory allocators: CPU 0 MiB, GPU 71 MiB\n"}
+,{"stream_name":"stdout","time":252.994713151,"data":"[11/28/2026-20:47:57] [TRT] [I] Total Host Persistent Memory: 524352 bytes\n"}
+,{"stream_name":"stdout","time":252.994770765,"data":"[11/28/2026-20:47:57] [TRT] [I] Total Device Persistent Memory: 536064 bytes\n"}
+,{"stream_name":"stdout","time":252.994789555,"data":"[11/28/2026-20:47:57] [TRT] [I] Max Scratch Memory: 1382400 bytes\n"}
+,{"stream_name":"stdout","time":252.994794373,"data":"[11/28/2026-20:47:57] [TRT] [I] [BlockAssignment] Started assigning block shifts. This will take 206 steps to complete.\n"}
+,{"stream_name":"stdout","time":252.9947998,"data":"[11/28/2026-20:47:57] [TRT] [I] [BlockAssignment] Algorithm ShiftNTopDown took 19.503ms to assign 11 blocks to 206 nodes requiring 9524224 bytes.\n"}
+,{"stream_name":"stdout","time":252.994808897,"data":"[11/28/2026-20:47:57] [TRT] [I] Total Activation Memory: 9523200 bytes\n"}
+,{"stream_name":"stdout","time":252.994828486,"data":"[11/28/2026-20:47:57] [TRT] [I] Total Weights Memory: 59047808 bytes\n"}
+,{"stream_name":"stdout","time":252.994832129,"data":"[11/28/2026-20:47:57] [TRT] [I] Compiler backend is used during engine execution.\n"}
+,{"stream_name":"stdout","time":252.994835511,"data":"[11/28/2026-20:47:57] [TRT] [I] Engine generation completed in 145.277 seconds.\n"}
+,{"stream_name":"stdout","time":252.994839248,"data":"[11/28/2026-20:47:57] [TRT] [I] [MemUsageStats] Peak memory usage of TRT CPU/GPU memory allocators: CPU 0 MiB, GPU 71 MiB\n"}
+,{"stream_name":"stdout","time":253.069456084,"data":"\u001b[34m\u001b[1mTensorRT:\u001b[0m export success ✅ 220.3s, saved as '/tmp/e1_engine_cache/best.engine' (58.2 MB)\n"}
+,{"stream_name":"stdout","time":253.069784681,"data":"\n"}
+,{"stream_name":"stdout","time":253.069808281,"data":"Export complete (223.9s)\n"}
+,{"stream_name":"stdout","time":253.069813759,"data":"Results saved to \u001b[1m/tmp/e1_engine_cache/best.engine\u001b[0m\n"}
+,{"stream_name":"stdout","time":253.069818801,"data":"Predict:         yolo predict task=detect model=/tmp/e1_engine_cache/best.engine imgsz=640 quantize=16\n"}
+,{"stream_name":"stdout","time":253.069823159,"data":"Validate:        yolo val task=detect model=/tmp/e1_engine_cache/best.engine imgsz=640  quantize=16\n"}
+,{"stream_name":"stdout","time":253.069827665,"data":"Visualize:       https://netron.app\n"}
+,{"stream_name":"stdout","time":253.272027424,"data":"\u001b[34m\u001b[1mTensorRT:\u001b[0m export success ✅ 220.3s, saved as '/tmp/e1_engine_cache/best.engine' (58.2 MB)\n"}
+,{"stream_name":"stdout","time":253.272084319,"data":"\n"}
+,{"stream_name":"stdout","time":253.272090088,"data":"Export complete (223.9s)\n"}
+,{"stream_name":"stdout","time":253.272093961,"data":"Results saved to \u001b[1m/tmp/e1_engine_cache/best.engine\u001b[0m\n"}
+,{"stream_name":"stdout","time":253.272097775,"data":"Predict:         yolo predict task=detect model=/tmp/e1_engine_cache/best.engine imgsz=640 quantize=16\n"}
+,{"stream_name":"stdout","time":253.27210152,"data":"Validate:        yolo val task=detect model=/tmp/e1_engine_cache/best.engine imgsz=640  quantize=16\n"}
+,{"stream_name":"stdout","time":253.272105719,"data":"Visualize:       https://netron.app\n"}
+,{"stream_name":"stdout","time":253.382832008,"data":"Loading /tmp/e1_engine_cache/best.engine for TensorRT inference...\n"}
+,{"stream_name":"stdout","time":253.416611858,"data":"[11/28/2026-20:47:58] [TRT] [I] Loaded engine size: 58 MiB\n"}
+,{"stream_name":"stdout","time":253.493797362,"data":"[11/28/2026-20:47:58] [TRT] [I] [MemUsageChange] TensorRT-managed allocation in IExecutionContext creation: CPU +0, GPU +10, now: CPU 0, GPU 66 (MiB)\n"}
+,{"stream_name":"stdout","time":253.584879068,"data":"Loading /tmp/e1_engine_cache/best.engine for TensorRT inference...\n"}
+,{"stream_name":"stdout","time":253.584912333,"data":"[11/28/2026-20:47:58] [TRT] [I] Loaded engine size: 58 MiB\n"}
+,{"stream_name":"stdout","time":253.584917465,"data":"[11/28/2026-20:47:58] [TRT] [I] [MemUsageChange] TensorRT-managed allocation in IExecutionContext creation: CPU +0, GPU +10, now: CPU 0, GPU 66 (MiB)\n"}
+,{"stream_name":"stderr","time":316.477828492,"data":"INFO w9_C2_rep1: 11821 frame, FPS 199.144, p95 total 5.44 ms\n"}
+,{"stream_name":"stderr","time":316.685186313,"data":"INFO w9_C2_rep1: 11821 frame, FPS 199.144, p95 total 5.44 ms\n"}
+,{"stream_name":"stderr","time":316.68526226,"data":"\n"}
+,{"stream_name":"stderr","time":316.685269482,"data":"INFO w9_C2_rep1: 11821 frame, FPS 199.144, p95 total 5.44 ms\n"}
+,{"stream_name":"stdout","time":320.701959111,"data":"\u003c\u003c\u003c C2 1 ma thoat 0\n"}
+,{"stream_name":"stdout","time":320.703151577,"data":"\u003e\u003e\u003e C2 2\n"}
+,{"stream_name":"stdout","time":323.409968166,"data":"Loading /tmp/e1_engine_cache/best.engine for TensorRT inference...\n"}
+,{"stream_name":"stdout","time":323.512572997,"data":"[11/28/2026-20:49:08] [TRT] [I] Loaded engine size: 58 MiB\n"}
+,{"stream_name":"stdout","time":323.612586701,"data":"Loading /tmp/e1_engine_cache/best.engine for TensorRT inference...\n"}
+,{"stream_name":"stdout","time":323.612645325,"data":"[11/28/2026-20:49:08] [TRT] [I] Loaded engine size: 58 MiB\n"}
+,{"stream_name":"stdout","time":323.623306349,"data":"[11/28/2026-20:49:08] [TRT] [I] [MemUsageChange] TensorRT-managed allocation in IExecutionContext creation: CPU +0, GPU +10, now: CPU 0, GPU 66 (MiB)\n"}
+,{"stream_name":"stdout","time":323.825344713,"data":"[11/28/2026-20:49:08] [TRT] [I] [MemUsageChange] TensorRT-managed allocation in IExecutionContext creation: CPU +0, GPU +10, now: CPU 0, GPU 66 (MiB)\n"}
+,{"stream_name":"stderr","time":384.844565125,"data":"INFO w9_C2_rep2: 11821 frame, FPS 198.814, p95 total 5.408 ms\n"}
+,{"stream_name":"stderr","time":385.051997268,"data":"INFO w9_C2_rep2: 11821 frame, FPS 198.814, p95 total 5.408 ms\n"}
+,{"stream_name":"stderr","time":385.052038287,"data":"\n"}
+,{"stream_name":"stderr","time":385.052045674,"data":"INFO w9_C2_rep2: 11821 frame, FPS 198.814, p95 total 5.408 ms\n"}
+,{"stream_name":"stdout","time":385.673542487,"data":"\u003c\u003c\u003c C2 2 ma thoat 0\n"}
+,{"stream_name":"stdout","time":385.674469413,"data":"\u003e\u003e\u003e C2 3\n"}
+,{"stream_name":"stdout","time":388.321586322,"data":"Loading /tmp/e1_engine_cache/best.engine for TensorRT inference...\n"}
+,{"stream_name":"stdout","time":388.424874449,"data":"[11/28/2026-20:50:13] [TRT] [I] Loaded engine size: 58 MiB\n"}
+,{"stream_name":"stdout","time":388.523765703,"data":"Loading /tmp/e1_engine_cache/best.engine for TensorRT inference...\n"}
+,{"stream_name":"stdout","time":388.523800547,"data":"[11/28/2026-20:50:13] [TRT] [I] Loaded engine size: 58 MiB\n"}
+,{"stream_name":"stdout","time":388.541348322,"data":"[11/28/2026-20:50:13] [TRT] [I] [MemUsageChange] TensorRT-managed allocation in IExecutionContext creation: CPU +0, GPU +10, now: CPU 0, GPU 66 (MiB)\n"}
+,{"stream_name":"stdout","time":388.744362402,"data":"[11/28/2026-20:50:13] [TRT] [I] [MemUsageChange] TensorRT-managed allocation in IExecutionContext creation: CPU +0, GPU +10, now: CPU 0, GPU 66 (MiB)\n"}
+,{"stream_name":"stderr","time":449.823685018,"data":"INFO w9_C2_rep3: 11821 frame, FPS 198.589, p95 total 5.444 ms\n"}
+,{"stream_name":"stderr","time":450.028975437,"data":"INFO w9_C2_rep3: 11821 frame, FPS 198.589, p95 total 5.444 ms\n"}
+,{"stream_name":"stderr","time":450.029005358,"data":"\n"}
+,{"stream_name":"stderr","time":450.02901031,"data":"INFO w9_C2_rep3: 11821 frame, FPS 198.589, p95 total 5.444 ms\n"}
+,{"stream_name":"stdout","time":450.647331334,"data":"\u003c\u003c\u003c C2 3 ma thoat 0\n"}
+,{"stream_name":"stdout","time":450.648328834,"data":"{('C2', 1): 0, ('C2', 2): 0, ('C2', 3): 0}\n"}
+,{"stream_name":"stdout","time":451.444462046,"data":"  cfg  rep  rc                                                          stages  frames      fps  p95_ms\n"}
+,{"stream_name":"stdout","time":451.444487707,"data":"0  C2    1   0  inputs:OK,env:OK,export:OK,run:OK,detect:OK,dump:OK,summary:OK   11821  199.144   5.440\n"}
+,{"stream_name":"stdout","time":451.444493563,"data":"1  C2    2   0                    inputs:OK,env:OK,export:OK,run:OK,summary:OK   11821  198.814   5.408\n"}
+,{"stream_name":"stdout","time":451.44449827,"data":"2  C2    3   0                    inputs:OK,env:OK,export:OK,run:OK,summary:OK   11821  198.589   5.444\n"}
+,{"stream_name":"stdout","time":451.444503016,"data":"C2: OK\n"}
+,{"stream_name":"stdout","time":451.444516816,"data":"PASS\n"}
+,{"stream_name":"stdout","time":451.444520608,"data":"w9_run18_all.zip 1231 KB  sha256 00ccca85ccbc9089321a48adfec6d1c779c05a52b4935317505c6104978b65d3\n"}
+,{"stream_name":"stderr","time":454.411528663,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":454.411558675,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":454.542691564,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":454.542741557,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":455.29159434,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":455.372940978,"data":"[NbConvertApp] Writing 28545 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":457.884395466,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":458.419638575,"data":"[NbConvertApp] Writing 326432 bytes to __results__.html\n"}
+]

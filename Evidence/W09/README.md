@@ -1,6 +1,6 @@
 # Evidence W09 — Tối ưu inference, FPS/latency
 
-Milestone **Tuan9** · Tạo bởi `scripts/reporting/build_evidence.py` tại commit `7c95a13` · 2026-11-28
+Milestone **Tuan9** · Tạo bởi `scripts/reporting/build_evidence.py` tại commit `d2e0f8e` · 2026-11-28
 
 **Phạm vi:** Pipeline e1pipe chạy từng frame có độ trễ từng bước, qua cổng tái tạo so với run 17 (luật B). Benchmark C0/C1/C2/CPU trên 38 video val, chọn cấu hình vận hành theo luật C viết trước; chạy ổn định 60 phút (run 20). Tập âm tính: FBD-SV-2024 chuẩn hóa và đo cảnh báo sai/giờ (run 19b3), kích hoạt ADR-0011; danh sách ứng viên Wikimedia Commons lập từ API gốc, sàng lọc hai người chuyển W10.
 
@@ -9,8 +9,8 @@ Milestone **Tuan9** · Tạo bởi `scripts/reporting/build_evidence.py` tại c
 ## Nội dung thư mục
 | File | Mô tả |
 |---|---|
-| `metrics.csv` | 67 chỉ số; mỗi dòng có `source` (file gốc trong repo), `producer` (script), `run_commit` |
-| `test-results.json` | 161 kiểm tra chạy lại lúc tạo Evidence: **161 PASS / 0 FAIL** |
+| `metrics.csv` | 84 chỉ số; mỗi dòng có `source` (file gốc trong repo), `producer` (script), `run_commit` |
+| `test-results.json` | 162 kiểm tra chạy lại lúc tạo Evidence: **162 PASS / 0 FAIL** |
 | `figures/` | Hình dùng trong báo cáo tuần |
 | `manifest.json` | SHA-256 của mọi tệp trong thư mục này và của tệp nguồn |
 

@@ -1,0 +1,696 @@
+{
+  "job": "run18_bench",
+  "commit": "834dc3feda6f9c16413ed430ba6a35a49f15ba69",
+  "tag": "c2",
+  "kernel": "minhquangdng/e1-w9-run18-bench-c2",
+  "final_status": "minhquangdng/e1-w9-run18-bench-c2 has status \"kernelworkerstatus.complete\"",
+  "actions_run_id": "46178534291",
+  "kaggle_cli": "Kaggle CLI 2.2.5",
+  "files": [
+    {
+      "path": "e1-w9-run18-bench-c2.log",
+      "bytes": 42233,
+      "sha256": "6068ca1bb80419b88f36c43248ef991579e04c37c08ba937df9a47f11fa082c7"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_AIRPLANE_005.csv",
+      "bytes": 16703,
+      "sha256": "47aabf219eb6833f689a6d112fc22a2d6a46a330dfc31aa7bdce6460cc5989b8"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_AIRPLANE_007.csv",
+      "bytes": 12300,
+      "sha256": "4f938bfa59fb111e037a194bc7bc4402e32211bec0c45c1d92cf511ae1716f7e"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_AIRPLANE_009.csv",
+      "bytes": 12395,
+      "sha256": "a7b7af547e53557d6e29eba1dc2014d296702fd85de143d6844df60f87bf9b10"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_AIRPLANE_027.csv",
+      "bytes": 12176,
+      "sha256": "9c3535c7aee1f2159a0b2f4e41e8bd7476071d5fa288c5cb9707d643b72f1729"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_AIRPLANE_030.csv",
+      "bytes": 12668,
+      "sha256": "d371667c25f5172d7a89cb2cc0581a391919f802c165b3f625ec8ef016ceaee8"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_AIRPLANE_037.csv",
+      "bytes": 15898,
+      "sha256": "7de7d984d3ffeb1f521be7f8a952fca11962d9039cba0b28709a18594ead3c7d"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_AIRPLANE_047.csv",
+      "bytes": 9276,
+      "sha256": "e7fc753a364b739d352e9e66238d01bcbaac4d1e9f54a70938c0f45c45a781d9"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_AIRPLANE_048.csv",
+      "bytes": 12683,
+      "sha256": "46c026ac76f452182b08649088dccf4991a39bd190c6543d7ed66294cc070d2f"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_AIRPLANE_052.csv",
+      "bytes": 13767,
+      "sha256": "ae312af02e199d4077f4ff91498f169d3aa409f85daab0e6d8da38f1e2bc958a"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_BIRD_025.csv",
+      "bytes": 12979,
+      "sha256": "3d359f373a0574f58eb7c16238e01f6d3008e21c4eaa55df8dd25411956b360f"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_BIRD_037.csv",
+      "bytes": 16716,
+      "sha256": "8cc1a7a78def699ee098ace39ae4ab795bcab3f352e7c85e913eb1bf4a9bc2cb"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_BIRD_041.csv",
+      "bytes": 21034,
+      "sha256": "e360e41db98d3b677d41f7718da0481522a85fe589e72ea5d2673744c6946e8c"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_DRONE_004.csv",
+      "bytes": 16640,
+      "sha256": "af1f08fb0d79d6ac518749c8d132d82b467209b74b3fd6f5bdc948788970627a"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_DRONE_010.csv",
+      "bytes": 14098,
+      "sha256": "1ecb1bffc1524aec4a62c55856c5253ca4c544be2fcf5c7625c18097d9677683"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_DRONE_011.csv",
+      "bytes": 17446,
+      "sha256": "5bd1aaa07100e78b5e9089e30734fa5a677ed6c3144de81a5e8cfc6d0d9b1f36"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_DRONE_018.csv",
+      "bytes": 14490,
+      "sha256": "d499be7cf02eea38fd3faa3307aa79631180017f5c30372b4eb17bbfa04b84d6"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_DRONE_023.csv",
+      "bytes": 12376,
+      "sha256": "ac77a7ec7af282d4aea482773c2c233ddbdc2eda3db93499c44586309d12a128"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_DRONE_025.csv",
+      "bytes": 12532,
+      "sha256": "19c153ffa36931fde1513c821ebb284e6f3e15b3c9fb0a6876fe757804b77bb0"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_DRONE_029.csv",
+      "bytes": 18011,
+      "sha256": "cea59c0cb6ddad9f6a6c4f126d03d8069a11854ebee20bda4f4e492228fc8e56"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_DRONE_032.csv",
+      "bytes": 18428,
+      "sha256": "8ef636542f53842954f7474df90d4ca60434d40d324075903092c06c19b0fe39"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_DRONE_044.csv",
+      "bytes": 12230,
+      "sha256": "45e82fc584fd0588eb523339942e685af884d0f2df4eb4dcef0c504d998e93ab"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_DRONE_049.csv",
+      "bytes": 18726,
+      "sha256": "639e541101dcb3f58dee6f75406e3cbd3958dcc34644fe3e57bfadb77e001301"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_DRONE_060.csv",
+      "bytes": 13114,
+      "sha256": "2845f77731e195f26157190eb200afebad7bc1ef4b15eb8c4a15316cf2ff77bb"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_DRONE_077.csv",
+      "bytes": 17034,
+      "sha256": "01c19ecb2b0b57ba537c9e2ff549bf0b678e75a1bf18dd46a26dd5397898a250"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_DRONE_078.csv",
+      "bytes": 8818,
+      "sha256": "aa5f513ffa86d31d70b21f2444641d830174d927cf650ee3302e28fb037bc55c"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_DRONE_080.csv",
+      "bytes": 11924,
+      "sha256": "d6dd51dd04d29b6ec6882c11e8fee6b1ba38b1905e2dbfe5251530579a1922b3"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_DRONE_088.csv",
+      "bytes": 14969,
+      "sha256": "9e8158b2e6b4efcce763a3d764be3ef2fc99a3f4df6441f2f3ab0878b5fe21eb"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_DRONE_095.csv",
+      "bytes": 13978,
+      "sha256": "dab7ca74ca580797120c7c3837b2feee862a5cd94ddb293fd196c7a3e9b740c4"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_DRONE_096.csv",
+      "bytes": 13052,
+      "sha256": "175ceaec19e0821b5b56d664092971340e20a009f4c082f2e765c53ec91289ba"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_HELICOPTER_005.csv",
+      "bytes": 11851,
+      "sha256": "fbed02a986308d480a2dc19e4bea6d8808959f562ca2d5c06163fa3038d1e10f"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_HELICOPTER_010.csv",
+      "bytes": 3901,
+      "sha256": "453a7cb047a66a83dcdc9f0cb803b5b3849aec2c231a0d85b296b8b81320630c"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_HELICOPTER_011.csv",
+      "bytes": 11828,
+      "sha256": "d1634d143221f7dbc82bdb4b58d89acc0d4af8005e45a692e88b051bff7777c5"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_HELICOPTER_012.csv",
+      "bytes": 11956,
+      "sha256": "695724f9628c5a40ea862fff1f549c329a12e0302500a28a47313d7250ea1dd3"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_HELICOPTER_031.csv",
+      "bytes": 13314,
+      "sha256": "92e1496f44c4e11178c2829c7b9aa003335dccd7eac237c29801b548db3ae789"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_HELICOPTER_039.csv",
+      "bytes": 13006,
+      "sha256": "c986d73d9f726f5a5b6694f8a0bc604759e8904eef4799f18dfd3eadd0b460c0"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_HELICOPTER_041.csv",
+      "bytes": 12353,
+      "sha256": "524ac15d4571a719128d61749000142ab7bad95f1aab7bf4339de78522f06a83"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_HELICOPTER_053.csv",
+      "bytes": 12931,
+      "sha256": "549d98f8cb6783102ef120527afd6a6ad697d52142e132000f779d72ac5f9a5c"
+    },
+    {
+      "path": "w9_C2_rep1/dets/V_HELICOPTER_056.csv",
+      "bytes": 12770,
+      "sha256": "192eb50205d2acfaf2b7a472bad3b869cd89430feb9afa7a71ee3a22f013f638"
+    },
+    {
+      "path": "w9_C2_rep1/env.json",
+      "bytes": 1053,
+      "sha256": "5ca3f32c917e11a8e0d541ae3eed62d6a8287d15f697a0b11278f66e4e660828"
+    },
+    {
+      "path": "w9_C2_rep1/events.sqlite",
+      "bytes": 45056,
+      "sha256": "41dee2475f568e2cb6a68700591b5859e875e06528e5865656d45a40603b432f"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_AIRPLANE_005.jsonl.gz",
+      "bytes": 13024,
+      "sha256": "0cb0b269b220380315602a01c19be9143fa2468080b8b7147e79917bf40cf516"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_AIRPLANE_007.jsonl.gz",
+      "bytes": 11870,
+      "sha256": "923c50b51eb335b103457c57c15575aabe6220011a551f46c3c271c2c436197c"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_AIRPLANE_009.jsonl.gz",
+      "bytes": 10334,
+      "sha256": "3c1d46bc1b8697053636e205af26f88ee9bcccf8eb52bc9505188800137f857f"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_AIRPLANE_027.jsonl.gz",
+      "bytes": 12058,
+      "sha256": "1936c061bb932e2a5a20e61f6c4497339b4a3297c07ac320c9a7e7acbad6cccc"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_AIRPLANE_030.jsonl.gz",
+      "bytes": 11838,
+      "sha256": "55009d17ca8ac7221db91dd3eb80d9a512c8fc8f3e46d6a8ab3f638e35f75d1a"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_AIRPLANE_037.jsonl.gz",
+      "bytes": 12854,
+      "sha256": "3f31402c7dd1803e472c3a9cff6704c295c6ad67526b398c6ff729a0e888760d"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_AIRPLANE_047.jsonl.gz",
+      "bytes": 10702,
+      "sha256": "ab15f2eccf720594ea714baad376d93e39cef37163b9c0c3b76e2df2e710be55"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_AIRPLANE_048.jsonl.gz",
+      "bytes": 12051,
+      "sha256": "5e29ce54714fc7524cb2ee8574e8d8879f83ab82632ccb8e4796c97f365416a4"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_AIRPLANE_052.jsonl.gz",
+      "bytes": 12762,
+      "sha256": "ecf6b0a1bd90e4addfd4df6eae192b098d3da7769464d2cb347068ddafa07b6a"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_BIRD_025.jsonl.gz",
+      "bytes": 12210,
+      "sha256": "5621632c1e8e9dd068d343fa654119d6f133a84ec50b8367b7f219968a256eb0"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_BIRD_037.jsonl.gz",
+      "bytes": 11677,
+      "sha256": "4484871b7bdf5cf205ec7e00ca5dddc2dd0fde01b9ad71cdd903513704410b25"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_BIRD_041.jsonl.gz",
+      "bytes": 15617,
+      "sha256": "d9ac38aef5ca5aa00996b80bf7a81a20e16d6ecc413a503c52d619d6193e86cd"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_DRONE_004.jsonl.gz",
+      "bytes": 11722,
+      "sha256": "59e99d86aa24a10154f23997806848b8c8f29db021aece22bc5e2ab091d8a753"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_DRONE_010.jsonl.gz",
+      "bytes": 11479,
+      "sha256": "f88d16517eed8f23e3d3d6d9ca19085325d801cf3d55a0c181cda8b8cf336433"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_DRONE_011.jsonl.gz",
+      "bytes": 11543,
+      "sha256": "3a29706b8b731c9c1c4be09148074a785850b95afe6551717f5134d9e1e19b5c"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_DRONE_018.jsonl.gz",
+      "bytes": 11686,
+      "sha256": "1f7294543ce18650c1dfbc5dffae777b27afe09cd2d1a6674091b9b1041cb28e"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_DRONE_023.jsonl.gz",
+      "bytes": 11998,
+      "sha256": "7142e117c6a6d85ac655c060538c941af476111e6e310520a305bdcbba2f7b33"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_DRONE_025.jsonl.gz",
+      "bytes": 12168,
+      "sha256": "a92206dfa733a7e658f9fb3fba2c197af872c1eb2fe59446ea87f5b7f5dcf13c"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_DRONE_029.jsonl.gz",
+      "bytes": 11639,
+      "sha256": "c98947f38c667cc8e3d54445b3410e8c470aa6ec834b8ca8156866b1d71f798a"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_DRONE_032.jsonl.gz",
+      "bytes": 12162,
+      "sha256": "0ec952e079e0efefa24c37cc7f3159fb78e93dff3fe7833fdc1ae6d5141ed648"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_DRONE_044.jsonl.gz",
+      "bytes": 12015,
+      "sha256": "0c600d4c0894ece68859f9f0302966e9776ace26c9188b08cf1ae1d55e167e8b"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_DRONE_049.jsonl.gz",
+      "bytes": 11765,
+      "sha256": "64d21edc2ae90ee8e4ed794698d4e36c78fbf492eb795ae2ac1a68a33a0d382e"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_DRONE_060.jsonl.gz",
+      "bytes": 12343,
+      "sha256": "09865b7bc648533fcfe3af8a612901d675556f89b5da96918bbf875bccb2ed74"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_DRONE_077.jsonl.gz",
+      "bytes": 12427,
+      "sha256": "d2955f0faca10138199f352bd1c9712a5f87e3120ae3ac9520037111c75f5a1b"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_DRONE_078.jsonl.gz",
+      "bytes": 10221,
+      "sha256": "8867bc5a4595341dec746f456d0abc6eef7a6703f2972b05db65134778e3ef3a"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_DRONE_080.jsonl.gz",
+      "bytes": 11828,
+      "sha256": "b44c57b046774a77cbabe362bf4d6ee599f2e969114cd86bcca8161bb188d46c"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_DRONE_088.jsonl.gz",
+      "bytes": 11748,
+      "sha256": "bda04a0e3e3b160911b387c2d95c4db6474067f14f0c8da9551ce13a501b7e6d"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_DRONE_095.jsonl.gz",
+      "bytes": 12043,
+      "sha256": "4593e70b7690f34f0abbb34f0807ccd394cbe2cfb3fd877ca0964f54a7c44981"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_DRONE_096.jsonl.gz",
+      "bytes": 11852,
+      "sha256": "132d0bdb588c3c5135332ce4050361ae56b10460b980977a66123b2b13b7d1fa"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_HELICOPTER_005.jsonl.gz",
+      "bytes": 11269,
+      "sha256": "e73e229a9e16c36df3b2154d21ba085d2a681336add0e5cefc5e1a802f3ce73e"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_HELICOPTER_010.jsonl.gz",
+      "bytes": 6964,
+      "sha256": "591ef87b22e8c182e5c335f3ba64dcee19f96e9a34730663836e26f33a07b555"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_HELICOPTER_011.jsonl.gz",
+      "bytes": 11598,
+      "sha256": "e811f2a44fa3b815bf84f0697f9fb3f41c21aead397b73441ef844c564864c43"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_HELICOPTER_012.jsonl.gz",
+      "bytes": 12085,
+      "sha256": "0bf1641c02a15482be9e7ce15d2f3944c2acaa8db6881d8e8e64b31f320a2192"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_HELICOPTER_031.jsonl.gz",
+      "bytes": 11947,
+      "sha256": "fcd3f40531cda05ac69124b235e3bab6e1e4f1110e7bb5cedbc383a890aee7d7"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_HELICOPTER_039.jsonl.gz",
+      "bytes": 12267,
+      "sha256": "b9668ec4d543a7ffd2a33a86ac09e75e7e507cc03f1458ac07c928e053d9e5b9"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_HELICOPTER_041.jsonl.gz",
+      "bytes": 12180,
+      "sha256": "4f72395f00bf105671d2c7ce9c115ea1dc82e135a1083045a20c7f3b0768d8db"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_HELICOPTER_053.jsonl.gz",
+      "bytes": 12426,
+      "sha256": "e2ff4d16efbe9173a1d6767f83bb12ae5240373133c1b93e41ba4691a082dcca"
+    },
+    {
+      "path": "w9_C2_rep1/frames/w9_C2_rep1/V_HELICOPTER_056.jsonl.gz",
+      "bytes": 11918,
+      "sha256": "8bb8ea5763653f5555f3f7659259f9114f0ac624559779c0907b2ad05ef0ddd2"
+    },
+    {
+      "path": "w9_C2_rep1/inputs.json",
+      "bytes": 847,
+      "sha256": "eea5dc2552cf6fc5887563610ff1563158db1e775e18b55bd4be974d9634d026"
+    },
+    {
+      "path": "w9_C2_rep1/latency.csv.gz",
+      "bytes": 147811,
+      "sha256": "0931104386896a6d79923989a67de5a8e001b826512475c89b656415caf95a5e"
+    },
+    {
+      "path": "w9_C2_rep1/meta.csv",
+      "bytes": 1713,
+      "sha256": "2e813fb54e9c4c99128124add7529cc69e28f14d3914f8c9e67c54ac37959111"
+    },
+    {
+      "path": "w9_C2_rep1/stage_status.json",
+      "bytes": 573,
+      "sha256": "5e2724d6224a7c3a5999002c16f7d346c90985f245f8e77b159b0864f399a6d8"
+    },
+    {
+      "path": "w9_C2_rep1/summary.json",
+      "bytes": 9945,
+      "sha256": "7369abc427f77bde7ff83d5ea1ee626ddfca8f98680e04bd65a62f98c4ce309c"
+    },
+    {
+      "path": "w9_C2_rep1/timing.csv",
+      "bytes": 2073,
+      "sha256": "aac05bb3d2ab90b00b3f27286d05244c50b8bcf6563d2f2ef35577e5d332a623"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_AIRPLANE_005.csv",
+      "bytes": 13924,
+      "sha256": "6a90270bbe300cd715527e079c8cad06bc4bbd46f61d318da9883f581083a024"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_AIRPLANE_007.csv",
+      "bytes": 12101,
+      "sha256": "3d6cf023a6fd1f5b7252def6cd26255429cc3b7283de7e3c338ae4e42c108db8"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_AIRPLANE_009.csv",
+      "bytes": 13401,
+      "sha256": "2d114a59a9224c5b254488c5c31cddd2ac26967d7e4c0325a9e60280b1e395cb"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_AIRPLANE_027.csv",
+      "bytes": 13209,
+      "sha256": "de471301db4c745423a911b223f5c3491360593e796f562739c0823031e6eb22"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_AIRPLANE_030.csv",
+      "bytes": 13181,
+      "sha256": "70a38d1c27b5602b55e85421b5224af2b8f0be3693eeea6040f2e052e4c74992"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_AIRPLANE_037.csv",
+      "bytes": 13127,
+      "sha256": "d4742a93636d2a3e500d72b235bb6aeae4f04117f592965a8b70eba7d66f7a1f"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_AIRPLANE_047.csv",
+      "bytes": 8625,
+      "sha256": "debe5c4d50fa2a4e5a892353858c008205090567bc4fac2ec03d9766583b8aec"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_AIRPLANE_048.csv",
+      "bytes": 12457,
+      "sha256": "7cac79a34717d3e3eda3bcd450614912b10cedd1b1184323ebac85e42145cc58"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_AIRPLANE_052.csv",
+      "bytes": 12912,
+      "sha256": "c70765df1f033d9e4d39f6dcf3db5a81f54e5ff71feb61d3b41cdb24bcf21ddd"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_BIRD_025.csv",
+      "bytes": 13141,
+      "sha256": "ba5c9dff4746982f222309a525bee780ad4889333d4962a6c6648001c1deea0e"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_BIRD_037.csv",
+      "bytes": 13447,
+      "sha256": "6f0268a12021c0da07f27e459a4f5c53d6bce7bb34139b743a00c36fe9946972"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_BIRD_041.csv",
+      "bytes": 20889,
+      "sha256": "d44bb3e25c72d426a99ba768b1bf4c71c1401488423ae3bbd7271d6d0e1a9431"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_DRONE_004.csv",
+      "bytes": 12450,
+      "sha256": "42e9376dd90e73c25b89ec765f53846f0d8c4bd4bdbf045398ec8ff566240097"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_DRONE_010.csv",
+      "bytes": 11564,
+      "sha256": "fe1bbdb8839a746d063dd2c81600d9833d97bec065f03f56f7facd3eea1a6f90"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_DRONE_011.csv",
+      "bytes": 12363,
+      "sha256": "b9c8ee15b153b8e31d217817506ee7a2978132d0f39f25c41f3af65690626902"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_DRONE_018.csv",
+      "bytes": 12434,
+      "sha256": "3279190c4e6c89be7584bbe96cdef78741d6b645e756b4334db9f211e18a7f98"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_DRONE_023.csv",
+      "bytes": 12397,
+      "sha256": "056d515e26eb83d946fa1f216cfdf5e7bd85fefcb98990793424934b17533d00"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_DRONE_025.csv",
+      "bytes": 12419,
+      "sha256": "178c6d93e68d836646e26ffe12c569865467f0cf0ee6b816cdaacb5ca03d30e2"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_DRONE_029.csv",
+      "bytes": 12387,
+      "sha256": "cf422e86a1dd73f3f7def48a21db4bfae7d1150a1c19576b7a9a1ec49b81ce7b"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_DRONE_032.csv",
+      "bytes": 12891,
+      "sha256": "88389cb39827cb597ff39ef05f61721924220e866e5f12768951e93725fe2cb3"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_DRONE_044.csv",
+      "bytes": 12867,
+      "sha256": "1da396312d5b5f355a2707d46f7261891be9a2576665e789dc9f240be96d68c3"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_DRONE_049.csv",
+      "bytes": 12632,
+      "sha256": "db972913c58e45db92ad8d7fc418f1d80472bd0a49acd63a3300156c18238374"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_DRONE_060.csv",
+      "bytes": 12574,
+      "sha256": "3dd287c5eae220259f14dd9b67080be610e74dbcb4a92a572dc94c9cb463a958"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_DRONE_077.csv",
+      "bytes": 12862,
+      "sha256": "817b46f7c706273a7540d592260a7a8febf84589e86020db5ef10ef3e457209f"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_DRONE_078.csv",
+      "bytes": 8069,
+      "sha256": "a7aadcfbf9789c89995efd0572938ea606deb4ed062f3bd010c76b0123bb12d9"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_DRONE_080.csv",
+      "bytes": 12106,
+      "sha256": "168ede53b1d5ac2069d3e3f63957cd29a4cfac17e925be70df211eb4712b808a"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_DRONE_088.csv",
+      "bytes": 13031,
+      "sha256": "02c77c15692c2f38e0b0cf57c49cfab99eef16a6fe9c9bc53a90cbc922e3201a"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_DRONE_095.csv",
+      "bytes": 12127,
+      "sha256": "e2acd8a5c3b0e31ae1ac38d31d5945298ee44c905cc258abb5f7cb11bfb48c13"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_DRONE_096.csv",
+      "bytes": 10329,
+      "sha256": "a4be701f42abfb6fcd5af31094b556f347c7ff144ceb4b9ffdcfc3b34f6db1c3"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_HELICOPTER_005.csv",
+      "bytes": 12794,
+      "sha256": "6fb9952f6e597bc97156f021a969ac0d11bf7744fc664e04b676dbe11c81ce0d"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_HELICOPTER_010.csv",
+      "bytes": 2181,
+      "sha256": "1b5d376cdc915f0e516318d30547d02e02fdee2126543745a93997f603f23628"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_HELICOPTER_011.csv",
+      "bytes": 12731,
+      "sha256": "975a2e9271bab777d978e03a4b5a69237f379d5f6049deaf6c7b536f546e1dda"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_HELICOPTER_012.csv",
+      "bytes": 12923,
+      "sha256": "f869917d4a3f629890e6273a673eae6e966596600dc4d71c544b7dca8874e016"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_HELICOPTER_031.csv",
+      "bytes": 12553,
+      "sha256": "e7003fd73841d797428a3864f2bce79acb684cf923b33a85f316f7bc6f7da4ca"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_HELICOPTER_039.csv",
+      "bytes": 12964,
+      "sha256": "5387fbd17fee3d34d1f2a86085dfa4ae026ee10e2b87d62ebacf2a92e27db89e"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_HELICOPTER_041.csv",
+      "bytes": 13173,
+      "sha256": "5f644b3bbd664aa1d4b988bfa3c63cad4d32023a60630ee07c0736760201bcab"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_HELICOPTER_053.csv",
+      "bytes": 13791,
+      "sha256": "0df6d7d28b76fd107a8334ed542af4fb004f8471b9fc638fa21fe3938d7e5bc0"
+    },
+    {
+      "path": "w9_C2_rep1/tracks/tracker_bytetrack_e1/V_HELICOPTER_056.csv",
+      "bytes": 13416,
+      "sha256": "b4569e22d019f7e55d5fc5f9d00571575fd0f6acbadfcd1309d737e4aebf8b03"
+    },
+    {
+      "path": "w9_C2_rep1_evidence.zip",
+      "bytes": 963000,
+      "sha256": "b547ab7737fc4ad9a1f7e04dd637af1f526bc3ea2c7e9e56a39effc31c86ed60"
+    },
+    {
+      "path": "w9_C2_rep2/env.json",
+      "bytes": 1054,
+      "sha256": "7278634a4347308684dbe2bd95d73d563884577ae56b428c5ca633e797aa9c91"
+    },
+    {
+      "path": "w9_C2_rep2/inputs.json",
+      "bytes": 847,
+      "sha256": "a3c65b2beb88c13a7dd8741fab74e0e83b8a1e95d5e920c408211fba60e63db8"
+    },
+    {
+      "path": "w9_C2_rep2/latency.csv.gz",
+      "bytes": 145678,
+      "sha256": "94383399179dbb68ed002ead1dc23fbe022c514a3e00ff571e282716d0301c65"
+    },
+    {
+      "path": "w9_C2_rep2/stage_status.json",
+      "bytes": 498,
+      "sha256": "df01ded76a0f4fc27ff1ea16df5eede527bf500294c2b259979c4e8c2705af0e"
+    },
+    {
+      "path": "w9_C2_rep2/summary.json",
+      "bytes": 9904,
+      "sha256": "da859a44a187bc24e9fa76fc13049cee603efda6cdfcc8b885f2e2667b473d5b"
+    },
+    {
+      "path": "w9_C2_rep2_evidence.zip",
+      "bytes": 148897,
+      "sha256": "8b62c91823c8db22f149a96c60e729f3d6f0e9ecdd660e19387b04ac1c90d87e"
+    },
+    {
+      "path": "w9_C2_rep3/env.json",
+      "bytes": 1054,
+      "sha256": "3fcb4c63552971c89727da9359d70ed9923b4fba6cb277b3ee601355205d6300"
+    },
+    {
+      "path": "w9_C2_rep3/inputs.json",
+      "bytes": 847,
+      "sha256": "4f00694b7b92007fe63f1df41ebe1a5ee9b7f474e4eaf4998df9b5a68d79b8f0"
+    },
+    {
+      "path": "w9_C2_rep3/latency.csv.gz",
+      "bytes": 145896,
+      "sha256": "98ef8c9f1f29bdc0a8440a26ba8a89541a2fe91c9651f5d894c02bdaba6aee68"
+    },
+    {
+      "path": "w9_C2_rep3/stage_status.json",
+      "bytes": 498,
+      "sha256": "ad5bff5bed898dc96b5447a9016e03fa117ed8068448cb300a88a99689609e5b"
+    },
+    {
+      "path": "w9_C2_rep3/summary.json",
+      "bytes": 9906,
+      "sha256": "485d8524f50fae2f5e7db24b1a16cfd8fb7f88359ca3e470e3b85c48401a1d1d"
+    },
+    {
+      "path": "w9_C2_rep3_evidence.zip",
+      "bytes": 149119,
+      "sha256": "013738549e488bab53cb48e9110cfba01b14e5940f2c0ab47ad37078ed235a4a"
+    },
+    {
+      "path": "w9_run18_all.zip",
+      "bytes": 1261404,
+      "sha256": "00ccca85ccbc9089321a48adfec6d1c779c05a52b4935317505c6104978b65d3"
+    }
+  ]
+}
