@@ -26,40 +26,26 @@ Hệ thống xử lý video theo từng frame, theo thứ tự: giải mã, phá
 | Tình huống lỗi/biên | Hành vi hoặc fallback đã xác minh |
 |---|---|
 | Không mở được video hoặc lệch số frame | `read_frames` báo lỗi nếu không mở được video. Benchmark cố định so số frame đọc với metadata và đánh dấu run thất bại nếu lệch; không dùng run thiếu frame như kết quả hợp lệ. |
-| SHA weights/tools không khớp | Job dừng nếu SHA-256 weights khác giá trị kỳ vọng. GitHub Actions cũng dừng nếu commit checkout không khớp `--commit`; tools được dựng từ commit đó. Không thấy kiểm tra SHA-256 độc lập cho gói tools trên Kaggle, nên không khẳng định có cổng riêng như vậy. |
+| SHA weights/tools không khớp | Notebook run 18 dừng nếu SHA weights không khớp; nó cũng kiểm `TOOLS_MANIFEST.json` có commit đúng, `dirty_worktree=false` và SHA-256 từng tệp tools đúng manifest. Commit hoặc hash tools lệch đều làm kiểm tra thất bại trước khi chạy job. |
 | TensorRT export thất bại | Ghi `export.status=FAILED` và thông báo lỗi vào `stage_status.json`, rồi kết thúc job với mã 2; W9_PLAN yêu cầu ghi log, đánh dấu “không khả thi” và không thử cấu hình thay thế. Run 18 lần đầu gặp lỗi do bộ đo ghi `best.onnx` vào `/kaggle/input` chỉ đọc; theo cập nhật được báo cùng PR #141, đường dẫn xuất đã được sửa, nhưng chưa có số đo C2 sau sửa. |
-| EOS khi còn event mở | `R1Engine.close()` đặt `end=last_in` và trả chuyển trạng thái `close`; sau vòng lặp, `run_source` lưu các event đã đóng vào SQLite. Không có frame JSONL mới để mang chuyển trạng thái EOS này. |
+| EOS khi còn event mở | Theo `e1pipe` sau #137, nếu đã biết số frame và xử lý tới frame cuối thì `close` nằm trong `FrameResult` cuối. Nếu video kết thúc sớm hoặc số frame không biết trước, pipeline ghi thêm một dòng `{"type":"eos",...}` có chuyển trạng thái `close`. |
 | Frame không có detection | Detector trả mảng 0×6; pipeline vẫn gọi tracker và R1 cho frame đó, ghi frame result với dữ liệu track mà tracker trả về và tiếp tục xử lý. |
 
 `FrameResult` tổng hợp dưới đây chỉ là **ví dụ tổng hợp**, không phải số đo hay dữ liệu của một run:
 
 ```json
 {
-  "run_id": "synthetic-run",
-  "source_id": "synthetic-video",
-  "model_version": "synthetic-sha256",
-  "frame_index": 42,
-  "source_time_ms": 1400.0,
-  "tracks": [
-    {"id": 7, "cls": 2, "cls_name": "Drone", "conf": 0.91, "box": [300.0, 160.0, 360.0, 220.0]}
-  ],
-  "events": [
-    {"event_id": "synthetic-run:synthetic-video:0", "transition": "open"}
-  ],
-  "stage_latency_ms": {
-    "decode": 1.2,
-    "detect": 12.4,
-    "track": 0.5,
-    "alert": 0.2,
-    "persist": 0.8,
-    "total": 15.1
-  }
+  "run_id": "rt", "source_id": "V_SYN", "frame_index": 20, "source_time_ms": 667,
+  "tracks": [{"id": 1, "cls": 2, "cls_name": "Drone", "conf": 0.8, "box": [89.96, 240.0, 109.96, 260.0]}],
+  "events": [{"event_id": "rt:V_SYN:0", "transition": "open"}],
+  "stage_latency_ms": {"decode": 0.0, "detect": 0.004, "track": 0.2, "alert": 0.016, "persist": 0.018, "total": 0.237},
+  "latency_scope": "pre_write"
 }
 ```
 
-Artifacts theo dõi run benchmark gồm `stage_status.json`, `env.json` và `latency.csv.gz` (CSV độ trễ được nén). `config_audit` là bảng audit append-only trong bundle SQLite W8, đọc được qua `GET /config_audit`; đây không phải tệp đầu ra riêng của job benchmark W9.
+Mẫu này là dòng tổng hợp của test `test_synthetic_drone_enters_roi`, không phải dữ liệu run thực. Artifacts theo dõi run benchmark gồm `stage_status.json`, `env.json` và `latency.csv` (được đóng gói nén thành `latency.csv.gz`). `config_audit` là bảng audit append-only trong bundle SQLite W8, đọc được qua `GET /config_audit`; đây không phải tệp đầu ra riêng của job benchmark W9.
 
-Trong implementation hiện tại, các giá trị `stage_latency_ms` được chụp trước `Sink.write_line`; `latency.csv.gz` được dựng từ cùng các giá trị đó nên cũng chưa tính thời gian ghi dòng JSONL nén. Đây khác với mô tả trong W9_PLAN mục B rằng `total` tính đến sau khi ghi xong. Vì vậy `total`/`persist` hiện chưa bao gồm thao tác ghi dòng JSONL; cần giữ rõ khác biệt này khi diễn giải p95 và NFR1, không mô tả chúng như số đo sau khi ghi.
+`stage_latency_ms` trong mỗi FrameResult có `latency_scope: "pre_write"`: `persist` và `total` tính đến lúc dòng được serialize, trước khi chính dòng đó được ghi vào gzip. Riêng benchmark `latency.csv` được tạo từ phép đo sau `Sink.write_line`; `persist` và `total` được tính lại đến sau khi ghi xong dòng, theo W9_PLAN mục B. `tests/test_w9_e1pipe.py` kiểm tra scope `pre_write` và xác nhận `total` benchmark không nhỏ hơn giá trị trong FrameResult cùng frame. Vì vậy p95 benchmark/NFR1 lấy từ CSV, không lấy trực tiếp `stage_latency_ms` của FrameResult.
 
 W9 so sánh bốn cấu hình: C0 (PyTorch fp32), C1 (PyTorch fp16), C2 (TensorRT fp16) và CPU (PyTorch fp32). C0 là mốc đối chiếu; CPU chỉ dùng để báo cáo. Cấu hình vận hành chỉ được chọn nếu đạt ngưỡng hiệu năng đã định trước và không vượt các giới hạn suy giảm độ chính xác trong W9_PLAN. Nếu C2 cần đệm đầu vào 640×640 khác với PyTorch, khác biệt tiền xử lý này được ghi nhận; vì vậy chênh lệch C2–C1 không được diễn giải như tác động thuần túy của runtime.
 
@@ -67,12 +53,16 @@ W9 so sánh bốn cấu hình: C0 (PyTorch fp32), C1 (PyTorch fp16), C2 (TensorR
 
 ### Quy tắc R0/R1 của v0.8, ROI và nguồn ngưỡng
 
-| Luật | Tóm tắt |
-|---|---|
-| R0 (detector-only) | Mỗi frame có detection lớp Drone, confidence đạt `conf_min` và điểm tâm hộp nằm trong ROI được tính là frame kích hoạt; các đoạn được gộp theo `merge_gap_s`. Không dùng track. |
-| R1 (theo track) | Bằng chứng Drone đạt `confirm_k=3` trong `confirm_n=5` frame gần nhất, lớp Drone chiếm đa số của track, confidence đạt ngưỡng và điểm tâm ở trong ROI liên tục đủ `dwell_s=0.3`; event đóng sau `end_timeout_s=1.0` thiếu bằng chứng trong ROI. |
+| Thành phần | R0: chỉ dùng detector (mốc) | R1: theo track (đề xuất) |
+|---|---|---|
+| Bằng chứng | Detection lớp Drone, confidence ≥ 0,25, tâm hộp trong ROI | Dòng track lớp Drone, confidence ≥ 0,25 |
+| Xác nhận | Không | ≥ 3 bằng chứng trong 5 frame gần nhất; lớp xuất hiện nhiều nhất của track phải là Drone (đồng hạng thì chưa đạt) |
+| Bắt đầu cảnh báo | Ngay frame có bằng chứng | Track đã xác nhận có bằng chứng trong ROI liên tục ≥ 0,3 giây |
+| Kết thúc | Gộp các đoạn cách nhau ≤ 1 giây | Không còn bằng chứng trong ROI quá 1 giây |
+| Chống lặp | Gộp theo thời gian | Track mới chồng hộp IoU ≥ 0,3 với cảnh báo đang mở, hoặc quay lại trong 1 giây, được gắn vào cùng cảnh báo (track trùng, đổi ID) |
+| Quỹ đạo | Không | Ghi `vao_vung` hoặc `xuat_hien_trong_vung`; cảnh báo sớm bằng ngoại suy tâm hộp 1 giây tới (thăm dò) |
 
-ROI chính là `center_hex`, lục giác giữa khung trong `configs/roi_w6.yaml`; phép thử dùng điểm `center` của hộp. Đây là ROI mô phỏng, không phải vùng cấm bay pháp lý. `conf_min=0.25` có nguồn là `results/W05/seed_comparison.csv` (`conf_op`); `confirm_k`, `confirm_n`, `dwell_s` và các giá trị khởi điểm luật cảnh báo lấy từ Thuyết minh mục 10.2, theo chú thích trong `configs/alert_e1.yaml`. Ngưỡng phát hiện suy luận 0.1 và NMS cùng lớp IoU 0.5 là cấu hình W9_PLAN mục B (V2, mục 5.3.8), tách biệt với `conf_min` của luật cảnh báo.
+Bảng trên giữ nguyên các hàng và giá trị của bảng `t_alert_rules` trong bản v0.8. ROI là đa giác trong tọa độ ảnh chuẩn hóa, dùng chung cho mọi video vì Svanström không có cấu hình camera hay vùng thật: `full_frame` (kiểm tra logic), `center_hex` (ROI chính, lục giác giữa khung) và `lower_half`. Điểm đại diện chính là tâm hộp; phép hộp giao đa giác chỉ dùng phân tích độ nhạy. Đây là vùng mô phỏng, không phải vùng cấm bay pháp lý. Các ngưỡng `conf_min=0.25` lấy từ `results/W05/seed_comparison.csv` (`conf_op`); ngưỡng 3/5, 0,3 giây và 1 giây là giá trị khởi điểm trong Thuyết minh mục 10.2, không hiệu chỉnh trên dữ liệu đánh giá W6. Ngưỡng phát hiện suy luận 0,1 và NMS cùng lớp IoU 0,5 là cấu hình W9_PLAN mục B (V2, mục 5.3.8), tách biệt với `conf_min` của luật cảnh báo.
 
 ## 4.4. Bảo mật, quyền riêng tư và rủi ro
 
@@ -98,7 +88,7 @@ Manifest, SHA-256 của video/weights/cấu hình và commit được dùng đ�
 | Bundle và video phát lại | Client cục bộ cố truy cập media tùy ý hoặc gọi API từ máy khác. | API bind `127.0.0.1`; media chỉ tra theo `run_id`/`source_id` trong bundle, không nhận path/URL tùy ý. | Không có xác thực hay phân quyền; tiến trình hoặc người dùng cùng máy vẫn có thể gọi API. |
 | Sự kiện và nhật ký review/audit | Sửa hoặc xóa lịch sử sự kiện để che dấu thao tác. | SQLite tạo trigger từ chối `UPDATE`/`DELETE` trên `events`, `event_reviews`, `config_audit`; review được ghi thêm thay vì sửa event. | Trigger không bảo vệ khỏi người có quyền ghi trực tiếp vào tệp DB hoặc thay schema/tệp. |
 | Nội dung dashboard | Dữ liệu bundle/API độc hại được diễn giải như HTML/script. | Dashboard dựng text bằng `textContent`/text node, không ghép nội dung API thành HTML tại các đường hiển thị đã kiểm tra. | Đây không phải xác nhận bảo mật toàn bộ trình duyệt hay mọi mã frontend trong tương lai. |
-| Kaggle API credentials | Token bị lộ qua log, artifact hoặc xử lý ngoài ý muốn. | Workflow đưa `KAGGLE_USERNAME`/`KAGGLE_KEY` vào môi trường riêng của bước chạy Kaggle; quyền workflow khai báo `contents: read`. | Mã chạy trong bước đó có thể sử dụng secrets; an toàn phụ thuộc vào quyền truy cập và tính tin cậy của workflow/commit được dispatch. |
+| Kaggle API credentials | Token bị lộ qua log, artifact hoặc xử lý ngoài ý muốn. | Workflow chỉ đưa `K_TOKEN`, `K_USER`, `K_KEY` (tương ứng secrets `KAGGLE`, `KAGGLE_USERNAME`, `KAGGLE_KEY`) vào bước “Nạp khóa Kaggle”; `actions_kaggle_auth.py` không in giá trị và ghi credential vào tệp trong `~/.kaggle` với quyền `600`. Bước chạy Kaggle chỉ nhận tham số job/commit/config/tag, không nhận trực tiếp các secret env này. | Tệp credential vẫn tồn tại trên runner cho các bước sau sử dụng; mã workflow trên runner có thể dùng credential. Quyền truy cập GitHub/Kaggle bên ngoài repository chưa được xác minh. |
 | Dataset và job Kaggle | Job chạy ngoài ý muốn hoặc đưa dữ liệu nhạy cảm qua runner ngoài Kaggle. | ADR-0016 và workflow chỉ cho phép `workflow_dispatch`; job dùng dataset Kaggle có sẵn, không chuyển video/dataset qua Actions. | Người có quyền vẫn có thể dispatch job; cấu hình quyền người dùng GitHub/Kaggle nằm ngoài repository. |
 
 ### Checklist bảo mật và quyền riêng tư
@@ -110,7 +100,7 @@ Manifest, SHA-256 của video/weights/cấu hình và commit được dùng đ�
 | API phát lại chỉ dùng loopback | Yes | `scripts/pipeline/api.py` khởi chạy Uvicorn trên `127.0.0.1`; API chưa có xác thực. |
 | Trigger bảo vệ bảng sự kiện/audit khỏi UPDATE/DELETE | Yes | `scripts/pipeline/e1store.py` tạo trigger SQLite cho `events`, `event_reviews`, `config_audit`; test `tests/test_w8_pipeline.py` thử các thao tác bị chặn. |
 | Dashboard hiển thị text không diễn giải nội dung dữ liệu thành HTML | Yes | `scripts/pipeline/static/index.html` dùng `textContent` trong helper `el` và khi cập nhật giao diện; phạm vi xác minh là các vị trí đã kiểm tra. |
-| Kaggle secrets không đưa vào artifact và chỉ cấp cho bước chạy cần thiết | Yes, theo cấu hình | `.github/workflows/kaggle_run.yml` truyền secrets vào env của bước “Chạy job trên Kaggle”; repository không xác minh quyền GitHub/Kaggle bên ngoài. |
+| Kaggle secrets chỉ cấp trực tiếp cho bước nạp credential | Yes, theo cấu hình | `.github/workflows/kaggle_run.yml` truyền `K_TOKEN`/`K_USER`/`K_KEY` vào bước “Nạp khóa Kaggle”; `actions_kaggle_auth.py` mask giá trị và ghi file credential mode 600. Bước job kế tiếp không nhận các biến secret, nhưng sử dụng file credential trên runner. |
 | Workflow Kaggle chỉ chạy thủ công | Yes | `.github/workflows/kaggle_run.yml` chỉ khai báo `workflow_dispatch`; ADR-0016 cũng cấm lịch/push trigger. |
 
 Các biện pháp trên giảm rủi ro cho quy trình thí nghiệm và demo cục bộ, nhưng không biến hệ thống thành dịch vụ an ninh vận hành. Kết quả cảnh báo cần có người xem xét; các ngưỡng, dữ liệu và cấu hình được đánh giá trong W9 chưa chứng minh độ an toàn cho quyết định tự động hoặc môi trường thực tế. Rủi ro đo lường/hiệu năng được trình bày ở mục 4.3 và W9_PLAN, không xếp vào mô hình đe dọa.
