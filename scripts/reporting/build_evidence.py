@@ -667,7 +667,7 @@ def w09(w: Week):
     tot = {k: sum(int(float(r[k])) for r in pc) for k in ("frames", "r1_false_alerts", "r0_false_alerts", "frames_drone_det_conf025")}
     w.check("run19_per_clip_sums_match_summary", tot == {"frames": ns["frames"], "r1_false_alerts": ns["R1"]["false_alerts"], "r0_false_alerts": ns["R0"]["false_alerts"],
             "frames_drone_det_conf025": ns["frames_drone_det_conf025"]}, json.dumps(tot), f"{N}/per_clip.csv")
-    w.check("run19_poisson_upper_reproduced", all(abs(round(ea.poisson_upper(ns[r]["false_alerts"]) / ns["hours"], 2) - ns[r]["per_hour_upper95"]) < 0.05 for r in ("R0", "R1")),
+    w.check("run19_poisson_upper_reproduced", all(abs(round(ea.poisson_upper(ns[r]["false_alerts"]) / (ns["frames"] / 30 / 3600), 2) - ns[r]["per_hour_upper95"]) < 0.01 for r in ("R0", "R1")),
             f"R1 <= {ns['R1']['per_hour_upper95']}/h, R0 <= {ns['R0']['per_hour_upper95']}/h", f"{N}/neg_summary.json")
     w.check("run19_no_media_in_repo", not [p for p in (ROOT / "results/W09/kaggle_run_19").rglob("*") if p.suffix.lower() in (".mp4", ".jpg", ".png", ".webm")],
             "ADR-0014: chi so tong hop va ID clip", "results/W09/kaggle_run_19/")

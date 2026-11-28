@@ -1,0 +1,978 @@
+{
+  "week": "W09",
+  "generated_by": "scripts/reporting/build_evidence.py",
+  "repo_commit": "7c95a139a0d2e4cd26782ecfbfe4583b47590d5b",
+  "summary": {
+    "total": 161,
+    "passed": 161,
+    "failed": 0
+  },
+  "checks": [
+    {
+      "check": "run18_C0_all_stages_ok",
+      "status": "PASS",
+      "detail": "{\"C0_rep1\": [], \"C0_rep2\": [], \"C0_rep3\": []}",
+      "source": "results/W09/kaggle_run_18/w9_C0_rep1"
+    },
+    {
+      "check": "run18_C1_all_stages_ok",
+      "status": "PASS",
+      "detail": "{\"C1_rep1\": [], \"C1_rep2\": [], \"C1_rep3\": []}",
+      "source": "results/W09/kaggle_run_18/w9_C1_rep1"
+    },
+    {
+      "check": "run18_CPU_all_stages_ok",
+      "status": "PASS",
+      "detail": "{\"CPU_rep1\": []}",
+      "source": "results/W09/kaggle_run_18/w9_CPU_rep1"
+    },
+    {
+      "check": "gate_b_reproduced_pass",
+      "status": "PASS",
+      "detail": "11474/11474 dong, su kien 25/25",
+      "source": "results/W09/benchmark/benchmark_summary.json"
+    },
+    {
+      "check": "timing_reproduced_from_summaries",
+      "status": "PASS",
+      "detail": "{\"C0\": 89.313, \"C1\": 78.514, \"CPU\": 12.978}",
+      "source": "results/W09/benchmark/benchmark_summary.json"
+    },
+    {
+      "check": "rule_c_reproduced",
+      "status": "PASS",
+      "detail": "chon C0: dat (1)+(2): ['C0', 'C1']; FPS cao nhat C0; trong 5%: ['C0'] -> chon don gian nhat C0",
+      "source": "results/W09/benchmark/benchmark_summary.json"
+    },
+    {
+      "check": "stability_60min_rss_ratio_le_1_10",
+      "status": "PASS",
+      "detail": "60.0 phut, RSS phut 60/phut 10 = 1.0563, loi None",
+      "source": "results/W09/kaggle_run_20/w9_C0_rep1_stab/summary.json"
+    },
+    {
+      "check": "stability_in_benchmark_summary_matches_run20",
+      "status": "PASS",
+      "detail": "benchmark_summary.stability = 1.0563",
+      "source": "results/W09/benchmark/benchmark_summary.json"
+    },
+    {
+      "check": "rss_growth_check_reproduced",
+      "status": "PASS",
+      "detail": "RSS +104.1 MB, list latency ~82.3 MB (0.79)",
+      "source": "results/W09/benchmark/rss_growth_check.json"
+    },
+    {
+      "check": "run19_all_stages_ok_483_clips",
+      "status": "PASS",
+      "detail": "{\"normalize\": \"OK\", \"measure\": \"OK\", \"summary\": \"OK\"}",
+      "source": "results/W09/kaggle_run_19/w9_neg_fbdsv/stage_status.json"
+    },
+    {
+      "check": "run19_per_clip_sums_match_summary",
+      "status": "PASS",
+      "detail": "{\"frames\": 34438, \"r1_false_alerts\": 44, \"r0_false_alerts\": 142, \"frames_drone_det_conf025\": 9279}",
+      "source": "results/W09/kaggle_run_19/w9_neg_fbdsv/per_clip.csv"
+    },
+    {
+      "check": "run19_poisson_upper_reproduced",
+      "status": "PASS",
+      "detail": "R1 <= 177.42/h, R0 <= 511.88/h",
+      "source": "results/W09/kaggle_run_19/w9_neg_fbdsv/neg_summary.json"
+    },
+    {
+      "check": "run19_no_media_in_repo",
+      "status": "PASS",
+      "detail": "ADR-0014: chi so tong hop va ID clip",
+      "source": "results/W09/kaggle_run_19/"
+    },
+    {
+      "check": "adr0011_trigger_recorded",
+      "status": "PASS",
+      "detail": "{\"r1_false_alert_ge1\": true, \"drone_det_frames_ge_1pct\": true}",
+      "source": "results/W09/kaggle_run_19/w9_neg_fbdsv/neg_summary.json"
+    },
+    {
+      "check": "commons_candidates_authors_ok_licenses_allowed",
+      "status": "PASS",
+      "detail": "83 clip, 133.3 phut",
+      "source": "data/manifests/neg_commons_candidates.csv"
+    },
+    {
+      "check": "adr-0014_accepted",
+      "status": "PASS",
+      "detail": "Accepted",
+      "source": "docs/decisions/ADR-0014-fbd-sv-evaluation-only.md"
+    },
+    {
+      "check": "adr-0016_accepted",
+      "status": "PASS",
+      "detail": "Accepted",
+      "source": "docs/decisions/ADR-0016-kaggle-github-actions.md"
+    },
+    {
+      "check": "pytest::tests.test_alert::test_polygon_geometry",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_alert::test_gt_events_dwell_and_merge",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_alert::test_r0_detector_only",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_alert::test_r1_enter_roi_after_dwell",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_alert::test_r1_track_appears_inside_roi",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_alert::test_r1_needs_confirmation_and_drone_majority",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_alert::test_r1_class_tie_does_not_count_as_drone_majority",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_alert::test_r1_short_detection_gaps_restart_dwell",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_alert::test_r1_duplicate_tracks_and_id_change_one_event",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_alert::test_r1_short_loss_keeps_event_long_absence_splits",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_alert::test_roi_boundary_center_vs_box_rules",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_alert::test_r1_prewarning_from_trajectory",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_alert::test_match_events_counts",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_alert::test_evaluate_end_to_end",
+      "status": "PASS",
+      "detail": "0.015s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_alert::test_evaluate_rejects_wrong_weights_and_missing_stage",
+      "status": "PASS",
+      "detail": "0.002s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_alert::test_evaluate_rejects_non_val_split_even_if_flag_says_not_test",
+      "status": "PASS",
+      "detail": "0.003s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_alert::test_decide_rules",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_alert::test_alert_demo_job",
+      "status": "PASS",
+      "detail": "0.450s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_alert::test_match_events_one_to_one_is_maximum_matching",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_dataset_coverage::test_coverage_counts_only_modality_and_non_drone_minutes",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_dataset_coverage::test_confusion_counts_predicted_as_drone",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_dataset_coverage::test_val_negative_frames_causes",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_github_structure::test_issue_title_one_student_one_assignee",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_github_structure::test_pr_reviewer_must_be_other_member",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_github_structure::test_evidence_folder",
+      "status": "PASS",
+      "detail": "0.002s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_github_structure::test_evidence_manifest_must_cover_files",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_github_structure::test_tag_weeks_follow_de_cuong",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_github_structure::test_api_via_gh_cli_pages_with_page_param",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_to_box_valid_and_absent[w3_export_yolo]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_to_box_valid_and_absent[w3_review_sheets]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_to_box_malformed_is_not_absent[w3_export_yolo-bad0]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_to_box_malformed_is_not_absent[w3_export_yolo-bad1]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_to_box_malformed_is_not_absent[w3_review_sheets-bad0]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_to_box_malformed_is_not_absent[w3_review_sheets-bad1]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_review_sheet_rejects_nonpositive_size",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_label_kind",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_iou_basic",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_valid",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[2 0.5 0.5 0.1]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[7 0.5 0.5 0.1 0.1]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[2 1.5 0.5 0.1 0.1]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[2 0.5 0.5 0 0.1]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[2.0 0.5 0.5 0.1 0.1]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[x 0.5 0.5 0.1 0.1]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_parse_label_line_rejects[2 nan 0.5 0.1 0.1]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_load_preds_detects_one_based",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_review_agreement_kappa",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_comparison_health_detects_nan_and_noise",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_label_utils::test_seed_rule_decisions",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_negframes_export::test_export_end_to_end",
+      "status": "PASS",
+      "detail": "0.014s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_negframes_export::test_export_rejects_nonempty_label",
+      "status": "PASS",
+      "detail": "0.005s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_negframes_export::test_parse_boxes_mismatch",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_offset_methods::test_sign_test_p",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_offset_methods::test_offset_check_end_to_end[1-offset1]",
+      "status": "PASS",
+      "detail": "0.008s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_offset_methods::test_offset_check_end_to_end[0-offset0]",
+      "status": "PASS",
+      "detail": "0.005s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_offset_methods::test_score_cvat_gold_detects_offset1",
+      "status": "PASS",
+      "detail": "0.002s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_offset_methods::test_score_cvat_gold_center_metric_ignores_tight_boxes",
+      "status": "PASS",
+      "detail": "0.002s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_tracking::test_id_switch_fragment_and_coverage",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_tracking::test_switch_back_counts_twice_and_missing_gt_frames",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_tracking::test_iou_threshold_and_class_consistency",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_tracking::test_summarize_pools_counts",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_tracking::test_track_job_end_to_end",
+      "status": "PASS",
+      "detail": "1.311s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_tracking::test_track_job_rejects_wrong_weights",
+      "status": "PASS",
+      "detail": "0.016s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_tracking::test_track_comparison_tie_rule",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_tracking::test_track_gap_bins",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_tracking::test_track_dup_frames",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_tracking::test_track_dup_median_even_count",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_tracking::test_track_job_w6_dumps",
+      "status": "PASS",
+      "detail": "0.024s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_tracking::test_track_job_refuses_to_overwrite_evidence",
+      "status": "PASS",
+      "detail": "0.005s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w7_confusion_analysis::test_fp_iou_boundaries[0.099-background]",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w7_confusion_analysis::test_fp_iou_boundaries[0.1-mislocalized]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w7_confusion_analysis::test_fp_iou_boundaries[0.499-mislocalized]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w7_confusion_analysis::test_fp_iou_boundaries[0.5-other_high_overlap_unmatched]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w7_confusion_analysis::test_duplicate_has_priority_over_gt_overlap",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w7_postproc::test_nms_agnostic_vs_class_aware",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w7_postproc::test_offline_tracker_keeps_one_id_for_moving_box",
+      "status": "PASS",
+      "detail": "0.040s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w7_postproc::test_decide_rule_adr0012",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w7_postproc::test_variants_gated_by_adr",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w7_postproc::test_explore_sign_counts_and_drop_top",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w8_dup_diagnostic::test_dup_count_same_class_only_and_conf_filter",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w8_dup_diagnostic::test_match_rate_tolerance",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w8_dup_diagnostic::test_summarize_matches_w7_explore_on_saved_run14",
+      "status": "PASS",
+      "detail": "0.072s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w8_dup_diagnostic::test_main_end_to_end_with_fake_model",
+      "status": "PASS",
+      "detail": "0.028s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w8_dup_diagnostic::test_run17_notebook_uses_real_dataset_card_keys",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w8_pipeline::test_store_append_only_and_derived_status",
+      "status": "PASS",
+      "detail": "0.017s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w8_pipeline::test_bundle_events_frames_and_manifest",
+      "status": "PASS",
+      "detail": "0.025s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w8_pipeline::test_overwrite_refuses_paths_outside_bundle",
+      "status": "PASS",
+      "detail": "0.094s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w8_pipeline::test_append_run_writes_config_audit",
+      "status": "PASS",
+      "detail": "0.064s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w8_pipeline::test_bundle_from_run14_matches_w6_alert_log",
+      "status": "PASS",
+      "detail": "0.379s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w8_pipeline::test_api_rest_review_media_and_stream",
+      "status": "PASS",
+      "detail": "0.424s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w8_pipeline::test_openapi_lists_contract",
+      "status": "PASS",
+      "detail": "0.029s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w8_pipeline::test_dashboard_replay_and_review",
+      "status": "PASS",
+      "detail": "1.612s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w8_pipeline::test_dashboard_renders_bundle_text_without_html_injection",
+      "status": "PASS",
+      "detail": "1.141s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w8_pipeline::test_dashboard_pauses_video_when_stream_stalls",
+      "status": "PASS",
+      "detail": "3.235s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w8_pipeline::test_e2e_fixture_cases_pass",
+      "status": "PASS",
+      "detail": "32.054s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w8_transcode::test_transcode_media_keeps_frames_fps_size",
+      "status": "PASS",
+      "detail": "0.192s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w8_transcode::test_ffmpeg_cmd_old_version_uses_vsync",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w8_v2_verify::test_rule_b_passes_and_each_condition_can_fail",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w8_v2_verify::test_rule_c_branches",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w8_v2_verify::test_saved_result_matches_rerun_and_kaggle",
+      "status": "PASS",
+      "detail": "0.628s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_bench_select::test_gate_b_and_accuracy_on_saved_run17",
+      "status": "PASS",
+      "detail": "4.212s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_bench_select::test_rule_c_branches",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_commons_manifest::test_manifest_filters_and_writes_two_separate_screen_files",
+      "status": "PASS",
+      "detail": "0.002s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_commons_manifest::test_time_lapse_category_is_refused",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_commons_manifest::test_author_key[<a href='//commons.wikimedia.org/wiki/User:Ai_B' title='User:Ai B'>Ai</a>-user:ai b-ok]",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_commons_manifest::test_author_key[<a href='https://commons.wikimedia.org/w/index.php?title=User:Foo&action=edit'>F</a>-user:foo-ok]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_commons_manifest::test_author_key[  John   SMITH. -name:john smith-ok]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_commons_manifest::test_author_key[Own work--needs_review]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_commons_manifest::test_author_key[--needs_review]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_commons_manifest::test_author_key[Unknown author--needs_review]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_commons_manifest::test_author_key[<a href='/wiki/User:A'>A</a> and <a href='/wiki/User:B'>B</a>--needs_review]",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_commons_manifest::test_alias_via_shared_uploader_stays_in_one_split",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_commons_manifest::test_split_targets_quarter_of_duration_and_is_deterministic",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_commons_manifest::test_finalize_double_keep_two_splits_and_stats",
+      "status": "PASS",
+      "detail": "0.002s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_commons_manifest::test_finalize_refuses_incomplete_mismatched_or_one_split",
+      "status": "PASS",
+      "detail": "0.004s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_commons_manifest::test_author_key_ignores_title_attribute_of_red_link",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_e1pipe::test_synthetic_drone_enters_roi",
+      "status": "PASS",
+      "detail": "0.075s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_e1pipe::test_finalized_event_written_before_end_and_not_changed",
+      "status": "PASS",
+      "detail": "0.005s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_e1pipe::test_saved_run17_dets_reproduce_run17_tracks[V_DRONE_060]",
+      "status": "PASS",
+      "detail": "0.205s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_e1pipe::test_saved_run17_dets_reproduce_run17_tracks[V_HELICOPTER_012]",
+      "status": "PASS",
+      "detail": "0.255s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_e1pipe::test_saved_run17_dets_reproduce_run17_tracks[V_AIRPLANE_037]",
+      "status": "PASS",
+      "detail": "0.114s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_e1pipe::test_match_tracks_tolerance",
+      "status": "PASS",
+      "detail": "0.000s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_e1pipe::test_close_transitions_in_last_frame_and_eos",
+      "status": "PASS",
+      "detail": "0.098s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_kaggle_jobs::test_bench_main_cpu_with_fake_detector",
+      "status": "PASS",
+      "detail": "0.574s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_kaggle_jobs::test_bench_c2_exports_from_writable_copy",
+      "status": "PASS",
+      "detail": "0.002s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_kaggle_jobs::test_neg_main_normalizes_and_counts",
+      "status": "PASS",
+      "detail": "1.323s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_kaggle_jobs::test_neg_main_stops_on_ffmpeg_timeout_and_logs_progress",
+      "status": "PASS",
+      "detail": "0.286s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_kaggle_jobs::test_run19_notebook_relays_log_and_smoke_runs_first",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_kaggle_jobs::test_w9_notebooks_parse_and_read_real_keys",
+      "status": "PASS",
+      "detail": "0.004s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_kaggle_jobs::test_actions_runner_fills_notebook_and_metadata",
+      "status": "PASS",
+      "detail": "0.004s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_kaggle_jobs::test_actions_auth_writes_private_credentials[KGAT_abc123---access_token]",
+      "status": "PASS",
+      "detail": "0.002s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_kaggle_jobs::test_actions_auth_writes_private_credentials[{\"username\": \"u\", \"key\": \"k1\"}---kaggle.json]",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_kaggle_jobs::test_actions_auth_writes_private_credentials[-u-k2-kaggle.json]",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_kaggle_jobs::test_actions_auth_refuses_missing_or_bad_secret",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_kaggle_jobs::test_actions_auth_extracts_token_from_pasted_forms[KGAT_abc123]",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_kaggle_jobs::test_actions_auth_extracts_token_from_pasted_forms[ KGAT_abc123\\n]",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_kaggle_jobs::test_actions_auth_extracts_token_from_pasted_forms[KAGGLE_API_TOKEN=\"KGAT_abc123\"]",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_kaggle_jobs::test_actions_auth_extracts_token_from_pasted_forms[export KAGGLE_API_TOKEN=KGAT_abc123\\n]",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_kaggle_jobs::test_actions_log_tail_parses_kaggle_json_log",
+      "status": "PASS",
+      "detail": "0.001s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_kaggle_jobs::test_actions_remote_tools_commit_reads_manifest_direct_or_in_zip",
+      "status": "PASS",
+      "detail": "0.002s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_kaggle_jobs::test_poisson_upper_no_overflow_for_large_k",
+      "status": "PASS",
+      "detail": "0.066s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_kaggle_jobs::test_run18_notebook_only_config_for_rerun_c2",
+      "status": "PASS",
+      "detail": "0.002s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_rss_growth_check::test_estimate_grows_with_rows_and_reports_share",
+      "status": "PASS",
+      "detail": "0.043s",
+      "source": "tests/"
+    },
+    {
+      "check": "pytest::tests.test_w9_rss_growth_check::test_refuses_row_count_mismatch",
+      "status": "PASS",
+      "detail": "0.002s",
+      "source": "tests/"
+    }
+  ]
+}
