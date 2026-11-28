@@ -24,7 +24,8 @@ Viết 29/11/2026, trước khi mở test và trước khi có danh sách ứng 
 ## 2b. Pixabay và Pexels không dùng được (kiểm 29/11) [WEB SOURCE]
 - Terms of Service của Pixabay và Pexels (cùng cập nhật 20/10/2026), mục 8: cấm thu thập tự động và scraping cho mục đích không được phép, nêu rõ gồm học máy; cấm sao chép hàng loạt hoặc có hệ thống. Tài liệu API của Pixabay cũng cấm tải hàng loạt có hệ thống. Bằng chứng: `data/manifests/license_evidence/pixabay_pexels_terms_2026-11-29.md`.
 - Dùng clip làm `neg_train` hoặc `neg_eval` cho mô hình là mục đích học máy, nên hai nguồn chuyển sang `needs_review` trong `license_matrix.csv` và không dùng nếu chưa có cho phép bằng văn bản.
-- Thay thế [DECISION đề xuất]: **Wikimedia Commons v2**, thêm category (chim, đàn chim, mòng biển, ngỗng, máy bay dân dụng, trực thăng, bầu trời; gồm subcategory một cấp), cùng bộ lọc và cùng giao thức sàng lọc; danh sách category commit trước khi chạy. Giấy phép CC0/CC BY/CC BY-SA cho phép dùng cho học máy khi ghi công.
+- Quang chốt 29/11 (ADR-0018, giao thức `docs/w10/neg_sources_v2_protocol.md`): **AirBirds** (camera đường băng sân bay, chỉ `neg_eval`) + **Commons v2**; DVIDS dự phòng; Pixabay chờ email cho phép.
+- Chi tiết Commons v2: **Wikimedia Commons v2**, thêm category (chim, đàn chim, mòng biển, ngỗng, máy bay dân dụng, trực thăng, bầu trời; gồm subcategory một cấp), cùng bộ lọc và cùng giao thức sàng lọc; danh sách category commit trước khi chạy. Giấy phép CC0/CC BY/CC BY-SA cho phép dùng cho học máy khi ghi công.
 - Nếu Commons v2 không đủ: báo đúng thời lượng thực có (ADR-0011 mục 2), không hạ tiêu chí.
 
 ## 3. Việc theo thứ tự phụ thuộc
@@ -35,6 +36,7 @@ Viết 29/11/2026, trước khi mở test và trước khi có danh sách ứng 
 | 10.1 | An sàng lọc Commons (tệp riêng), gửi Quang | An | — | — |
 | 10.2 | Phụ lục giao thức Commons v2 (category mới, subcategory một cấp; loại trùng với v1) — commit **trước** khi lấy danh sách | Quang viết, An review ≤ 6 giờ | — | — |
 | 10.3 | Chạy `commons_manifest.py` với category v2 trên máy có Internet → ứng viên mới ≥ 300 phút | Quang | 10.2 | — |
+| 10.3b | AirBirds: Quang điền form; khi có link, kiểm LICENSE, tải theo thứ tự phần vào Kaggle; sàng lọc mẫu hai người (đầu/giữa/cuối mỗi chuỗi) | Quang, An | form | tùy link |
 | 10.4 | Gộp Commons (`commons_manifest.py --finalize`) → `neg_commons_v1` | Quang | 10.1 | — |
 | 10.5 | Sàng lọc Commons v2, hai tệp độc lập | Quang, An | 10.3 | — |
 | 10.6 | Job Kaggle: tải, kiểm SHA, chuẩn hóa Commons v1 (+ v2 khi xong); đo C0 trên `neg_eval`; xuất frame stride 10 của `neg_train` | Quang | 10.4 (10.5) | khoảng 1 giờ |

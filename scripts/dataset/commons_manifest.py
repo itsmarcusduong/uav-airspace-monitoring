@@ -8,6 +8,10 @@ cho phep. Khong tai video. Luat sang loc va gan split: docs/w9/neg_screening_pro
 Buoc 1 - lap ung vien va hai ban sang loc rieng (Quang, may co Internet):
     python scripts/dataset/commons_manifest.py --out data/manifests/neg_commons_candidates.csv
   -> neg_commons_candidates.csv, neg_commons_screen_quang.csv, neg_commons_screen_an.csv (cung thu muc)
+Buoc 1b (W10, v2 - docs/w10/neg_sources_v2_protocol.md):
+    python scripts/dataset/commons_manifest.py --v2 --exclude data/manifests/neg_commons_candidates.csv \
+        --out data/manifests/neg_commons_v2_candidates.csv
+  -> category v2 + subcategory mot cap, bo clip da co o v1, tran 330 phut chon tat dinh theo SHA-256(title)
 Buoc 2 - moi nguoi dien ban cua minh, khong xem ban cua nguoi kia (protocol muc 2).
 Buoc 3 - gop sau khi CA HAI ban da xong:
     python scripts/dataset/commons_manifest.py --finalize data/manifests/neg_commons_candidates.csv \
@@ -40,6 +44,16 @@ CATEGORIES = [                                          # canh nen troi, chim ba
     "Videos of aircraft takeoffs",
     "Videos of clouds",
 ]
+# v2 (W10, docs/w10/neg_sources_v2_protocol.md, viet truoc khi lap danh sach): category cha + subcategory mot cap
+CATEGORIES_V2 = [
+    "Videos of birds in flight", "Videos of flocks of birds in flight", "Videos of birds", "Videos of gulls",
+    "Videos of aircraft", "Videos of aircraft landings", "Videos of aircraft takeoffs", "Videos of airliners",
+    "Videos of helicopters", "Videos of clouds", "Videos of the sky",
+]
+SUBCAT_EXCLUDE = re.compile(r"drone|uav|unmanned|quadcopter|multicopter|aerial|from the air|from aircraft|from helicopters|cockpit|"
+                            r"onboard|interior|cabin|time[\s_-]?lapse|hyper[\s_-]?lapse|slow[\s_-]?mo|animation|animated|model|toy|"
+                            r"radio[\s_-]?controlled|video games?|simulat|captive|zoo|cage|indoor|underwater", re.I)
+V2_MAX_MINUTES = 330.0                                  # tran thoi luong ung vien de sang loc (khoang 4-5 gio moi nguoi)
 ALLOWED = re.compile(r"^(CC0|Public domain|PD|CC BY(-SA)? [0-9.]+|CC BY(-SA)?)$", re.I)
 MIN_SECONDS, MIN_WIDTH = 10.0, 640
 EXCLUDE_WORDS = re.compile(r"drone|uav|quadcopter|multicopter|dji|unmanned|aerial video|from the air|cockpit|onboard", re.I)
@@ -69,6 +83,40 @@ def category_files(cat: str, fetch=get) -> list[str]:
         if "continue" not in d:
             return out
         cont = {"cmcontinue": d["continue"]["cmcontinue"]}
+
+
+def subcategories(cat: str, fetch=get) -> list[str]:
+    out, cont = [], {}
+    while True:
+        d = fetch({"action": "query", "list": "categorymembers", "cmtitle": f"Category:{cat}", "cmtype": "subcat", "cmlimit": "500", **cont})
+        out += [m["title"].split(":", 1)[1] for m in d.get("query", {}).get("categorymembers", [])]
+        if "continue" not in d:
+            return out
+        cont = {"cmcontinue": d["continue"]["cmcontinue"]}
+
+
+def expand_categories(cats: list[str], depth: int, fetch=get) -> list[str]:
+    """Category cha + subcategory toi `depth` cap; bo subcategory co ten goi y drone/quay tu tren khong/chinh sua/trong nha.
+    Giu thu tu xuat hien, khong trung."""
+    out, frontier = list(dict.fromkeys(cats)), list(dict.fromkeys(cats))
+    for _ in range(depth):
+        nxt = []
+        for c in frontier:
+            for s in subcategories(c, fetch):
+                if s not in out and not SUBCAT_EXCLUDE.search(s):
+                    out.append(s); nxt.append(s)
+        frontier = nxt
+    return out
+
+
+def cap_minutes(rows: list[dict], max_minutes: float) -> list[dict]:
+    """Chon tat dinh theo SHA-256(title) cho toi khi dat max_minutes (khong dung noi dung hay ket qua detector)."""
+    out, acc = [], 0.0
+    for r in sorted(rows, key=lambda r: hashlib.sha256(r["title"].encode("utf-8")).hexdigest()):
+        if acc >= max_minutes * 60:
+            break
+        out.append(r); acc += float(r["duration_s"] or 0)
+    return sorted(out, key=lambda r: r["title"])
 
 
 def strip_html(s: str) -> str:
@@ -259,7 +307,11 @@ def finalize(cand: Path, screen_quang: Path, screen_an: Path, out: Path) -> dict
 
 def main(argv=None, fetch=get) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--categories", nargs="+", default=CATEGORIES)
+    ap.add_argument("--categories", nargs="+", default=None, help="mac dinh: CATEGORIES (v1) hoac CATEGORIES_V2 khi --v2")
+    ap.add_argument("--v2", action="store_true", help="bo category v2, subcategory 1 cap, bo tep da co o --exclude, tran --max-minutes")
+    ap.add_argument("--subcat-depth", type=int, default=None)
+    ap.add_argument("--exclude", type=Path, nargs="*", default=[], help="bang ung vien cu: bo cac title da co")
+    ap.add_argument("--max-minutes", type=float, default=None)
     ap.add_argument("--finalize", type=Path, help="bang ung vien -> manifest chinh thuc (can --screen-quang, --screen-an)")
     ap.add_argument("--screen-quang", type=Path)
     ap.add_argument("--screen-an", type=Path)
@@ -271,8 +323,19 @@ def main(argv=None, fetch=get) -> int:
             ap.error("--finalize can ca --screen-quang va --screen-an")
         finalize(a.finalize, a.screen_quang, a.screen_an, a.out)
         return 0
-    seen, rows, rejected = set(), [], {}
-    for cat in a.categories:
+    cats = a.categories or (CATEGORIES_V2 if a.v2 else CATEGORIES)
+    depth = a.subcat_depth if a.subcat_depth is not None else (1 if a.v2 else 0)
+    max_min = a.max_minutes if a.max_minutes is not None else (V2_MAX_MINUTES if a.v2 else None)
+    if a.v2 and not a.exclude:
+        ap.error("--v2 can --exclude <bang ung vien v1> de khong sang loc lai clip cu")
+    for cat in cats:
+        if EDITED_WORDS.search(cat):
+            raise SystemExit(f"category {cat!r} la canh chinh sua (ADR-0013), khong dung")
+    cats = expand_categories(cats, depth, fetch)
+    LOG.info("%d category sau khi mo rong %d cap", len(cats), depth)
+    old = {r["title"] for p in a.exclude for r in csv.DictReader(p.open(encoding="utf-8"))}
+    seen, rows, rejected = set(old), [], {}
+    for cat in cats:
         if EDITED_WORDS.search(cat):
             raise SystemExit(f"category {cat!r} la canh chinh sua (ADR-0013), khong dung")
         titles = [t for t in category_files(cat, fetch) if t not in seen]
@@ -285,6 +348,10 @@ def main(argv=None, fetch=get) -> int:
                 rejected[why] = rejected.get(why, 0) + 1
         LOG.info("%s: %d tep, giu tong %d", cat, len(titles), len(rows))
     rows.sort(key=lambda r: r["title"])
+    if max_min is not None:
+        n0, m0 = len(rows), sum(float(r["duration_s"] or 0) for r in rows) / 60
+        rows = cap_minutes(rows, max_min)
+        LOG.info("tran %.0f phut: %d/%d tep (%.1f/%.1f phut truoc tran)", max_min, len(rows), n0, sum(float(r["duration_s"] or 0) for r in rows) / 60, m0)
     write_csv(a.out, CAND_FIELDS, rows)
     to_screen = [{"title": r["title"], "page": r["page"], "screen": "", "screen_note": ""} for r in rows if r["author_status"] == "ok"]
     for p in screen_paths(a.out):

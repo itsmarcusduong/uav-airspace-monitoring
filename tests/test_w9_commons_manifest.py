@@ -143,3 +143,43 @@ def test_author_key_ignores_title_attribute_of_red_link():
     h = ('<a href="//commons.wikimedia.org/w/index.php?title=User:Meerah_Dhiman&action=edit&redlink=1" class="new" '
          'title="User:Meerah Dhiman (page does not exist)">Meerah Dhiman</a>')
     assert cm.author_key(h) == ("user:meerah dhiman", "ok")
+
+
+def fake_fetch_v2(params):
+    if params.get("list") == "categorymembers" and params.get("cmtype") == "subcat":
+        subs = {"Category:Videos of birds": ["Category:Videos of geese", "Category:Aerial videos of birds", "Category:Time-lapse videos of birds"],
+                "Category:Videos of geese": ["Category:Videos of geese in zoo"]}
+        return {"query": {"categorymembers": [{"title": s} for s in subs.get(params["cmtitle"], [])]}}
+    if params.get("list") == "categorymembers":
+        files = {"Category:Videos of birds": ["File:Birds a.webm", "File:Sky d.webm"], "Category:Videos of geese": ["File:Geese e.webm"]}
+        return {"query": {"categorymembers": [{"title": f} for f in files.get(params["cmtitle"], [])]}}
+    pages = []
+    for t in params["titles"].split("|"):
+        md = {"LicenseShortName": {"value": "CC0"}, "LicenseUrl": {"value": "https://x"}, "Artist": {"value": USER_LINK}}
+        pages.append({"title": t, "imageinfo": [{"descriptionurl": "https://c/" + t, "url": "https://u/" + t, "mime": "video/webm", "width": 1280,
+                                                 "height": 720, "duration": 30.0, "size": 1, "sha1": "ab", "user": "Up", "extmetadata": md}]})
+    return {"query": {"pages": pages}}
+
+
+def test_expand_categories_depth_one_filters_aerial_and_edited():
+    cats = cm.expand_categories(["Videos of birds"], 1, fake_fetch_v2)
+    assert cats == ["Videos of birds", "Videos of geese"]                 # khong xuong cap 2, bo aerial va time-lapse
+
+
+def test_v2_excludes_v1_titles_and_caps_deterministically(tmp_path, monkeypatch):
+    monkeypatch.setattr(cm.time, "sleep", lambda s: None)
+    v1 = tmp_path / "neg_commons_candidates.csv"
+    cm.write_csv(v1, cm.CAND_FIELDS, [{"title": "File:Birds a.webm"}])
+    out = tmp_path / "neg_commons_v2_candidates.csv"
+    assert cm.main(["--v2", "--categories", "Videos of birds", "--exclude", str(v1), "--out", str(out)], fetch=fake_fetch_v2) == 0
+    assert [r["title"] for r in csv.DictReader(out.open(encoding="utf-8"))] == ["File:Geese e.webm", "File:Sky d.webm"]
+    assert (tmp_path / "neg_commons_v2_screen_quang.csv").exists() and (tmp_path / "neg_commons_v2_screen_an.csv").exists()
+    out2 = tmp_path / "c2.csv"
+    cm.main(["--v2", "--categories", "Videos of birds", "--exclude", str(v1), "--max-minutes", "0.4", "--out", str(out2)], fetch=fake_fetch_v2)
+    one = [r["title"] for r in csv.DictReader(out2.open(encoding="utf-8"))]
+    assert len(one) == 1 and one == [r["title"] for r in cm.cap_minutes([{"title": "File:Geese e.webm", "duration_s": 30}, {"title": "File:Sky d.webm", "duration_s": 30}], 0.4)]
+
+
+def test_v2_requires_exclude(tmp_path):
+    with pytest.raises(SystemExit):
+        cm.main(["--v2", "--out", str(tmp_path / "x.csv")], fetch=fake_fetch_v2)
