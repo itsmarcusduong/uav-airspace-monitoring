@@ -137,5 +137,13 @@
     "nfr1_met": true,
     "reason": "dat (1)+(2): ['C0', 'C1']; FPS cao nhat C0; trong 5%: ['C0'] -> chon don gian nhat C0"
   },
-  "stability": null
+  "stability": {
+    "tag": "w9_C0_rep1_stab",
+    "minutes": 60.0,
+    "rss_min10": 1467.9,
+    "rss_last": 1550.6,
+    "rss_ratio": 1.0563,
+    "errors": null,
+    "pass": true
+  }
 }

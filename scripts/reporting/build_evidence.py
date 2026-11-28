@@ -607,6 +607,95 @@ def w08(w: Week):
         w.external.append({"name": f"demo/W08/{x['file']}", "link": x.get("drive_link", ""), "sha256": x["sha256"], "bytes": x.get("bytes", 0)})
 
 
+def w09(w: Week):
+    """W9: e1pipe tung frame + cong tai tao (muc B), benchmark C0/C1/C2/CPU va luat C, chay on dinh 60 phut (run 20),
+    tap am tinh FBD-SV-2024 (run 19b3), danh sach ung vien Commons."""
+    import sys
+    for sub in ("scripts/experiments", "scripts/alert", "scripts/pipeline", "scripts/tracking"):
+        sys.path.insert(0, str(ROOT / sub))
+    import evaluate_alerts as ea  # noqa: E402
+    import w9_bench_select as bs  # noqa: E402
+    B = "results/W09/benchmark/benchmark_summary.json"
+    b = rjson(B)
+    runs = bs.load_runs([ROOT / "results/W09/kaggle_run_18"] + ([ROOT / "results/W09/kaggle_run_18b"] if (ROOT / "results/W09/kaggle_run_18b").is_dir() else []))
+    for cfg, reps in sorted(runs.items()):
+        bad = {f"{cfg}_rep{k}": [s for s, v in rjson(str((p / "stage_status.json").relative_to(ROOT))).items() if v.get("status") != "OK"] for k, p in reps.items()}
+        w.check(f"run18_{cfg}_all_stages_ok", not any(bad.values()), json.dumps(bad), str(next(iter(reps.values())).relative_to(ROOT)))
+    gate = bs.gate_b(runs["C0"][1])
+    w.check("gate_b_reproduced_pass", gate["pass"] and gate == b["gate_b"], f"{gate['matched']}/{gate['track_rows_run17']} dong, su kien {gate['events_e1pipe']}/{gate['events_run17']}", B)
+    tm = {c: bs.timing(r) for c, r in runs.items()}
+    w.check("timing_reproduced_from_summaries", all(tm[c]["fps_median"] == b["timing"][c]["fps_median"] for c in tm), json.dumps({c: tm[c]["fps_median"] for c in tm}), B)
+    export = {c: rjson(str((r[min(r)] / "stage_status.json").relative_to(ROOT))).get("export", {}) for c, r in runs.items()}
+    rc = bs.rule_c(tm, b["accuracy"], export)
+    w.check("rule_c_reproduced", rc["choice"] == b["rule_c"]["choice"] and rc["nfr1_met"], f"chon {rc['choice']}: {rc['reason'][:90]}", B)
+    for c, x in tm.items():
+        for k in ("fps_median", "fps_min", "fps_max", "p95_total_median", "p50_total_median"):
+            w.m(k, x[k], "fps" if "fps" in k else "ms", "val 38 video (CPU: 5 video)", c, B, "scripts/experiments/w9_bench_select.py")
+        for st, v in x["stage_p50_median_ms"].items():
+            w.m(f"stage_p50_{st}", v, "ms", "val 38 video (CPU: 5 video)", c, B, "scripts/experiments/w9_bench_select.py")
+    for c, x in b["accuracy"].items():
+        for k in ("drone_recall", "drone_precision", "r1_detected", "r1_false_nondrone", "track_recall_pooled", "idsw_per_1000"):
+            w.m(k, x[k], "", "val 38 video", c, B, "scripts/experiments/w9_bench_select.py")
+    w.m("rule_c_choice", rc["choice"], "", "W9_PLAN muc C", "", B, "scripts/experiments/w9_bench_select.py")
+    S = "results/W09/kaggle_run_20/w9_C0_rep1_stab"
+    if (ROOT / S / "summary.json").is_file():
+        st = bs.stability(ROOT / S)
+        w.check("stability_60min_rss_ratio_le_1_10", st["pass"], f"{st['minutes']} phut, RSS phut 60/phut 10 = {st['rss_ratio']}, loi {st.get('errors')}", f"{S}/summary.json")
+        s20 = rjson(f"{S}/summary.json")
+        for k in ("minutes", "rss_min10", "rss_last", "rss_ratio"):
+            w.m(f"stability_{k}", st[k], "", "val lap 60 phut", "C0", f"{S}/summary.json", "scripts/kaggle/w9_e1pipe_bench.py")
+        w.m("stability_frames", s20["frames"], "frame", "val lap 60 phut", "C0", f"{S}/summary.json", "scripts/kaggle/w9_e1pipe_bench.py")
+        w.m("stability_fps", s20["fps_excl_warmup"], "fps", "val lap 60 phut", "C0", f"{S}/summary.json", "scripts/kaggle/w9_e1pipe_bench.py")
+        w.check("stability_in_benchmark_summary_matches_run20", b["stability"] is not None and b["stability"]["rss_ratio"] == st["rss_ratio"],
+                f"benchmark_summary.stability = {b['stability'] and b['stability']['rss_ratio']}", B)
+        RG = "results/W09/benchmark/rss_growth_check.json"
+        if (ROOT / RG).is_file():
+            import tempfile
+            import w9_rss_growth_check as rg  # noqa: E402
+            old = rjson(RG)
+            with tempfile.TemporaryDirectory() as td:
+                rg.main(["--run", str(ROOT / S), "--out", str(Path(td) / "r.json")])
+                new = json.loads((Path(td) / "r.json").read_text(encoding="utf-8"))
+            w.check("rss_growth_check_reproduced", abs(new["latency_list_mb_estimate"] - old["latency_list_mb_estimate"]) < 1 and new["rss_growth_mb"] == old["rss_growth_mb"],
+                    f"RSS +{old['rss_growth_mb']} MB, list latency ~{old['latency_list_mb_estimate']} MB ({old['share_explained']})", RG)
+            w.m("stability_rss_growth_mb", old["rss_growth_mb"], "MB", "val lap 60 phut (tham do)", "C0", RG, "scripts/experiments/w9_rss_growth_check.py")
+            w.m("stability_latency_list_mb_estimate", old["latency_list_mb_estimate"], "MB", "val lap 60 phut (tham do)", "C0", RG, "scripts/experiments/w9_rss_growth_check.py")
+    N = "results/W09/kaggle_run_19/w9_neg_fbdsv"
+    ns = rjson(f"{N}/neg_summary.json"); nst = rjson(f"{N}/stage_status.json")
+    w.check("run19_all_stages_ok_483_clips", all(v["status"] == "OK" for v in nst.values()) and ns["clips"] == 483, json.dumps({k: v["status"] for k, v in nst.items()}), f"{N}/stage_status.json")
+    pc = rcsv(f"{N}/per_clip.csv")
+    tot = {k: sum(int(float(r[k])) for r in pc) for k in ("frames", "r1_false_alerts", "r0_false_alerts", "frames_drone_det_conf025")}
+    w.check("run19_per_clip_sums_match_summary", tot == {"frames": ns["frames"], "r1_false_alerts": ns["R1"]["false_alerts"], "r0_false_alerts": ns["R0"]["false_alerts"],
+            "frames_drone_det_conf025": ns["frames_drone_det_conf025"]}, json.dumps(tot), f"{N}/per_clip.csv")
+    w.check("run19_poisson_upper_reproduced", all(abs(round(ea.poisson_upper(ns[r]["false_alerts"]) / ns["hours"], 2) - ns[r]["per_hour_upper95"]) < 0.05 for r in ("R0", "R1")),
+            f"R1 <= {ns['R1']['per_hour_upper95']}/h, R0 <= {ns['R0']['per_hour_upper95']}/h", f"{N}/neg_summary.json")
+    w.check("run19_no_media_in_repo", not [p for p in (ROOT / "results/W09/kaggle_run_19").rglob("*") if p.suffix.lower() in (".mp4", ".jpg", ".png", ".webm")],
+            "ADR-0014: chi so tong hop va ID clip", "results/W09/kaggle_run_19/")
+    w.check("adr0011_trigger_recorded", ns["adr0011_trigger"]["r1_false_alert_ge1"] and ns["adr0011_trigger"]["drone_det_frames_ge_1pct"],
+            json.dumps(ns["adr0011_trigger"]), f"{N}/neg_summary.json")
+    for r in ("R0", "R1"):
+        for k in ("false_alerts", "per_hour", "per_hour_upper95", "clips_with_false_alert"):
+            w.m(f"fbdsv_{r}_{k}", ns[r][k], "", f"FBD-SV-2024 {ns['clips']} clip, {ns['minutes']} phut", "C0", f"{N}/neg_summary.json", "scripts/kaggle/w9_neg_fbdsv.py")
+    w.m("fbdsv_minutes", ns["minutes"], "phut", "FBD-SV-2024", "", f"{N}/neg_summary.json", "scripts/kaggle/w9_neg_fbdsv.py")
+    w.m("fbdsv_frac_frames_drone_det_conf025", ns["frac_frames_drone_det"], "", "FBD-SV-2024", "C0", f"{N}/neg_summary.json", "scripts/kaggle/w9_neg_fbdsv.py")
+    w.m("fbdsv_tracks_majority_drone", sum(int(r["tracks_majority_drone"]) for r in pc), "track", "FBD-SV-2024 (tham do)", "C0", f"{N}/per_clip.csv", "scripts/kaggle/w9_neg_fbdsv.py")
+    w.m("fbdsv_tracks", sum(int(r["tracks"]) for r in pc), "track", "FBD-SV-2024 (tham do)", "C0", f"{N}/per_clip.csv", "scripts/kaggle/w9_neg_fbdsv.py")
+    cand = rcsv("data/manifests/neg_commons_candidates.csv")
+    w.check("commons_candidates_authors_ok_licenses_allowed", all(r["author_status"] == "ok" for r in cand) and all(
+        r["license"].startswith(("CC0", "Public domain", "CC BY")) for r in cand), f"{len(cand)} clip, {round(sum(float(r['duration_s']) for r in cand) / 60, 1)} phut",
+        "data/manifests/neg_commons_candidates.csv")
+    w.m("commons_candidates", len(cand), "clip", "Wikimedia Commons (chua sang loc)", "", "data/manifests/neg_commons_candidates.csv", "scripts/dataset/commons_manifest.py")
+    for adr in ("ADR-0014-fbd-sv-evaluation-only", "ADR-0016-kaggle-github-actions"):
+        txt = (ROOT / f"docs/decisions/{adr}.md").read_text(encoding="utf-8").split("\n## ")[0]
+        w.check(f"{adr[:8].lower()}_accepted", "**Accepted**" in txt, "Accepted" if "**Accepted**" in txt else "chua Accepted", f"docs/decisions/{adr}.md")
+    for f, cap in (("results/W09/fig_w9_bench.png", "FPS và độ trễ p95 theo cấu hình (run 18, 18b)"),
+                   ("results/W09/fig_w9_stage.png", "Độ trễ p50 từng bước của pipeline"),
+                   ("results/W09/fig_w9_stability.png", "Chạy ổn định 60 phút với C0 (run 20)"),
+                   ("results/W09/fig_w9_neg.png", "Cảnh báo sai/giờ trên FBD-SV-2024 (run 19b3)")):
+        if (ROOT / f).is_file():
+            w.fig(f, cap)
+
+
 def _find_count(obj, key):
     if isinstance(obj, dict):
         if key in obj and isinstance(obj[key], int):
@@ -657,6 +746,8 @@ INFO = {
             "Cổng tái tạo tracker offline trên detection của run 14; thí nghiệm hậu xử lý detection V0/V1/V2 theo luật đặt trước ADR-0012 (chọn V2, NMS cùng lớp IoU 0,5); phân tích nhầm lẫn và hard negative trên val (An, #98); nguồn video âm tính công khai có giấy phép thay video tự quay (ADR-0013, thu thập W8); Chương III bản 1."),
     "W08": ("Tuan8", "Pipeline E2E + dashboard/log",
             "Kaggle run 17: V2 (NMS cùng lớp IoU 0,5) trong detector, áp luật đặt trước W8_PLAN mục B → áp dụng V2; chẩn đoán hộp trùng video so với ảnh val (mục C, trường hợp 3). Pipeline phát lại: kho sự kiện SQLite chỉ thêm, API FastAPI + WebSocket, dashboard, nhật ký review và cấu hình (ADR-0015). 13 kịch bản E2E của An: 9 đạt, 0 trượt, 4 không kiểm được ở chế độ phát lại. Tập âm tính e1-neg-v1 chưa xong (chuyển W9)."),
+    "W09": ("Tuan9", "Tối ưu inference, FPS/latency",
+            "Pipeline e1pipe chạy từng frame có độ trễ từng bước, qua cổng tái tạo so với run 17 (luật B). Benchmark C0/C1/C2/CPU trên 38 video val, chọn cấu hình vận hành theo luật C viết trước; chạy ổn định 60 phút (run 20). Tập âm tính: FBD-SV-2024 chuẩn hóa và đo cảnh báo sai/giờ (run 19b3), kích hoạt ADR-0011; danh sách ứng viên Wikimedia Commons lập từ API gốc, sàng lọc hai người chuyển W10."),
     "W04": ("Tuan4", "Tuning + augmentation, so sánh baseline",
             "Kiểm chứng chiều lệch nhãn (run 06 và tập chuẩn CVAT, ADR-0006), train và so sánh 6 mô hình trên cùng dữ liệu (run 09), áp luật chọn đặt trước (ADR-0007)."),
 }
@@ -667,6 +758,7 @@ LINKS = {
     "W05": "Issue #57–#62; PR #63–#70. Báo cáo: reports/w5/ (báo cáo công việc, v0.5). Trạng thái: docs/status/W05_planned_done_evidence.md. Kế hoạch: docs/w5/W5_PLAN.md. ADR-0007 (cập nhật), ADR-0008. Giao thức: docs/w5/tracking_protocol_w5.md, docs/w4/training_protocol_w4.md mục 6.",
     "W06": "Issue #74–#79, #88; PR #80–#83, #86, #87, #89–#95. Báo cáo: reports/w6/ (báo cáo công việc, v0.6). Trạng thái: docs/status/W06_planned_done_evidence.md. Kế hoạch: docs/w6/W6_PLAN.md. ADR-0009, ADR-0010, ADR-0011. Phân tích: docs/w6/alert_error_review.md, docs/w6/val_negative_frames.md, docs/w7/data_expansion_proposal.md.",
     "W08": "Issue #113, #115–#119; PR #114, #120–#127 và PR chốt tuần. Báo cáo: reports/w8/ (báo cáo công việc, v0.8). Trạng thái: docs/status/W08_planned_done_evidence.md. Kế hoạch: docs/w8/W8_PLAN.md. ADR-0014, ADR-0015. Kết quả: docs/w8/v2_verify_results.md, results/W08/e2e/README.md.",
+    "W09": "Issue #129–#134; PR #135–#155 và PR chốt tuần. Báo cáo: reports/w9/ (báo cáo công việc, v0.9). Trạng thái: docs/status/W09_planned_done_evidence.md. Kế hoạch: docs/w9/W9_PLAN.md. ADR-0016. Kết quả: results/W09/benchmark/, results/W09/kaggle_run_18/README.md, results/W09/kaggle_run_19/README.md, results/W09/kaggle_run_20/README.md. Giao thức sàng lọc: docs/w9/neg_screening_protocol.md.",
     "W07": "Issue #97–#101; PR #102–#109 và PR chốt tuần. Báo cáo: reports/w7/ (báo cáo công việc, v0.7). Trạng thái: docs/status/W07_planned_done_evidence.md. Kế hoạch: docs/w7/W7_PLAN.md. ADR-0012, ADR-0013. Phân tích: docs/w7/postproc_results.md, docs/w7/confusion_analysis.md.",
     "W04": "Issue #24, #36–#42, #48, #49; PR #43–#47, #50–#55. Báo cáo: reports/w4/ (báo cáo công việc, v0.4). Trạng thái: docs/status/W04_planned_done_evidence.md. Kế hoạch: docs/w4/W4_PLAN.md. ADR-0006, ADR-0007. Giao thức: docs/w4/training_protocol_w4.md.",
 }
@@ -743,7 +835,7 @@ def main() -> int:
         if w.dir.exists():
             shutil.rmtree(w.dir)
         w.dir.mkdir(parents=True)
-        {"W01": w01, "W02": w02, "W03": w03, "W04": w04, "W05": w05, "W06": w06, "W07": w07, "W08": w08}[wk](w)
+        {"W01": w01, "W02": w02, "W03": w03, "W04": w04, "W05": w05, "W06": w06, "W07": w07, "W08": w08, "W09": w09}[wk](w)
         if a.pytest_xml and wk == a.weeks[-1]:
             shutil.copy2(a.pytest_xml, w.dir / "test-results.xml")
             junit_to_checks(w, a.pytest_xml)

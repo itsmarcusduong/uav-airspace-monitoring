@@ -1,0 +1,41 @@
+[{"stream_name":"stderr","time":5.943121261,"data":"/usr/local/lib/python3.13/dist-packages/nbformat/validator.py:434: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n"}
+,{"stream_name":"stderr","time":5.943184807,"data":"  _validate(nbdict, ref, version, version_minor, relax_add_props)\n"}
+,{"stream_name":"stderr","time":6.6910743660000005,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":6.691113041,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":6.691142341,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":6.691147182,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":7.239889923,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":7.239924372,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":7.239928472,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":7.239931024,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":20.139271738,"data":"TOOLS /kaggle/input/datasets/minhquangdng/e1-w9-tools | commit 98bc37938b74 | 33 tep | WEIGHTS /kaggle/input/notebooks/minhquangdng/e1-w5-run13/runs/yolo11n_640_s20261030/weights/best.pt\n"}
+,{"stream_name":"stdout","time":29.382852615,"data":"Creating new Ultralytics Settings v0.0.8 file ✅ \n"}
+,{"stream_name":"stdout","time":29.382880611,"data":"View Ultralytics Settings with 'yolo settings' or at '/root/.config/Ultralytics/settings.json'\n"}
+,{"stream_name":"stdout","time":29.382885635,"data":"Update Settings with 'yolo settings key=value', i.e. 'yolo settings runs_dir=path/to/dir'. For help see https://docs.ultralytics.com/usage/settings.\n"}
+,{"stream_name":"stdout","time":29.633143278,"data":"ultralytics 8.4.183 | lap 0.5.14 | cuda True\n"}
+,{"stream_name":"stdout","time":31.939404155,"data":"DATA_ROOT = /kaggle/input\n"}
+,{"stream_name":"stderr","time":3653.888495247,"data":"INFO w9_C0_rep1_stab: 329430 frame, FPS 91.735, p95 total 11.826 ms\n"}
+,{"stream_name":"stderr","time":3654.093870876,"data":"INFO w9_C0_rep1_stab: 329430 frame, FPS 91.735, p95 total 11.826 ms\n"}
+,{"stream_name":"stderr","time":3654.093908645,"data":"\n"}
+,{"stream_name":"stderr","time":3654.093913884,"data":"INFO w9_C0_rep1_stab: 329430 frame, FPS 91.735, p95 total 11.826 ms\n"}
+,{"stream_name":"stdout","time":3657.467892878,"data":"ma thoat 0\n"}
+,{"stream_name":"stdout","time":3657.500700315,"data":"{'inputs': 'OK', 'env': 'OK', 'run': 'OK', 'summary': 'OK'}\n"}
+,{"stream_name":"stdout","time":3657.500730013,"data":"{\n"}
+,{"stream_name":"stdout","time":3657.500755155,"data":" \"minutes\": 60.0,\n"}
+,{"stream_name":"stdout","time":3657.500760763,"data":" \"rss_min10\": 1467.9,\n"}
+,{"stream_name":"stdout","time":3657.500765608,"data":" \"rss_last\": 1550.6,\n"}
+,{"stream_name":"stdout","time":3657.500770728,"data":" \"rss_ratio\": 1.0563,\n"}
+,{"stream_name":"stdout","time":3657.500775159,"data":" \"errors\": null\n"}
+,{"stream_name":"stdout","time":3657.500780078,"data":"}\n"}
+,{"stream_name":"stdout","time":3657.500784701,"data":"[{'minute': 57.48, 'rss_mb': 1547.3, 'gpu_alloc_mb': 42.0}, {'minute': 58.5, 'rss_mb': 1549.0, 'gpu_alloc_mb': 42.0}, {'minute': 59.5, 'rss_mb': 1550.6, 'gpu_alloc_mb': 42.0}]\n"}
+,{"stream_name":"stdout","time":3657.500800712,"data":"PASS\n"}
+,{"stream_name":"stdout","time":3657.500804848,"data":"/kaggle/working/w9_C0_rep1_stab_evidence.zip 4212 KB  sha256 dcb6bf77554c5f5340152835622e26d6d808496ba2a593f50ed1f2ce2770cc4a\n"}
+,{"stream_name":"stderr","time":3660.519066235,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":3660.519105497,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":3660.655267074,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":3660.655314464,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":3661.456197649,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":3661.533441965,"data":"[NbConvertApp] Writing 12485 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":3664.075364924,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":3664.592273021,"data":"[NbConvertApp] Writing 300929 bytes to __results__.html\n"}
+]

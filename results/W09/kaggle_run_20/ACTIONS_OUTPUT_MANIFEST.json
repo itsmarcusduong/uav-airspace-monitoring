@@ -1,0 +1,46 @@
+{
+  "job": "run20_stability",
+  "commit": "98bc37938b74dd207dab844df3849249cdb725dd",
+  "tag": "",
+  "kernel": "minhquangdng/e1-w9-run20-stability",
+  "final_status": "minhquangdng/e1-w9-run20-stability has status \"kernelworkerstatus.complete\"",
+  "actions_run_id": "46148190658",
+  "kaggle_cli": "Kaggle CLI 2.2.5",
+  "files": [
+    {
+      "path": "e1-w9-run20-stability.log",
+      "bytes": 5227,
+      "sha256": "1fcdbecb748c3ecfbf00d645d5e3bac3736570bef5f9304a2994ec585db8306c"
+    },
+    {
+      "path": "w9_C0_rep1_stab/env.json",
+      "bytes": 1055,
+      "sha256": "469031e722827143cdbabcdf4b1bdd8ca4e3d0f8d82b3b50d5a804a1ca8bb5a4"
+    },
+    {
+      "path": "w9_C0_rep1_stab/inputs.json",
+      "bytes": 849,
+      "sha256": "200ae9b7d62993c63648675045cdeb8a5055070ef77b7c569a902c1677a9ea3a"
+    },
+    {
+      "path": "w9_C0_rep1_stab/latency.csv.gz",
+      "bytes": 4296187,
+      "sha256": "28c2f46c97b70376a3d3150298124f887b3a9a6e466bba5583e6892729b29a28"
+    },
+    {
+      "path": "w9_C0_rep1_stab/stage_status.json",
+      "bytes": 354,
+      "sha256": "1717ea97724ae75b1a772225ba8562c4613f1dfa6c1020fd477ea7f7f7507552"
+    },
+    {
+      "path": "w9_C0_rep1_stab/summary.json",
+      "bytes": 172552,
+      "sha256": "16b0d7c544ae58860019fa2f2dfcb1dd87e2cd6679c587f5e0e1c5815730f798"
+    },
+    {
+      "path": "w9_C0_rep1_stab_evidence.zip",
+      "bytes": 4314050,
+      "sha256": "dcb6bf77554c5f5340152835622e26d6d808496ba2a593f50ed1f2ce2770cc4a"
+    }
+  ]
+}

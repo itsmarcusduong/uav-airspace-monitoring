@@ -1,0 +1,32 @@
+{
+ "note": "tham do sau khi xem ket qua run 20; khong phai luat dat truoc",
+ "frames": 329430,
+ "columns": [
+  "source_id",
+  "frame",
+  "decode",
+  "detect",
+  "track",
+  "alert",
+  "persist",
+  "total"
+ ],
+ "rss_first": {
+  "minute": 0.21,
+  "rss_mb": 1446.5,
+  "gpu_alloc_mb": 42.0
+ },
+ "rss_last": {
+  "minute": 59.5,
+  "rss_mb": 1550.6,
+  "gpu_alloc_mb": 42.0
+ },
+ "rss_growth_mb": 104.1,
+ "rss_slope_mb_per_min": 1.756,
+ "latency_list_mb_estimate": 82.3,
+ "share_explained": 0.79,
+ "gpu_alloc_mb_first_last": [
+  42.0,
+  42.0
+ ]
+}
