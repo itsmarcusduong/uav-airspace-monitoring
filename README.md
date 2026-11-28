@@ -10,7 +10,7 @@ Repo này chỉ chứa mã, cấu hình, quyết định (ADR), kết quả nh�
 
 > README này cập nhật khi chốt tuần, hoặc khi thay đổi cách chạy, cấu trúc thư mục hay kết quả chính. Số liệu chi tiết và nguồn của chúng nằm trong `docs/status/` và `Evidence/WNN/`.
 
-## Trạng thái (cập nhật 24/11/2026, đang ở W9)
+## Trạng thái (cập nhật 29/11/2026, chốt W9, bắt đầu W10)
 
 | Tuần | Mốc (thang chấm GVHD) | Kết quả chính | Tag / commit cuối tuần |
 |---|---|---|---|
@@ -20,7 +20,8 @@ Repo này chỉ chứa mã, cấu hình, quyết định (ADR), kết quả nh�
 | W6 | Geofence, cảnh báo | Luật R1 theo track: cảnh báo sai trên video không Drone 7 → 0, event recall 23/23 trên val (ADR-0009) | `154a596` |
 | W7 | Hard negative, phân tích nhầm lẫn | Hậu xử lý V2 (NMS cùng lớp IoU 0,5) chọn theo luật đặt trước, đo offline (ADR-0012) | `9c99539` |
 | W8 | Pipeline E2E, dashboard, log | V2 xác nhận trên video thật: ID switch / 1000 frame GT 18,01 → 1,98. Pipeline phát lại (SQLite, FastAPI + WebSocket, dashboard). 13 ca E2E: 9 đạt, 0 trượt, 4 không kiểm được ở phát lại (ADR-0015) | `w08` |
-| W9 | Tối ưu suy luận, FPS/độ trễ | Đang làm: `e1pipe` chạy từng frame; benchmark C0/C1/C2; tập âm tính FBD-SV-2024 (ADR-0014, ADR-0016) | — |
+| W9 | Tối ưu suy luận, FPS/độ trễ | `e1pipe` chạy từng frame qua cổng tái tạo so với run 17. Luật C chọn **C0** (PyTorch fp32): 89,3 FPS, p95 12,1 ms trên T4; C2 TensorRT nhanh hơn nhưng không đạt giới hạn độ chính xác. Chạy 60 phút đạt. FBD-SV-2024: R1 138 cảnh báo sai/giờ → hard negative ở W10 (ADR-0011) | commit cuối tuần ở issue #134 |
+| W10 | Đánh giá detection + tracking trên test | Đang làm | — |
 
 Chi tiết từng tuần: `docs/status/WNN_planned_done_evidence.md`. Kế hoạch tuần: `docs/wN/WN_PLAN.md`. Mọi số trên đây đo trên **val**; tập test khóa tới đánh giá cuối.
 
@@ -61,12 +62,12 @@ Toàn bộ trong `docs/decisions/`. Những ADR ảnh hưởng trực tiếp t�
 ```bash
 python -m pip install -r requirements-dev.txt
 python -m pytest -q                                   # khoảng 1 phút; test dashboard cần Playwright + Chromium
-python scripts/reporting/build_evidence.py --weeks W08
-python scripts/github/check_structure.py --weeks 8
+python scripts/reporting/build_evidence.py --weeks W09
+python scripts/github/check_structure.py --weeks 9
 ```
 
 - **Dữ liệu thật** (giải mã video, huấn luyện, benchmark) chỉ chạy trên Kaggle, theo notebook trong `scripts/kaggle/notebooks/`. Dataset tools dựng bằng `python scripts/kaggle/make_tools_bundle.py --out <thư mục> --zip`; notebook kiểm commit và SHA-256 của tools trước khi chạy.
-- **Áp luật lên kết quả**, ví dụ W8: `python scripts/experiments/w8_v2_verify.py --out results/W08/v2_verify`.
+- **Áp luật lên kết quả**, ví dụ W9: `python scripts/experiments/w9_bench_select.py --runs results/W09/kaggle_run_18 results/W09/kaggle_run_18b --stability results/W09/kaggle_run_20/w9_C0_rep1_stab --out results/W09/benchmark`.
 - **Dashboard phát lại** (cần bundle, video không có trong repo): xem `scripts/pipeline/README.md`.
 
 ## Dữ liệu và giấy phép

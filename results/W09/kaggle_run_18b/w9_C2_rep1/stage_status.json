@@ -1,0 +1,33 @@
+{
+  "inputs": {
+    "status": "OK",
+    "videos": 38,
+    "video_sha256_checked": 38
+  },
+  "env": {
+    "status": "OK",
+    "gpu": "Tesla T4",
+    "ultralytics": "8.4.183"
+  },
+  "export": {
+    "status": "OK",
+    "engine_sha256": "5448aac8542538dbfee19eeb4937049bf3c88ca8590e45a16d4d78849f18928c",
+    "seconds": 224.3
+  },
+  "run": {
+    "status": "OK",
+    "videos": 38,
+    "frames": 11821
+  },
+  "detect": {
+    "status": "OK"
+  },
+  "dump": {
+    "status": "OK"
+  },
+  "summary": {
+    "status": "OK",
+    "fps_excl_warmup": 199.144,
+    "p95_total_ms": 5.44
+  }
+}

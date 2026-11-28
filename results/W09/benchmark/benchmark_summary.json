@@ -76,6 +76,29 @@
         "total": 77.322
       },
       "gpu_peak_mb_max": 0
+    },
+    "C2": {
+      "reps": [
+        1,
+        2,
+        3
+      ],
+      "fps_median": 198.814,
+      "fps_min": 198.589,
+      "fps_max": 199.144,
+      "p95_total_median": 5.44,
+      "p95_total_min": 5.408,
+      "p95_total_max": 5.444,
+      "p50_total_median": 4.917,
+      "stage_p50_median_ms": {
+        "decode": 0.382,
+        "detect": 3.893,
+        "track": 0.53,
+        "alert": 0.03,
+        "persist": 0.053,
+        "total": 4.917
+      },
+      "gpu_peak_mb_max": 72.5
     }
   },
   "accuracy": {
@@ -96,6 +119,15 @@
       "r1_false_nondrone": 0,
       "track_recall_pooled": 0.8376,
       "idsw_per_1000": 1.81
+    },
+    "C2": {
+      "drone_recall": 0.8291,
+      "drone_precision": 0.8489,
+      "r1_detected": 23,
+      "r1_events": 23,
+      "r1_false_nondrone": 1,
+      "track_recall_pooled": 0.8305,
+      "idsw_per_1000": 1.465
     }
   },
   "rule_c": {
@@ -129,13 +161,31 @@
         "p95_total_median": 13.779
       },
       "C2": {
-        "available": false,
-        "reason": "khong co ket qua"
+        "available": true,
+        "nfr1": true,
+        "accuracy_guard": {
+          "drone_recall_drop_le_0.01": false,
+          "r1_event_recall_not_lower": true,
+          "r1_false_nondrone_not_higher": false,
+          "track_recall_drop_le_0.01": true,
+          "idsw_increase_le_10pct": true
+        },
+        "accuracy_ok": false,
+        "fps_median": 198.814,
+        "p95_total_median": 5.44
       }
     },
     "choice": "C0",
     "nfr1_met": true,
     "reason": "dat (1)+(2): ['C0', 'C1']; FPS cao nhat C0; trong 5%: ['C0'] -> chon don gian nhat C0"
   },
-  "stability": null
+  "stability": {
+    "tag": "w9_C0_rep1_stab",
+    "minutes": 60.0,
+    "rss_min10": 1467.9,
+    "rss_last": 1550.6,
+    "rss_ratio": 1.0563,
+    "errors": null,
+    "pass": true
+  }
 }
