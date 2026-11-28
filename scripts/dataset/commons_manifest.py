@@ -30,6 +30,7 @@ import re
 import sys
 import time
 import unicodedata
+import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -68,11 +69,31 @@ FINAL_FIELDS = CAND_FIELDS + ["group_key", "split", "screen_quang", "note_quang"
 VALUES = {"keep", "reject"}
 
 
-def get(params: dict, opener=urllib.request.urlopen) -> dict:
-    q = urllib.parse.urlencode({**params, "format": "json", "formatversion": "2"})
+RETRY_STATUS, MAX_TRIES, MIN_INTERVAL = {429, 503}, 6, 1.0
+_last_call = [0.0]
+
+
+def get(params: dict, opener=urllib.request.urlopen, sleep=time.sleep, clock=time.monotonic) -> dict:
+    """Mot request toi Commons API: cach nhau >= MIN_INTERVAL giay (chinh sach API Wikimedia: request tuan tu, cham);
+    gap 429/503 thi doi theo Retry-After (hoac 5, 10, 20, 40, 80 giay) roi thu lai, toi da MAX_TRIES lan."""
+    q = urllib.parse.urlencode({**params, "format": "json", "formatversion": "2", "maxlag": "5"})
     req = urllib.request.Request(f"{API}?{q}", headers={"User-Agent": UA})
-    with opener(req, timeout=60) as r:
-        return json.loads(r.read().decode("utf-8"))
+    for attempt in range(MAX_TRIES):
+        wait = MIN_INTERVAL - (clock() - _last_call[0])
+        if wait > 0:
+            sleep(wait)
+        _last_call[0] = clock()
+        try:
+            with opener(req, timeout=60) as r:
+                return json.loads(r.read().decode("utf-8"))
+        except urllib.error.HTTPError as e:
+            if e.code not in RETRY_STATUS or attempt == MAX_TRIES - 1:
+                raise
+            ra = (e.headers or {}).get("Retry-After") if e.headers is not None else None
+            delay = float(ra) if ra and str(ra).isdigit() else 5.0 * 2 ** attempt
+            LOG.warning("HTTP %s, doi %.0f giay roi thu lai (%d/%d)", e.code, delay, attempt + 1, MAX_TRIES - 1)
+            sleep(delay)
+    raise RuntimeError("khong toi duoc day")
 
 
 def category_files(cat: str, fetch=get) -> list[str]:

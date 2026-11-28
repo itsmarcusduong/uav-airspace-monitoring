@@ -183,3 +183,36 @@ def test_v2_excludes_v1_titles_and_caps_deterministically(tmp_path, monkeypatch)
 def test_v2_requires_exclude(tmp_path):
     with pytest.raises(SystemExit):
         cm.main(["--v2", "--out", str(tmp_path / "x.csv")], fetch=fake_fetch_v2)
+
+
+def test_get_retries_on_429_with_retry_after(monkeypatch):
+    import io
+    import urllib.error
+    calls, slept = [], []
+
+    class Resp(io.BytesIO):
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+    def opener(req, timeout):
+        calls.append(req.full_url)
+        if len(calls) < 3:
+            raise urllib.error.HTTPError(req.full_url, 429, "Too Many Requests", {"Retry-After": "7"} if len(calls) == 1 else {}, None)
+        return Resp(b'{"ok": 1}')
+
+    assert cm.get({"action": "query"}, opener=opener, sleep=slept.append, clock=lambda: 0.0) == {"ok": 1}
+    assert len(calls) == 3 and 7.0 in slept and 10.0 in slept           # Retry-After, roi 5*2^1
+    assert "maxlag=5" in calls[0]
+
+
+def test_get_raises_other_http_errors():
+    import urllib.error
+
+    def opener(req, timeout):
+        raise urllib.error.HTTPError(req.full_url, 404, "Not Found", {}, None)
+
+    with pytest.raises(urllib.error.HTTPError):
+        cm.get({"action": "query"}, opener=opener, sleep=lambda s: None, clock=lambda: 0.0)
