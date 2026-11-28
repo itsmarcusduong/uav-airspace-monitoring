@@ -4,9 +4,13 @@
     decode (cv2) -> detect (Ultralytics predict, NMS cung lop IoU 0,5) -> track (BYTETracker, ByteTrack-e1)
     -> alert (R1Engine, truc tuyen) -> persist (FrameResult JSONL + su kien da chot vao SQLite)
 
-Moi FrameResult co stage_latency_ms = {decode, detect, track, alert, persist, total} (perf_counter, ms). `total` tinh tu
-truoc khi doc frame toi khi ban ghi da san sang: persist gom ghi su kien da chot vao SQLite (commit) va serialize JSON;
-lenh ghi dong JSON vao bo dem gzip ngay sau do khong nam trong so do (vi so do phai nam trong chinh dong do). Su kien chi ghi vao kho bat bien khi da dong va het cua so mo lai
+Do tre (perf_counter, ms), hai noi ghi, hai pham vi (review cua An tren PR #136):
+- latency_out (latency.csv cua benchmark, dung cho luat C va NFR1): persist va total tinh SAU khi ghi xong dong FrameResult,
+  dung dinh nghia W9_PLAN muc B ("tu truoc luc doc frame toi sau luc ghi xong").
+- stage_latency_ms trong chinh FrameResult: persist va total chi tinh toi khi ban ghi duoc serialize (mot dong khong the
+  chua thoi gian ghi chinh no); dong co "latency_scope": "pre_write". Chenh lech = lenh ghi mot dong vao bo dem gzip.
+Chuyen trang thai "close" o cuoi video: neu biet truoc so frame, R1 duoc chot ngay o frame cuoi va "close" nam trong
+FrameResult cuoi; neu video het som hon (hoac khong biet truoc), them mot dong {"type": "eos", ...} chua cac "close". Su kien chi ghi vao kho bat bien khi da dong va het cua so mo lai
 (R1Engine.finalized), nen kho khong bao gio phai sua ban ghi.
 
 Thiet ke de kiem thu: detector la mot ham frame -> mang [x1, y1, x2, y2, conf, cls]; pytest dung detector gia va video
@@ -146,6 +150,8 @@ def run_source(frames: Iterable, source_id: str, class_name: str, fps: float, w:
         rows = track_step(tracker, det, w, h)
         t3 = clock()
         trans = eng.step(f, rows)
+        if n_frames and f == n_frames - 1:       # frame cuoi da biet truoc: chot moi canh bao ngay trong FrameResult cuoi
+            trans += eng.close()
         t4 = clock()
         rec = {"run_id": sink.run_id, "source_id": source_id, "model_version": model_version, "frame_index": f,
                "source_time_ms": e1store.frame_ms(f, fps),
@@ -163,11 +169,19 @@ def run_source(frames: Iterable, source_id: str, class_name: str, fps: float, w:
         t5 = clock()
         lat = {"decode": t1 - t0, "detect": t2 - t1, "track": t3 - t2, "alert": t4 - t3, "persist": t5 - t4, "total": t5 - t0}
         rec["stage_latency_ms"] = {k: round(1000 * v, 3) for k, v in lat.items()}
-        sink.write_line(body[:-1] + ',"stage_latency_ms":' + json.dumps(rec["stage_latency_ms"], separators=(",", ":")) + "}")
-        if latency_out is not None:
-            latency_out.append((source_id, f, *(rec["stage_latency_ms"][k] for k in (*STAGES, "total"))))
+        sink.write_line(body[:-1] + ',"stage_latency_ms":' + json.dumps(rec["stage_latency_ms"], separators=(",", ":"))
+                        + ',"latency_scope":"pre_write"}')
+        t6 = clock()
+        if latency_out is not None:              # so do benchmark (W9_PLAN muc B, C): persist va total tinh SAU khi ghi xong dong
+            ms = {k: round(1000 * v, 3) for k, v in lat.items()}
+            ms["persist"] = round(1000 * (t6 - t4), 3); ms["total"] = round(1000 * (t6 - t0), 3)
+            latency_out.append((source_id, f, *(ms[k] for k in (*STAGES, "total"))))
         f += 1
     trans = eng.close()
+    if trans:                                    # het video som hon so frame ky vong (hoac khong biet truoc): ban ghi ket thuc
+        sink.write_line(json.dumps({"type": "eos", "run_id": sink.run_id, "source_id": source_id, "frame_index": f,
+                                    "events": [{"event_id": f"{sink.run_id}:{source_id}:{t['event']}", "transition": t["transition"]}
+                                               for t in trans]}, ensure_ascii=False, separators=(",", ":")))
     for idx in range(len(eng.alerts)):
         if idx not in written:
             sink.event(source_id, idx, eng.event(idx), fps, roi_name)
