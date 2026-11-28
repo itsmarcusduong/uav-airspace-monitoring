@@ -85,7 +85,8 @@ def author_key(artist_html: str) -> tuple[str, str]:
     """Khoa tac gia on dinh (protocol muc 3). Uu tien tai khoan Commons trong lien ket User:, sau do ten da chuan hoa.
 
     Tra (key, status): status 'ok' hoac 'needs_review' (trong, khong ro, hoac nhieu tai khoan khac nhau)."""
-    users = {norm(urllib.parse.unquote(u)) for u in re.findall(r"User:([^\"'#?&<>/|]+)", artist_html or "")}
+    # chi doc tai khoan trong href (thuoc tinh title co the them "(page does not exist)" lam mot tai khoan thanh hai)
+    users = {norm(urllib.parse.unquote(u)) for u in re.findall(r"href=[\"'][^\"']*?User:([^\"'#?&<>/|]+)", artist_html or "")}
     users.discard("")
     if len(users) > 1:
         return "", "needs_review"
