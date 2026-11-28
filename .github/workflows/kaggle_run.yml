@@ -16,10 +16,14 @@ on:
         description: "Chi cho run20_stability: C0, C1 hoac C2"
         required: false
         default: ""
+      tag:
+        description: "Nhan run (a-z, 0-9): tao notebook Kaggle rieng e1-w9-<job>-<tag>; de trong = notebook mac dinh"
+        required: false
+        default: ""
 permissions:
   contents: read
 concurrency:
-  group: kaggle-${{ inputs.job }}
+  group: kaggle-${{ inputs.job }}-${{ inputs.tag }}
   cancel-in-progress: false
 jobs:
   run:
@@ -38,7 +42,12 @@ jobs:
         env:
           KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
           KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
-        run: python scripts/kaggle/actions_kaggle_run.py --job "${{ inputs.job }}" --commit "${{ inputs.commit }}" --config "${{ inputs.config }}" --out out
+          IN_JOB: ${{ inputs.job }}
+          IN_COMMIT: ${{ inputs.commit }}
+          IN_CONFIG: ${{ inputs.config }}
+          IN_TAG: ${{ inputs.tag }}
+        # dau vao di qua bien moi truong, khong chen thang vao lenh shell
+        run: python scripts/kaggle/actions_kaggle_run.py --job "$IN_JOB" --commit "$IN_COMMIT" --config "$IN_CONFIG" --tag "$IN_TAG" --out out
       - name: Tai ket qua len lam artifact (30 ngay)
         if: always()
         uses: actions/upload-artifact@v4

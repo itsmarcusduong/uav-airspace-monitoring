@@ -80,6 +80,7 @@ def main() -> int:
     ap.add_argument("--job", choices=list(JOBS), required=True)
     ap.add_argument("--commit", required=True)
     ap.add_argument("--config", default="", help="run20_stability: C0/C1/C2")
+    ap.add_argument("--tag", default="", help="nhan run (ADR-0016 muc 2), vd. b2: tao notebook Kaggle rieng e1-w9-<job>-<tag>, khong ghi de notebook dang chay")
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--timeout-min", type=int, default=300)
     ap.add_argument("--dry-run", action="store_true", help="chi dung thu muc, khong goi Kaggle (kiem thu)")
@@ -103,7 +104,9 @@ def main() -> int:
     if a.job == "run20_stability":
         vals["CONFIG"] = a.config
     (kd / JOBS[a.job]["notebook"]).write_text(json.dumps(fill_notebook(nb, vals), ensure_ascii=False, indent=1), encoding="utf-8")
-    slug = f"{USER}/e1-w9-{a.job.replace('_', '-')}"
+    if a.tag and not re.fullmatch(r"[a-z0-9]{1,12}", a.tag):
+        raise SystemExit("--tag chi gom a-z, 0-9, toi da 12 ky tu")
+    slug = f"{USER}/e1-w9-{a.job.replace('_', '-')}" + (f"-{a.tag}" if a.tag else "")
     (kd / "kernel-metadata.json").write_text(json.dumps(kernel_metadata(a.job, slug), indent=2))
     if a.dry_run:
         print("dry-run:", build)
@@ -128,7 +131,7 @@ def main() -> int:
     res = a.out / "kernel_output"; res.mkdir(parents=True, exist_ok=True)
     sh("kaggle", "kernels", "output", slug, "-p", str(res), check=False)
     files = sorted(p for p in res.rglob("*") if p.is_file())
-    man = {"job": a.job, "commit": a.commit, "kernel": slug, "final_status": state.strip()[-200:], "actions_run_id": os.environ.get("GITHUB_RUN_ID", ""),
+    man = {"job": a.job, "commit": a.commit, "tag": a.tag, "kernel": slug, "final_status": state.strip()[-200:], "actions_run_id": os.environ.get("GITHUB_RUN_ID", ""),
            "kaggle_cli": sh("kaggle", "--version", check=False).strip(),
            "files": [{"path": p.relative_to(res).as_posix(), "bytes": p.stat().st_size, "sha256": sha256(p)} for p in files]}
     (a.out / "ACTIONS_OUTPUT_MANIFEST.json").write_text(json.dumps(man, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
