@@ -227,3 +227,12 @@ def test_actions_auth_extracts_token_from_pasted_forms(tmp_path, raw):
     assert au.write_creds(tmp_path, raw, "", "") == "access_token"
     assert (tmp_path / ".kaggle/access_token").read_text() == "KGAT_abc123"
     assert "KGAT_abc123" not in au.shape(raw)
+
+
+def test_actions_log_tail_parses_kaggle_json_log(tmp_path):
+    import actions_kaggle_run as ak
+    p = tmp_path / "k.log"
+    p.write_text(json.dumps([{"stream_name": "stdout", "time": 1.0, "data": "a\nb\n"}, {"stream_name": "stderr", "time": 2.0, "data": "AssertionError: x\n"}]))
+    assert ak.log_tail(p, 2) == "b\nAssertionError: x"
+    p.write_text("not json\nlast")
+    assert ak.log_tail(p, 1) == "last"
