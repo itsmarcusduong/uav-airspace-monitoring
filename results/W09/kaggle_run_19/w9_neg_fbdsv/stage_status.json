@@ -1,0 +1,29 @@
+{
+  "normalize": {
+    "status": "OK",
+    "clips": 483,
+    "seconds": 278.4,
+    "seconds_by_step": {
+      "index": 0.5,
+      "copy": 67.0,
+      "sha": 14.9,
+      "ffmpeg": 531.3,
+      "probe": 496.1
+    },
+    "source_sizes": [
+      "1280x720@25.0"
+    ]
+  },
+  "measure": {
+    "status": "OK",
+    "clips": 483,
+    "seconds": 379.4,
+    "frames": 34438
+  },
+  "summary": {
+    "status": "OK",
+    "minutes": 19.13,
+    "r1_false": 44,
+    "r0_false": 142
+  }
+}
