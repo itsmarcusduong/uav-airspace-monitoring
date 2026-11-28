@@ -96,3 +96,24 @@ def test_match_tracks_tolerance():
     a = [{"frame": 0, "id": 1, "cls": 2, "x": 1.0, "y": 1.0, "w": 2.0, "h": 2.0}, {"frame": 1, "id": 1, "cls": 2, "x": 1, "y": 1, "w": 2, "h": 2}]
     b = [{"frame": 0, "id": 1, "cls": 2, "x": 1.04, "y": 1.0, "w": 2.0, "h": 2.0}, {"frame": 1, "id": 2, "cls": 2, "x": 1, "y": 1, "w": 2, "h": 2}]
     assert e1pipe.match_tracks(a, b) == (1, 2)
+
+
+def test_close_transitions_in_last_frame_and_eos(tmp_path):
+    """Review An (#136): 'close' cua canh bao con mo khi het video phai xuat hien trong FrameResult (frame cuoi hoac dong eos)."""
+    tr, poly, acfg = cfgs()
+    by_f = {f: [(2, 0.8, (300, 240, 20, 20))] for f in range(60)}             # drone o giua khung toi frame cuoi
+    for name, n_expected in (("A", 60), ("B", 90)):                            # B: video het som hon so frame ky vong
+        sink = e1pipe.Sink(tmp_path / name, "rt", "c", "m", {}, "cpu", "t")
+        lat = []
+        e1pipe.run_source(range(60), "V", "Drone", 30.0, 640, 512, n_expected, SavedDets(by_f), e1pipe.make_tracker(tr), sink, poly,
+                          acfg, "center_hex", "m", latency_out=lat)
+        sink.close()
+        with gzip.open(tmp_path / name / "frames/rt/V.jsonl.gz", "rt") as fh:
+            fr = [json.loads(x) for x in fh]
+        tr_ = [(x.get("type", "frame"), x["frame_index"], t["transition"]) for x in fr for t in x["events"]]
+        assert [t for _, _, t in tr_] == ["open", "close"]
+        assert tr_[-1][:2] == (("frame", 59) if name == "A" else ("eos", 60))
+        recs = [x for x in fr if "stage_latency_ms" in x]
+        assert all(x["latency_scope"] == "pre_write" for x in recs)
+        # so do benchmark gom ca lenh ghi dong: total >= total trong ban ghi, cung frame
+        assert all(l[-1] >= x["stage_latency_ms"]["total"] for l, x in zip(lat, recs)) and len(lat) == 60

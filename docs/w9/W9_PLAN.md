@@ -30,7 +30,10 @@ Mốc tuần:
 | alert | R1 chạy trực tuyến; cùng mã với `alert_engine.r1_alerts` (ADR-0009, `configs/alert_e1.yaml`, ROI `center_hex`, điểm tâm) |
 | persist | ghi `FrameResult` (JSONL nén) và sự kiện đã chốt vào SQLite (`e1store`) |
 
-- Mỗi `FrameResult` ghi `stage_latency_ms` của 5 bước và `total`. `total` tính từ trước lúc đọc frame tới sau lúc ghi xong.
+- Độ trễ đo bằng `perf_counter`. Làm rõ ngày 24/11, theo review của An trên PR #136, trước mọi run:
+  - **số đo benchmark** (`latency.csv`, dùng cho luật C và NFR1): `total` tính từ trước lúc đọc frame tới **sau** lúc ghi xong dòng `FrameResult`; `persist` gồm ghi SQLite, serialize và ghi dòng;
+  - `stage_latency_ms` **nằm trong** `FrameResult` chỉ tính tới lúc serialize, vì một dòng không thể chứa thời gian ghi chính nó. Dòng đó có `"latency_scope": "pre_write"`.
+- Khi hết video, sự kiện còn mở được chốt ngay ở frame cuối. Chuyển trạng thái `close` nằm trong `FrameResult` cuối. Nếu video hết sớm hơn số frame kỳ vọng thì thêm một dòng `{"type": "eos"}`.
 - **Cổng tái tạo** chạy trên 38 video val với cấu hình C0, phải đạt cả ba điều kiện:
   1. track log khớp run 17 ở ≥ 99% dòng (cùng frame, ID, lớp; mỗi tọa độ lệch ≤ 0,05 px);
   2. sự kiện R1 trùng từng khung frame với bundle run 17 (25 sự kiện);
