@@ -7,7 +7,7 @@
 - [DOCUMENT] Đề cương: 14 tuần, 27/09–31/12/2026; tag bắt buộc ở W4, W8, W11, W14.
 - Ngày 29/11/2026, GVHD báo hạn mới: quyển đồ án, demo và release mã nguồn phải **hoàn thiện toàn bộ trước 10/12/2026**. GVHD không nói gì về cách chia báo cáo tuần và tag từ W10.
 - Ngày bắt đầu W10 là 30/11, nên còn 10 ngày làm việc (30/11–09/12) cho năm mốc W10–W14.
-- Quang quyết định (29/11): **không cắt nội dung**. Giữ Pixabay, giữ mục tiêu ≥ 120 phút âm tính (ADR-0011 mục 2), được thêm detector nếu cần, và mô hình cuối chạy ≥ 3 seed. Cả hai thành viên làm mỗi ngày; việc sau bắt đầu ngay khi việc trước xong.
+- Quang quyết định (29/11): **không cắt nội dung**. Giữ mục tiêu ≥ 120 phút âm tính (ADR-0011 mục 2), được thêm detector nếu cần, và mô hình cuối chạy ≥ 3 seed. Pixabay được giữ trong kế hoạch, nhưng kiểm Terms of Service ngày 29/11 cho thấy không dùng được cho học máy khi chưa có cho phép (`docs/w10/W10_W14_PLAN.md` mục 2b); nguồn bù là Wikimedia Commons v2. Cả hai thành viên làm mỗi ngày; việc sau bắt đầu ngay khi việc trước xong.
 
 ## Quyết định [DECISION]
 1. **Giữ năm milestone `Tuan10`…`Tuan14`**, mỗi milestone là một đợt ngắn:
@@ -32,7 +32,7 @@
 6. **Ngân sách GPU Kaggle**: theo dõi quota mỗi ngày trong `docs/w10/W10_W14_PLAN.md`; không chạy hai job cùng lúc khi job sau phụ thuộc job trước.
 
 ## Hệ quả
-- Khối lượng mỗi ngày lớn; rủi ro chính là GPU queue của Kaggle và thời gian sàng lọc hai người (Commons + Pixabay).
+- Khối lượng mỗi ngày lớn; rủi ro chính là GPU queue của Kaggle và thời gian sàng lọc hai người (Commons v1 + v2).
 - Báo cáo và version đồ án dựng bằng script như các tuần trước để giữ thời gian.
 - Nếu đến 05/12 vẫn chưa đủ 120 phút âm tính sau sàng lọc, báo đúng thời lượng thực có (ADR-0011 mục 2) và nêu là hạn chế; không hạ tiêu chí sàng lọc.
 
