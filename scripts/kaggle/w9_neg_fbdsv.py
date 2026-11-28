@@ -24,6 +24,7 @@ import subprocess
 import sys
 import time
 import zipfile
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 LOG = logging.getLogger("w9_neg_fbdsv")
@@ -61,6 +62,22 @@ def progress(stage: str, i: int, n: int, t0: float, frames: int) -> None:
     LOG.info("[%s] %d/%d clip | %d frame | %.0f s | %.1f frame/s | con ~%.0f s", stage, i, n, frames, el, frames / el if el else 0.0, eta)
 
 
+def clip_index(root: Path) -> dict[str, list[Path]]:
+    """Mot lan rglob: ten tep -> cac duong dan (tranh 483 lan quet thu muc tren /kaggle/input)."""
+    idx: dict[str, list[Path]] = {}
+    for p in root.rglob("*.mp4"):
+        idx.setdefault(p.name, []).append(p)
+    return idx
+
+
+def find_in_index(idx: dict[str, list[Path]], rel: str) -> Path:
+    tail = Path(*Path(rel).parts[1:])
+    hits = [p for p in idx.get(Path(rel).name, []) if p.as_posix().endswith(tail.as_posix())]
+    if len(hits) != 1:
+        raise FileNotFoundError(f"{rel}: tim thay {len(hits)} tep")
+    return hits[0]
+
+
 def find_clip(root: Path, rel: str) -> Path:
     """rel kieu 'FBD-SV-2024/videos/train/bird_1.mp4'; Kaggle co the giai nen them mot tang thu muc."""
     tail = Path(*Path(rel).parts[1:])
@@ -78,6 +95,7 @@ def main() -> int:
     ap.add_argument("--weights-sha", required=True)
     ap.add_argument("--device", default="0")
     ap.add_argument("--max-clips", type=int, default=0, help="chi de kiem thu")
+    ap.add_argument("--jobs", type=int, default=4, help="so clip chuan hoa song song (doc /kaggle/input cham, run 19: ~11 s/clip)")
     ap.add_argument("--work", type=Path, default=Path("/tmp/e1_fbd_norm"))
     ap.add_argument("--out", type=Path, default=Path("/kaggle/working"))
     ap.add_argument("--commit", default="UNKNOWN")
@@ -120,34 +138,52 @@ def main() -> int:
     a.work.mkdir(parents=True)
     clips = []
     t0 = time.time()
-    LOG.info("[normalize] bat dau %d clip", len(man))
-    tsum = {"find": 0.0, "sha": 0.0, "ffmpeg": 0.0, "probe": 0.0}      # thoi gian tung buoc, de biet buoc nao cham
-    for i, r in enumerate(man, 1):
-        tt = time.time()
-        src = find_clip(a.fbd_root, r["path"])
-        tsum["find"] += time.time() - tt; tt = time.time()
-        ok_sha = sha256(src) == r["sha256"]
-        tsum["sha"] += time.time() - tt
-        if not ok_sha:
-            raise SystemExit(f"{r['path']}: SHA-256 khac manifest (ADR-0014: dung lai)")
+    LOG.info("[normalize] bat dau %d clip, %d luong", len(man), a.jobs)
+    tt = time.time()
+    index = clip_index(a.fbd_root)                                    # mot lan rglob thay vi 483 lan
+    tsum = {"index": time.time() - tt, "copy": 0.0, "sha": 0.0, "ffmpeg": 0.0, "probe": 0.0}
+    (a.work / "_src").mkdir()
+
+    def one(r: dict) -> dict:
+        """Chep clip tu /kaggle/input (doc mang, cham) sang dia cuc bo MOT lan, roi kiem SHA, chuan hoa, probe tren ban chep."""
         cid = f"{Path(r['path']).parent.name}/{Path(r['path']).stem}"
+        key = "__".join(Path(r["path"]).parts[-2:])
+        loc = a.work / "_src" / key
         dst = a.work / f"{Path(r['path']).parent.name}__{Path(r['path']).stem}.mp4"
-        try:
-            tt = time.time()
-            subprocess.run(normalize_cmd(src, dst), check=True, timeout=CMD_TIMEOUT_S)
-            tsum["ffmpeg"] += time.time() - tt; tt = time.time()
-            ps, pd = probe(src), probe(dst)
-            tsum["probe"] += time.time() - tt
-        except subprocess.TimeoutExpired as e:
-            status["normalize"] = {"status": "FAIL", "clip": cid, "error": f"timeout {CMD_TIMEOUT_S}s: {e.cmd[0]}", "done": len(clips)}
-            save_status()
-            raise SystemExit(f"{cid}: {e.cmd[0]} qua {CMD_TIMEOUT_S}s")
+        tm = {}
+        t = time.time(); shutil.copyfile(find_in_index(index, r["path"]), loc); tm["copy"] = time.time() - t
+        t = time.time(); ok = sha256(loc) == r["sha256"]; tm["sha"] = time.time() - t
+        if not ok:
+            raise ValueError(f"{r['path']}: SHA-256 khac manifest (ADR-0014: dung lai)")
+        t = time.time(); subprocess.run(normalize_cmd(loc, dst), check=True, timeout=CMD_TIMEOUT_S); tm["ffmpeg"] = time.time() - t
+        t = time.time(); ps, pd = probe(loc), probe(dst); tm["probe"] = time.time() - t
+        loc.unlink()
         if (pd["width"], pd["height"]) != (640, 512) or abs(pd["fps"] - 30.0) > 0.01:
-            raise SystemExit(f"{cid}: chuan hoa sai {pd}")
-        clips.append({"clip": cid, "src": ps, "out": pd, "path": dst})
-        if i % PROGRESS_EVERY == 0 or i == len(man):
-            progress("normalize", i, len(man), t0, sum(c["out"]["frames"] for c in clips))
-            LOG.info("[normalize] giay cong don: %s", {k: round(v, 1) for k, v in tsum.items()})
+            raise ValueError(f"{cid}: chuan hoa sai {pd}")
+        return {"clip": cid, "src": ps, "out": pd, "path": dst, "_tm": tm}
+
+    done = {}
+    with ThreadPoolExecutor(max_workers=a.jobs) as ex:
+        futs = {ex.submit(one, r): k for k, r in enumerate(man)}
+        for n, f in enumerate(as_completed(futs), 1):
+            try:
+                c = f.result()
+            except subprocess.TimeoutExpired as e:
+                status["normalize"] = {"status": "FAIL", "clip": man[futs[f]]["path"], "error": f"timeout {CMD_TIMEOUT_S}s: {e.cmd[0]}", "done": len(done)}
+                save_status(); ex.shutdown(cancel_futures=True)
+                raise SystemExit(f"{man[futs[f]]['path']}: {e.cmd[0]} qua {CMD_TIMEOUT_S}s")
+            except ValueError as e:
+                status["normalize"] = {"status": "FAIL", "error": str(e), "done": len(done)}
+                save_status(); ex.shutdown(cancel_futures=True)
+                raise SystemExit(str(e))
+            for k, v in c.pop("_tm").items():
+                tsum[k] += v
+            done[futs[f]] = c
+            if n % PROGRESS_EVERY == 0 or n == len(man):
+                progress("normalize", n, len(man), t0, sum(x["out"]["frames"] for x in done.values()))
+                LOG.info("[normalize] giay cong don (tong cac luong): %s", {k: round(v, 1) for k, v in tsum.items()})
+    clips = [done[k] for k in range(len(man))]                       # giu dung thu tu manifest (tat dinh)
+    shutil.rmtree(a.work / "_src", ignore_errors=True)
     status["normalize"] = {"status": "OK", "clips": len(clips), "seconds": round(time.time() - t0, 1),
                            "seconds_by_step": {k: round(v, 1) for k, v in tsum.items()},
                            "source_sizes": sorted({f"{c['src']['width']}x{c['src']['height']}@{c['src']['fps']}" for c in clips})}

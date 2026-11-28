@@ -154,7 +154,7 @@ def test_neg_main_stops_on_ffmpeg_timeout_and_logs_progress(tmp_path, tools, mon
     with pytest.raises(SystemExit, match="ffmpeg qua"):
         wn.main()
     st = json.loads((out / "w9_neg_fbdsv" / "stage_status.json").read_text())
-    assert st["normalize"]["status"] == "FAIL" and st["normalize"]["clip"] == "train/bird_1"
+    assert st["normalize"]["status"] == "FAIL" and st["normalize"]["clip"] == "FBD-SV-2024/videos/train/bird_1.mp4"
     assert "[normalize] bat dau 1 clip" in capsys.readouterr().out
 
 
